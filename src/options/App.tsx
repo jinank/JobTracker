@@ -3,8 +3,9 @@ import { AccountPanel } from "./components/AccountPanel";
 import { PrivacyPanel } from "./components/PrivacyPanel";
 import { DangerZone } from "./components/DangerZone";
 import { SyncStats } from "./components/SyncStats";
+import { ExportPanel } from "./components/ExportPanel";
 
-type Tab = "account" | "privacy" | "about";
+type Tab = "account" | "privacy" | "export" | "about";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>("account");
@@ -12,6 +13,7 @@ export default function App() {
   const tabs: { id: Tab; label: string }[] = [
     { id: "account", label: "Account" },
     { id: "privacy", label: "Privacy" },
+    { id: "export", label: "Export" },
     { id: "about", label: "About" },
   ];
 
@@ -19,7 +21,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-50">
       {/* Top bar */}
       <div className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-2xl px-6">
+        <div className="mx-auto max-w-5xl px-6">
           <div className="flex items-center gap-3 py-4">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
               <svg
@@ -68,7 +70,7 @@ export default function App() {
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-2xl px-6 py-6">
+      <div className="mx-auto max-w-5xl px-6 py-6">
         {/* Stats */}
         <div className="mb-6">
           <SyncStats />
@@ -81,6 +83,15 @@ export default function App() {
             <div className="space-y-8">
               <PrivacyPanel />
               <DangerZone />
+            </div>
+          )}
+          {activeTab === "export" && (
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-base font-semibold text-gray-900">Export Applications</h2>
+                <p className="text-sm text-gray-500 mt-1">View and download all your tracked applications as an Excel spreadsheet.</p>
+              </div>
+              <ExportPanel />
             </div>
           )}
           {activeTab === "about" && <AboutPanel />}
