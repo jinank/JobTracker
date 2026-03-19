@@ -1,0 +1,12 @@
+export const DB_NAME = "glanceai";
+export const DB_VERSION = 1;
+export const EXTRACTION_VERSION = 1;
+
+export const GMAIL_BASE_URL = "https://gmail.googleapis.com/gmail/v1";
+
+export const GMAIL_JOB_QUERY =
+  "newer_than:6m (subject:(application OR interview OR rejection OR offer OR assessment OR position OR role OR opportunity OR hiring OR candidate OR candidacy OR \"not be moving forward\" OR \"unfortunately\" OR \"thank you for considering\" OR \"thank you for your interest\" OR \"we will not\" OR \"regret to inform\" OR \"received your application\" OR \"joining our team\") OR from:(greenhouse.io OR greenhouse-mail.io OR lever.co OR workday.com OR myworkday.com OR smartrecruiters.com OR jobs-noreply.linkedin.com OR indeed.com OR icims.com OR taleo.net OR jobvite.com OR myworkdayjobs.com OR successfactors.com OR ashbyhq.com OR bamboohr.com OR recruitee.com OR jazz.co OR breezy.hr OR applytojob.com OR hirebridge.com OR ultipro.com OR ceridian.com OR adp.com OR oracle.com OR cornerstoneondemand.com OR hire.lever.co OR boards.eu.greenhouse.io))";
+
+export const MAX_MESSAGES_PER_SYNC = 500;
+export const GMAIL_FETCH_BATCH_SIZE = 10;
+export const CLASSIFY_BATCH_SIZE = 10;
