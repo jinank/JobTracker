@@ -21,6 +21,7 @@ export async function GET() {
   return NextResponse.json({
     chains: data,
     paid: user.paid,
+    studentVerified: user.studentVerified,
     chainCount: user.chainCount,
     limit: user.paid ? null : user.limit,
   });

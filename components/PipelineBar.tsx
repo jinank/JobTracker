@@ -1,6 +1,7 @@
 "use client";
 
 import type { Chain, ChainStatus } from "@/types/chain";
+import { WeeklyGrowthPill } from "./WeeklyGrowthPill";
 
 const PIPELINE_STAGES: { status: ChainStatus; label: string; color: string; bg: string }[] = [
   { status: "APPLIED", label: "Applied", color: "bg-blue-500", bg: "bg-blue-50" },
@@ -10,19 +11,47 @@ const PIPELINE_STAGES: { status: ChainStatus; label: string; color: string; bg: 
   { status: "REJECTED", label: "Rejected", color: "bg-red-400", bg: "bg-red-50" },
 ];
 
+function chainCreatedMs(c: Chain): number {
+  const raw = c.created_at as unknown;
+  if (typeof raw === "number" && raw > 0) return raw;
+  if (typeof raw === "string") {
+    const n = Number(raw);
+    if (!Number.isNaN(n) && n > 1e11) return n;
+    const parsed = Date.parse(raw);
+    if (!Number.isNaN(parsed)) return parsed;
+  }
+  return c.last_event_at;
+}
+
 export function PipelineBar({
   chains,
   selectedFilter,
   onFilterClick,
+  growthFromMs,
+  growthToMs,
+  growthLabel,
 }: {
   chains: Chain[];
   selectedFilter: string;
   onFilterClick: (status: string) => void;
+  growthFromMs: number;
+  growthToMs: number;
+  growthLabel: string;
 }) {
-  const counts = PIPELINE_STAGES.map((stage) => ({
-    ...stage,
-    count: chains.filter((c) => c.status === stage.status).length,
-  }));
+  const inGrowthWindow = (c: Chain) => {
+    const t = chainCreatedMs(c);
+    return t >= growthFromMs && t <= growthToMs;
+  };
+
+  const counts = PIPELINE_STAGES.map((stage) => {
+    const inStage = chains.filter((c) => c.status === stage.status);
+    const addedInPeriod = inStage.filter(inGrowthWindow).length;
+    return {
+      ...stage,
+      count: inStage.length,
+      addedInPeriod,
+    };
+  });
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 animate-fade-in">
@@ -32,7 +61,7 @@ export function PipelineBar({
           <button
             key={stage.status}
             onClick={() => onFilterClick(stage.status)}
-            className={`flex flex-col items-center justify-center rounded-xl border-2 p-4 transition-all text-left w-full min-h-[80px] ${
+            className={`flex flex-col items-center justify-center rounded-xl border-2 p-3.5 sm:p-4 transition-all text-left w-full min-h-[96px] ${
               isSelected
                 ? `${stage.color} border-transparent text-white shadow-md`
                 : `${stage.bg} border-slate-200/80 hover:border-slate-300`
@@ -41,7 +70,14 @@ export function PipelineBar({
             <span className="text-2xl font-bold tabular-nums">
               {stage.count}
             </span>
-            <span className={`text-xs font-medium mt-0.5 ${isSelected ? "text-white/90" : "text-slate-600"}`}>
+            <WeeklyGrowthPill
+              count={stage.addedInPeriod}
+              periodLabel={growthLabel}
+              selected={isSelected}
+            />
+            <span
+              className={`text-xs font-medium mt-1 ${isSelected ? "text-white/90" : "text-slate-600"}`}
+            >
               {stage.label}
             </span>
           </button>

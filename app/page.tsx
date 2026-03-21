@@ -474,29 +474,6 @@ function LandingPage() {
         </div>
       </div>
 
-      {/* ── Footer ── */}
-      <footer className="bg-white border-t border-slate-200 py-10">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                </svg>
-              </div>
-              <span className="text-sm font-bold text-slate-900">Rethinkjobs</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <a href="#features" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Features</a>
-              <a href="#how-it-works" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">How It Works</a>
-              <a href="#pricing" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Pricing</a>
-            </div>
-            <p className="text-xs text-slate-400">
-              &copy; {new Date().getFullYear()} Rethinkjobs. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

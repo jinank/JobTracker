@@ -19,6 +19,18 @@ import {
   EXTRACTION_VERSION,
 } from "@/lib/constants";
 
+const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
+  "REJECTION",
+  "INTERVIEW_INVITE",
+  "ASSESSMENT_INVITE",
+  "OFFER",
+]);
+
+// If we missed the original application email, we still want to record the
+// later stages (rejection/interview/etc) but avoid false positives from
+// marketing content.
+const MIN_CONFIDENCE_NON_APPLICATION_CHAIN = 0.55;
+
 export async function POST() {
   const user = await requireSyncAccess();
   if (!user) {
@@ -60,24 +72,26 @@ export async function POST() {
       .filter((m) => !processedIds.has(m.id))
       .slice(0, MAX_MESSAGES_PER_SYNC);
 
-    if (newMessageIds.length === 0) {
-      return NextResponse.json({ newCount: 0, total: allMessageIds.length });
-    }
-
     const parsed: ParsedMessage[] = [];
-    for (let i = 0; i < newMessageIds.length; i += GMAIL_FETCH_BATCH_SIZE) {
-      const batch = newMessageIds.slice(i, i + GMAIL_FETCH_BATCH_SIZE);
-      const results = await Promise.all(
-        batch.map(async (m) => {
-          try {
-            const full = await getMessage(user.accessToken, m.id);
-            return parseGmailMessage(full);
-          } catch {
-            return null;
-          }
-        })
-      );
-      parsed.push(...results.filter((r): r is ParsedMessage => r !== null));
+    if (newMessageIds.length > 0) {
+      for (
+        let i = 0;
+        i < newMessageIds.length;
+        i += GMAIL_FETCH_BATCH_SIZE
+      ) {
+        const batch = newMessageIds.slice(i, i + GMAIL_FETCH_BATCH_SIZE);
+        const results = await Promise.all(
+          batch.map(async (m) => {
+            try {
+              const full = await getMessage(user.accessToken, m.id);
+              return parseGmailMessage(full);
+            } catch {
+              return null;
+            }
+          })
+        );
+        parsed.push(...results.filter((r): r is ParsedMessage => r !== null));
+      }
     }
 
     const { data: userChains } = await supabase
@@ -142,12 +156,15 @@ export async function POST() {
 
       const match = findBestMatch(chainCache, company, role);
 
-      // Only create NEW chains from APPLICATION_RECEIVED (application confirmation).
-      // Interview/assessment invites, offers, rejections, etc. must match an existing
-      // application—otherwise skip (e.g. marketing emails like "interview tips" from Alison).
-      if (!match && classification.eventType !== "APPLICATION_RECEIVED") {
-        continue;
-      }
+      const canCreateFromNoMatch =
+        classification.eventType === "APPLICATION_RECEIVED" ||
+        (NON_APPLICATION_CREATE_EVENT_TYPES.has(classification.eventType) &&
+          classification.confidence >= MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
+
+      // Option A: if we missed the application email, still create a chain for
+      // later-stage signals (rejection/interview/assessment/offer) but only
+      // when confidence is high enough.
+      if (!match && !canCreateFromNoMatch) continue;
 
       let chainId: string;
 
@@ -211,6 +228,164 @@ export async function POST() {
       });
 
       newCount++;
+    }
+
+    // Backfill: if we previously indexed a message but skipped inserting an
+    // event (e.g. due to earlier strict matching), create the missing event
+    // now. This is limited to recently indexed messages to avoid heavy API usage.
+    const BACKFILL_LOOKBACK_MS = 24 * 60 * 60 * 1000;
+    const MAX_BACKFILL_MESSAGES = 20;
+
+    const lookback = Date.now() - BACKFILL_LOOKBACK_MS;
+    const { data: recentIndexed } = await supabase
+      .from("message_index")
+      .select("provider_message_id,msg_id_internal,received_at")
+      .eq("user_id", user.userId)
+      .eq("processed", true)
+      .gte("received_at", lookback)
+      .order("received_at", { ascending: false })
+      .limit(50);
+
+    const indexed = recentIndexed ?? [];
+    if (indexed.length > 0) {
+      const msgIdInternals = indexed
+        .map((m) => m.msg_id_internal)
+        .filter(Boolean);
+
+      if (msgIdInternals.length > 0) {
+        const { data: indexedEvents } = await supabase
+          .from("events")
+          .select("msg_id_internal")
+          .in("msg_id_internal", msgIdInternals);
+
+        const hasEvent = new Set(
+          (indexedEvents ?? [])
+            .map((e) => e.msg_id_internal)
+            .filter(Boolean)
+        );
+
+        const missing = indexed
+          .filter((m) => !hasEvent.has(m.msg_id_internal))
+          .slice(0, MAX_BACKFILL_MESSAGES);
+
+        for (const missingMsg of missing) {
+          const msgIdInternal = missingMsg.msg_id_internal;
+          if (!msgIdInternal) continue;
+
+          let parsedMsg: ParsedMessage | null = null;
+          try {
+            const full = await getMessage(
+              user.accessToken,
+              missingMsg.provider_message_id
+            );
+            parsedMsg = parseGmailMessage(full);
+          } catch {
+            continue;
+          }
+
+          if (!parsedMsg) continue;
+
+          let classification;
+          try {
+            classification = await classifyEmail(parsedMsg);
+          } catch {
+            continue;
+          }
+
+          if (
+            classification.eventType === "OTHER" &&
+            classification.confidence < 0.3
+          ) {
+            continue;
+          }
+
+          const status = eventTypeToStatus(classification.eventType);
+          const company = resolveCompanyName(
+            classification.company || undefined,
+            parsedMsg.from_domain
+          );
+          const role = normalizeRoleTitle(classification.roleTitle || "");
+
+          const match = findBestMatch(chainCache, company, role);
+          const canCreateFromNoMatch =
+            classification.eventType === "APPLICATION_RECEIVED" ||
+            (NON_APPLICATION_CREATE_EVENT_TYPES.has(
+              classification.eventType
+            ) &&
+              classification.confidence >=
+                MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
+
+          if (!match && !canCreateFromNoMatch) continue;
+
+          let chainId: string;
+          if (match) {
+            const updatedStatus = advanceStatus(match.status, status);
+            await supabase
+              .from("chains")
+              .update({
+                status: updatedStatus,
+                last_event_at: Math.max(
+                  match.last_event_at,
+                  parsedMsg.received_at
+                ),
+                confidence: Math.max(match.confidence, classification.confidence),
+                ...(role && !match.role_title ? { role_title: role } : {}),
+              })
+              .eq("chain_id", match.chain_id);
+
+            match.status = updatedStatus;
+            match.last_event_at = Math.max(
+              match.last_event_at,
+              parsedMsg.received_at
+            );
+            match.confidence = Math.max(match.confidence, classification.confidence);
+            chainId = match.chain_id;
+          } else {
+            chainId = crypto.randomUUID();
+            const newChain: ChainRow = {
+              chain_id: chainId,
+              canonical_company: company,
+              role_title: role,
+              status,
+              last_event_at: parsedMsg.received_at,
+              confidence: classification.confidence,
+            };
+
+            await supabase.from("chains").insert({
+              ...newChain,
+              user_id: user.userId,
+              created_at: Date.now(),
+            });
+
+            chainCache.push(newChain);
+          }
+
+          const deadlineMs = classification.deadline
+            ? new Date(classification.deadline).getTime()
+            : null;
+
+          await supabase.from("events").insert({
+            event_id: crypto.randomUUID(),
+            chain_id: chainId,
+            user_id: user.userId,
+            event_type: classification.eventType,
+            event_time: parsedMsg.received_at,
+            due_at: deadlineMs,
+            evidence: classification.evidence,
+            extracted_entities: {
+              company_raw: classification.company || undefined,
+              role_raw: classification.roleTitle || undefined,
+              recruiter_name: classification.recruiterName || undefined,
+              deadline_raw: classification.deadline || undefined,
+              links: classification.links,
+            },
+            msg_id_internal: msgIdInternal,
+            extraction_version: EXTRACTION_VERSION,
+          });
+
+          newCount++;
+        }
+      }
     }
 
     return NextResponse.json({ newCount, total: allMessageIds.length });

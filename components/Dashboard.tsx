@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useChains } from "@/hooks/useChains";
 import { useSync } from "@/hooks/useSync";
@@ -12,6 +12,7 @@ import { ChainView } from "./ChainView";
 import { EmptyState } from "./EmptyState";
 import type { Chain, ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
+import { startOfCalendarWeekMs } from "@/lib/utils";
 
 const TERMINAL_STATUSES: ChainStatus[] = ["REJECTED", "GHOSTED", "WITHDRAWN"];
 const PAGE_SIZE_OPTIONS = [5, 10, 25, 50];
@@ -48,7 +49,15 @@ function sortChains(
 
 export function Dashboard() {
   const { data: session } = useSession();
-  const { chains, paid, chainCount, limit, loading, refresh } = useChains();
+  const {
+    chains,
+    paid,
+    studentVerified,
+    chainCount,
+    limit,
+    loading,
+    refresh,
+  } = useChains();
   const { syncing, progress, error, newCount, lastSyncAt, sync } =
     useSync(refresh);
   const { notifications, unreadCount, markAllRead, clearAll } =
@@ -56,6 +65,26 @@ export function Dashboard() {
 
   const freeLimit = limit ?? 50;
   const atLimit = !paid && chainCount >= freeLimit;
+
+  const [showStudentApprovedNotif, setShowStudentApprovedNotif] =
+    useState(false);
+  useEffect(() => {
+    if (!studentVerified) {
+      setShowStudentApprovedNotif(false);
+      return;
+    }
+    const email = session?.user?.email;
+    if (!email) return;
+
+    const key = `rethinkjobs_student_verified_approved_notif_${email.toLowerCase()}`;
+    try {
+      if (localStorage.getItem(key)) return;
+      localStorage.setItem(key, "1");
+    } catch {
+      // If localStorage is blocked, still show the banner once per page load.
+    }
+    setShowStudentApprovedNotif(true);
+  }, [studentVerified, session?.user?.email]);
 
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
   const [filter, setFilter] = useState<string>("all");
@@ -110,6 +139,44 @@ export function Dashboard() {
         return { from: 0, to: Infinity };
     }
   }, [datePreset, dateFrom, dateTo]);
+
+  /** Pipeline “+N …” badge window + label — matches selected date preset. */
+  const pipelineGrowth = useMemo(() => {
+    const now = new Date();
+    const endOfDay = (d: Date) =>
+      new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999).getTime();
+
+    if (datePreset === "all") {
+      return {
+        from: startOfCalendarWeekMs(now),
+        to: endOfDay(now),
+        label: "this week",
+      };
+    }
+
+    const label =
+      datePreset === "today"
+        ? "today"
+        : datePreset === "week"
+          ? "this week"
+          : datePreset === "month"
+            ? "this month"
+            : datePreset === "30d"
+              ? "last 30 days"
+              : datePreset === "90d"
+                ? "last 90 days"
+                : datePreset === "custom"
+                  ? dateFrom && dateTo
+                    ? `${dateFrom} – ${dateTo}`
+                    : "in this range"
+                  : "this week";
+
+    return {
+      from: dateRange.from,
+      to: dateRange.to,
+      label,
+    };
+  }, [datePreset, dateFrom, dateTo, dateRange]);
 
   const dateFilteredChains = useMemo(() => {
     if (dateRange.from === 0 && dateRange.to === Infinity) return chains;
@@ -246,6 +313,24 @@ export function Dashboard() {
           </div>
         )}
 
+        {showStudentApprovedNotif && (
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm rounded-xl px-4 py-3 mb-5 animate-fade-in">
+            <div className="font-semibold">Student verification approved</div>
+            <div className="text-xs text-emerald-700/90 mt-1">
+              You now have free student access. Reach out and manage your
+              applications in the dashboard.
+            </div>
+            <div className="mt-3">
+              <button
+                onClick={() => setShowStudentApprovedNotif(false)}
+                className="text-xs font-medium text-emerald-800 hover:text-emerald-900 transition-colors"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
+
         {!paid && (
           <div className="bg-white rounded-xl border border-slate-200/80 shadow-card p-4 mb-5 animate-fade-in">
             <div className="flex items-center justify-between mb-2">
@@ -352,6 +437,9 @@ export function Dashboard() {
               chains={dateFilteredChains}
               selectedFilter={filter}
               onFilterClick={handleFilterChange}
+              growthFromMs={pipelineGrowth.from}
+              growthToMs={pipelineGrowth.to}
+              growthLabel={pipelineGrowth.label}
             />
 
             {/* Search + Filters Row */}

@@ -7,6 +7,7 @@ import type { AppEvent } from "@/types/event";
 export function useChains() {
   const [chains, setChains] = useState<Chain[]>([]);
   const [paid, setPaid] = useState<boolean>(false);
+  const [studentVerified, setStudentVerified] = useState<boolean>(false);
   const [chainCount, setChainCount] = useState(0);
   const [limit, setLimit] = useState<number | null>(50);
   const [loading, setLoading] = useState(true);
@@ -18,6 +19,7 @@ export function useChains() {
       const data = await res.json();
       setChains(data.chains ?? []);
       setPaid(data.paid ?? false);
+      setStudentVerified(data.studentVerified ?? false);
       setChainCount(data.chainCount ?? 0);
       setLimit(data.limit ?? null);
     } catch {
@@ -31,7 +33,7 @@ export function useChains() {
     refresh();
   }, [refresh]);
 
-  return { chains, paid, chainCount, limit, loading, refresh };
+  return { chains, paid, studentVerified, chainCount, limit, loading, refresh };
 }
 
 export function useChainEvents(chainId: string | null) {

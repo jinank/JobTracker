@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { Chain, ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
 import type { AppEvent, EventType } from "@/types/event";
@@ -175,6 +176,12 @@ export function ChainView({
           <div className="flex items-center gap-2">
             {!editing && (
               <>
+                <Link
+                  href={`/reach-out?company=${encodeURIComponent(chain.canonical_company)}&chainId=${chain.chain_id}${chain.role_title ? `&role=${encodeURIComponent(chain.role_title)}` : ""}`}
+                  className="text-xs px-3.5 py-2 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-colors font-medium"
+                >
+                  Reach Out
+                </Link>
                 <button
                   onClick={() => setEditing(true)}
                   className="text-xs px-3.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-colors font-medium"

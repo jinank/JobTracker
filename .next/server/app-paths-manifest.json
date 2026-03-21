@@ -1,16 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/admin/students/page": "app/admin/students/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/chains/[chainId]/events/route": "app/api/chains/[chainId]/events/route.js",
-  "/api/admin/students/route": "app/api/admin/students/route.js",
-  "/api/checkout/route": "app/api/checkout/route.js",
-  "/api/chains/route": "app/api/chains/route.js",
-  "/api/gmail/sync/route": "app/api/gmail/sync/route.js",
-  "/api/student-verify/route": "app/api/student-verify/route.js",
-  "/api/webhooks/stripe/route": "app/api/webhooks/stripe/route.js",
-  "/success/page": "app/success/page.js",
+  "/reach-out/page": "app/reach-out/page.js",
   "/page": "app/page.js",
-  "/pricing/page": "app/pricing/page.js",
-  "/verify-student/page": "app/verify-student/page.js"
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/chains/route": "app/api/chains/route.js"
 }

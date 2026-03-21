@@ -1,3 +1,13 @@
+/** Monday 00:00:00 local time for the week containing `ref` (ISO-style week). */
+export function startOfCalendarWeekMs(ref: Date = new Date()): number {
+  const d = new Date(ref);
+  const day = d.getDay();
+  const diff = day === 0 ? 6 : day - 1;
+  d.setDate(d.getDate() - diff);
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+}
+
 export function formatRelativeTime(ms: number): string {
   const diff = Date.now() - ms;
   const seconds = Math.floor(diff / 1000);

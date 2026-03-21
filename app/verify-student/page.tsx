@@ -21,15 +21,37 @@ export default function VerifyStudentPage() {
   const [graduationYear, setGraduationYear] = useState("");
 
   useEffect(() => {
-    fetch("/api/student-verify")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.verification) {
-          setStatus(data.verification.status);
+    let cancelled = false;
+    let intervalId: number | undefined;
+
+    const fetchStatus = async () => {
+      try {
+        const res = await fetch("/api/student-verify");
+        const data = await res.json();
+        if (cancelled) return;
+        if (data.verification?.status) {
+          const nextStatus = data.verification.status as VerificationStatus;
+          setStatus(nextStatus);
+
+          // Stop polling once we have a final answer.
+          if (nextStatus === "approved" || nextStatus === "rejected") {
+            if (intervalId) window.clearInterval(intervalId);
+          }
         }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      } catch {
+        // Ignore transient errors and keep polling.
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    fetchStatus();
+    intervalId = window.setInterval(fetchStatus, 5000);
+
+    return () => {
+      cancelled = true;
+      if (intervalId) window.clearInterval(intervalId);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {

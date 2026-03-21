@@ -9,6 +9,7 @@ export interface AuthenticatedUser {
   email: string;
   accessToken: string;
   paid: boolean;
+  studentVerified: boolean;
   chainCount: number;
   limit: number;
 }
@@ -41,6 +42,7 @@ export async function getAuthUser(): Promise<AuthenticatedUser | null> {
     email: session.user.email,
     accessToken: session.accessToken,
     paid: isPaid,
+    studentVerified: data.student_verified === true,
     chainCount: count ?? 0,
     limit: isPaid ? Infinity : FREE_TIER_LIMIT,
   };
