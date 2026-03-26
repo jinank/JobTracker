@@ -31,6 +31,7 @@ export const authOptions: NextAuthOptions = {
           {
             email: user.email,
             name: user.name ?? "",
+            image: user.image ?? null,
             google_sub: account.providerAccountId,
             ...(isOwner ? { paid: true, subscription_status: "active" } : {}),
           },

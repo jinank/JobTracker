@@ -16,6 +16,8 @@ export interface Chain {
   confidence: number;
   created_at: number;
   account_id: string;
+  /** User-entered / self-reported notes (newline-separated log lines) */
+  user_notes?: string | null;
 }
 
 export const STATUS_ORDER: ChainStatus[] = [

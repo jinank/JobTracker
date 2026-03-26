@@ -1,6 +1,7 @@
 {
-  "/reach-out/page": "app/reach-out/page.js",
   "/page": "app/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/chains/route": "app/api/chains/route.js"
+  "/api/chains/route": "app/api/chains/route.js",
+  "/api/leaderboard/route": "app/api/leaderboard/route.js",
+  "/api/chains/response-prompts/route": "app/api/chains/response-prompts/route.js"
 }

@@ -24,6 +24,28 @@ export function formatRelativeTime(ms: number): string {
   return `${months}mo ago`;
 }
 
+/** Header line for last Gmail sync: time today, or short date + time if older. */
+export function formatLastSyncLabel(ms: number): string {
+  const d = new Date(ms);
+  const now = new Date();
+  if (d.toDateString() === now.toDateString()) {
+    return d
+      .toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .toLowerCase();
+  }
+  return d.toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 export function formatDeadline(ms: number): string {
   const date = new Date(ms);
   const now = new Date();

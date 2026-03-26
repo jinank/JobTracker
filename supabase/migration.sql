@@ -29,6 +29,8 @@ create table if not exists chains (
 create index if not exists idx_chains_user on chains(user_id);
 create index if not exists idx_chains_status on chains(status);
 
+alter table chains add column if not exists user_notes text default '';
+
 -- Events (timeline entries)
 create table if not exists events (
   event_id uuid primary key default gen_random_uuid(),

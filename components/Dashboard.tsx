@@ -10,6 +10,8 @@ import { PipelineBar } from "./PipelineBar";
 import { ChainCard } from "./ChainCard";
 import { ChainView } from "./ChainView";
 import { EmptyState } from "./EmptyState";
+import { LeaderboardSidebar } from "./LeaderboardSidebar";
+import { InviteResponseBanner } from "./InviteResponseBanner";
 import type { Chain, ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
 import { startOfCalendarWeekMs } from "@/lib/utils";
@@ -58,8 +60,10 @@ export function Dashboard() {
     loading,
     refresh,
   } = useChains();
-  const { syncing, progress, error, newCount, lastSyncAt, sync } =
-    useSync(refresh);
+  const { syncing, progress, error, newCount, lastSyncAt, sync } = useSync(
+    refresh,
+    session?.user?.email
+  );
   const { notifications, unreadCount, markAllRead, clearAll } =
     useNotifications(chains);
 
@@ -96,6 +100,14 @@ export function Dashboard() {
   const [datePreset, setDatePreset] = useState<string>("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+
+  useEffect(() => {
+    setSelectedChain((prev) => {
+      if (!prev) return prev;
+      const next = chains.find((c) => c.chain_id === prev.chain_id);
+      return next ?? prev;
+    });
+  }, [chains]);
 
   const dateRange = useMemo(() => {
     if (datePreset === "all") return { from: 0, to: Infinity };
@@ -280,13 +292,22 @@ export function Dashboard() {
           onMarkAllRead={markAllRead}
           onClearNotifications={clearAll}
         />
-        <main className="max-w-4xl mx-auto px-4 py-6">
-          <ChainView
-            chain={selectedChain}
-            onBack={handleBack}
-            onUpdated={handleChainUpdated}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+          <InviteResponseBanner
+            chainsLoading={loading}
+            onChainsRefresh={refresh}
           />
-        </main>
+          <div className="flex flex-col xl:flex-row gap-8 items-start">
+          <main className="flex-1 min-w-0 w-full max-w-4xl">
+            <ChainView
+              chain={selectedChain}
+              onBack={handleBack}
+              onUpdated={handleChainUpdated}
+            />
+          </main>
+          <LeaderboardSidebar />
+          </div>
+        </div>
       </div>
     );
   }
@@ -306,7 +327,13 @@ export function Dashboard() {
         onMarkAllRead={markAllRead}
         onClearNotifications={clearAll}
       />
-      <main className="max-w-4xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <InviteResponseBanner
+          chainsLoading={loading}
+          onChainsRefresh={refresh}
+        />
+        <div className="flex flex-col xl:flex-row gap-8 items-start">
+        <main className="flex-1 min-w-0 w-full max-w-4xl">
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
             {error}
@@ -643,7 +670,10 @@ export function Dashboard() {
             )}
           </>
         )}
-      </main>
+        </main>
+        <LeaderboardSidebar />
+        </div>
+      </div>
     </div>
   );
 }

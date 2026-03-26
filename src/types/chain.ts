@@ -16,6 +16,7 @@ export interface Chain {
   confidence: number; // 0.0–1.0
   created_at: number; // Unix ms
   account_id: string;
+  user_notes?: string | null;
 }
 
 // Status ordering for state machine (higher index = later stage)

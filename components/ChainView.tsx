@@ -306,6 +306,15 @@ export function ChainView({
         ) : (
           <EventTimeline events={events} />
         )}
+
+        {chain.user_notes?.trim() && (
+          <div className="mt-8 pt-6 border-t border-slate-100">
+            <h3 className="text-sm font-semibold text-slate-800 mb-2">Your notes</h3>
+            <pre className="text-xs text-slate-600 whitespace-pre-wrap font-sans leading-relaxed bg-slate-50 rounded-xl px-3.5 py-3 border border-slate-100">
+              {chain.user_notes.trim()}
+            </pre>
+          </div>
+        )}
       </div>
     </div>
   );

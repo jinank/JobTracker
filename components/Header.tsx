@@ -3,7 +3,9 @@
 import { signOut } from "next-auth/react";
 import { SyncButton } from "./SyncButton";
 import { NotificationBell } from "./NotificationBell";
+import { LogoMark } from "@/components/LogoMark";
 import type { Notification } from "@/hooks/useNotifications";
+import { formatLastSyncLabel } from "@/lib/utils";
 
 interface HeaderProps {
   email?: string | null;
@@ -34,25 +36,11 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200/80">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3.5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & title */}
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm shrink-0">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
-                />
-              </svg>
-            </div>
+            <LogoMark />
             <div className="min-w-0">
               <h1 className="text-base font-bold text-slate-900 truncate">Rethinkjobs</h1>
               <p className="text-xs text-slate-500">
@@ -64,14 +52,17 @@ export function Header({
           {/* Actions */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <div className="flex items-center gap-2">
-              {lastSyncAt && !syncing && (
-                <span className="text-[11px] text-slate-400 hidden sm:inline whitespace-nowrap">
-                  Last synced{" "}
-                  {new Date(lastSyncAt).toLocaleTimeString([], {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                  }).toLowerCase()}
+              {lastSyncAt != null && (
+                <span
+                  className={`text-[11px] hidden sm:inline whitespace-nowrap ${
+                    syncing ? "text-slate-400/80" : "text-slate-400"
+                  }`}
+                  title={new Date(lastSyncAt).toLocaleString()}
+                >
+                  Last synced {formatLastSyncLabel(lastSyncAt)}
+                  {syncing && (
+                    <span className="text-slate-400/70"> · updating…</span>
+                  )}
                 </span>
               )}
               <SyncButton syncing={syncing} progress={progress} onSync={onSync} />

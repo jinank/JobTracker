@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: "Rethinkjobs – Job Application Tracker",
   description:
     "Automatically tracks your job applications from Gmail using AI classification.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
