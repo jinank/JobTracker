@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 
 interface Verification {
   id: string;
@@ -61,22 +60,7 @@ export default function AdminStudentsPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
-              <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </div>
-            <h1 className="text-base font-bold text-slate-900">Rethinkjobs</h1>
-          </Link>
-          <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Admin Panel</span>
-        </div>
-      </header>
-
-      <main className="max-w-5xl mx-auto px-4 py-8">
+      <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <h2 className="text-xl font-bold text-slate-900 mb-6">Student Verification Requests</h2>
 
         {error && (

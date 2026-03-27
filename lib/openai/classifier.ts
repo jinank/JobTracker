@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import type { ParsedMessage } from "@/lib/gmail/parser";
+import { recordAiTokenUsage } from "@/lib/userTelemetry";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -46,7 +47,8 @@ Return a JSON object with these fields:
 If the email is NOT job-related, set eventType to "OTHER" with confidence below 0.3.`;
 
 export async function classifyEmail(
-  email: ParsedMessage
+  email: ParsedMessage,
+  opts?: { userId?: string }
 ): Promise<ClassificationResult> {
   const bodyTruncated = email.body_text.slice(0, 3000);
 
@@ -63,6 +65,19 @@ export async function classifyEmail(
     temperature: 0.1,
     max_tokens: 500,
   });
+
+  const usage = completion.usage;
+  const model = completion.model ?? "gpt-4o-mini";
+  if (opts?.userId && usage) {
+    void recordAiTokenUsage({
+      userId: opts.userId,
+      model,
+      promptTokens: usage.prompt_tokens ?? 0,
+      completionTokens: usage.completion_tokens ?? 0,
+      totalTokens: usage.total_tokens ?? 0,
+      source: "classify_email",
+    });
+  }
 
   const text = completion.choices[0]?.message?.content ?? "{}";
 
@@ -93,7 +108,8 @@ export async function classifyEmail(
 }
 
 export async function classifyEmails(
-  emails: ParsedMessage[]
+  emails: ParsedMessage[],
+  opts?: { userId?: string }
 ): Promise<ClassificationResult[]> {
-  return Promise.all(emails.map(classifyEmail));
+  return Promise.all(emails.map((e) => classifyEmail(e, opts)));
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/requirePaid";
+import { recordUserActivity } from "@/lib/userTelemetry";
 import { companyNameToDomain } from "@/lib/companyDomain";
 import { supabase } from "@/lib/supabase";
 
@@ -850,6 +851,16 @@ export async function GET(request: Request) {
     if (!hasRemote) {
       if (localPeople.length > 0) {
         const locals = localPeople.slice(0, cap);
+        void recordUserActivity({
+          userId: user.userId,
+          action: "reach_out_lookup",
+          meta: {
+            company: companyTrimmed,
+            domain: resolvedDomain,
+            count: locals.length,
+            source: "local_events",
+          },
+        });
         return NextResponse.json({
           people: locals,
           total: locals.length,
@@ -905,6 +916,17 @@ export async function GET(request: Request) {
         "Live lookup returned no rows; showing recruiters from your synced emails."
       );
     }
+
+    void recordUserActivity({
+      userId: user.userId,
+      action: "reach_out_lookup",
+      meta: {
+        company: companyTrimmed,
+        domain: resolvedDomain,
+        count: merged.length,
+        source,
+      },
+    });
 
     return NextResponse.json({
       people: merged,

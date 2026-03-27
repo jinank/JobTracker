@@ -642,7 +642,7 @@ export function LandingPage() {
       <section id="pricing" className="bg-scale-lavender/30 py-20 lg:py-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <div className="mb-14 text-center">
+            <div className="mb-12 text-center sm:mb-14">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
                 Pricing
               </span>
@@ -654,21 +654,26 @@ export function LandingPage() {
               </p>
             </div>
           </Reveal>
-          <div className="mx-auto grid w-full grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
-            <Reveal className="h-full min-h-0">
-              <div className="flex h-full min-h-0 flex-col rounded-3xl border border-slate-200/80 bg-white p-8 pt-10 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-scale-soft">
-                <h3 className="mb-1 text-sm font-bold uppercase tracking-wide text-slate-400">Free</h3>
-                <div className="mb-2 flex items-baseline gap-1">
-                  <span className="text-5xl font-extrabold text-slate-900">$0</span>
-                  <span className="text-sm text-slate-400">forever</span>
+
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:gap-6 lg:grid-cols-3 lg:items-stretch lg:gap-5 xl:gap-6">
+            {/* Free */}
+            <Reveal className="min-w-0 lg:min-h-0">
+              <article className="flex h-full flex-col rounded-2xl border-2 border-slate-200/90 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-7">
+                <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
+                  <span className="sr-only">No badge</span>
                 </div>
-                <p className="mb-6 text-sm text-slate-500">Perfect for getting started</p>
-                <ul className="mb-8 flex-1 space-y-3">
+                <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Free</h3>
+                <div className="mt-3 flex items-baseline justify-center gap-1">
+                  <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">$0</span>
+                  <span className="text-sm text-slate-500">forever</span>
+                </div>
+                <p className="mt-2 text-center text-sm text-slate-500">Perfect for getting started</p>
+                <ul className="mt-6 flex-1 space-y-2.5 border-t border-slate-100 pt-6">
                   {["Track up to 50 applications", "AI email classification", "Pipeline dashboard", "Edit & manage"].map(
                     (x) => (
-                      <li key={x} className="flex items-start gap-2.5 text-sm text-slate-600">
-                        <CheckIcon className="mt-0.5 shrink-0 text-scale-purple" />
-                        {x}
+                      <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
+                        <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-scale-purple" />
+                        <span>{x}</span>
                       </li>
                     )
                   )}
@@ -676,54 +681,64 @@ export function LandingPage() {
                 <button
                   type="button"
                   onClick={() => signIn("google")}
-                  className="w-full rounded-2xl border-2 border-slate-200 py-3.5 text-sm font-semibold text-slate-800 transition-all hover:border-scale-purple/40 hover:bg-scale-mist"
+                  className="mt-8 w-full rounded-xl border-2 border-slate-200 bg-white py-3 text-sm font-semibold text-slate-800 transition-colors hover:border-scale-purple/35 hover:bg-scale-mist/80"
                 >
                   Get started free
                 </button>
-              </div>
+              </article>
             </Reveal>
-            <Reveal className="h-full min-h-0">
-              <div className="relative flex h-full min-h-0 flex-col rounded-3xl border border-emerald-200/80 bg-white p-8 pt-10 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-scale-soft">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-600 px-4 py-1 text-xs font-bold text-white shadow-md">
-                  Students
+
+            {/* Student */}
+            <Reveal className="min-w-0 lg:min-h-0">
+              <article className="flex h-full flex-col rounded-2xl border-2 border-emerald-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-7">
+                <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
+                  <span className="rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+                    Students
+                  </span>
                 </div>
-                <h3 className="mb-1 text-sm font-bold uppercase tracking-wide text-emerald-600">Student</h3>
-                <div className="mb-2 text-5xl font-extrabold text-slate-900">Free</div>
-                <p className="mb-6 text-sm text-slate-500">Verify your student status</p>
-                <ul className="mb-8 flex-1 space-y-3">
+                <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-emerald-700">Student</h3>
+                <div className="mt-3 flex justify-center">
+                  <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">Free</span>
+                </div>
+                <p className="mt-2 text-center text-sm text-slate-500">Verify your student status</p>
+                <ul className="mt-6 flex-1 space-y-2.5 border-t border-emerald-100/80 pt-6">
                   {[
                     "Unlimited applications",
                     "Unlimited Gmail syncs",
                     "AI classification",
                     "Full pipeline & timeline",
                   ].map((x) => (
-                    <li key={x} className="flex items-start gap-2.5 text-sm text-slate-600">
-                      <CheckIcon className="mt-0.5 shrink-0 text-emerald-600" />
-                      {x}
+                    <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
+                      <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <span>{x}</span>
                     </li>
                   ))}
                 </ul>
                 <button
                   type="button"
                   onClick={() => signIn("google")}
-                  className="w-full rounded-2xl bg-emerald-600 py-3.5 text-sm font-semibold text-white transition-all hover:bg-emerald-700 active:scale-[0.98]"
+                  className="mt-8 w-full rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
                 >
                   Verify & get access
                 </button>
-              </div>
+              </article>
             </Reveal>
-            <Reveal className="h-full min-h-0">
-              <div className="relative flex h-full min-h-0 flex-col rounded-3xl border-2 border-scale-purple bg-white p-8 pt-10 shadow-scale-soft transition-all hover:-translate-y-1">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-scale-purple px-4 py-1 text-xs font-bold text-white shadow-md">
-                  Most popular
+
+            {/* Pro */}
+            <Reveal className="min-w-0 lg:min-h-0">
+              <article className="flex h-full flex-col rounded-2xl border-2 border-scale-purple bg-gradient-to-b from-white to-scale-lavender/30 p-6 shadow-[0_8px_30px_-8px_rgba(107,70,254,0.25)] sm:p-7">
+                <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
+                  <span className="rounded-full bg-scale-purple px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+                    Most popular
+                  </span>
                 </div>
-                <h3 className="mb-1 text-sm font-bold uppercase tracking-wide text-scale-purple">Professional</h3>
-                <div className="mb-2 flex items-baseline gap-1">
-                  <span className="text-5xl font-extrabold text-slate-900">$9.99</span>
-                  <span className="text-sm text-slate-400">/mo</span>
+                <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-scale-purple">Professional</h3>
+                <div className="mt-3 flex items-baseline justify-center gap-1">
+                  <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">$9.99</span>
+                  <span className="text-sm text-slate-500">/mo</span>
                 </div>
-                <p className="mb-6 text-sm text-slate-500">For serious job seekers</p>
-                <ul className="mb-8 flex-1 space-y-3">
+                <p className="mt-2 text-center text-sm text-slate-500">For serious job seekers</p>
+                <ul className="mt-6 flex-1 space-y-2.5 border-t border-scale-purple/15 pt-6">
                   {[
                     "Unlimited applications",
                     "Unlimited Gmail syncs",
@@ -731,21 +746,21 @@ export function LandingPage() {
                     "Full pipeline & timeline",
                     "Priority support",
                   ].map((x) => (
-                    <li key={x} className="flex items-start gap-2.5 text-sm text-slate-600">
-                      <CheckIcon className="mt-0.5 shrink-0 text-scale-purple" />
-                      {x}
+                    <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
+                      <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-scale-purple" />
+                      <span>{x}</span>
                     </li>
                   ))}
                 </ul>
                 <button
                   type="button"
                   onClick={() => signIn("google")}
-                  className="w-full rounded-2xl bg-scale-purple py-3.5 text-sm font-semibold text-white transition-all hover:bg-scale-purple-dark active:scale-[0.98]"
+                  className="mt-8 w-full rounded-xl bg-scale-purple py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-scale-purple-dark"
                 >
                   Start Pro
                 </button>
                 <p className="mt-3 text-center text-xs text-slate-400">Cancel anytime · Stripe</p>
-              </div>
+              </article>
             </Reveal>
           </div>
         </div>

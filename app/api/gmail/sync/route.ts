@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { listMessages, getMessage } from "@/lib/gmail/client";
 import { parseGmailMessage, type ParsedMessage } from "@/lib/gmail/parser";
 import { classifyEmail } from "@/lib/openai/classifier";
+import { recordUserActivity } from "@/lib/userTelemetry";
 import {
   eventTypeToStatus,
   findBestMatch,
@@ -115,7 +116,7 @@ export async function POST() {
 
       let classification;
       try {
-        classification = await classifyEmail(email);
+        classification = await classifyEmail(email, { userId: user.userId });
       } catch {
         continue;
       }
@@ -287,7 +288,7 @@ export async function POST() {
 
           let classification;
           try {
-            classification = await classifyEmail(parsedMsg);
+            classification = await classifyEmail(parsedMsg, { userId: user.userId });
           } catch {
             continue;
           }
@@ -387,6 +388,12 @@ export async function POST() {
         }
       }
     }
+
+    void recordUserActivity({
+      userId: user.userId,
+      action: "gmail_sync",
+      meta: { newCount, total: allMessageIds.length },
+    });
 
     return NextResponse.json({ newCount, total: allMessageIds.length });
   } catch (error) {

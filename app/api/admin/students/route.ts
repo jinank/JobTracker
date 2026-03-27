@@ -1,18 +1,12 @@
 import { NextResponse } from "next/server";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
-
-function isOwner(email: string): boolean {
-  const ownerEmails = (process.env.OWNER_EMAILS ?? "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-  return ownerEmails.includes(email.toLowerCase());
-}
+import { isAdminSession } from "@/lib/isAdmin";
 
 export async function GET() {
-  const user = await getAuthUser();
-  if (!user || !isOwner(user.email)) {
+  const session = await getServerSession(authOptions);
+  if (!isAdminSession(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -25,8 +19,8 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
-  const user = await getAuthUser();
-  if (!user || !isOwner(user.email)) {
+  const session = await getServerSession(authOptions);
+  if (!isAdminSession(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

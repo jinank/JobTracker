@@ -1,7 +1,8 @@
 {
   "/page": "app/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/chains/route": "app/api/chains/route.js",
-  "/api/leaderboard/route": "app/api/leaderboard/route.js",
-  "/api/chains/response-prompts/route": "app/api/chains/response-prompts/route.js"
+  "/pricing/page": "app/pricing/page.js",
+  "/admin/students/page": "app/admin/students/page.js",
+  "/admin/users/[userId]/page": "app/admin/users/[userId]/page.js",
+  "/admin/users/page": "app/admin/users/page.js"
 }

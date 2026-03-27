@@ -61,6 +61,17 @@ export function resolveCompanyName(
   );
 }
 
+/**
+ * Max allowed Levenshtein distance for company names to count as "same company".
+ * Short names (≤5 chars) use threshold 1 so "Tubi" and "Turo" are not merged (dist 2),
+ * while normal typos like "Googel" vs "Google" still match on longer names.
+ */
+function companyLevenshteinThreshold(lenA: number, lenB: number): number {
+  const short = Math.min(lenA, lenB);
+  if (short <= 5) return 1;
+  return Math.max(2, Math.floor(short * 0.2));
+}
+
 export function findBestMatch(
   chains: ChainRow[],
   company: string,
@@ -75,7 +86,10 @@ export function findBestMatch(
     const chainRole = chain.role_title.toLowerCase();
 
     const companyDist = levenshtein(companyNorm, chainCompany);
-    const companyThreshold = Math.max(2, Math.floor(companyNorm.length * 0.2));
+    const companyThreshold = companyLevenshteinThreshold(
+      companyNorm.length,
+      chainCompany.length
+    );
     if (companyDist > companyThreshold) continue;
 
     if (role && chainRole) {
