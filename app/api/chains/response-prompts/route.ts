@@ -75,15 +75,18 @@ export async function GET() {
     const wantType = STATUS_TO_EVENT[chain.status];
     if (!wantType) continue;
     const list = byChain.get(chain.chain_id) ?? [];
-    const latest = list.find((e) => e.event_type === wantType);
-    if (!latest) continue;
+    const matching = list.filter((e) => e.event_type === wantType);
+    if (matching.length === 0) continue;
+    const latest = matching.reduce((a, b) => (a.event_time >= b.event_time ? a : b));
     if (now - latest.event_time > MAX_AGE_MS) continue;
+    const kind = kindFromStatus(chain.status);
+    // Stable id: do not include event_id — new sync rows would change the id and bypass localStorage dismissals.
     prompts.push({
-      promptId: `${chain.chain_id}:${latest.event_id}`,
+      promptId: `${chain.chain_id}:${kind}`,
       chainId: chain.chain_id,
       company: chain.canonical_company,
       role: chain.role_title || "",
-      kind: kindFromStatus(chain.status),
+      kind,
       eventTime: latest.event_time,
     });
   }

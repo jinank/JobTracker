@@ -280,8 +280,8 @@ export function LandingPage() {
               <div className="rounded-[1.35rem] bg-gradient-to-br from-scale-lavender/90 via-white to-slate-50 p-6 sm:p-8">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-scale-purple">Pipeline health</p>
-                    <p className="text-2xl font-bold text-slate-900">Active search</p>
+                    <p className="text-xs font-semibold tracking-wide text-scale-purple">100+ Job Applications</p>
+                    <p className="text-2xl font-bold text-slate-900">Job Applications Tracker</p>
                   </div>
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-scale-purple/10">
                     <span className="text-lg font-bold text-scale-purple">92%</span>
@@ -601,42 +601,6 @@ export function LandingPage() {
           </div>
         </section>
       </Reveal>
-
-      {/* Case study block */}
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <div className="mb-10 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                Case study
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                From inbox overload to a single source of truth
-              </h2>
-            </div>
-          </Reveal>
-          <Reveal>
-            <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-gradient-to-br from-scale-lavender/60 via-white to-scale-mist shadow-scale-soft lg:flex">
-              <div className="flex items-center justify-center bg-slate-900 p-10 lg:w-[280px] lg:shrink-0">
-                <div className="h-32 w-32 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 ring-4 ring-white/10" />
-              </div>
-              <div className="flex flex-1 flex-col justify-center p-8 sm:p-12">
-                <p className="mb-6 text-4xl font-extrabold text-scale-purple sm:text-5xl">100%</p>
-                <blockquote className="text-lg leading-relaxed text-slate-700 sm:text-xl">
-                  &ldquo;I used to miss replies because they were buried in threads. Now every application lives in one
-                  pipeline—I know exactly who to follow up with and when.&rdquo;
-                </blockquote>
-                <footer className="mt-8 flex items-center gap-3">
-                  <div>
-                    <p className="font-semibold text-slate-900">Rethinkjobs user</p>
-                    <p className="text-sm text-slate-500">High-volume applicant</p>
-                  </div>
-                </footer>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
 
       {/* Pricing */}
       <section id="pricing" className="bg-scale-lavender/30 py-20 lg:py-28">
