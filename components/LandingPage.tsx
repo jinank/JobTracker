@@ -239,17 +239,17 @@ export function LandingPage() {
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
           <div className="landing-hero-stagger text-center lg:text-left">
             <span className="mb-5 inline-flex items-center rounded-full border border-orange-200/80 bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-orange-700 shadow-sm">
-              The smarter way to track applications
+              For students &amp; new grads
             </span>
             <h1 className="mb-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]">
-              Stop juggling spreadsheets.{" "}
+              Track internships and job applications in one place.{" "}
               <span className="bg-gradient-to-r from-scale-purple to-violet-600 bg-clip-text text-transparent">
-                One sync. Full pipeline. Zero manual work.
+                Cold outreach on LinkedIn—and customized emails that don&apos;t feel generic.
               </span>
             </h1>
             <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-slate-600 lg:mx-0">
-              Rethinkjobs reads your Gmail, classifies every job email with AI, and builds your application
-              pipeline automatically—so you focus on interviews, not inbox archaeology.
+              Rethinkjobs syncs Gmail, uses AI to sort recruiter mail into a live pipeline, and surfaces who to
+              contact—so you spend less time digging through threads and more time on real outreach and follow-ups.
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <button
@@ -268,7 +268,7 @@ export function LandingPage() {
               </a>
             </div>
             <p className="mt-5 text-xs text-slate-500">
-              Free for students · No credit card to start · Read-only Gmail
+              Free for verified students · Reach Out + pipeline · No card to start · Read-only Gmail
             </p>
           </div>
 
@@ -296,10 +296,10 @@ export function LandingPage() {
                 </div>
                 <div className="space-y-2.5">
                   {[
-                    { company: "Google", role: "Senior Software Engineer", status: "Interviewing", chip: "bg-violet-100 text-violet-700" },
-                    { company: "Stripe", role: "Full Stack Developer", status: "Applied", chip: "bg-blue-100 text-blue-700" },
-                    { company: "Shopify", role: "Frontend Engineer", status: "Assessment", chip: "bg-amber-100 text-amber-800" },
-                    { company: "Netflix", role: "Platform Engineer", status: "Offer", chip: "bg-emerald-100 text-emerald-700" },
+                    { company: "Google", role: "Software Engineering Intern", status: "Interviewing", chip: "bg-violet-100 text-violet-700" },
+                    { company: "Stripe", role: "New Grad Engineer", status: "Applied", chip: "bg-blue-100 text-blue-700" },
+                    { company: "Shopify", role: "Frontend Intern", status: "Assessment", chip: "bg-amber-100 text-amber-800" },
+                    { company: "Figma", role: "Product Design Intern", status: "Offer", chip: "bg-emerald-100 text-emerald-700" },
                   ].map((r) => (
                     <div
                       key={r.company}
