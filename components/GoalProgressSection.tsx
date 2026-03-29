@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Chain } from "@/types/chain";
 import {
   applicationDayStreak,
@@ -22,6 +22,31 @@ import {
 } from "@/lib/goalPreferences";
 
 export { DEFAULT_DAILY_TARGET, DEFAULT_WEEKLY_TARGET } from "@/lib/goalPreferences";
+
+type UserGoalsPayload = {
+  period: GoalPeriod;
+  dailyTarget: number;
+  weeklyTarget: number;
+};
+
+async function patchUserGoals(
+  partial: Partial<{
+    period: GoalPeriod;
+    dailyTarget: number;
+    weeklyTarget: number;
+  }>
+): Promise<void> {
+  try {
+    const res = await fetch("/api/user/goals", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(partial),
+    });
+    if (!res.ok) return;
+  } catch {
+    /* network / offline */
+  }
+}
 
 function GoalSettingsButton({
   onSave,
@@ -173,24 +198,50 @@ export function GoalProgressSection({ chains }: { chains: Chain[] }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setPeriod(readGoalPeriod());
-    setDailyTarget(readDailyTarget());
-    setWeeklyTarget(readWeeklyTarget());
-    setMounted(true);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/user/goals");
+        if (!res.ok) throw new Error(String(res.status));
+        const data = (await res.json()) as UserGoalsPayload;
+        if (cancelled) return;
+        const p: GoalPeriod = data.period === "daily" ? "daily" : "weekly";
+        const d = clampDailyTarget(data.dailyTarget);
+        const w = clampWeeklyTarget(data.weeklyTarget);
+        setPeriod(p);
+        setDailyTarget(d);
+        setWeeklyTarget(w);
+        writeGoalPeriod(p);
+        writeGoalTargets(d, w);
+      } catch {
+        if (!cancelled) {
+          setPeriod(readGoalPeriod());
+          setDailyTarget(readDailyTarget());
+          setWeeklyTarget(readWeeklyTarget());
+        }
+      } finally {
+        if (!cancelled) setMounted(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const setPeriodPersist = (next: GoalPeriod) => {
+  const setPeriodPersist = useCallback((next: GoalPeriod) => {
     setPeriod(next);
     writeGoalPeriod(next);
-  };
+    void patchUserGoals({ period: next });
+  }, []);
 
-  const persistTargets = (daily: number, weekly: number) => {
+  const persistTargets = useCallback((daily: number, weekly: number) => {
     const d = clampDailyTarget(daily);
     const w = clampWeeklyTarget(weekly);
     writeGoalTargets(d, w);
     setDailyTarget(d);
     setWeeklyTarget(w);
-  };
+    void patchUserGoals({ dailyTarget: d, weeklyTarget: w });
+  }, []);
 
   const { current, target, label } = useMemo(() => {
     const now = new Date();
