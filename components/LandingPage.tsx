@@ -241,15 +241,17 @@ export function LandingPage() {
             <span className="mb-5 inline-flex items-center rounded-full border border-orange-200/80 bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-orange-700 shadow-sm">
               For students &amp; new grads
             </span>
-            <h1 className="mb-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]">
-              Track internships and job applications in one place.{" "}
-              <span className="bg-gradient-to-r from-scale-purple to-violet-600 bg-clip-text text-transparent">
-                Cold outreach on LinkedIn—and customized emails that don&apos;t feel generic.
+            <h1 className="mb-6 font-extrabold leading-[1.12] tracking-tight">
+              <span className="block text-4xl text-slate-900 sm:text-5xl lg:text-[3.25rem]">
+                Track internships and job applications in one place.
+              </span>
+              <span className="mt-2 block bg-gradient-to-r from-scale-purple to-violet-600 bg-clip-text text-[11px] font-semibold leading-snug tracking-normal text-transparent sm:mt-2.5 sm:text-xs lg:text-sm">
+                Cold outreach on LinkedIn and Customized cold emails.
               </span>
             </h1>
             <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-slate-600 lg:mx-0">
-              Rethinkjobs syncs Gmail, uses AI to sort recruiter mail into a live pipeline, and surfaces who to
-              contact—so you spend less time digging through threads and more time on real outreach and follow-ups.
+              Rethinkjobs syncs Gmail, uses AI to sort recruiter emails into a live pipeline and surfaces who to
+              contact so you spend less time digging through threads and more time on real outreach and follow-ups.
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <button
