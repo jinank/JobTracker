@@ -25,14 +25,19 @@ export interface ClassificationResult {
 
 const SYSTEM_PROMPT = `You are an expert job application email classifier. Given an email's subject, sender, and body, determine if it is related to a SPECIFIC job application the user made (application confirmation, interview invite, assessment, offer, rejection) and extract structured data.
 
+Treat these as APPLICATION_RECEIVED with confidence at least 0.65 (so the user can track them in a pipeline):
+- Standard application received / under review confirmations for a named role.
+- Expression of Interest (EOI), talent pool, "future opportunities", or general candidacy acknowledgments from a company's recruiting/talent team (e.g. "thank you for your interest", "thank you for sharing your information", "we will reach out if there is a match") when it clearly responds to the candidate's submission to THAT company—not a newsletter.
+- If there is no single job title, set roleTitle to "Expression of interest" or "Talent community / future opportunities" and company to the employer name from the email (not the email vendor).
+
 IMPORTANT - Set eventType to "OTHER" with confidence below 0.3 for:
 - Marketing or promotional emails (newsletters, course ads, "interview tips", "job search advice")
 - Emails from learning platforms (Alison, Coursera, Udemy, LinkedIn Learning, etc.) promoting courses
 - Generic career advice, resume tips, or "land your next job" content
 - Emails with "noreply@" that are clearly bulk/promotional (e.g. us-skills.alison.com)
-- Any email that does not reference a specific job application the user submitted
+- Content that is not tied to the user's action with a specific employer (no application, EOI, or candidacy context)
 
-Only use APPLICATION_RECEIVED, INTERVIEW_INVITE, ASSESSMENT_INVITE, OFFER, REJECTION, etc. when the email is a direct response to a job application (confirmation, interview scheduling, assessment link, offer letter, rejection notice from a hiring company).
+Use INTERVIEW_INVITE, ASSESSMENT_INVITE, OFFER, REJECTION, etc. when appropriate for later-stage employer messages.
 
 Return a JSON object with these fields:
 - eventType: one of APPLICATION_RECEIVED, REJECTION, ASSESSMENT_INVITE, INTERVIEW_INVITE, DEADLINE, OFFER, FOLLOW_UP, OTHER
