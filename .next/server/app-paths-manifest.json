@@ -1,3 +1,8 @@
 {
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/api/chains/route": "app/api/chains/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/leaderboard/route": "app/api/leaderboard/route.js",
+  "/api/chains/response-prompts/route": "app/api/chains/response-prompts/route.js",
+  "/api/gmail/sync/route": "app/api/gmail/sync/route.js"
 }

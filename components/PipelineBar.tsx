@@ -1,6 +1,7 @@
 "use client";
 
 import type { Chain, ChainStatus } from "@/types/chain";
+import { chainCreatedMs } from "@/lib/chainCreatedAt";
 import { WeeklyGrowthPill } from "./WeeklyGrowthPill";
 
 const PIPELINE_STAGES: { status: ChainStatus; label: string; color: string; bg: string }[] = [
@@ -10,18 +11,6 @@ const PIPELINE_STAGES: { status: ChainStatus; label: string; color: string; bg: 
   { status: "OFFER", label: "Offer", color: "bg-emerald-500", bg: "bg-emerald-50" },
   { status: "REJECTED", label: "Rejected", color: "bg-red-400", bg: "bg-red-50" },
 ];
-
-function chainCreatedMs(c: Chain): number {
-  const raw = c.created_at as unknown;
-  if (typeof raw === "number" && raw > 0) return raw;
-  if (typeof raw === "string") {
-    const n = Number(raw);
-    if (!Number.isNaN(n) && n > 1e11) return n;
-    const parsed = Date.parse(raw);
-    if (!Number.isNaN(parsed)) return parsed;
-  }
-  return c.last_event_at;
-}
 
 export function PipelineBar({
   chains,

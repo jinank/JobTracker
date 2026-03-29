@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { Chain } from "@/types/chain";
+import { GoalProgressSection } from "./GoalProgressSection";
 import { GitaQuoteCard } from "./GitaQuoteCard";
 import {
   disableLeaderboard,
@@ -177,7 +179,7 @@ function LeaderboardSettingsButton({
   );
 }
 
-export function LeaderboardSidebar() {
+export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
   const [lbReady, setLbReady] = useState(false);
   const [visibility, setVisibility] = useState<
     "visible" | "snoozed" | "disabled"
@@ -261,6 +263,7 @@ export function LeaderboardSidebar() {
 
   return (
     <aside className="hidden xl:block w-72 shrink-0 self-start sticky top-28 space-y-4">
+      <GoalProgressSection chains={chains} />
       {!lbReady ? (
         <div
           className="rounded-2xl border border-slate-200/80 bg-white shadow-card overflow-hidden animate-pulse"

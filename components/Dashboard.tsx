@@ -305,7 +305,7 @@ export function Dashboard() {
               onUpdated={handleChainUpdated}
             />
           </main>
-          <LeaderboardSidebar />
+          <LeaderboardSidebar chains={chains} />
           </div>
         </div>
       </div>
@@ -671,7 +671,7 @@ export function Dashboard() {
           </>
         )}
         </main>
-        <LeaderboardSidebar />
+        <LeaderboardSidebar chains={chains} />
         </div>
       </div>
     </div>
