@@ -60,7 +60,8 @@ export function Dashboard() {
     loading,
     refresh,
   } = useChains();
-  const { syncing, progress, error, newCount, lastSyncAt, sync } = useSync(
+  const { syncing, progress, error, newCount, syncHasMore, lastSyncAt, sync } =
+    useSync(
     refresh,
     session?.user?.email
   );
@@ -388,9 +389,20 @@ export function Dashboard() {
           </div>
         )}
 
-        {newCount > 0 && !syncing && (
+        {(newCount > 0 || syncHasMore) && !syncing && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl px-4 py-3 mb-5">
-            Found {newCount} new job-related email{newCount !== 1 ? "s" : ""}!
+            {newCount > 0 ? (
+              <>
+                Found {newCount} new job-related email{newCount !== 1 ? "s" : ""}!
+              </>
+            ) : (
+              <span className="font-medium">Sync batch finished.</span>
+            )}
+            {syncHasMore && (
+              <span className="block mt-2 text-xs text-emerald-800/90 font-medium">
+                More messages are queued — press Sync again to continue importing.
+              </span>
+            )}
           </div>
         )}
 

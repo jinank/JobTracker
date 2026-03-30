@@ -16,7 +16,9 @@ import {
 import {
   GMAIL_JOB_QUERY,
   MAX_MESSAGES_PER_SYNC,
+  MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC,
   GMAIL_FETCH_BATCH_SIZE,
+  CLASSIFY_BATCH_SIZE,
   EXTRACTION_VERSION,
 } from "@/lib/constants";
 
@@ -69,9 +71,9 @@ export async function POST() {
       if (!pageToken) break;
     }
 
-    const newMessageIds = allMessageIds
-      .filter((m) => !processedIds.has(m.id))
-      .slice(0, MAX_MESSAGES_PER_SYNC);
+    const allNewIds = allMessageIds.filter((m) => !processedIds.has(m.id));
+    const hasMorePending = allNewIds.length > MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC;
+    const newMessageIds = allNewIds.slice(0, MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC);
 
     const parsed: ParsedMessage[] = [];
     if (newMessageIds.length > 0) {
@@ -111,131 +113,147 @@ export async function POST() {
 
     let newCount = 0;
 
-    for (const email of parsed) {
-      if (processedIds.has(email.gmail_id)) continue;
+    const toClassify = parsed.filter((e) => !processedIds.has(e.gmail_id));
 
-      let classification;
-      try {
-        classification = await classifyEmail(email, { userId: user.userId });
-      } catch {
-        continue;
-      }
-
-      const msgId = crypto.randomUUID();
-
-      await supabase.from("message_index").upsert(
-        {
-          msg_id_internal: msgId,
-          user_id: user.userId,
-          provider_message_id: email.gmail_id,
-          provider_thread_id: email.thread_id,
-          subject_text: email.subject,
-          from_email: email.from_email,
-          from_domain: email.from_domain,
-          received_at: email.received_at,
-          snippet: email.snippet,
-          processed: true,
-        },
-        { onConflict: "user_id,provider_message_id" }
+    for (let i = 0; i < toClassify.length; i += CLASSIFY_BATCH_SIZE) {
+      const slice = toClassify.slice(i, i + CLASSIFY_BATCH_SIZE);
+      const classified = await Promise.all(
+        slice.map(async (email) => {
+          try {
+            const classification = await classifyEmail(email, {
+              userId: user.userId,
+            });
+            return { email, classification };
+          } catch {
+            return null;
+          }
+        })
       );
 
-      processedIds.add(email.gmail_id);
+      for (const item of classified) {
+        if (!item) continue;
+        const { email, classification } = item;
+        if (processedIds.has(email.gmail_id)) continue;
 
-      if (
-        classification.eventType === "OTHER" &&
-        classification.confidence < 0.3
-      ) {
-        continue;
-      }
+        const msgId = crypto.randomUUID();
 
-      const status = eventTypeToStatus(classification.eventType);
-      const company = resolveCompanyName(
-        classification.company || undefined,
-        email.from_domain
-      );
-      const role = normalizeRoleTitle(classification.roleTitle || "");
+        await supabase.from("message_index").upsert(
+          {
+            msg_id_internal: msgId,
+            user_id: user.userId,
+            provider_message_id: email.gmail_id,
+            provider_thread_id: email.thread_id,
+            subject_text: email.subject,
+            from_email: email.from_email,
+            from_domain: email.from_domain,
+            received_at: email.received_at,
+            snippet: email.snippet,
+            processed: true,
+          },
+          { onConflict: "user_id,provider_message_id" }
+        );
 
-      const match = findBestMatch(chainCache, company, role);
+        processedIds.add(email.gmail_id);
 
-      const canCreateFromNoMatch =
-        classification.eventType === "APPLICATION_RECEIVED" ||
-        (NON_APPLICATION_CREATE_EVENT_TYPES.has(classification.eventType) &&
-          classification.confidence >= MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
+        if (
+          classification.eventType === "OTHER" &&
+          classification.confidence < 0.3
+        ) {
+          continue;
+        }
 
-      // Option A: if we missed the application email, still create a chain for
-      // later-stage signals (rejection/interview/assessment/offer) but only
-      // when confidence is high enough.
-      if (!match && !canCreateFromNoMatch) continue;
+        const status = eventTypeToStatus(classification.eventType);
+        const company = resolveCompanyName(
+          classification.company || undefined,
+          email.from_domain
+        );
+        const role = normalizeRoleTitle(classification.roleTitle || "");
 
-      let chainId: string;
+        const match = findBestMatch(chainCache, company, role);
 
-      if (match) {
-        const updatedStatus = advanceStatus(match.status, status);
-        await supabase
-          .from("chains")
-          .update({
-            status: updatedStatus,
-            last_event_at: Math.max(match.last_event_at, email.received_at),
-            confidence: Math.max(match.confidence, classification.confidence),
-            ...(role && !match.role_title ? { role_title: role } : {}),
-          })
-          .eq("chain_id", match.chain_id);
+        const canCreateFromNoMatch =
+          classification.eventType === "APPLICATION_RECEIVED" ||
+          (NON_APPLICATION_CREATE_EVENT_TYPES.has(classification.eventType) &&
+            classification.confidence >= MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
 
-        match.status = updatedStatus;
-        match.last_event_at = Math.max(match.last_event_at, email.received_at);
-        match.confidence = Math.max(match.confidence, classification.confidence);
-        chainId = match.chain_id;
-      } else {
-        chainId = crypto.randomUUID();
-        const newChain: ChainRow = {
+        if (!match && !canCreateFromNoMatch) continue;
+
+        let chainId: string;
+
+        if (match) {
+          const updatedStatus = advanceStatus(match.status, status);
+          await supabase
+            .from("chains")
+            .update({
+              status: updatedStatus,
+              last_event_at: Math.max(match.last_event_at, email.received_at),
+              confidence: Math.max(match.confidence, classification.confidence),
+              ...(role && !match.role_title ? { role_title: role } : {}),
+            })
+            .eq("chain_id", match.chain_id);
+
+          match.status = updatedStatus;
+          match.last_event_at = Math.max(
+            match.last_event_at,
+            email.received_at
+          );
+          match.confidence = Math.max(
+            match.confidence,
+            classification.confidence
+          );
+          chainId = match.chain_id;
+        } else {
+          chainId = crypto.randomUUID();
+          const newChain: ChainRow = {
+            chain_id: chainId,
+            canonical_company: company,
+            role_title: role,
+            status,
+            last_event_at: email.received_at,
+            confidence: classification.confidence,
+          };
+
+          await supabase.from("chains").insert({
+            ...newChain,
+            user_id: user.userId,
+            created_at: Date.now(),
+          });
+
+          chainCache.push(newChain);
+        }
+
+        const deadlineMs = classification.deadline
+          ? new Date(classification.deadline).getTime()
+          : null;
+
+        await supabase.from("events").insert({
+          event_id: crypto.randomUUID(),
           chain_id: chainId,
-          canonical_company: company,
-          role_title: role,
-          status,
-          last_event_at: email.received_at,
-          confidence: classification.confidence,
-        };
-
-        await supabase.from("chains").insert({
-          ...newChain,
           user_id: user.userId,
-          created_at: Date.now(),
+          event_type: classification.eventType,
+          event_time: email.received_at,
+          due_at: deadlineMs,
+          evidence: classification.evidence,
+          extracted_entities: {
+            company_raw: classification.company || undefined,
+            role_raw: classification.roleTitle || undefined,
+            recruiter_name: classification.recruiterName || undefined,
+            deadline_raw: classification.deadline || undefined,
+            links: classification.links,
+          },
+          msg_id_internal: msgId,
+          extraction_version: EXTRACTION_VERSION,
         });
 
-        chainCache.push(newChain);
+        newCount++;
       }
-
-      const deadlineMs = classification.deadline
-        ? new Date(classification.deadline).getTime()
-        : null;
-
-      await supabase.from("events").insert({
-        event_id: crypto.randomUUID(),
-        chain_id: chainId,
-        user_id: user.userId,
-        event_type: classification.eventType,
-        event_time: email.received_at,
-        due_at: deadlineMs,
-        evidence: classification.evidence,
-        extracted_entities: {
-          company_raw: classification.company || undefined,
-          role_raw: classification.roleTitle || undefined,
-          recruiter_name: classification.recruiterName || undefined,
-          deadline_raw: classification.deadline || undefined,
-          links: classification.links,
-        },
-        msg_id_internal: msgId,
-        extraction_version: EXTRACTION_VERSION,
-      });
-
-      newCount++;
     }
 
     // Backfill: if we previously indexed a message but skipped inserting an
     // event (e.g. due to earlier strict matching), create the missing event
     // now. This is limited to recently indexed messages to avoid heavy API usage.
     const BACKFILL_LOOKBACK_MS = 24 * 60 * 60 * 1000;
-    const MAX_BACKFILL_MESSAGES = 20;
+    const MAX_BACKFILL_MESSAGES = 8;
 
     const lookback = Date.now() - BACKFILL_LOOKBACK_MS;
     const { data: recentIndexed } = await supabase
@@ -395,7 +413,11 @@ export async function POST() {
       meta: { newCount, total: allMessageIds.length },
     });
 
-    return NextResponse.json({ newCount, total: allMessageIds.length });
+    return NextResponse.json({
+      newCount,
+      total: allMessageIds.length,
+      hasMore: hasMorePending,
+    });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Failed to sync Gmail";

@@ -45,6 +45,8 @@ interface SyncState {
   error: string | null;
   newCount: number;
   paymentRequired: boolean;
+  /** True when the server capped this sync; run Sync again to pull more mail. */
+  syncHasMore: boolean;
 }
 
 export function useSync(
@@ -63,6 +65,7 @@ export function useSync(
     error: null,
     newCount: 0,
     paymentRequired: false,
+    syncHasMore: false,
   });
 
   useEffect(() => {
@@ -78,6 +81,7 @@ export function useSync(
       progress: "Syncing emails and classifying with AI...",
       newCount: 0,
       paymentRequired: false,
+      syncHasMore: false,
     }));
 
     try {
@@ -91,6 +95,7 @@ export function useSync(
             syncing: false,
             progress: "",
             paymentRequired: true,
+            syncHasMore: false,
           }));
           onComplete();
           return;
@@ -102,7 +107,11 @@ export function useSync(
         throw new Error(err.error ?? "Sync failed");
       }
 
-      const { newCount, total } = await res.json();
+      const data = (await res.json()) as {
+        newCount: number;
+        total: number;
+        hasMore?: boolean;
+      };
 
       const now = Date.now();
       writeStoredLastSyncAt(syncStorageKey, now);
@@ -111,8 +120,9 @@ export function useSync(
         progress: "",
         lastSyncAt: now,
         error: null,
-        newCount,
+        newCount: data.newCount,
         paymentRequired: false,
+        syncHasMore: data.hasMore === true,
       });
       onComplete();
     } catch (error) {
@@ -121,6 +131,7 @@ export function useSync(
         syncing: false,
         progress: "",
         error: error instanceof Error ? error.message : "Sync failed",
+        syncHasMore: false,
       }));
     }
   }, [onComplete, syncStorageKey]);

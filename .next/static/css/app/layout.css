@@ -2652,6 +2652,9 @@ video {
   --tw-text-opacity: 1;
   color: rgb(92 84 184 / var(--tw-text-opacity, 1));
 }
+.text-emerald-800\/90 {
+  color: rgb(6 95 70 / 0.9);
+}
 .underline {
   text-decoration-line: underline;
 }

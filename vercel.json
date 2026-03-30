@@ -1,5 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "npm run web:build"
+  "buildCommand": "npm run web:build",
+  "functions": {
+    "app/api/gmail/sync/route.ts": {
+      "maxDuration": 300
+    }
+  }
 }
