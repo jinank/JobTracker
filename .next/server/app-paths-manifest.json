@@ -1,6 +1,1 @@
-{
-  "/page": "app/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/user/goals/route": "app/api/user/goals/route.js",
-  "/api/gmail/sync/route": "app/api/gmail/sync/route.js"
-}
+{}

@@ -48,6 +48,7 @@ function buildCredentialsProvider() {
 const credentialsProvider = buildCredentialsProvider();
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -70,34 +71,43 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (user.email && account?.provider === "google") {
-        const ownerEmails = (process.env.OWNER_EMAILS ?? "")
-          .split(",")
-          .map((e) => e.trim().toLowerCase())
-          .filter(Boolean);
+        try {
+          const ownerEmails = (process.env.OWNER_EMAILS ?? "")
+            .split(",")
+            .map((e) => e.trim().toLowerCase())
+            .filter(Boolean);
 
-        const isOwner = ownerEmails.includes(user.email.toLowerCase());
+          const isOwner = ownerEmails.includes(user.email.toLowerCase());
 
-        const { data: row, error } = await supabase
-          .from("users")
-          .upsert(
-            {
+          const { data: row, error } = await supabase
+            .from("users")
+            .upsert(
+              {
+                email: user.email,
+                name: user.name ?? "",
+                image: user.image ?? null,
+                google_sub: account.providerAccountId,
+                ...(isOwner ? { paid: true, subscription_status: "active" } : {}),
+              },
+              { onConflict: "email" }
+            )
+            .select("id")
+            .maybeSingle();
+
+          if (!error && row?.id) {
+            void recordUserSignIn({
+              userId: row.id,
               email: user.email,
-              name: user.name ?? "",
-              image: user.image ?? null,
-              google_sub: account.providerAccountId,
-              ...(isOwner ? { paid: true, subscription_status: "active" } : {}),
-            },
-            { onConflict: "email" }
-          )
-          .select("id")
-          .single();
-
-        if (!error && row?.id) {
-          void recordUserSignIn({
-            userId: row.id,
-            email: user.email,
-            provider: "google",
-          });
+              provider: "google",
+            });
+          } else if (error) {
+            console.error("[auth] users upsert:", error.message);
+          }
+        } catch (e) {
+          console.error(
+            "[auth] signIn google / supabase:",
+            e instanceof Error ? e.message : e
+          );
         }
       }
       return true;
