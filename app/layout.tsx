@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Footer } from "@/components/Footer";
 import { Providers } from "./providers";
 import "./globals.css";
@@ -30,6 +31,7 @@ export default function RootLayout({
           <div className="flex-1 flex flex-col min-h-0">{children}</div>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
