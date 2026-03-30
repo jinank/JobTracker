@@ -55,10 +55,17 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope:
-            "openid email profile https://www.googleapis.com/auth/gmail.readonly",
+          // Space-separated; gmail.readonly is required for sync. Must match scopes
+          // on the OAuth consent screen in Google Cloud + Gmail API enabled.
+          scope: [
+            "openid",
+            "email",
+            "profile",
+            "https://www.googleapis.com/auth/gmail.readonly",
+          ].join(" "),
           access_type: "offline",
           prompt: "consent",
+          include_granted_scopes: "true",
         },
       },
     }),

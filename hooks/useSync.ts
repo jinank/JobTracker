@@ -86,10 +86,19 @@ export function useSync(
 
     try {
       const res = await fetch("/api/gmail/sync", { method: "POST" });
+      const data = (await res.json().catch(() => ({}))) as {
+        code?: string;
+        error?: string;
+        newCount?: number;
+        total?: number;
+        hasMore?: boolean;
+      };
 
-      if (res.status === 403) {
-        const data = await res.json();
-        if (data.code === "UPGRADE_REQUIRED" || data.code === "PAYMENT_REQUIRED") {
+      if (!res.ok) {
+        if (
+          res.status === 403 &&
+          (data.code === "UPGRADE_REQUIRED" || data.code === "PAYMENT_REQUIRED")
+        ) {
           setState((s) => ({
             ...s,
             syncing: false,
@@ -100,18 +109,24 @@ export function useSync(
           onComplete();
           return;
         }
+        if (res.status === 403 && data.code === "GMAIL_SCOPE_INSUFFICIENT") {
+          setState((s) => ({
+            ...s,
+            syncing: false,
+            progress: "",
+            error:
+              typeof data.error === "string"
+                ? data.error
+                : "Gmail access missing — sign out and sign in with Google again.",
+            syncHasMore: false,
+          }));
+          onComplete();
+          return;
+        }
+        throw new Error(
+          typeof data.error === "string" ? data.error : "Sync failed"
+        );
       }
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error ?? "Sync failed");
-      }
-
-      const data = (await res.json()) as {
-        newCount: number;
-        total: number;
-        hasMore?: boolean;
-      };
 
       const now = Date.now();
       writeStoredLastSyncAt(syncStorageKey, now);
@@ -120,7 +135,7 @@ export function useSync(
         progress: "",
         lastSyncAt: now,
         error: null,
-        newCount: data.newCount,
+        newCount: data.newCount ?? 0,
         paymentRequired: false,
         syncHasMore: data.hasMore === true,
       });

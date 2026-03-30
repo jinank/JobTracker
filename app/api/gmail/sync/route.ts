@@ -421,6 +421,21 @@ export async function POST() {
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Failed to sync Gmail";
+
+    if (
+      message.includes("ACCESS_TOKEN_SCOPE_INSUFFICIENT") ||
+      message.includes("insufficient authentication scopes")
+    ) {
+      return NextResponse.json(
+        {
+          code: "GMAIL_SCOPE_INSUFFICIENT",
+          error:
+            "This Google session does not include Gmail access. Sign out of Rethinkjobs, sign in with Google again, and approve Gmail when Google asks. In Google Cloud Console, add scope https://www.googleapis.com/auth/gmail.readonly to your OAuth consent screen and enable the Gmail API.",
+        },
+        { status: 403 }
+      );
+    }
+
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
