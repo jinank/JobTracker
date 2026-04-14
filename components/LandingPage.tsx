@@ -741,7 +741,10 @@ export function LandingPage() {
             </h2>
             <p className="mt-4 text-slate-600">
               Still stuck?{" "}
-              <Link href="/contact" className="font-semibold text-scale-purple hover:underline">
+              <Link
+                href="/contact-us"
+                className="font-semibold text-scale-purple hover:underline"
+              >
                 Contact us
               </Link>
               .

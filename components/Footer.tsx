@@ -38,6 +38,19 @@ export function Footer() {
               <LogoMark className="h-9 w-9" iconClassName="w-5 h-5" />
               <span className="text-sm font-bold text-white">Rethinkjobs</span>
             </Link>
+            <nav className="hidden sm:flex items-center gap-3 text-xs text-slate-300">
+              <Link href="/contact-us" className="hover:text-white transition-colors">
+                Contact
+              </Link>
+              <span className="text-slate-700">•</span>
+              <Link href="/privacy" className="hover:text-white transition-colors">
+                Privacy
+              </Link>
+              <span className="text-slate-700">•</span>
+              <Link href="/terms" className="hover:text-white transition-colors">
+                Terms
+              </Link>
+            </nav>
             <div className="flex items-center gap-2">
               <SocialIcon href="https://twitter.com" label="Rethinkjobs on X">
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
