@@ -17,7 +17,7 @@ export async function GET() {
   }
 
   const [topRes, aboveRes, trackersRes] = await Promise.all([
-    supabase.rpc("leaderboard_by_chain_count", { p_limit: 12 }),
+    supabase.rpc("leaderboard_by_chain_count", { p_limit: 5 }),
     supabase.rpc("count_users_with_more_chains", {
       p_count: user.chainCount,
     }),

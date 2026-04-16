@@ -306,7 +306,8 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
             <div className="min-w-0 pr-1">
               <h2 className="text-sm font-semibold text-slate-800">Leaderboard</h2>
               <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
-                Top trackers by applications synced. Names are shortened for privacy.
+                Top 5 trackers by applications synced. Names are shortened for
+                privacy.
               </p>
             </div>
             <LeaderboardSettingsButton
@@ -338,6 +339,11 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
 
             {!loading && !error && data && (
               <>
+                <p className="mb-3 rounded-lg border border-amber-100 bg-amber-50/80 px-2.5 py-2 text-[11px] leading-snug text-amber-950/90">
+                  <span className="font-semibold">Monthly top 5</span>{" "}
+                  leaderboard winners can receive prizes of up to{" "}
+                  <span className="font-semibold">$100 USD</span>.
+                </p>
                 <ul className="space-y-1">
                   {data.entries.map((e) => (
                     <li
