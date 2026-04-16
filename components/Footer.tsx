@@ -36,17 +36,25 @@ export function Footer() {
               aria-label="Rethinkjobs home"
             >
               <LogoMark className="h-9 w-9" iconClassName="w-5 h-5" />
-              <span className="text-sm font-bold text-white">Rethinkjobs</span>
+              <span className="text-sm font-bold text-white">RethinkJobs</span>
             </Link>
-            <nav className="hidden sm:flex items-center gap-3 text-xs text-slate-300">
+            <nav className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-300">
+              <Link href="/resources" className="hover:text-white transition-colors">
+                Resources
+              </Link>
+              <span className="text-slate-700 hidden sm:inline">•</span>
+              <Link href="/blog" className="hover:text-white transition-colors">
+                Blog
+              </Link>
+              <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/contact-us" className="hover:text-white transition-colors">
                 Contact
               </Link>
-              <span className="text-slate-700">•</span>
+              <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/privacy" className="hover:text-white transition-colors">
                 Privacy
               </Link>
-              <span className="text-slate-700">•</span>
+              <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/terms" className="hover:text-white transition-colors">
                 Terms
               </Link>

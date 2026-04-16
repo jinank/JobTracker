@@ -1,0 +1,200 @@
+[
+  {
+    "id": "raycast-pro",
+    "provider": "Raycast",
+    "badge": "50% off",
+    "title": "Raycast Pro 50% Student Discount",
+    "description": "50% off Raycast Pro for verified U.S. university students—macOS productivity launcher with AI, cloud sync, and custom themes.",
+    "studentPrice": "$5/month",
+    "regularPrice": "$10/month",
+    "categories": ["Coding & Programming", "Collaboration & Teams"],
+    "url": "https://www.raycast.com/pricing"
+  },
+  {
+    "id": "vercel-v0",
+    "provider": "Vercel",
+    "badge": "FREE",
+    "title": "v0 by Vercel — 1 Year Free Premium for Students",
+    "description": "Select universities: 1 year free v0 Premium ($240 value)—AI platform that turns natural language into production-ready web apps.",
+    "studentPrice": "FREE",
+    "regularPrice": "$20/month",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://v0.dev"
+  },
+  {
+    "id": "ycombinator-deals",
+    "provider": "Y Combinator",
+    "badge": "FREE",
+    "title": "YC Deals for Student Founders — $3,000+ in Startup Credits",
+    "description": "For YC event attendees: Anthropic, OpenAI, Exa credits, and 20+ startup tools (eligibility varies).",
+    "studentPrice": "FREE",
+    "regularPrice": "$3,000+ value",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://www.ycombinator.com/rfs"
+  },
+  {
+    "id": "screen-studio",
+    "provider": "Screen Studio",
+    "badge": "40% off",
+    "title": "Screen Studio — 40% Student Discount",
+    "description": "Professional macOS screen recording with auto zoom, cursor smoothing, and polished exports for tutorials and presentations.",
+    "studentPrice": "~$5.40/mo (yearly) or ~$17.40/mo",
+    "regularPrice": "See site",
+    "categories": ["Design & Presentations", "Online Courses & Learning"],
+    "url": "https://screen.studio"
+  },
+  {
+    "id": "meshy-ai",
+    "provider": "Meshy.ai",
+    "badge": "FREE",
+    "title": "Meshy.ai — Student Education Plan",
+    "description": "1 free month of Meshy Pro for AI 3D generation, then $5.99/mo up to 12 months for coursework and creative projects.",
+    "studentPrice": "1 month FREE, then $5.99/month",
+    "regularPrice": "$192/year (~$16/mo)",
+    "categories": ["Design & Presentations", "Building Apps & Websites"],
+    "url": "https://www.meshy.ai"
+  },
+  {
+    "id": "beautiful-ai",
+    "provider": "Beautiful.ai",
+    "badge": "FREE",
+    "title": "Beautiful.ai — Free Pro Plan for Students",
+    "description": "Valid .edu: free annual Pro subscription—AI-powered presentation software for fast, polished slides.",
+    "studentPrice": "FREE",
+    "regularPrice": "$144/year",
+    "categories": ["Design & Presentations", "Collaboration & Teams"],
+    "url": "https://www.beautiful.ai"
+  },
+  {
+    "id": "gitkraken-gitlens",
+    "provider": "GitKraken",
+    "badge": "FREE",
+    "title": "GitLens Pro — Free 6 Months via GitHub Student Pack",
+    "description": "6 months GitLens Pro + GitKraken Student Pack via GitHub Student Developer Pack; then steep discount on Pro.",
+    "studentPrice": "FREE for 6 months, then 75–80% off",
+    "regularPrice": "See site",
+    "categories": ["Coding & Programming", "Collaboration & Teams"],
+    "url": "https://education.github.com/pack"
+  },
+  {
+    "id": "appwrite-edu",
+    "provider": "Appwrite",
+    "badge": "FREE",
+    "title": "Appwrite — Free Education Plan",
+    "description": "GitHub Student Pack: Education plan with Pro-level limits (~$15/mo value)—bandwidth, storage, databases.",
+    "studentPrice": "FREE",
+    "regularPrice": "$15/month",
+    "categories": ["Building Apps & Websites", "Coding & Programming"],
+    "url": "https://appwrite.io/education"
+  },
+  {
+    "id": "digitalocean-gh",
+    "provider": "DigitalOcean",
+    "badge": "FREE",
+    "title": "DigitalOcean — $200 Free Cloud Credits (GitHub Student Pack)",
+    "description": "$200 credits for 1 year—hosting, deployments, and learning cloud infrastructure.",
+    "studentPrice": "FREE ($200 credits)",
+    "regularPrice": "Pay-as-you-go",
+    "categories": ["Building Apps & Websites", "Coding & Programming"],
+    "url": "https://www.digitalocean.com/github-students"
+  },
+  {
+    "id": "mongodb-atlas",
+    "provider": "MongoDB",
+    "badge": "FREE",
+    "title": "MongoDB Atlas — $50 Free Credits for Students",
+    "description": "$50 Atlas credits + certification options via GitHub Student Pack.",
+    "studentPrice": "$50 free credits",
+    "regularPrice": "See Atlas pricing",
+    "categories": ["Coding & Programming", "Data & Analytics"],
+    "url": "https://www.mongodb.com/academia/education/students"
+  },
+  {
+    "id": "unreal-engine",
+    "provider": "Epic Games",
+    "badge": "FREE",
+    "title": "Unreal Engine — Free for Students",
+    "description": "Free Unreal Engine access including Twinmotion and RealityCapture for learning and non-commercial use (see Epic terms).",
+    "studentPrice": "FREE",
+    "regularPrice": "Commercial licensing varies",
+    "categories": ["Building Apps & Websites", "Design & Presentations"],
+    "url": "https://www.unrealengine.com"
+  },
+  {
+    "id": "unity-pro",
+    "provider": "Unity",
+    "badge": "FREE",
+    "title": "Unity — Free Unity Pro Editor for Students",
+    "description": "Unity Pro Editor free for students; Asset Store discounts and bundles (verify eligibility on Unity site).",
+    "studentPrice": "FREE",
+    "regularPrice": "~$2,200/year retail",
+    "categories": ["Coding & Programming", "Design & Presentations"],
+    "url": "https://unity.com/products/unity-student"
+  },
+  {
+    "id": "adobe-cc",
+    "provider": "Adobe",
+    "badge": "64% off 1st year",
+    "title": "Adobe Creative Cloud — Student & Teacher Discount",
+    "description": "20+ apps including Photoshop, Illustrator, Premiere—student/teacher pricing (first year promo; renewal rates vary).",
+    "studentPrice": "$24.99/mo (1st year), then $39.99/mo",
+    "regularPrice": "$69.99/month",
+    "categories": ["Design & Presentations", "Coding & Programming"],
+    "url": "https://www.adobe.com/creativecloud/buy/students.html"
+  },
+  {
+    "id": "gcp-vertex-edu",
+    "provider": "Google Cloud",
+    "badge": "FREE",
+    "title": "Google Cloud Vertex AI — Education Credits",
+    "description": "Vertex AI access via faculty-sponsored education credits; amounts vary by program.",
+    "studentPrice": "FREE (via education credits)",
+    "regularPrice": "Pay-as-you-go",
+    "categories": ["Coding & Programming", "Data & Analytics"],
+    "url": "https://cloud.google.com/edu"
+  },
+  {
+    "id": "manus-campus",
+    "provider": "Manus",
+    "badge": "FREE",
+    "title": "Manus — Campus Program",
+    "description": "Participating institutions: early access and referral credits (terms on Manus site).",
+    "studentPrice": "FREE access (program)",
+    "regularPrice": "See site",
+    "categories": ["Coding & Programming", "Data & Analytics"],
+    "url": "https://manus.im"
+  },
+  {
+    "id": "perplexity-pro-free",
+    "provider": "Perplexity",
+    "badge": "FREE",
+    "title": "Perplexity — 12 Months Free Pro (Student)",
+    "description": "12 months Pro free for eligible students—research, Study Mode, file uploads (offer details on Perplexity).",
+    "studentPrice": "FREE",
+    "regularPrice": "$20/month",
+    "categories": ["Writing & Research", "Study Tools & Exam Prep"],
+    "url": "https://www.perplexity.ai"
+  },
+  {
+    "id": "perplexity-edu",
+    "provider": "Perplexity",
+    "badge": "75% off",
+    "title": "Perplexity Education Pro — $4.99/month",
+    "description": "Students/faculty: discounted Pro with citations, Study Mode, latest models (verify on site).",
+    "studentPrice": "$4.99/month",
+    "regularPrice": "$20/month",
+    "categories": ["Writing & Research", "Study Tools & Exam Prep"],
+    "url": "https://www.perplexity.ai"
+  },
+  {
+    "id": "superhuman-edu",
+    "provider": "Superhuman",
+    "badge": "67% off",
+    "title": "Superhuman — Student & Education Pricing",
+    "description": "Premium email client for students and faculty at reduced monthly rate.",
+    "studentPrice": "$10/month",
+    "regularPrice": "$30/month",
+    "categories": ["Collaboration & Teams", "Writing & Research"],
+    "url": "https://superhuman.com"
+  }
+]

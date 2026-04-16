@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { SyncButton } from "./SyncButton";
 import { NotificationBell } from "./NotificationBell";
@@ -42,7 +43,7 @@ export function Header({
           <div className="flex items-center gap-3 min-w-0">
             <LogoMark />
             <div className="min-w-0">
-              <h1 className="text-base font-bold text-slate-900 truncate">Rethinkjobs</h1>
+              <p className="text-base font-bold text-slate-900 truncate">RethinkJobs</p>
               <p className="text-xs text-slate-500">
                 {activeCount} active application{activeCount !== 1 ? "s" : ""}
               </p>
@@ -51,6 +52,12 @@ export function Header({
 
           {/* Actions */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <Link
+              href="/resources"
+              className="hidden md:inline-flex text-xs font-medium text-slate-500 hover:text-scale-purple transition-colors"
+            >
+              Resources
+            </Link>
             <div className="flex items-center gap-2">
               {lastSyncAt != null && (
                 <span

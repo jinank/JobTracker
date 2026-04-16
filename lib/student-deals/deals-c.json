@@ -1,0 +1,200 @@
+[
+  {
+    "id": "grammarly-student",
+    "provider": "Grammarly",
+    "badge": "50% off",
+    "title": "Grammarly Pro — 50% Student Discount",
+    "description": "SheerID verification: advanced grammar, rewrites, tone, and higher AI prompt limits.",
+    "studentPrice": "$72/year (intro period)",
+    "regularPrice": "See site",
+    "categories": ["Writing & Research", "Study Tools & Exam Prep"],
+    "url": "https://www.grammarly.com/edu"
+  },
+  {
+    "id": "replit-core",
+    "provider": "Replit",
+    "badge": "60% off",
+    "title": "Replit Core — $15/Month Off for Students",
+    "description": "$15/mo off Core for first 6 months—AI coding environment ($25 → $10 during promo window).",
+    "studentPrice": "$10/month (first 6 months)",
+    "regularPrice": "$25/month",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://replit.com"
+  },
+  {
+    "id": "tabnine-student",
+    "provider": "Tabnine",
+    "badge": "FREE",
+    "title": "Tabnine — Dev Preview for Students",
+    "description": "Free Dev Preview plan for AI completions; dedicated student program may change—verify on Tabnine.",
+    "studentPrice": "FREE (Dev Preview)",
+    "regularPrice": "$12/month",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://www.tabnine.com"
+  },
+  {
+    "id": "github-copilot-student",
+    "provider": "GitHub",
+    "badge": "FREE",
+    "title": "GitHub Copilot — Free Pro for Students",
+    "description": "Verified students: Copilot Pro free—completion, chat, premium coding features.",
+    "studentPrice": "FREE",
+    "regularPrice": "$10/month or $100/year",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://education.github.com/pack"
+  },
+  {
+    "id": "julius-ai-student",
+    "provider": "Julius AI",
+    "badge": "50% off",
+    "title": "Julius AI — 50% Off Student Discount",
+    "description": "Students, professors, teachers: half off subscriptions for data analysis workflows.",
+    "studentPrice": "$10/mo (Plus) or $22.50/mo (Pro)",
+    "regularPrice": "See site",
+    "categories": ["Data & Analytics", "Coding & Programming"],
+    "url": "https://julius.ai"
+  },
+  {
+    "id": "gemini-advanced-student",
+    "provider": "Google",
+    "badge": "FREE",
+    "title": "Google Gemini Advanced — 1 Year Free (Students)",
+    "description": "Eligible college students: AI Pro / Gemini Advanced promotional access (verify current Google offer).",
+    "studentPrice": "FREE (1 year promo)",
+    "regularPrice": "$19.99/month",
+    "categories": ["Writing & Research", "Coding & Programming"],
+    "url": "https://one.google.com"
+  },
+  {
+    "id": "cursor-student",
+    "provider": "Cursor",
+    "badge": "FREE",
+    "title": "Cursor Pro — Free 12 Months for Students",
+    "description": "Verified students: Cursor Pro free for 12 months—premium models and fast requests (see Cursor terms).",
+    "studentPrice": "FREE",
+    "regularPrice": "$20/month",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://cursor.com/students"
+  },
+  {
+    "id": "mistral-le-chat",
+    "provider": "Mistral AI",
+    "badge": "60% off",
+    "title": "Le Chat Student — 60% Off",
+    "description": "Students/educators: discount on Le Chat Pro—extended features and research modes.",
+    "studentPrice": "$5.99/month",
+    "regularPrice": "$14.99/month",
+    "categories": ["Writing & Research", "Coding & Programming"],
+    "url": "https://mistral.ai"
+  },
+  {
+    "id": "slack-education",
+    "provider": "Slack",
+    "badge": "85% off",
+    "title": "Slack — Education Discount",
+    "description": "Educational institutions: deep discount on Pro or Business+ for teams.",
+    "studentPrice": "85% off",
+    "regularPrice": "~$8.75/user/mo",
+    "categories": ["Collaboration & Teams"],
+    "url": "https://slack.com/education"
+  },
+  {
+    "id": "github-student-pack",
+    "provider": "GitHub",
+    "badge": "FREE",
+    "title": "GitHub Student Developer Pack",
+    "description": "100+ tools, cloud credits, and learning resources for verified students.",
+    "studentPrice": "FREE",
+    "regularPrice": "$1,000+/year value",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://education.github.com/pack"
+  },
+  {
+    "id": "framer-edu",
+    "provider": "Framer",
+    "badge": "FREE",
+    "title": "Framer for Education — Free Student Plan",
+    "description": "No-code responsive sites with Figma-like canvas for verified students.",
+    "studentPrice": "FREE",
+    "regularPrice": "$120/year",
+    "categories": ["Design & Presentations", "Building Apps & Websites"],
+    "url": "https://www.framer.com"
+  },
+  {
+    "id": "windsurf-student",
+    "provider": "Windsurf",
+    "badge": "50%+ off",
+    "title": "Windsurf — Student Discount",
+    "description": "Discounted Windsurf Pro—AI-native IDE with agentic assistance (verify current student offer).",
+    "studentPrice": "Under ~$7.50/month",
+    "regularPrice": "$15/month",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://windsurf.com"
+  },
+  {
+    "id": "canva-student",
+    "provider": "Canva",
+    "badge": "FREE",
+    "title": "Canva — Free Premium for K-12",
+    "description": "K-12: free Pro features, premium assets, and classroom collaboration (program scope on Canva).",
+    "studentPrice": "FREE",
+    "regularPrice": "$119.99/year",
+    "categories": ["Design & Presentations", "Collaboration & Teams"],
+    "url": "https://www.canva.com/education/"
+  },
+  {
+    "id": "huggingface-academic",
+    "provider": "Hugging Face",
+    "badge": "50% off",
+    "title": "Hugging Face — Academic / Research Pricing",
+    "description": "University programs: discounted enterprise-style tooling, storage, and compute (seat pricing).",
+    "studentPrice": "$10/seat/month (programs)",
+    "regularPrice": "$20+/user/month",
+    "categories": ["Coding & Programming", "Data & Analytics"],
+    "url": "https://huggingface.co"
+  },
+  {
+    "id": "anthropic-api-student",
+    "provider": "Anthropic",
+    "badge": "FREE",
+    "title": "Claude API — Student Builder Credits",
+    "description": "Apply for API credits for student projects and coursework (availability varies).",
+    "studentPrice": "FREE ($50 credits)",
+    "regularPrice": "API list pricing",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://www.anthropic.com"
+  },
+  {
+    "id": "cloudflare-student",
+    "provider": "Cloudflare",
+    "badge": "FREE",
+    "title": "Cloudflare — Student Discount (Workers)",
+    "description": "U.S. students 18+ with .edu: Workers Paid free 12 months on verified programs (see Cloudflare terms).",
+    "studentPrice": "FREE 12 months",
+    "regularPrice": "$5/month",
+    "categories": ["Coding & Programming", "Building Apps & Websites"],
+    "url": "https://www.cloudflare.com"
+  },
+  {
+    "id": "spotify-student",
+    "provider": "Spotify",
+    "badge": "50% off",
+    "title": "Spotify Premium Student",
+    "description": "Eligible students: ad-free music, offline, and skips at student rate.",
+    "studentPrice": "$5.99/month",
+    "regularPrice": "$11.99/month",
+    "categories": ["Entertainment & Lifestyle", "Online Courses & Learning"],
+    "url": "https://www.spotify.com/us/student/"
+  },
+  {
+    "id": "anthropic-claude-edu",
+    "provider": "Anthropic",
+    "badge": "FREE",
+    "title": "Claude for Education — Institutional Access",
+    "description": "Partner schools: enterprise Claude access for students/faculty/staff (IT-mediated; not individual signup).",
+    "studentPrice": "FREE (institution)",
+    "regularPrice": "~$20/month consumer",
+    "categories": ["Writing & Research", "Study Tools & Exam Prep"],
+    "url": "https://www.anthropic.com/claude/for-education"
+  }
+]

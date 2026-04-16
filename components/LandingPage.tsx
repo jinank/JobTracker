@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { LogoMark } from "@/components/LogoMark";
 
 const TICKER_LINES = [
-  "Marcus Harper got 10 assestment in his first month",
+  "Marcus Harper got 10 assessments in his first month",
   "Sam Ruiz closed 17 interviews in 3 months",
-  "William Torres improved his daily applicated to 50 using Rethinkjobs",
+  "William Torres improved daily applications to 50 using RethinkJobs",
 ] as const;
 
 function Reveal({
@@ -101,8 +102,8 @@ const COMPARISON_ROWS: { feature: string; us: boolean; them: boolean }[] = [
 
 const FAQ_ITEMS: { q: string; a: string }[] = [
   {
-    q: "What is Rethinkjobs?",
-    a: "Rethinkjobs connects to your Gmail (read-only), finds job-related emails, and uses AI to build a structured pipeline of your applications—company, role, status, and more—so you never rely on a messy spreadsheet again.",
+    q: "What is RethinkJobs?",
+    a: "RethinkJobs is a job application tracker that connects to your Gmail (read-only), finds job-related emails, and uses AI to build a structured pipeline—company, role, status, and more—so you can track job applications without living in a spreadsheet.",
   },
   {
     q: "Is my email data secure?",
@@ -127,11 +128,11 @@ export function LandingPage() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2" aria-label="RethinkJobs home">
             <LogoMark />
-            <span className="text-lg font-bold tracking-tight text-slate-900">Rethinkjobs</span>
-          </a>
-          <nav className="hidden items-center gap-8 md:flex">
+            <span className="text-lg font-bold tracking-tight text-slate-900">RethinkJobs</span>
+          </Link>
+          <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
             <a
               href="#features"
               className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
@@ -150,6 +151,18 @@ export function LandingPage() {
             >
               Pricing
             </Link>
+            <Link
+              href="/resources"
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
+            >
+              Resources
+            </Link>
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
+            >
+              Blog
+            </Link>
             <a
               href="#faq"
               className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
@@ -161,7 +174,7 @@ export function LandingPage() {
               onClick={() => signIn("google")}
               className="rounded-xl bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
             >
-              Get started
+              Get started free
             </button>
           </nav>
           <div className="flex items-center gap-2 md:hidden">
@@ -170,7 +183,7 @@ export function LandingPage() {
               onClick={() => signIn("google")}
               className="rounded-xl bg-scale-purple px-3 py-2 text-xs font-semibold text-white"
             >
-              Start
+              Get started free
             </button>
             <button
               type="button"
@@ -197,6 +210,8 @@ export function LandingPage() {
                   ["#features", "Features", false],
                   ["#how-it-works", "How it works", false],
                   ["/pricing", "Pricing", true],
+                  ["/resources", "Resources", true],
+                  ["/blog", "Blog", true],
                   ["#faq", "FAQ", false],
                 ] as const
               ).map(([href, label, isPage]) =>
@@ -225,8 +240,9 @@ export function LandingPage() {
         )}
       </header>
 
+      <main id="main-content">
       {/* Hero */}
-      <section className="relative overflow-hidden pb-16 pt-12 sm:pb-24 sm:pt-16 lg:pb-28 lg:pt-20">
+      <section className="relative overflow-hidden pb-16 pt-12 sm:pb-24 sm:pt-16 lg:pb-28 lg:pt-20" aria-labelledby="hero-heading">
         <div
           className="pointer-events-none absolute -right-32 -top-24 h-[420px] w-[420px] rounded-full bg-gradient-to-br from-fuchsia-200/80 via-scale-purple/25 to-violet-200/40 blur-3xl animate-gradient-drift"
           aria-hidden
@@ -239,42 +255,78 @@ export function LandingPage() {
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
           <div className="landing-hero-stagger text-center lg:text-left">
             <span className="mb-5 inline-flex items-center rounded-full border border-orange-200/80 bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-orange-700 shadow-sm">
-              For students &amp; new grads
+              For students &amp; professionals
             </span>
-            <h1 className="mb-6 font-extrabold leading-[1.12] tracking-tight">
-              <span className="block text-4xl text-slate-900 sm:text-5xl lg:text-[3.25rem]">
-                Track internships and job applications in one place.
-              </span>
-              <span className="mt-2 block bg-gradient-to-r from-scale-purple to-violet-600 bg-clip-text text-[11px] font-semibold leading-snug tracking-normal text-transparent sm:mt-2.5 sm:text-xs lg:text-sm">
-                Cold outreach on LinkedIn and Customized cold emails.
-              </span>
+            <h1
+              id="hero-heading"
+              className="mb-4 text-3xl font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]"
+            >
+              RethinkJobs: AI-powered job application tracker for students and professionals
             </h1>
+            <p className="mb-6 text-lg font-semibold leading-snug text-slate-800 sm:text-xl">
+              Track internships and full-time applications in one place—your AI job search tool for a cleaner
+              pipeline.
+            </p>
             <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-slate-600 lg:mx-0">
-              Rethinkjobs syncs Gmail, uses AI to sort recruiter emails into a live pipeline and surfaces who to
-              contact so you spend less time digging through threads and more time on real outreach and follow-ups.
+              Sync Gmail (read-only), let AI classify recruiter mail, and{" "}
+              <strong className="font-semibold text-slate-800">track job applications</strong> from applied to offer.
+              Less inbox archaeology, more follow-ups. Explore{" "}
+              <Link href="/blog" className="font-semibold text-scale-purple hover:underline">
+                job search tips on the blog
+              </Link>{" "}
+              or jump to{" "}
+              <a href="#features" className="font-semibold text-scale-purple hover:underline">
+                AI job search tool features
+              </a>{" "}
+              and{" "}
+              <a href="#pricing" className="font-semibold text-scale-purple hover:underline">
+                job application tracker pricing
+              </a>
+              .
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <button
                 type="button"
                 onClick={() => signIn("google")}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-scale-purple px-8 py-4 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98] sm:w-auto"
+                aria-label="Get started free with Google"
               >
                 <GoogleIcon />
                 Get started free
               </button>
+              <button
+                type="button"
+                onClick={() => signIn("google")}
+                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 transition-all hover:border-scale-purple/40 hover:bg-scale-mist sm:w-auto"
+                aria-label="Track your applications with Google sign-in"
+              >
+                Track your applications
+              </button>
               <a
                 href="#how-it-works"
-                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 transition-all hover:border-scale-purple/40 hover:bg-scale-mist sm:w-auto"
+                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-transparent px-8 py-4 text-sm font-semibold text-scale-purple underline-offset-4 hover:underline sm:w-auto"
               >
                 See how it works
               </a>
             </div>
             <p className="mt-5 text-xs text-slate-500">
-              Free for verified students · Reach Out + pipeline · No card to start · Read-only Gmail
+              Free for verified students · Internship tracker + full-time pipeline · No card to start · Read-only
+              Gmail
             </p>
           </div>
 
           <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none">
+            <div className="mb-4 flex justify-center lg:justify-start">
+              <Image
+                src="/icon.svg"
+                alt="RethinkJobs logo"
+                width={48}
+                height={48}
+                priority
+                unoptimized
+                className="h-12 w-12 rounded-xl shadow-md ring-1 ring-slate-200/80"
+              />
+            </div>
             <div
               className="relative rounded-3xl border border-slate-200/80 bg-white/90 p-1 shadow-scale-soft backdrop-blur-sm animate-float-slow motion-reduce:animate-none"
               style={{ animationDelay: "-1s" }}
@@ -282,8 +334,8 @@ export function LandingPage() {
               <div className="rounded-[1.35rem] bg-gradient-to-br from-scale-lavender/90 via-white to-slate-50 p-6 sm:p-8">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-semibold tracking-wide text-scale-purple">100+ Job Applications</p>
-                    <p className="text-2xl font-bold text-slate-900">Job Applications Tracker</p>
+                    <p className="text-xs font-semibold tracking-wide text-scale-purple">Pipeline preview</p>
+                    <p className="text-2xl font-bold text-slate-900">Job application tracker</p>
                   </div>
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-scale-purple/10">
                     <span className="text-lg font-bold text-scale-purple">92%</span>
@@ -412,7 +464,7 @@ export function LandingPage() {
                 Comparison
               </span>
               <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Rethinkjobs vs. the spreadsheet grind
+                RethinkJobs vs. the spreadsheet grind
               </h2>
             </div>
           </Reveal>
@@ -423,7 +475,7 @@ export function LandingPage() {
                   Capability
                 </div>
                 <div className="border-b border-slate-100 bg-scale-purple/10 px-2 py-4 text-center font-bold text-scale-purple sm:px-4">
-                  Rethinkjobs
+                  RethinkJobs
                 </div>
                 <div className="border-b border-slate-100 bg-slate-50 px-2 py-4 text-center font-semibold text-slate-500 sm:px-4">
                   Manual
@@ -461,18 +513,23 @@ export function LandingPage() {
       </section>
 
       {/* Feature grid */}
-      <section id="features" className="py-20 lg:py-28">
+      <section id="features" className="py-20 lg:py-28" aria-labelledby="features-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="mb-14 text-center">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
                 Product
               </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Everything you need to run a serious search
+              <h2
+                id="features-heading"
+                className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl"
+              >
+                AI job search tool features to organize every application
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                From first application to final offer—organized, searchable, and always up to date.
+                From first application to final offer—organized, searchable, and always up to date. Perfect whether
+                you need a lightweight <strong className="font-semibold text-slate-800">internship tracker</strong> or
+                a full offer-stage pipeline.
               </p>
             </div>
           </Reveal>
@@ -545,7 +602,7 @@ export function LandingPage() {
             {[
               {
                 quote:
-                  "I finally stopped maintaining a spreadsheet. Rethinkjobs pulls everything from Gmail and my pipeline is always current.",
+                  "I finally stopped maintaining a spreadsheet. RethinkJobs pulls everything from Gmail and my pipeline is always current.",
                 name: "Alex M.",
                 role: "Software engineer",
               },
@@ -605,18 +662,22 @@ export function LandingPage() {
       </Reveal>
 
       {/* Pricing */}
-      <section id="pricing" className="bg-scale-lavender/30 py-20 lg:py-28">
+      <section id="pricing" className="bg-scale-lavender/30 py-20 lg:py-28" aria-labelledby="pricing-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="mb-12 text-center sm:mb-14">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
                 Pricing
               </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Simple, transparent pricing
+              <h2 id="pricing-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                Simple pricing for your job application tracker
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
-                Start free. Upgrade when you need unlimited tracking.
+                Start free. Upgrade when you need unlimited tracking.{" "}
+                <Link href="/blog" className="font-semibold text-scale-purple hover:underline">
+                  Read the blog
+                </Link>{" "}
+                for job-search playbooks.
               </p>
             </div>
           </Reveal>
@@ -797,17 +858,29 @@ export function LandingPage() {
             <p className="mx-auto mt-4 max-w-xl text-lg text-violet-100">
               Connect Gmail, sync once, and watch your pipeline build itself.
             </p>
-            <button
-              type="button"
-              onClick={() => signIn("google")}
-              className="mt-10 inline-flex items-center gap-3 rounded-2xl bg-white px-10 py-4 text-sm font-bold text-scale-purple shadow-xl transition-all hover:bg-scale-mist hover:shadow-2xl active:scale-[0.98]"
-            >
-              <GoogleIcon />
-              Get started free
-            </button>
+            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => signIn("google")}
+                className="inline-flex items-center gap-3 rounded-2xl bg-white px-10 py-4 text-sm font-bold text-scale-purple shadow-xl transition-all hover:bg-scale-mist hover:shadow-2xl active:scale-[0.98]"
+                aria-label="Get started free with Google"
+              >
+                <GoogleIcon />
+                Get started free
+              </button>
+              <button
+                type="button"
+                onClick={() => signIn("google")}
+                className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-transparent px-10 py-4 text-sm font-bold text-white shadow-lg transition-all hover:bg-white/10 active:scale-[0.98]"
+                aria-label="Track your applications"
+              >
+                Track your applications
+              </button>
+            </div>
           </div>
         </Reveal>
       </section>
+      </main>
     </div>
   );
 }
