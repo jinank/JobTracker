@@ -119,7 +119,7 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account, user }) {
       if (account?.provider === ADMIN_CREDENTIALS_PROVIDER_ID) {
         token.adminCredential = true;
         return token;
@@ -133,6 +133,17 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.expiresAt = account.expires_at;
+        if (user?.email) {
+          const email = user.email.trim().toLowerCase();
+          const { data: u } = await supabase
+            .from("users")
+            .select("login_count")
+            .eq("email", email)
+            .maybeSingle();
+          if (u?.login_count === 1) {
+            token.adsSignUpConversion = true;
+          }
+        }
         return token;
       }
 
@@ -178,6 +189,9 @@ export const authOptions: NextAuthOptions = {
       session.accessToken = token.accessToken as string | undefined;
       if (token.adminCredential) {
         session.adminCredential = true;
+      }
+      if (token.adsSignUpConversion) {
+        session.adsSignUpConversion = true;
       }
       return session;
     },
