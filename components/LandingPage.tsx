@@ -119,9 +119,44 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
   },
 ];
 
+/** Shown once per browser before the first Google sign-in from the marketing site. */
+const SIGNUP_GMAIL_PRIVACY_ACK_KEY = "rethinkjobs_signup_gmail_privacy_v1";
+
 export function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const [gmailPrivacyOpen, setGmailPrivacyOpen] = useState(false);
+
+  useEffect(() => {
+    if (!gmailPrivacyOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setGmailPrivacyOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [gmailPrivacyOpen]);
+
+  function beginGoogleSignIn() {
+    try {
+      if (typeof window !== "undefined" && localStorage.getItem(SIGNUP_GMAIL_PRIVACY_ACK_KEY)) {
+        void signIn("google");
+        return;
+      }
+    } catch {
+      // localStorage unavailable (private mode / blocked) — show the dialog once
+    }
+    setGmailPrivacyOpen(true);
+  }
+
+  function confirmGoogleSignIn() {
+    try {
+      localStorage.setItem(SIGNUP_GMAIL_PRIVACY_ACK_KEY, "1");
+    } catch {
+      // still proceed with sign-in
+    }
+    setGmailPrivacyOpen(false);
+    void signIn("google");
+  }
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -171,7 +206,7 @@ export function LandingPage() {
             </a>
             <button
               type="button"
-              onClick={() => signIn("google")}
+              onClick={beginGoogleSignIn}
               className="rounded-xl bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
             >
               Get started free
@@ -180,7 +215,7 @@ export function LandingPage() {
           <div className="flex items-center gap-2 md:hidden">
             <button
               type="button"
-              onClick={() => signIn("google")}
+              onClick={beginGoogleSignIn}
               className="rounded-xl bg-scale-purple px-3 py-2 text-xs font-semibold text-white"
             >
               Get started free
@@ -287,7 +322,7 @@ export function LandingPage() {
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <button
                 type="button"
-                onClick={() => signIn("google")}
+                onClick={beginGoogleSignIn}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-scale-purple px-8 py-4 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98] sm:w-auto"
                 aria-label="Get started free with Google"
               >
@@ -296,7 +331,7 @@ export function LandingPage() {
               </button>
               <button
                 type="button"
-                onClick={() => signIn("google")}
+                onClick={beginGoogleSignIn}
                 className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 transition-all hover:border-scale-purple/40 hover:bg-scale-mist sm:w-auto"
                 aria-label="Track your applications with Google sign-in"
               >
@@ -707,7 +742,7 @@ export function LandingPage() {
                 </ul>
                 <button
                   type="button"
-                  onClick={() => signIn("google")}
+                  onClick={beginGoogleSignIn}
                   className="mt-8 w-full rounded-xl border-2 border-slate-200 bg-white py-3 text-sm font-semibold text-slate-800 transition-colors hover:border-scale-purple/35 hover:bg-scale-mist/80"
                 >
                   Get started free
@@ -743,7 +778,7 @@ export function LandingPage() {
                 </ul>
                 <button
                   type="button"
-                  onClick={() => signIn("google")}
+                  onClick={beginGoogleSignIn}
                   className="mt-8 w-full rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
                 >
                   Verify & get access
@@ -781,7 +816,7 @@ export function LandingPage() {
                 </ul>
                 <button
                   type="button"
-                  onClick={() => signIn("google")}
+                  onClick={beginGoogleSignIn}
                   className="mt-8 w-full rounded-xl bg-scale-purple py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-scale-purple-dark"
                 >
                   Start Pro
@@ -861,7 +896,7 @@ export function LandingPage() {
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <button
                 type="button"
-                onClick={() => signIn("google")}
+                onClick={beginGoogleSignIn}
                 className="inline-flex items-center gap-3 rounded-2xl bg-white px-10 py-4 text-sm font-bold text-scale-purple shadow-xl transition-all hover:bg-scale-mist hover:shadow-2xl active:scale-[0.98]"
                 aria-label="Get started free with Google"
               >
@@ -870,7 +905,7 @@ export function LandingPage() {
               </button>
               <button
                 type="button"
-                onClick={() => signIn("google")}
+                onClick={beginGoogleSignIn}
                 className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-transparent px-10 py-4 text-sm font-bold text-white shadow-lg transition-all hover:bg-white/10 active:scale-[0.98]"
                 aria-label="Track your applications"
               >
@@ -881,6 +916,54 @@ export function LandingPage() {
         </Reveal>
       </section>
       </main>
+
+      {gmailPrivacyOpen ? (
+        <div className="fixed inset-0 z-[100] flex items-end justify-center p-4 sm:items-center sm:p-6">
+          <button
+            type="button"
+            className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px]"
+            aria-label="Close dialog"
+            onClick={() => setGmailPrivacyOpen(false)}
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="gmail-privacy-heading"
+            className="relative z-10 w-full max-w-lg rounded-2xl border border-slate-200/80 bg-white p-6 shadow-2xl sm:p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 id="gmail-privacy-heading" className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
+              How we use your Gmail access
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
+              Google’s permission screen can look broad. <strong className="font-semibold text-slate-800">We’re not
+              building a copy of your inbox or reviewing personal messages.</strong> RethinkJobs is built to spot{" "}
+              <strong className="font-semibold text-slate-800">job-related updates</strong>—things like applications,
+              interviews, and recruiter replies—so your tracker stays current.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+              You can remove access anytime from your Google Account settings. When you’re ready, continue to sign in
+              with Google.
+            </p>
+            <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                onClick={() => setGmailPrivacyOpen(false)}
+                className="rounded-xl border-2 border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-scale-purple transition-colors hover:border-scale-purple/40 hover:bg-scale-mist/60"
+              >
+                Go back
+              </button>
+              <button
+                type="button"
+                onClick={confirmGoogleSignIn}
+                className="rounded-xl bg-scale-purple px-5 py-3 text-sm font-semibold text-white shadow-scale-soft transition-colors hover:bg-scale-purple-dark"
+              >
+                Continue with Google
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
