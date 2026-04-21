@@ -317,6 +317,7 @@ export function Dashboard() {
               chain={selectedChain}
               onBack={handleBack}
               onUpdated={handleChainUpdated}
+              onRefresh={refresh}
             />
           </main>
           <LeaderboardSidebar chains={chains} />

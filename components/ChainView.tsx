@@ -107,10 +107,14 @@ export function ChainView({
   chain,
   onBack,
   onUpdated,
+  onRefresh,
 }: {
   chain: Chain;
   onBack: () => void;
+  /** Called after edits that should close the detail view (edit / delete). */
   onUpdated: () => void;
+  /** Called after background updates that should keep the view open (e.g. adding a note). */
+  onRefresh?: () => void;
 }) {
   const { events, loading } = useChainEvents(chain.chain_id);
   const [editing, setEditing] = useState(false);
@@ -119,6 +123,37 @@ export function ChainView({
   const [editStatus, setEditStatus] = useState<ChainStatus>(chain.status);
   const [saving, setSaving] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [noteDraft, setNoteDraft] = useState("");
+  const [noteSaving, setNoteSaving] = useState(false);
+  const [noteError, setNoteError] = useState<string | null>(null);
+
+  const handleAddNote = async () => {
+    const line = noteDraft.trim();
+    if (!line) return;
+    setNoteSaving(true);
+    setNoteError(null);
+    try {
+      const res = await fetch("/api/chains", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chain_id: chain.chain_id,
+          append_note: line,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error ?? "Could not save note");
+      }
+      setNoteDraft("");
+      if (onRefresh) onRefresh();
+      else onUpdated();
+    } catch (err) {
+      setNoteError(err instanceof Error ? err.message : "Could not save note");
+    } finally {
+      setNoteSaving(false);
+    }
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -307,14 +342,57 @@ export function ChainView({
           <EventTimeline events={events} />
         )}
 
-        {chain.user_notes?.trim() && (
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <h3 className="text-sm font-semibold text-slate-800 mb-2">Your notes</h3>
-            <pre className="text-xs text-slate-600 whitespace-pre-wrap font-sans leading-relaxed bg-slate-50 rounded-xl px-3.5 py-3 border border-slate-100">
+        <div className="mt-8 pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-semibold text-slate-800">Your notes</h3>
+            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">
+              Private to you
+            </span>
+          </div>
+
+          {chain.user_notes?.trim() ? (
+            <pre className="text-xs text-slate-600 whitespace-pre-wrap font-sans leading-relaxed bg-slate-50 rounded-xl px-3.5 py-3 border border-slate-100 mb-3">
               {chain.user_notes.trim()}
             </pre>
+          ) : (
+            <p className="text-xs text-slate-400 mb-3">
+              No notes yet. Add reminders, recruiter details, or prep links below.
+            </p>
+          )}
+
+          <div className="rounded-xl border border-slate-200 bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-400/20 transition-all">
+            <textarea
+              value={noteDraft}
+              onChange={(e) => setNoteDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                  e.preventDefault();
+                  if (!noteSaving && noteDraft.trim()) void handleAddNote();
+                }
+              }}
+              placeholder="Add a note (e.g. 'Recruiter asked about availability Thu 2pm')"
+              rows={3}
+              disabled={noteSaving}
+              className="w-full resize-y rounded-xl px-3.5 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none bg-transparent disabled:opacity-60"
+            />
+            <div className="flex items-center justify-between gap-2 px-3 py-2 border-t border-slate-100 bg-slate-50/60 rounded-b-xl">
+              <p className="text-[11px] text-slate-400 hidden sm:block">
+                Notes are stamped with today&apos;s date. <kbd className="px-1 py-0.5 rounded border border-slate-200 bg-white text-[10px]">⌘/Ctrl</kbd>+<kbd className="px-1 py-0.5 rounded border border-slate-200 bg-white text-[10px]">Enter</kbd> to save.
+              </p>
+              <button
+                type="button"
+                onClick={handleAddNote}
+                disabled={noteSaving || !noteDraft.trim()}
+                className="ml-auto px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              >
+                {noteSaving ? "Saving..." : "Add note"}
+              </button>
+            </div>
           </div>
-        )}
+          {noteError && (
+            <p className="mt-2 text-xs text-red-600">{noteError}</p>
+          )}
+        </div>
       </div>
     </div>
   );
