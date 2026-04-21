@@ -9,6 +9,7 @@ import { Header } from "./Header";
 import { PipelineBar } from "./PipelineBar";
 import { ChainCard } from "./ChainCard";
 import { ChainView } from "./ChainView";
+import { CompanyGroupCard, buildCompanyGroups } from "./CompanyGroupCard";
 import { EmptyState } from "./EmptyState";
 import { LeaderboardSidebar } from "./LeaderboardSidebar";
 import { InviteResponseBanner } from "./InviteResponseBanner";
@@ -101,6 +102,7 @@ export function Dashboard() {
   const [datePreset, setDatePreset] = useState<string>("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [groupByCompany, setGroupByCompany] = useState(true);
 
   useEffect(() => {
     setSelectedChain((prev) => {
@@ -229,12 +231,23 @@ export function Dashboard() {
     return sortChains(result, sortField, sortDir);
   }, [dateFilteredChains, activeChains, closedChains, filter, search, sortField, sortDir]);
 
-  const totalPages = Math.max(1, Math.ceil(displayChains.length / pageSize));
+  const groupedChains = useMemo(
+    () => (groupByCompany ? buildCompanyGroups(displayChains) : null),
+    [groupByCompany, displayChains]
+  );
+
+  const totalItems = groupedChains
+    ? groupedChains.length
+    : displayChains.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const safePage = Math.min(page, totalPages);
   const paginatedChains = displayChains.slice(
     (safePage - 1) * pageSize,
     safePage * pageSize
   );
+  const paginatedGroups = groupedChains
+    ? groupedChains.slice((safePage - 1) * pageSize, safePage * pageSize)
+    : null;
 
   const handleFilterChange = useCallback((f: string) => {
     setFilter(f);
@@ -527,7 +540,7 @@ export function Dashboard() {
             </div>
 
             {/* Sort Controls */}
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
               <span className="text-xs text-slate-400">Sort by:</span>
               {(
                 [
@@ -554,12 +567,43 @@ export function Dashboard() {
                   )}
                 </button>
               ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setGroupByCompany((v) => !v);
+                  setPage(1);
+                }}
+                aria-pressed={groupByCompany}
+                title="Merge threads from the same company into one row"
+                className={`ml-auto inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all border ${
+                  groupByCompany
+                    ? "bg-blue-600 text-white border-blue-600 shadow-sm hover:bg-blue-700"
+                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-slate-300"
+                }`}
+              >
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
+                  />
+                </svg>
+                Group by company
+              </button>
             </div>
 
             {/* Results info */}
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs text-slate-400">
-                {displayChains.length} application{displayChains.length !== 1 ? "s" : ""}
+                {groupedChains
+                  ? `${groupedChains.length} compan${groupedChains.length !== 1 ? "ies" : "y"} · ${displayChains.length} application${displayChains.length !== 1 ? "s" : ""}`
+                  : `${displayChains.length} application${displayChains.length !== 1 ? "s" : ""}`}
                 {search.trim() ? ` for "${search.trim()}"` : ""}
                 {datePreset !== "all" && (
                   <span className="ml-1 text-blue-500 font-medium">
@@ -591,14 +635,22 @@ export function Dashboard() {
 
             {/* Chain List */}
             <div className="space-y-3">
-              {paginatedChains.map((chain) => (
-                <ChainCard
-                  key={chain.chain_id}
-                  chain={chain}
-                  onClick={() => setSelectedChain(chain)}
-                />
-              ))}
-              {paginatedChains.length === 0 && (
+              {paginatedGroups
+                ? paginatedGroups.map((group) => (
+                    <CompanyGroupCard
+                      key={group.key}
+                      group={group}
+                      onChainClick={(chain) => setSelectedChain(chain)}
+                    />
+                  ))
+                : paginatedChains.map((chain) => (
+                    <ChainCard
+                      key={chain.chain_id}
+                      chain={chain}
+                      onClick={() => setSelectedChain(chain)}
+                    />
+                  ))}
+              {(paginatedGroups ? paginatedGroups.length : paginatedChains.length) === 0 && (
                 <p className="text-sm text-slate-500 text-center py-12">
                   No applications match your search.
                 </p>
