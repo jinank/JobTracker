@@ -39,6 +39,14 @@ export function Footer() {
               <span className="text-sm font-bold text-white">RethinkJobs</span>
             </Link>
             <nav className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-300">
+              <Link href="/" className="hover:text-white transition-colors">
+                Track Jobs
+              </Link>
+              <span className="text-slate-700 hidden sm:inline">•</span>
+              <Link href="/practice-interviews" className="hover:text-white transition-colors">
+                Practice Interviews
+              </Link>
+              <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/resources" className="hover:text-white transition-colors">
                 Resources
               </Link>

@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { SyncButton } from "./SyncButton";
 import { NotificationBell } from "./NotificationBell";
-import { LogoMark } from "@/components/LogoMark";
+import { SiteNavApp } from "./SiteNav";
 import type { Notification } from "@/hooks/useNotifications";
 import { formatLastSyncLabel } from "@/lib/utils";
 
@@ -36,80 +35,54 @@ export function Header({
   onClearNotifications,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5">
-        <div className="flex items-center justify-between gap-4">
-          {/* Logo & title */}
-          <div className="flex items-center gap-3 min-w-0">
-            <LogoMark />
-            <div className="min-w-0">
-              <p className="text-base font-bold text-slate-900 truncate">RethinkJobs</p>
-              <p className="text-xs text-slate-500">
-                {activeCount} active application{activeCount !== 1 ? "s" : ""}
-              </p>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <Link
-              href="/resources"
-              className="hidden md:inline-flex text-xs font-medium text-slate-500 hover:text-scale-purple transition-colors"
-            >
-              Resources
-            </Link>
-            <div className="flex items-center gap-2">
-              {lastSyncAt != null && (
-                <span
-                  className={`text-[11px] hidden sm:inline whitespace-nowrap ${
-                    syncing ? "text-slate-400/80" : "text-slate-400"
-                  }`}
-                  title={new Date(lastSyncAt).toLocaleString()}
-                >
-                  Last synced {formatLastSyncLabel(lastSyncAt)}
-                  {syncing && (
-                    <span className="text-slate-400/70"> · updating…</span>
-                  )}
-                </span>
-              )}
-              <SyncButton syncing={syncing} progress={progress} onSync={onSync} />
-            </div>
-            <NotificationBell
-              notifications={notifications}
-              unreadCount={unreadCount}
-              onMarkAllRead={onMarkAllRead}
-              onClear={onClearNotifications}
-            />
-            {!paid && (
-              <a
-                href="/pricing"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-sm"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                </svg>
-                Upgrade
-              </a>
-            )}
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-              {email && (
-                <span className="text-xs text-slate-500 hidden md:inline truncate max-w-[140px]">
-                  {email}
-                </span>
-              )}
-              <button
-                onClick={() => signOut()}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors"
-                title="Sign out"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                </svg>
-              </button>
-            </div>
-          </div>
+    <SiteNavApp activeCount={activeCount}>
+      <div className="flex items-center gap-2 flex-wrap justify-end">
+        {lastSyncAt != null && (
+          <span
+            className={`text-[11px] hidden sm:inline whitespace-nowrap ${
+              syncing ? "text-slate-400/80" : "text-slate-400"
+            }`}
+            title={new Date(lastSyncAt).toLocaleString()}
+          >
+            Last synced {formatLastSyncLabel(lastSyncAt)}
+            {syncing && <span className="text-slate-400/70"> · updating…</span>}
+          </span>
+        )}
+        <SyncButton syncing={syncing} progress={progress} onSync={onSync} />
+        <NotificationBell
+          notifications={notifications}
+          unreadCount={unreadCount}
+          onMarkAllRead={onMarkAllRead}
+          onClear={onClearNotifications}
+        />
+        {!paid && (
+          <a
+            href="/pricing"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-sm"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+            Upgrade
+          </a>
+        )}
+        <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+          {email && (
+            <span className="text-xs text-slate-500 hidden md:inline truncate max-w-[140px]">
+              {email}
+            </span>
+          )}
+          <button
+            onClick={() => signOut()}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+            title="Sign out"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+            </svg>
+          </button>
         </div>
       </div>
-    </header>
+    </SiteNavApp>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LogoMark } from "@/components/LogoMark";
+import { SiteNavMarketing } from "@/components/SiteNav";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -20,25 +20,7 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4 sm:px-6">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-scale-purple transition-colors"
-          >
-            <LogoMark className="h-8 w-8" iconClassName="w-4 h-4" />
-            RethinkJobs
-          </Link>
-          <nav className="flex gap-4 text-xs font-medium text-slate-600" aria-label="Blog navigation">
-            <Link href="/#features" className="hover:text-slate-900">
-              Features
-            </Link>
-            <Link href="/pricing" className="hover:text-slate-900">
-              Pricing
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <SiteNavMarketing />
       <main id="main-content" className="flex-1 mx-auto w-full max-w-3xl px-4 py-12 sm:px-6">
         <article>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Blog</h1>

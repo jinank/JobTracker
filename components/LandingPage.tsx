@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { LogoMark } from "@/components/LogoMark";
+import { SiteNavMarketing } from "@/components/SiteNav";
 
 const TICKER_LINES = [
   "Marcus Harper got 10 assessments in his first month",
@@ -123,7 +123,6 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
 const SIGNUP_GMAIL_PRIVACY_ACK_KEY = "rethinkjobs_signup_gmail_privacy_v1";
 
 export function LandingPage() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
   const [gmailPrivacyOpen, setGmailPrivacyOpen] = useState(false);
 
@@ -160,121 +159,7 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      {/* Nav */}
-      <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2" aria-label="RethinkJobs home">
-            <LogoMark />
-            <span className="text-lg font-bold tracking-tight text-slate-900">RethinkJobs</span>
-          </Link>
-          <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
-            <a
-              href="#features"
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
-            >
-              Features
-            </a>
-            <a
-              href="#how-it-works"
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
-            >
-              How it works
-            </a>
-            <Link
-              href="/pricing"
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/resources"
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
-            >
-              Resources
-            </Link>
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
-            >
-              Blog
-            </Link>
-            <a
-              href="#faq"
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-scale-purple"
-            >
-              FAQ
-            </a>
-            <button
-              type="button"
-              onClick={beginGoogleSignIn}
-              className="rounded-xl bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
-            >
-              Get started free
-            </button>
-          </nav>
-          <div className="flex items-center gap-2 md:hidden">
-            <button
-              type="button"
-              onClick={beginGoogleSignIn}
-              className="rounded-xl bg-scale-purple px-3 py-2 text-xs font-semibold text-white"
-            >
-              Get started free
-            </button>
-            <button
-              type="button"
-              aria-expanded={menuOpen}
-              aria-label="Menu"
-              onClick={() => setMenuOpen((v) => !v)}
-              className="rounded-lg border border-slate-200 p-2 text-slate-600"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                {menuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-        {menuOpen && (
-          <div className="border-t border-slate-100 bg-white px-4 py-4 md:hidden">
-            <div className="flex flex-col gap-3">
-              {(
-                [
-                  ["#features", "Features", false],
-                  ["#how-it-works", "How it works", false],
-                  ["/pricing", "Pricing", true],
-                  ["/resources", "Resources", true],
-                  ["/blog", "Blog", true],
-                  ["#faq", "FAQ", false],
-                ] as const
-              ).map(([href, label, isPage]) =>
-                isPage ? (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setMenuOpen(false)}
-                    className="text-sm font-medium text-slate-700"
-                  >
-                    {label}
-                  </Link>
-                ) : (
-                  <a
-                    key={href}
-                    href={href}
-                    onClick={() => setMenuOpen(false)}
-                    className="text-sm font-medium text-slate-700"
-                  >
-                    {label}
-                  </a>
-                )
-              )}
-            </div>
-          </div>
-        )}
-      </header>
-
+      <SiteNavMarketing onSignIn={beginGoogleSignIn} />
       <main id="main-content">
       {/* Hero */}
       <section className="relative overflow-hidden pb-16 pt-12 sm:pb-24 sm:pt-16 lg:pb-28 lg:pt-20" aria-labelledby="hero-heading">
@@ -289,36 +174,25 @@ export function LandingPage() {
         />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
           <div className="landing-hero-stagger text-center lg:text-left">
-            <span className="mb-5 inline-flex items-center rounded-full border border-orange-200/80 bg-gradient-to-r from-orange-50 to-amber-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-orange-700 shadow-sm">
-              For students &amp; professionals
-            </span>
             <h1
               id="hero-heading"
-              className="mb-4 text-3xl font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]"
+              className="mb-6 text-3xl font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]"
             >
-              RethinkJobs: AI-powered job application tracker for students and professionals
+              Track every job application in one place
             </h1>
-            <p className="mb-6 text-lg font-semibold leading-snug text-slate-800 sm:text-xl">
-              Track internships and full-time applications in one place—your AI job search tool for a cleaner
-              pipeline.
-            </p>
-            <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-slate-600 lg:mx-0">
-              Sync Gmail (read-only), let AI classify recruiter mail, and{" "}
-              <strong className="font-semibold text-slate-800">track job applications</strong> from applied to offer.
-              Less inbox archaeology, more follow-ups. Explore{" "}
-              <Link href="/blog" className="font-semibold text-scale-purple hover:underline">
-                job search tips on the blog
-              </Link>{" "}
-              or jump to{" "}
-              <a href="#features" className="font-semibold text-scale-purple hover:underline">
-                AI job search tool features
-              </a>{" "}
-              and{" "}
-              <a href="#pricing" className="font-semibold text-scale-purple hover:underline">
-                job application tracker pricing
-              </a>
-              .
-            </p>
+            <ul className="mx-auto mb-8 max-w-xl space-y-3 text-left text-base leading-relaxed text-slate-600 lg:mx-0">
+              <li className="flex gap-3">
+                <CheckIcon className="mt-1 h-5 w-5 shrink-0 text-scale-purple" />
+                <span>
+                  Connect Gmail once—AI turns recruiter mail into a live pipeline{" "}
+                  <span className="text-slate-500">(read-only)</span>.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <CheckIcon className="mt-1 h-5 w-5 shrink-0 text-scale-purple" />
+                <span>See every role from applied to offer—no spreadsheets or inbox digging.</span>
+              </li>
+            </ul>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <button
                 type="button"
@@ -329,24 +203,15 @@ export function LandingPage() {
                 <GoogleIcon />
                 Get started free
               </button>
-              <button
-                type="button"
-                onClick={beginGoogleSignIn}
-                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 transition-all hover:border-scale-purple/40 hover:bg-scale-mist sm:w-auto"
-                aria-label="Track your applications with Google sign-in"
-              >
-                Track your applications
-              </button>
               <a
                 href="#how-it-works"
-                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-transparent px-8 py-4 text-sm font-semibold text-scale-purple underline-offset-4 hover:underline sm:w-auto"
+                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 transition-all hover:border-scale-purple/40 hover:bg-scale-mist sm:w-auto"
               >
                 See how it works
               </a>
             </div>
             <p className="mt-5 text-xs text-slate-500">
-              Free for verified students · Internship tracker + full-time pipeline · No card to start · Read-only
-              Gmail
+              Free for students · Read-only Gmail · No card to start
             </p>
           </div>
 
