@@ -261,6 +261,11 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
     refreshLbPrefs();
   };
 
+  const hiddenLeaderboardNames = ["Jin**You"];
+  const filteredEntries = data?.entries.filter(
+    (entry) => !hiddenLeaderboardNames.includes(entry.displayName)
+  );
+
   return (
     <aside className="hidden xl:block w-72 shrink-0 self-start sticky top-28 space-y-4">
       <GoalProgressSection chains={chains} />
@@ -345,7 +350,7 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
                   <span className="font-semibold">$100 USD</span>.
                 </p>
                 <ul className="space-y-1">
-                  {data.entries.map((e) => (
+                  {filteredEntries?.map((e) => (
                     <li
                       key={`${e.rank}-${e.displayName}`}
                       className={`flex items-center gap-2.5 rounded-xl px-2 py-2 transition-colors ${
