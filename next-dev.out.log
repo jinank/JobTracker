@@ -1,0 +1,9 @@
+
+> glance-ai@0.1.0 web:dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
