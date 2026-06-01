@@ -34,13 +34,6 @@ const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
 // marketing content.
 const MIN_CONFIDENCE_NON_APPLICATION_CHAIN = 0.55;
 
-const JIN_DAILY_APPLICATION_LIMIT = 10;
-const JIN_CAP_EMAIL_REGEX = /(^|[^a-z0-9])(jinank|jin)([^a-z0-9]|$)/i;
-
-function isJinCapUser(email: string) {
-  return JIN_CAP_EMAIL_REGEX.test(email);
-}
-
 export async function POST() {
   const user = await requireSyncAccess();
   if (!user) {
@@ -59,24 +52,6 @@ export async function POST() {
     const processedIds = new Set(
       (existingMsgs ?? []).map((m) => m.provider_message_id)
     );
-
-    const isJinUser = isJinCapUser(user.email);
-    let remainingDailyAppCreates = Infinity;
-
-    if (isJinUser) {
-      const startOfToday = new Date();
-      startOfToday.setUTCHours(0, 0, 0, 0);
-      const { count: createdToday } = await supabase
-        .from("chains")
-        .select("chain_id", { count: "exact", head: true })
-        .eq("user_id", user.userId)
-        .gte("created_at", startOfToday.getTime());
-
-      remainingDailyAppCreates = Math.max(
-        0,
-        JIN_DAILY_APPLICATION_LIMIT - (createdToday ?? 0)
-      );
-    }
 
     const allMessageIds: Array<{ id: string; threadId: string }> = [];
     let pageToken: string | undefined;
@@ -203,13 +178,6 @@ export async function POST() {
 
         if (!match && !canCreateFromNoMatch) continue;
 
-        const canCreateNewChain =
-          !!match ||
-          remainingDailyAppCreates > 0 ||
-          !isJinUser;
-
-        if (!canCreateNewChain) continue;
-
         let chainId: string;
 
         if (match) {
@@ -252,13 +220,6 @@ export async function POST() {
           });
 
           chainCache.push(newChain);
-
-          if (isJinUser) {
-            remainingDailyAppCreates = Math.max(
-              0,
-              remainingDailyAppCreates - 1
-            );
-          }
         }
 
         const deadlineMs = classification.deadline
@@ -375,13 +336,6 @@ export async function POST() {
 
           if (!match && !canCreateFromNoMatch) continue;
 
-          const canCreateNewChain =
-            !!match ||
-            remainingDailyAppCreates > 0 ||
-            !isJinUser;
-
-          if (!canCreateNewChain) continue;
-
           let chainId: string;
           if (match) {
             const updatedStatus = advanceStatus(match.status, status);
@@ -423,13 +377,6 @@ export async function POST() {
             });
 
             chainCache.push(newChain);
-
-            if (isJinUser) {
-              remainingDailyAppCreates = Math.max(
-                0,
-                remainingDailyAppCreates - 1
-              );
-            }
           }
 
           const deadlineMs = classification.deadline

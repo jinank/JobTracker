@@ -59,6 +59,7 @@ export function Dashboard() {
     chainCount,
     limit,
     loading,
+    error: chainsError,
     refresh,
   } = useChains();
   const { syncing, progress, error, newCount, syncHasMore, lastSyncAt, sync } =
@@ -349,6 +350,11 @@ export function Dashboard() {
         />
         <div className="flex flex-col xl:flex-row gap-8 items-start">
         <main className="flex-1 min-w-0 w-full max-w-4xl">
+        {chainsError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
+            {chainsError}
+          </div>
+        )}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
             {error}
@@ -425,7 +431,7 @@ export function Dashboard() {
             <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : chains.length === 0 ? (
-          <EmptyState onSync={sync} />
+          <EmptyState onSync={sync} onRetry={refresh} />
         ) : (
           <>
             {/* Date Filter - above pipeline so it filters the stats */}

@@ -1,6 +1,12 @@
 "use client";
 
-export function EmptyState({ onSync }: { onSync: () => void }) {
+export function EmptyState({
+  onSync,
+  onRetry,
+}: {
+  onSync: () => void;
+  onRetry?: () => void;
+}) {
   return (
     <div className="text-center py-20 animate-fade-in">
       <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mx-auto mb-6 border border-blue-100/50">
@@ -25,25 +31,35 @@ export function EmptyState({ onSync }: { onSync: () => void }) {
         Click the button below to sync your Gmail and automatically detect job
         application emails.
       </p>
-      <button
-        onClick={onSync}
-        className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/30"
-      >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
+      <div className="flex flex-col gap-3 items-center justify-center">
+        <button
+          onClick={onSync}
+          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/30"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          />
-        </svg>
-        Sync Gmail Now
-      </button>
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Sync Gmail Now
+        </button>
+        {onRetry ? (
+          <button
+            onClick={onRetry}
+            className="inline-flex items-center justify-center px-5 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-50 transition-all"
+          >
+            Retry loading applications
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }
