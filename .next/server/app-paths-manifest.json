@@ -1,4 +1,4 @@
 {
-  "/page": "app/page.js",
-  "/find-jobs/page": "app/find-jobs/page.js"
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/login/page": "app/login/page.js"
 }
