@@ -39,7 +39,10 @@ export async function getAppUser(): Promise<AppUser | null> {
     .select("*", { count: "exact", head: true })
     .eq("user_id", data.id);
 
-  const gmailConnected = session.gmailConnected === true && !!session.accessToken;
+  const gmailConnected =
+    session.gmailConnected === true &&
+    !!session.accessToken &&
+    session.adminCredential !== true;
 
   return {
     userId: data.id,

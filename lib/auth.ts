@@ -169,6 +169,10 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === AUTH_PROVIDER_SUPABASE_EMAIL) {
         token.authProvider = "email";
         token.gmailConnected = false;
+        delete token.accessToken;
+        delete token.refreshToken;
+        delete token.expiresAt;
+        delete token.error;
         if (user?.id) token.appUserId = user.id;
         return token;
       }
@@ -184,7 +188,12 @@ export const authOptions: NextAuthOptions = {
           token.refreshToken = account.refresh_token;
           token.expiresAt = account.expires_at;
           token.gmailConnected = true;
-        } else if (!token.gmailConnected) {
+        } else {
+          // Basic Google sign-in (no Gmail scopes) — do not keep mail tokens.
+          delete token.accessToken;
+          delete token.refreshToken;
+          delete token.expiresAt;
+          delete token.error;
           token.gmailConnected = false;
         }
 
@@ -240,11 +249,18 @@ export const authOptions: NextAuthOptions = {
         token.error = "RefreshTokenError";
       }
 
+      if (token.refreshToken && !token.adminCredential) {
+        token.gmailConnected = true;
+      }
+
       return token;
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken as string | undefined;
-      session.gmailConnected = token.gmailConnected === true;
+      const hasMailToken =
+        !token.adminCredential &&
+        (!!token.refreshToken || token.gmailConnected === true);
+      session.gmailConnected = hasMailToken && !token.error;
       session.authProvider = token.authProvider as string | undefined;
       if (token.adminCredential) {
         session.adminCredential = true;

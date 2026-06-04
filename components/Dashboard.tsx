@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useChains } from "@/hooks/useChains";
 import { useSync } from "@/hooks/useSync";
@@ -52,7 +52,7 @@ function sortChains(
 }
 
 export function Dashboard() {
-  const { data: session } = useSession();
+  const { data: session, update: updateSession } = useSession();
   const gmailConnected = session?.gmailConnected === true;
   const {
     chains,
@@ -106,6 +106,13 @@ export function Dashboard() {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [groupByCompany, setGroupByCompany] = useState(true);
+
+  const refreshedSessionForGmail = useRef(false);
+  useEffect(() => {
+    if (refreshedSessionForGmail.current || session?.gmailConnected) return;
+    refreshedSessionForGmail.current = true;
+    void updateSession();
+  }, [session?.gmailConnected, updateSession]);
 
   useEffect(() => {
     setSelectedChain((prev) => {

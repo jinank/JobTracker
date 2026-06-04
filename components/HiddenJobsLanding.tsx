@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { LoginLink } from "@/components/LoginLink";
+import { NavAuthAction } from "@/components/NavAuthAction";
 import {
   HIDDEN_JOBS_PREVIEW,
   HIDDEN_JOBS_STATS,
@@ -81,7 +81,8 @@ function JobCard({ job }: { job: HiddenJob }) {
   );
 }
 
-export function HiddenJobsExplorer() {
+/** Marketing landing for /find-jobs (logged-out visitors). */
+export function HiddenJobsLanding() {
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<string>("All roles");
 
@@ -148,9 +149,10 @@ export function HiddenJobsExplorer() {
               >
                 View jobs
               </a>
-              <LoginLink
+              <NavAuthAction
                 callbackUrl="/find-jobs"
-                label="Sign in for full access"
+                signInLabel="Sign in for full access"
+                signedInLabel="Open Track Jobs"
                 className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
               />
             </div>
@@ -254,8 +256,8 @@ export function HiddenJobsExplorer() {
       <section id="job-listings" className="py-14 sm:py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50/90 px-4 py-3 text-sm text-amber-950">
-            <strong>Free preview:</strong> Sample listings below. Sign in to unlock search alerts, save roles, and
-            sync applications to{" "}
+            <strong>Free preview:</strong> Sample listings below. Sign in to browse the full catalog with filters,
+            details, and apply links, and sync applications to{" "}
             <Link href="/" className="font-semibold text-scale-purple hover:underline">
               Track Jobs
             </Link>
@@ -329,8 +331,10 @@ export function HiddenJobsExplorer() {
             pipeline, all in RethinkJobs.
           </p>
           <div className="mt-6 flex justify-center">
-            <LoginLink
+            <NavAuthAction
               callbackUrl="/find-jobs"
+              signInLabel="Get started free"
+              signedInLabel="Back to Track Jobs"
               className="rounded-full bg-scale-purple px-8 py-3.5 text-sm font-semibold text-white hover:bg-scale-purple-dark transition-colors"
             />
           </div>

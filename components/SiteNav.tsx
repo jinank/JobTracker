@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { LogoMark } from "@/components/LogoMark";
-import { LoginLink } from "@/components/LoginLink";
+import { NavAuthAction } from "@/components/NavAuthAction";
 import {
   APP_NAV_LINKS,
   MARKETING_NAV_LINKS,
@@ -77,8 +77,8 @@ export function SiteNavMarketing() {
         </div>
 
         <div className="hidden lg:flex items-center gap-2 shrink-0">
-          <LoginLink
-            callbackUrl="/"
+          <NavAuthAction
+            callbackUrl={pathname}
             className="rounded-full bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
           />
         </div>
@@ -111,8 +111,8 @@ export function SiteNavMarketing() {
             className="w-full flex-col !rounded-2xl !p-2 !gap-1"
           />
           <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4">
-            <LoginLink
-              callbackUrl="/"
+            <NavAuthAction
+              callbackUrl={pathname}
               className="w-full rounded-xl bg-scale-purple py-3 text-center text-sm font-semibold text-white"
             />
           </div>

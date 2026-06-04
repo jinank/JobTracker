@@ -1,0 +1,88 @@
+import type { HiddenJob } from "@/lib/hiddenJobsData";
+
+export type PostedPreset = "all" | "today" | "week" | "month" | "30d";
+export type WorkTypeFilter = "all" | HiddenJob["workType"];
+export type JobSortField = "posted" | "company" | "role" | "location";
+export type SortDir = "asc" | "desc";
+
+export function postedDaysForPreset(preset: PostedPreset): number | null {
+  switch (preset) {
+    case "today":
+      return 1;
+    case "week":
+      return 7;
+    case "month":
+      return 30;
+    case "30d":
+      return 30;
+    default:
+      return null;
+  }
+}
+
+export function filterHiddenJobs(
+  jobs: HiddenJob[],
+  opts: {
+    search: string;
+    roleCategory: string;
+    workType: WorkTypeFilter;
+    employmentType: string;
+    experienceLevel: string;
+    postedPreset: PostedPreset;
+    locationQuery: string;
+  }
+): HiddenJob[] {
+  const q = opts.search.trim().toLowerCase();
+  const locQ = opts.locationQuery.trim().toLowerCase();
+  const maxDays = postedDaysForPreset(opts.postedPreset);
+
+  return jobs.filter((j) => {
+    if (opts.roleCategory !== "All roles" && j.roleCategory !== opts.roleCategory) {
+      return false;
+    }
+    if (opts.workType !== "all" && j.workType !== opts.workType) return false;
+    if (
+      opts.employmentType !== "all" &&
+      j.employmentType !== opts.employmentType
+    ) {
+      return false;
+    }
+    if (
+      opts.experienceLevel !== "all" &&
+      j.experienceLevel !== opts.experienceLevel
+    ) {
+      return false;
+    }
+    if (maxDays != null && j.postedDaysAgo > maxDays) return false;
+    if (locQ && !j.location.toLowerCase().includes(locQ)) return false;
+    if (!q) return true;
+    const blob = `${j.company} ${j.title} ${j.location} ${j.roleCategory} ${j.description} ${(j.tags ?? []).join(" ")}`.toLowerCase();
+    return blob.includes(q);
+  });
+}
+
+export function sortHiddenJobs(
+  jobs: HiddenJob[],
+  field: JobSortField,
+  dir: SortDir
+): HiddenJob[] {
+  const sorted = [...jobs].sort((a, b) => {
+    let cmp = 0;
+    switch (field) {
+      case "posted":
+        cmp = a.postedDaysAgo - b.postedDaysAgo;
+        break;
+      case "company":
+        cmp = a.company.localeCompare(b.company);
+        break;
+      case "role":
+        cmp = a.title.localeCompare(b.title);
+        break;
+      case "location":
+        cmp = a.location.localeCompare(b.location);
+        break;
+    }
+    return dir === "asc" ? cmp : -cmp;
+  });
+  return sorted;
+}

@@ -8,7 +8,18 @@ export type HiddenJob = {
   postedDaysAgo: number;
   workType: "Remote" | "Hybrid" | "On-site";
   applyUrl: string;
+  description: string;
+  employmentType: "Full-time" | "Internship" | "Contract";
+  experienceLevel: "Intern" | "Entry" | "Mid" | "Senior";
+  salaryRange?: string;
+  tags: string[];
 };
+
+export const WORK_TYPES = ["Remote", "Hybrid", "On-site"] as const;
+
+export const EMPLOYMENT_TYPES = ["Full-time", "Internship", "Contract"] as const;
+
+export const EXPERIENCE_LEVELS = ["Intern", "Entry", "Mid", "Senior"] as const;
 
 export const ROLE_CATEGORIES = [
   "All roles",
@@ -20,7 +31,75 @@ export const ROLE_CATEGORIES = [
   "Operations",
 ] as const;
 
-export const HIDDEN_JOBS_PREVIEW: HiddenJob[] = [
+function inferEmployment(title: string): HiddenJob["employmentType"] {
+  if (/intern/i.test(title)) return "Internship";
+  if (/contract|contractor/i.test(title)) return "Contract";
+  return "Full-time";
+}
+
+function inferLevel(title: string): HiddenJob["experienceLevel"] {
+  if (/intern/i.test(title)) return "Intern";
+  if (/associate|analyst|junior|entry/i.test(title)) return "Entry";
+  if (/senior|staff|principal|lead|manager|director/i.test(title)) return "Senior";
+  return "Mid";
+}
+
+function inferSalary(
+  roleCategory: string,
+  level: HiddenJob["experienceLevel"]
+): string | undefined {
+  if (level === "Intern") return "$25–45/hr est.";
+  if (roleCategory === "Software Engineering" && level === "Senior") {
+    return "$180k–$260k + equity est.";
+  }
+  if (roleCategory === "Software Engineering") return "$120k–$190k + equity est.";
+  if (roleCategory === "Product") return "$110k–$165k est.";
+  if (roleCategory === "Design") return "$95k–$150k est.";
+  if (roleCategory === "Data & Analytics") return "$100k–$155k est.";
+  if (roleCategory === "Marketing") return "$75k–$120k est.";
+  if (roleCategory === "Operations") return "$70k–$110k est.";
+  return undefined;
+}
+
+function buildDescription(job: {
+  company: string;
+  title: string;
+  location: string;
+  workType: HiddenJob["workType"];
+  roleCategory: string;
+}): string {
+  return `${job.company} is hiring a ${job.title} (${job.roleCategory}) based in ${job.location}. This listing is sourced from the company career page, not a job board, so you apply directly to the employer. Work arrangement: ${job.workType}.`;
+}
+
+function enrich(
+  job: Omit<
+    HiddenJob,
+    "description" | "employmentType" | "experienceLevel" | "salaryRange" | "tags"
+  >
+): HiddenJob {
+  const employmentType = inferEmployment(job.title);
+  const experienceLevel = inferLevel(job.title);
+  const tags = [
+    job.roleCategory,
+    job.workType,
+    employmentType,
+    experienceLevel,
+    "Company site",
+  ];
+  return {
+    ...job,
+    description: buildDescription(job),
+    employmentType,
+    experienceLevel,
+    salaryRange: inferSalary(job.roleCategory, experienceLevel),
+    tags,
+  };
+}
+
+const HIDDEN_JOBS_RAW: Omit<
+  HiddenJob,
+  "description" | "employmentType" | "experienceLevel" | "salaryRange" | "tags"
+>[] = [
   {
     id: "stripe-swe-intern",
     company: "Stripe",
@@ -221,8 +300,15 @@ export const HIDDEN_JOBS_PREVIEW: HiddenJob[] = [
   },
 ];
 
+export const HIDDEN_JOBS_PREVIEW: HiddenJob[] = HIDDEN_JOBS_RAW.map(enrich);
+
 export const HIDDEN_JOBS_STATS = {
   searchersLabel: "3,800+",
   jobsLabel: "12,000+",
-  jobsSubtext: "roles found on company career pages (preview)",
+  jobsSubtext: "roles found on company career pages",
 };
+
+export const HIDDEN_JOBS_ROLE_COUNTS = ROLE_CATEGORIES.slice(1).map((role) => ({
+  role,
+  count: HIDDEN_JOBS_PREVIEW.filter((j) => j.roleCategory === role).length,
+}));

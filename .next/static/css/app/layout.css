@@ -950,6 +950,9 @@ video {
 .min-w-full {
   min-width: 100%;
 }
+.min-w-\[7rem\] {
+  min-width: 7rem;
+}
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -998,6 +1001,9 @@ video {
 .max-w-xl {
   max-width: 36rem;
 }
+.max-w-full {
+  max-width: 100%;
+}
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1033,6 +1039,10 @@ video {
 }
 .rotate-180 {
   --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.rotate-90 {
+  --tw-rotate: 90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .scale-125 {
@@ -2285,6 +2295,10 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 .pb-1 {
   padding-bottom: 0.25rem;
@@ -3742,6 +3756,10 @@ body {
     width: auto;
   }
 
+  .sm\:w-36 {
+    width: 9rem;
+  }
+
   .sm\:max-w-\[26rem\] {
     max-width: 26rem;
   }
@@ -3824,6 +3842,10 @@ body {
 
   .sm\:p-8 {
     padding: 2rem;
+  }
+
+  .sm\:p-5 {
+    padding: 1.25rem;
   }
 
   .sm\:px-3 {
@@ -3974,6 +3996,10 @@ body {
 
   .lg\:grid-cols-\[1fr_220px\] {
     grid-template-columns: 1fr 220px;
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .lg\:items-stretch {
