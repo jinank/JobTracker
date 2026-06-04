@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import Image from "next/image";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { SiteNavMarketing } from "@/components/SiteNav";
+import { ProductHubCards } from "@/components/ProductHubCards";
 
 const TICKER_LINES = [
   "Marcus Harper got 10 assessments in his first month",
@@ -103,7 +103,7 @@ const COMPARISON_ROWS: { feature: string; us: boolean; them: boolean }[] = [
 const FAQ_ITEMS: { q: string; a: string }[] = [
   {
     q: "What is RethinkJobs?",
-    a: "RethinkJobs is a job application tracker that connects to your Gmail (read-only), finds job-related emails, and uses AI to build a structured pipeline—company, role, status, and more—so you can track job applications without living in a spreadsheet.",
+    a: "RethinkJobs is a job application tracker that connects to your Gmail (read-only), finds job-related emails, and uses AI to build a structured pipeline with company, role, status, and more, so you can track applications without living in a spreadsheet.",
   },
   {
     q: "Is my email data secure?",
@@ -142,7 +142,7 @@ export function LandingPage() {
         return;
       }
     } catch {
-      // localStorage unavailable (private mode / blocked) — show the dialog once
+      // localStorage unavailable (private mode / blocked): show the dialog once
     }
     setGmailPrivacyOpen(true);
   }
@@ -162,73 +162,76 @@ export function LandingPage() {
       <SiteNavMarketing onSignIn={beginGoogleSignIn} />
       <main id="main-content">
       {/* Hero */}
-      <section className="relative overflow-hidden pb-16 pt-12 sm:pb-24 sm:pt-16 lg:pb-28 lg:pt-20" aria-labelledby="hero-heading">
-        <div
-          className="pointer-events-none absolute -right-32 -top-24 h-[420px] w-[420px] rounded-full bg-gradient-to-br from-fuchsia-200/80 via-scale-purple/25 to-violet-200/40 blur-3xl animate-gradient-drift"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute -left-24 top-40 h-[320px] w-[320px] rounded-full bg-gradient-to-tr from-orange-100/90 via-pink-100/60 to-transparent blur-3xl animate-gradient-drift motion-reduce:animate-none"
-          style={{ animationDelay: "-4s" }}
-          aria-hidden
-        />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
+      <section
+        className="relative overflow-hidden landing-hero-mesh pb-20 pt-10 sm:pb-28 sm:pt-14 lg:pb-32 lg:pt-16"
+        aria-labelledby="hero-heading"
+      >
+        <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20">
           <div className="landing-hero-stagger text-center lg:text-left">
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-scale-purple/20 bg-white/80 px-4 py-1.5 text-xs font-semibold text-scale-purple shadow-sm backdrop-blur-sm">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
+              AI job tracker · Read-only Gmail
+            </p>
             <h1
               id="hero-heading"
-              className="mb-6 text-3xl font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]"
+              className="mb-6 text-[2rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]"
             >
-              Track every job application in one place
+              Track every{" "}
+              <span className="text-hero-gradient">job application</span>
+              <br className="hidden sm:block" />
+              {" "}in one place
             </h1>
-            <ul className="mx-auto mb-8 max-w-xl space-y-3 text-left text-base leading-relaxed text-slate-600 lg:mx-0">
-              <li className="flex gap-3">
-                <CheckIcon className="mt-1 h-5 w-5 shrink-0 text-scale-purple" />
-                <span>
-                  Connect Gmail once—AI turns recruiter mail into a live pipeline{" "}
-                  <span className="text-slate-500">(read-only)</span>.
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <CheckIcon className="mt-1 h-5 w-5 shrink-0 text-scale-purple" />
-                <span>See every role from applied to offer—no spreadsheets or inbox digging.</span>
-              </li>
-            </ul>
+            <p className="mx-auto mb-8 max-w-lg text-base leading-relaxed text-slate-600 lg:mx-0 lg:text-lg">
+              Connect Gmail once. AI turns recruiter mail into a live pipeline from applied to offer.
+            </p>
+            <div className="mx-auto mb-8 grid max-w-md gap-3 sm:grid-cols-2 lg:mx-0 lg:max-w-none">
+              <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-scale-purple/10 text-scale-purple">
+                  <CheckIcon className="h-5 w-5" />
+                </div>
+                <p className="text-sm font-semibold text-slate-900">Gmail sync</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">Read-only access. No manual copy-paste.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                  </svg>
+                </div>
+                <p className="text-sm font-semibold text-slate-900">Live pipeline</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">Every stage, filter, and deadline in one view.</p>
+              </div>
+            </div>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <button
                 type="button"
                 onClick={beginGoogleSignIn}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-scale-purple px-8 py-4 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98] sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-scale-purple px-8 py-4 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(107,70,254,0.3),0_12px_32px_-8px_rgba(107,70,254,0.45)] transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98] sm:w-auto"
                 aria-label="Get started free with Google"
               >
                 <GoogleIcon />
                 Get started free
               </button>
               <a
-                href="#how-it-works"
-                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 transition-all hover:border-scale-purple/40 hover:bg-scale-mist sm:w-auto"
+                href="#products"
+                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
               >
-                See how it works
+                Explore features
               </a>
             </div>
-            <p className="mt-5 text-xs text-slate-500">
-              Free for students · Read-only Gmail · No card to start
+            <p className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-500 lg:justify-start">
+              <span>Free for students</span>
+              <span className="text-slate-300" aria-hidden>
+                ·
+              </span>
+              <span>No card to start</span>
             </p>
           </div>
 
           <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none">
-            <div className="mb-4 flex justify-center lg:justify-start">
-              <Image
-                src="/icon.svg"
-                alt="RethinkJobs logo"
-                width={48}
-                height={48}
-                priority
-                unoptimized
-                className="h-12 w-12 rounded-xl shadow-md ring-1 ring-slate-200/80"
-              />
-            </div>
             <div
-              className="relative rounded-3xl border border-slate-200/80 bg-white/90 p-1 shadow-scale-soft backdrop-blur-sm animate-float-slow motion-reduce:animate-none"
+              className="relative landing-pipeline-glow rounded-3xl border border-white/80 bg-white/95 p-1 backdrop-blur-sm animate-float-slow motion-reduce:animate-none"
               style={{ animationDelay: "-1s" }}
             >
               <div className="rounded-[1.35rem] bg-gradient-to-br from-scale-lavender/90 via-white to-slate-50 p-6 sm:p-8">
@@ -273,8 +276,8 @@ export function LandingPage() {
         </div>
 
         {/* Ticker */}
-        <div className="relative mx-auto mt-14 max-w-6xl px-4 sm:px-6">
-          <div className="overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-r from-scale-mist via-white to-scale-lavender/40 py-4 shadow-sm">
+        <div className="relative mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+          <div className="overflow-hidden rounded-2xl border border-scale-purple/10 bg-white/70 py-4 shadow-sm backdrop-blur-md ring-1 ring-slate-200/50">
             <div className="flex animate-[scroll_56s_linear_infinite] gap-8 motion-reduce:animate-none">
               {Array.from({ length: 2 }).map((_, i) => (
                 <div key={i} className="flex shrink-0 items-stretch gap-6 pl-6">
@@ -293,13 +296,15 @@ export function LandingPage() {
         </div>
       </section>
 
+      <ProductHubCards />
+
       {/* Big stat line */}
       <Reveal>
-        <section className="border-y border-slate-100 bg-scale-mist/50 py-14">
+        <section className="border-y border-slate-100 bg-gradient-to-b from-white via-scale-mist/40 to-white py-16 lg:py-20">
           <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-            <p className="text-xl font-semibold leading-snug text-slate-800 sm:text-2xl md:text-3xl">
+            <p className="text-xl font-bold leading-snug tracking-tight text-slate-800 sm:text-2xl md:text-[1.75rem] md:leading-snug">
               Built for people who send{" "}
-              <span className="text-scale-purple">dozens of applications</span>—and refuse to lose track of a single
+              <span className="text-scale-purple">dozens of applications</span> and refuse to lose track of a single
               reply.
             </p>
           </div>
@@ -318,7 +323,7 @@ export function LandingPage() {
                 Seamless sync. Maximum clarity.
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                Connect once. We handle classification, pipeline updates, and timelines—so your job search runs on
+                Connect once. We handle classification, pipeline updates, and timelines so your job search runs on
                 autopilot.
               </p>
             </div>
@@ -328,7 +333,7 @@ export function LandingPage() {
               {
                 step: "1",
                 title: "Sign in with Google",
-                desc: "Grant read-only Gmail access. Your applications appear in minutes—not hours of manual entry.",
+                desc: "Grant read-only Gmail access. Your applications appear in minutes, not hours of manual entry.",
               },
               {
                 step: "2",
@@ -389,7 +394,7 @@ export function LandingPage() {
                           <CheckIcon className="h-4 w-4 text-white" />
                         </span>
                       ) : (
-                        <span className="text-slate-300">—</span>
+                        <span className="text-xs font-medium text-slate-400">No</span>
                       )}
                     </div>
                     <div className="flex items-center justify-center border-b border-slate-100 py-3.5">
@@ -427,7 +432,7 @@ export function LandingPage() {
                 AI job search tool features to organize every application
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                From first application to final offer—organized, searchable, and always up to date. Perfect whether
+                From first application to final offer: organized, searchable, and always up to date. Perfect whether
                 you need a lightweight <strong className="font-semibold text-slate-800">internship tracker</strong> or
                 a full offer-stage pipeline.
               </p>
@@ -447,17 +452,17 @@ export function LandingPage() {
               },
               {
                 title: "Pipeline dashboard",
-                desc: "Applied through offer—visual stages, filters, and date ranges at a glance.",
+                desc: "Applied through offer: visual stages, filters, and date ranges at a glance.",
                 path: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
               },
               {
                 title: "Timeline & deadlines",
-                desc: "Never miss a follow-up—every touchpoint in one chronological view.",
+                desc: "Never miss a follow-up. Every touchpoint in one chronological view.",
                 path: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",
               },
               {
                 title: "Search & filters",
-                desc: "Slice by status, company, role, or time window—however you think about the search.",
+                desc: "Slice by status, company, role, or time window however you think about the search.",
                 path: "M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z",
               },
               {
@@ -803,8 +808,8 @@ export function LandingPage() {
             <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
               Google’s permission screen can look broad. <strong className="font-semibold text-slate-800">We’re not
               building a copy of your inbox or reviewing personal messages.</strong> RethinkJobs is built to spot{" "}
-              <strong className="font-semibold text-slate-800">job-related updates</strong>—things like applications,
-              interviews, and recruiter replies—so your tracker stays current.
+              <strong className="font-semibold text-slate-800">job-related updates</strong>, like applications,
+              interviews, and recruiter replies, so your tracker stays current.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
               You can remove access anytime from your Google Account settings. When you’re ready, continue to sign in

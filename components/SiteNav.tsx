@@ -24,7 +24,7 @@ function NavPill({
 }) {
   return (
     <nav
-      className={`inline-flex flex-wrap items-center justify-center gap-0.5 rounded-full bg-slate-100/90 p-1 ring-1 ring-slate-200/70 shadow-sm ${className}`}
+      className={`inline-flex flex-wrap items-center justify-center gap-0.5 rounded-full bg-slate-100/90 p-0.5 sm:p-1 ring-1 ring-slate-200/70 shadow-sm ${className}`}
       aria-label="Main"
     >
       {links.map((item) => {
@@ -34,7 +34,7 @@ function NavPill({
             key={item.href}
             href={item.href}
             onClick={onLinkClick}
-            className={`rounded-full px-3 py-2 text-sm font-medium transition-all whitespace-nowrap ${
+            className={`rounded-full px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
               active
                 ? "bg-white text-scale-purple shadow-sm ring-1 ring-slate-200/80"
                 : "text-slate-600 hover:bg-white/70 hover:text-slate-900"
@@ -84,22 +84,6 @@ export function SiteNavMarketing({
             <button
               type="button"
               onClick={onSignIn}
-              className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-scale-purple/40 hover:bg-scale-mist hover:text-scale-purple"
-            >
-              Track Jobs
-            </button>
-          ) : (
-            <Link
-              href="/"
-              className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-scale-purple/40 hover:bg-scale-mist hover:text-scale-purple"
-            >
-              Track Jobs
-            </Link>
-          )}
-          {onSignIn ? (
-            <button
-              type="button"
-              onClick={onSignIn}
               className="rounded-full bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
             >
               Get started free
@@ -115,15 +99,6 @@ export function SiteNavMarketing({
         </div>
 
         <div className="flex items-center gap-2 lg:hidden shrink-0">
-          {onSignIn && (
-            <button
-              type="button"
-              onClick={onSignIn}
-              className="rounded-full bg-scale-purple px-3 py-2 text-xs font-semibold text-white"
-            >
-              Track Jobs
-            </button>
-          )}
           <button
             type="button"
             aria-expanded={menuOpen}
@@ -152,35 +127,23 @@ export function SiteNavMarketing({
           />
           <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4">
             {onSignIn ? (
-              <>
-                <button
-                  type="button"
-                  onClick={() => {
-                    closeMenu();
-                    onSignIn();
-                  }}
-                  className="w-full rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-800"
-                >
-                  Track Jobs
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    closeMenu();
-                    onSignIn();
-                  }}
-                  className="w-full rounded-xl bg-scale-purple py-3 text-sm font-semibold text-white"
-                >
-                  Get started free
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={() => {
+                  closeMenu();
+                  onSignIn();
+                }}
+                className="w-full rounded-xl bg-scale-purple py-3 text-sm font-semibold text-white"
+              >
+                Get started free
+              </button>
             ) : (
               <Link
                 href="/"
                 onClick={closeMenu}
                 className="w-full rounded-xl bg-scale-purple py-3 text-center text-sm font-semibold text-white"
               >
-                Track Jobs
+                Get started free
               </Link>
             )}
           </div>
