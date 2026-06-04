@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireSyncAccess } from "@/lib/requirePaid";
+import { getAppUser, requireSyncAccess } from "@/lib/requirePaid";
 import { supabase } from "@/lib/supabase";
 import { listMessages, getMessage } from "@/lib/gmail/client";
 import { parseGmailMessage, type ParsedMessage } from "@/lib/gmail/parser";
@@ -35,6 +35,20 @@ const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
 const MIN_CONFIDENCE_NON_APPLICATION_CHAIN = 0.55;
 
 export async function POST() {
+  const appUser = await getAppUser();
+  if (!appUser) {
+    return NextResponse.json({ error: "Sign in required.", code: "UNAUTHORIZED" }, { status: 401 });
+  }
+  if (!appUser.gmailConnected) {
+    return NextResponse.json(
+      {
+        error: "Connect Gmail from the dashboard to sync applications (Track Jobs only).",
+        code: "GMAIL_NOT_CONNECTED",
+      },
+      { status: 403 }
+    );
+  }
+
   const user = await requireSyncAccess();
   if (!user) {
     return NextResponse.json(
@@ -430,7 +444,7 @@ export async function POST() {
         {
           code: "GMAIL_SCOPE_INSUFFICIENT",
           error:
-            "This Google session does not include Gmail access. Sign out of Rethinkjobs, sign in with Google again, and approve Gmail when Google asks. In Google Cloud Console, add scope https://www.googleapis.com/auth/gmail.readonly to your OAuth consent screen and enable the Gmail API.",
+            "Gmail access is missing or expired. Use Connect Gmail on the dashboard and approve read-only mail when Google asks.",
         },
         { status: 403 }
       );

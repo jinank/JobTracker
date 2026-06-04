@@ -117,7 +117,7 @@ export function useSync(
             error:
               typeof data.error === "string"
                 ? data.error
-                : "Gmail access missing — sign out and sign in with Google again.",
+                : "Gmail access missing. Use Connect Gmail on the dashboard (Track Jobs).",
             syncHasMore: false,
           }));
           onComplete();

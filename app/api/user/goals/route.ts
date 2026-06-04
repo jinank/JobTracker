@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 import {
   DEFAULT_DAILY_TARGET,
   DEFAULT_WEEKLY_TARGET,
@@ -40,7 +40,7 @@ function parseOptionalInt(v: unknown): number | undefined {
 }
 
 export async function GET() {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
@@ -59,7 +59,7 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }

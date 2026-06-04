@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { signIn } from "next-auth/react";
+import { LoginLink } from "@/components/LoginLink";
 import {
   HIDDEN_JOBS_PREVIEW,
   HIDDEN_JOBS_STATS,
@@ -148,13 +148,11 @@ export function HiddenJobsExplorer() {
               >
                 View jobs
               </a>
-              <button
-                type="button"
-                onClick={() => signIn("google")}
+              <LoginLink
+                callbackUrl="/find-jobs"
+                label="Sign in for full access"
                 className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
-              >
-                Sign in for full access
-              </button>
+              />
             </div>
             <p className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-500 lg:justify-start">
               <span>
@@ -330,13 +328,12 @@ export function HiddenJobsExplorer() {
             Use Hidden Job Search to discover roles, Interview Prep to practice, and Track Jobs to manage your
             pipeline, all in RethinkJobs.
           </p>
-          <button
-            type="button"
-            onClick={() => signIn("google")}
-            className="mt-6 rounded-full bg-scale-purple px-8 py-3.5 text-sm font-semibold text-white hover:bg-scale-purple-dark transition-colors"
-          >
-            Get started free
-          </button>
+          <div className="mt-6 flex justify-center">
+            <LoginLink
+              callbackUrl="/find-jobs"
+              className="rounded-full bg-scale-purple px-8 py-3.5 text-sm font-semibold text-white hover:bg-scale-purple-dark transition-colors"
+            />
+          </div>
         </div>
       </section>
     </div>

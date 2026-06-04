@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { LogoMark } from "@/components/LogoMark";
+import { LoginLink } from "@/components/LoginLink";
 import {
   APP_NAV_LINKS,
   MARKETING_NAV_LINKS,
@@ -50,11 +51,7 @@ function NavPill({
 }
 
 /** Marketing site header — landing, resources, practice interviews, blog, etc. */
-export function SiteNavMarketing({
-  onSignIn,
-}: {
-  onSignIn?: () => void;
-}) {
+export function SiteNavMarketing() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -80,22 +77,10 @@ export function SiteNavMarketing({
         </div>
 
         <div className="hidden lg:flex items-center gap-2 shrink-0">
-          {onSignIn ? (
-            <button
-              type="button"
-              onClick={onSignIn}
-              className="rounded-full bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
-            >
-              Get started free
-            </button>
-          ) : (
-            <Link
-              href="/"
-              className="rounded-full bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark"
-            >
-              Get started free
-            </Link>
-          )}
+          <LoginLink
+            callbackUrl="/"
+            className="rounded-full bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
+          />
         </div>
 
         <div className="flex items-center gap-2 lg:hidden shrink-0">
@@ -126,26 +111,10 @@ export function SiteNavMarketing({
             className="w-full flex-col !rounded-2xl !p-2 !gap-1"
           />
           <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4">
-            {onSignIn ? (
-              <button
-                type="button"
-                onClick={() => {
-                  closeMenu();
-                  onSignIn();
-                }}
-                className="w-full rounded-xl bg-scale-purple py-3 text-sm font-semibold text-white"
-              >
-                Get started free
-              </button>
-            ) : (
-              <Link
-                href="/"
-                onClick={closeMenu}
-                className="w-full rounded-xl bg-scale-purple py-3 text-center text-sm font-semibold text-white"
-              >
-                Get started free
-              </Link>
-            )}
+            <LoginLink
+              callbackUrl="/"
+              className="w-full rounded-xl bg-scale-purple py-3 text-center text-sm font-semibold text-white"
+            />
           </div>
         </div>
       )}

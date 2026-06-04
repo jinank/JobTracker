@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { LoginLink } from "@/components/LoginLink";
+import { loginUrl } from "@/lib/loginUrl";
 import { useCallback, useMemo, useRef, useState } from "react";
 import {
   COMPANY_BRAND_COLORS,
@@ -116,12 +118,11 @@ export function PracticeInterviewSession({ interview }: { interview: PracticeInt
           <p className="mt-1 text-amber-800/90">
             Practice interviews use AI and require a RethinkJobs account.
           </p>
-          <Link
-            href="/"
+          <LoginLink
+            href={loginUrl(`/practice-interviews/${interview.id}`)}
+            label="Sign in"
             className="mt-3 inline-flex rounded-lg bg-scale-purple px-4 py-2 text-xs font-semibold text-white hover:bg-scale-purple-dark"
-          >
-            Sign in with Google
-          </Link>
+          />
         </div>
       )}
 

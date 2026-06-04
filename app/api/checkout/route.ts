@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 import { stripe } from "@/lib/stripe";
 
 export async function POST() {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }

@@ -4,19 +4,21 @@ import { supabase } from "@/lib/supabase";
 
 const FREE_TIER_LIMIT = 50;
 
-export interface AuthenticatedUser {
+export interface AppUser {
   userId: string;
   email: string;
-  accessToken: string;
   paid: boolean;
   studentVerified: boolean;
   chainCount: number;
   limit: number;
+  gmailConnected: boolean;
+  accessToken?: string;
 }
 
-export async function getAuthUser(): Promise<AuthenticatedUser | null> {
+/** Signed-in user (email, Google without Gmail, or email magic link). */
+export async function getAppUser(): Promise<AppUser | null> {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email || !session.accessToken) return null;
+  if (!session?.user?.email) return null;
 
   const { data } = await supabase
     .from("users")
@@ -37,18 +39,31 @@ export async function getAuthUser(): Promise<AuthenticatedUser | null> {
     .select("*", { count: "exact", head: true })
     .eq("user_id", data.id);
 
+  const gmailConnected = session.gmailConnected === true && !!session.accessToken;
+
   return {
     userId: data.id,
     email: session.user.email,
-    accessToken: session.accessToken,
     paid: isPaid,
     studentVerified: data.student_verified === true,
     chainCount: count ?? 0,
     limit: isPaid ? Infinity : FREE_TIER_LIMIT,
+    gmailConnected,
+    accessToken: gmailConnected ? session.accessToken : undefined,
   };
 }
 
-export async function requireSyncAccess(): Promise<AuthenticatedUser | null> {
+/** @deprecated Alias — use getAppUser for non-Gmail features. */
+export type AuthenticatedUser = AppUser & { accessToken: string };
+
+/** Gmail sync and other mail APIs — requires Track Jobs Google connection. */
+export async function getAuthUser(): Promise<(AppUser & { accessToken: string }) | null> {
+  const user = await getAppUser();
+  if (!user?.accessToken) return null;
+  return user as AppUser & { accessToken: string };
+}
+
+export async function requireSyncAccess(): Promise<(AppUser & { accessToken: string }) | null> {
   const user = await getAuthUser();
   if (!user) return null;
 

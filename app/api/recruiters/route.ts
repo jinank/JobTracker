@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 import { recordUserActivity } from "@/lib/userTelemetry";
 import { companyNameToDomain } from "@/lib/companyDomain";
 import { supabase } from "@/lib/supabase";
@@ -804,7 +804,7 @@ async function fetchFromConfiguredProviders(args: {
 }
 
 export async function GET(request: Request) {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }

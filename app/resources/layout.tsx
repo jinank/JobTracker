@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Resources – Student discounts & tools | Rethinkjobs",
+  title: "Resources – Free member perks & student discounts | Rethinkjobs",
   description:
-    "Curated student discounts on AI, dev tools, cloud credits, design software, and more. Verify offers on each provider's site.",
+    "Free LinkedIn review, resume review, and headshot tools for RethinkJobs members, plus curated student discounts on AI, dev tools, and more.",
 };
 
 export default function ResourcesLayout({ children }: { children: ReactNode }) {

@@ -3,7 +3,12 @@ import { timingSafeEqual } from "crypto";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { supabase } from "@/lib/supabase";
-import { recordUserSignIn } from "@/lib/userTelemetry";
+import { ensureAppUser } from "@/lib/ensureAppUser";
+import {
+  AUTH_PROVIDER_GOOGLE,
+  AUTH_PROVIDER_GOOGLE_GMAIL,
+  AUTH_PROVIDER_SUPABASE_EMAIL,
+} from "@/lib/authSignIn";
 
 const ADMIN_CREDENTIALS_PROVIDER_ID = "admin-credentials";
 
@@ -45,18 +50,68 @@ function buildCredentialsProvider() {
   });
 }
 
+function buildSupabaseEmailProvider() {
+  return CredentialsProvider({
+    id: AUTH_PROVIDER_SUPABASE_EMAIL,
+    name: "Email",
+    credentials: {
+      access_token: { label: "Access token", type: "text" },
+    },
+    async authorize(credentials) {
+      const accessToken = credentials?.access_token?.trim();
+      if (!accessToken) return null;
+
+      const { data, error } = await supabase.auth.getUser(accessToken);
+      if (error || !data.user?.email) {
+        console.error("[auth] supabase getUser:", error?.message ?? "no user");
+        return null;
+      }
+
+      const email = data.user.email.trim().toLowerCase();
+      const row = await ensureAppUser({
+        email,
+        name: data.user.user_metadata?.full_name ?? data.user.email,
+        image: data.user.user_metadata?.avatar_url ?? null,
+        supabaseAuthId: data.user.id,
+        authProvider: "email",
+      });
+
+      if (!row) return null;
+
+      return {
+        id: row.id,
+        email,
+        name: data.user.user_metadata?.full_name ?? data.user.email,
+      };
+    },
+  });
+}
+
+const googleClientId = process.env.GOOGLE_CLIENT_ID!;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET!;
+
 const credentialsProvider = buildCredentialsProvider();
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      id: AUTH_PROVIDER_GOOGLE,
+      clientId: googleClientId,
+      clientSecret: googleClientSecret,
       authorization: {
         params: {
-          // Space-separated; gmail.readonly is required for sync. Must match scopes
-          // on the OAuth consent screen in Google Cloud + Gmail API enabled.
+          scope: "openid email profile",
+          prompt: "select_account",
+        },
+      },
+    }),
+    GoogleProvider({
+      id: AUTH_PROVIDER_GOOGLE_GMAIL,
+      clientId: googleClientId,
+      clientSecret: googleClientSecret,
+      authorization: {
+        params: {
           scope: [
             "openid",
             "email",
@@ -69,6 +124,7 @@ export const authOptions: NextAuthOptions = {
         },
       },
     }),
+    buildSupabaseEmailProvider(),
     ...(credentialsProvider ? [credentialsProvider] : []),
   ],
   callbacks: {
@@ -77,39 +133,20 @@ export const authOptions: NextAuthOptions = {
         return true;
       }
 
-      if (user.email && account?.provider === "google") {
+      if (account?.provider === AUTH_PROVIDER_SUPABASE_EMAIL) {
+        return true;
+      }
+
+      if (user.email && (account?.provider === AUTH_PROVIDER_GOOGLE || account?.provider === AUTH_PROVIDER_GOOGLE_GMAIL)) {
         try {
-          const ownerEmails = (process.env.OWNER_EMAILS ?? "")
-            .split(",")
-            .map((e) => e.trim().toLowerCase())
-            .filter(Boolean);
-
-          const isOwner = ownerEmails.includes(user.email.toLowerCase());
-
-          const { data: row, error } = await supabase
-            .from("users")
-            .upsert(
-              {
-                email: user.email,
-                name: user.name ?? "",
-                image: user.image ?? null,
-                google_sub: account.providerAccountId,
-                ...(isOwner ? { paid: true, subscription_status: "active" } : {}),
-              },
-              { onConflict: "email" }
-            )
-            .select("id")
-            .maybeSingle();
-
-          if (!error && row?.id) {
-            void recordUserSignIn({
-              userId: row.id,
-              email: user.email,
-              provider: "google",
-            });
-          } else if (error) {
-            console.error("[auth] users upsert:", error.message);
-          }
+          await ensureAppUser({
+            email: user.email,
+            name: user.name ?? "",
+            image: user.image ?? null,
+            googleSub: account.providerAccountId,
+            authProvider:
+              account.provider === AUTH_PROVIDER_GOOGLE_GMAIL ? "google-gmail" : "google",
+          });
         } catch (e) {
           console.error(
             "[auth] signIn google / supabase:",
@@ -129,10 +166,28 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
-      if (account?.provider === "google") {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
-        token.expiresAt = account.expires_at;
+      if (account?.provider === AUTH_PROVIDER_SUPABASE_EMAIL) {
+        token.authProvider = "email";
+        token.gmailConnected = false;
+        if (user?.id) token.appUserId = user.id;
+        return token;
+      }
+
+      if (
+        account?.provider === AUTH_PROVIDER_GOOGLE ||
+        account?.provider === AUTH_PROVIDER_GOOGLE_GMAIL
+      ) {
+        token.authProvider = account.provider === AUTH_PROVIDER_GOOGLE_GMAIL ? "google-gmail" : "google";
+
+        if (account.provider === AUTH_PROVIDER_GOOGLE_GMAIL) {
+          token.accessToken = account.access_token;
+          token.refreshToken = account.refresh_token;
+          token.expiresAt = account.expires_at;
+          token.gmailConnected = true;
+        } else if (!token.gmailConnected) {
+          token.gmailConnected = false;
+        }
+
         if (user?.email) {
           const email = user.email.trim().toLowerCase();
           const { data: u } = await supabase
@@ -147,14 +202,16 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
+      if (!token.gmailConnected || !token.refreshToken) {
+        return token;
+      }
+
       if (
         typeof token.expiresAt === "number" &&
         Date.now() < token.expiresAt * 1000 - 60_000
       ) {
         return token;
       }
-
-      if (!token.refreshToken) return { ...token, error: "NoRefreshToken" };
 
       try {
         const params = new URLSearchParams({
@@ -187,6 +244,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken as string | undefined;
+      session.gmailConnected = token.gmailConnected === true;
+      session.authProvider = token.authProvider as string | undefined;
       if (token.adminCredential) {
         session.adminCredential = true;
       }
@@ -197,6 +256,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/",
+    signIn: "/login",
   },
 };

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 import { supabase } from "@/lib/supabase";
 
 export async function POST(req: Request) {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

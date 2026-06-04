@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 import { maskDisplayName } from "@/lib/maskDisplayName";
 
 type LeaderboardRow = {
@@ -11,7 +11,7 @@ type LeaderboardRow = {
 };
 
 export async function GET() {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }

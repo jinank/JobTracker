@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { getPracticeInterviewById } from "@/lib/practiceInterviewsData";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 import {
   runMockInterviewTurn,
   type ChatMessage,
 } from "@/lib/openai/mockInterviewer";
 
 export async function POST(request: Request) {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Sign in to start a mock interview." }, { status: 401 });
   }

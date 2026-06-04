@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 
 const USER_NOTES_MIGRATION_HINT =
   "Add the column in Supabase SQL: ALTER TABLE chains ADD COLUMN IF NOT EXISTS user_notes text DEFAULT '';";
@@ -12,7 +12,7 @@ function withNotesMigrationHint(message: string) {
 }
 
 export async function GET() {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
@@ -37,7 +37,7 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
@@ -108,7 +108,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }

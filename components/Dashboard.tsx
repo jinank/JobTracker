@@ -6,6 +6,7 @@ import { useChains } from "@/hooks/useChains";
 import { useSync } from "@/hooks/useSync";
 import { useNotifications } from "@/hooks/useNotifications";
 import { Header } from "./Header";
+import { GmailConnectBanner } from "./GmailConnectBanner";
 import { PipelineBar } from "./PipelineBar";
 import { ChainCard } from "./ChainCard";
 import { ChainView } from "./ChainView";
@@ -52,6 +53,7 @@ function sortChains(
 
 export function Dashboard() {
   const { data: session } = useSession();
+  const gmailConnected = session?.gmailConnected === true;
   const {
     chains,
     paid,
@@ -348,6 +350,7 @@ export function Dashboard() {
           chainsLoading={loading}
           onChainsRefresh={refresh}
         />
+        {!gmailConnected && <GmailConnectBanner />}
         <div className="flex flex-col xl:flex-row gap-8 items-start">
         <main className="flex-1 min-w-0 w-full max-w-4xl">
         {chainsError && (

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getAuthUser } from "@/lib/requirePaid";
+import { getAppUser } from "@/lib/requirePaid";
 
 /** Only nudge for recent invites/offers */
 const MAX_AGE_MS = 21 * 24 * 60 * 60 * 1000;
@@ -20,7 +20,7 @@ function kindFromStatus(
 }
 
 export async function GET() {
-  const user = await getAuthUser();
+  const user = await getAppUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
