@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { SiteNavApp } from "@/components/SiteNav";
 import { FindJobListCard } from "@/components/FindJobListCard";
@@ -9,7 +9,6 @@ import {
   EMPLOYMENT_TYPES,
   EXPERIENCE_LEVELS,
   HIDDEN_JOBS_PREVIEW,
-  HIDDEN_JOBS_ROLE_COUNTS,
   ROLE_CATEGORIES,
   WORK_TYPES,
 } from "@/lib/hiddenJobsData";
@@ -24,13 +23,47 @@ import {
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 
-const POSTED_PRESETS: { key: PostedPreset; label: string }[] = [
-  { key: "all", label: "All time" },
-  { key: "today", label: "Today" },
-  { key: "week", label: "This week" },
-  { key: "month", label: "This month" },
-  { key: "30d", label: "Last 30 days" },
+const POSTED_OPTIONS: { value: PostedPreset; label: string }[] = [
+  { value: "all", label: "Any time" },
+  { value: "today", label: "Today" },
+  { value: "week", label: "This week" },
+  { value: "month", label: "This month" },
+  { value: "30d", label: "Last 30 days" },
 ];
+
+const SORT_OPTIONS: { value: JobSortField; label: string }[] = [
+  { value: "posted", label: "Date posted" },
+  { value: "company", label: "Company" },
+  { value: "role", label: "Role" },
+  { value: "location", label: "Location" },
+];
+
+function FilterSelect({
+  label,
+  value,
+  onChange,
+  children,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  children: ReactNode;
+}) {
+  return (
+    <label className="block min-w-0 flex-1 sm:flex-none sm:min-w-[9rem]">
+      <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-slate-400">
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+      >
+        {children}
+      </select>
+    </label>
+  );
+}
 
 export function FindJobsApp() {
   const { data: session } = useSession();
@@ -46,7 +79,7 @@ export function FindJobsApp() {
   const [experienceLevel, setExperienceLevel] = useState("all");
   const [postedPreset, setPostedPreset] = useState<PostedPreset>("all");
   const [locationQuery, setLocationQuery] = useState("");
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [sortField, setSortField] = useState<JobSortField>("posted");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [page, setPage] = useState(1);
@@ -81,47 +114,44 @@ export function FindJobsApp() {
 
   const resetPage = useCallback(() => setPage(1), []);
 
-  const handleSort = useCallback(
-    (field: JobSortField) => {
-      if (sortField === field) {
-        setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-      } else {
-        setSortField(field);
-        setSortDir(field === "posted" ? "asc" : "asc");
-      }
-      setPage(1);
-    },
-    [sortField]
-  );
+  const activeFilterCount = useMemo(() => {
+    let n = 0;
+    if (roleCategory !== "All roles") n++;
+    if (workType !== "all") n++;
+    if (employmentType !== "all") n++;
+    if (experienceLevel !== "all") n++;
+    if (postedPreset !== "all") n++;
+    if (locationQuery.trim()) n++;
+    return n;
+  }, [roleCategory, workType, employmentType, experienceLevel, postedPreset, locationQuery]);
 
-  const rolePills = useMemo(() => {
-    const all = HIDDEN_JOBS_PREVIEW.length;
-    return [
-      { key: "All roles", label: "All roles", count: all },
-      ...HIDDEN_JOBS_ROLE_COUNTS.map(({ role, count }) => ({
-        key: role,
-        label: role,
-        count,
-      })),
-    ];
-  }, []);
+  function clearFilters() {
+    setRoleCategory("All roles");
+    setWorkType("all");
+    setEmploymentType("all");
+    setExperienceLevel("all");
+    setPostedPreset("all");
+    setLocationQuery("");
+    setSearch("");
+    setPage(1);
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50/50">
+    <div className="flex min-h-screen flex-col bg-white">
       <SiteNavApp activeCount={activeCount}>
-        <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+        <div className="flex items-center gap-2 border-l border-slate-200 pl-2">
           {session?.user?.email && (
-            <span className="text-xs text-slate-500 hidden md:inline truncate max-w-[140px]">
+            <span className="hidden max-w-[140px] truncate text-xs text-slate-500 md:inline">
               {session.user.email}
             </span>
           )}
           <button
             type="button"
             onClick={() => signOut()}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
             title="Sign out"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -133,76 +163,22 @@ export function FindJobsApp() {
       </SiteNavApp>
 
       <main className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="mb-6">
-            <h1 className="text-xl font-bold text-slate-900">Find Jobs</h1>
+        <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
+          <header className="mb-6">
+            <h1 className="text-lg font-bold text-slate-900">Find Jobs</h1>
             <p className="mt-1 text-sm text-slate-500">
-              Roles from company career pages. Filter, review details, and apply on the employer site.
+              Company career pages — less competition than job boards.
             </p>
-          </div>
+          </header>
 
-          {/* Posted date */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
-            <div className="flex items-center gap-2 flex-wrap">
+          {/* Filters */}
+          <section
+            className="mb-6 rounded-xl border border-slate-200/80 bg-slate-50/50 p-4"
+            aria-label="Job filters"
+          >
+            <div className="relative mb-4">
               <svg
-                className="w-4 h-4 text-slate-400 shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-                />
-              </svg>
-              {POSTED_PRESETS.map(({ key, label }) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => {
-                    setPostedPreset(key);
-                    resetPage();
-                  }}
-                  className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${
-                    postedPreset === key
-                      ? "bg-slate-800 text-white shadow-sm"
-                      : "text-slate-500 hover:bg-slate-100"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Role category pills */}
-          <div className="flex flex-wrap gap-2 mb-5">
-            {rolePills.map(({ key, label, count }) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => {
-                  setRoleCategory(key);
-                  resetPage();
-                }}
-                className={`px-3.5 py-2 rounded-xl text-xs font-medium transition-all ${
-                  roleCategory === key
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300"
-                }`}
-              >
-                {label} ({count})
-              </button>
-            ))}
-          </div>
-
-          {/* Search + work type */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
-            <div className="relative flex-1 w-full">
-              <svg
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -221,55 +197,102 @@ export function FindJobsApp() {
                   setSearch(e.target.value);
                   resetPage();
                 }}
-                placeholder="Search company, role, or location…"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+                placeholder="Search company, role, or location"
+                className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
               />
             </div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-slate-400">Work type:</span>
-              {(["all", ...WORK_TYPES] as const).map((wt) => (
-                <button
-                  key={wt}
-                  type="button"
-                  onClick={() => {
-                    setWorkType(wt);
-                    resetPage();
-                  }}
-                  className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${
-                    workType === wt
-                      ? "bg-slate-800 text-white shadow-sm"
-                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  {wt === "all" ? "All" : wt}
-                </button>
-              ))}
-            </div>
-          </div>
 
-          {/* Advanced filters */}
-          <div className="mb-4">
-            <button
-              type="button"
-              onClick={() => setShowAdvanced((v) => !v)}
-              className="inline-flex items-center gap-2 text-xs font-medium text-slate-600 hover:text-slate-900"
-              aria-expanded={showAdvanced}
-            >
-              <svg
-                className={`w-4 h-4 transition-transform ${showAdvanced ? "rotate-90" : ""}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
+            <div className="flex flex-wrap gap-3">
+              <FilterSelect
+                label="Posted"
+                value={postedPreset}
+                onChange={(v) => {
+                  setPostedPreset(v as PostedPreset);
+                  resetPage();
+                }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
-              Advanced filters
-            </button>
-            {showAdvanced && (
-              <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 rounded-xl border border-slate-200 bg-white p-4">
-                <label className="block">
-                  <span className="mb-1 block text-xs font-medium text-slate-500">Location contains</span>
+                {POSTED_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FilterSelect>
+
+              <FilterSelect
+                label="Role"
+                value={roleCategory}
+                onChange={(v) => {
+                  setRoleCategory(v);
+                  resetPage();
+                }}
+              >
+                {ROLE_CATEGORIES.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </FilterSelect>
+
+              <FilterSelect
+                label="Work type"
+                value={workType}
+                onChange={(v) => {
+                  setWorkType(v as WorkTypeFilter);
+                  resetPage();
+                }}
+              >
+                <option value="all">All</option>
+                {WORK_TYPES.map((w) => (
+                  <option key={w} value={w}>
+                    {w}
+                  </option>
+                ))}
+              </FilterSelect>
+
+              <FilterSelect
+                label="Employment"
+                value={employmentType}
+                onChange={(v) => {
+                  setEmploymentType(v);
+                  resetPage();
+                }}
+              >
+                <option value="all">All</option>
+                {EMPLOYMENT_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </FilterSelect>
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setShowMoreFilters((v) => !v)}
+                className="text-xs font-medium text-slate-600 hover:text-slate-900"
+                aria-expanded={showMoreFilters}
+              >
+                {showMoreFilters ? "Hide" : "More"} filters
+                {activeFilterCount > 0 && !showMoreFilters ? ` (${activeFilterCount})` : ""}
+              </button>
+              {(activeFilterCount > 0 || search.trim()) && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="text-xs font-medium text-blue-600 hover:text-blue-700"
+                >
+                  Clear all
+                </button>
+              )}
+            </div>
+
+            {showMoreFilters && (
+              <div className="mt-3 flex flex-wrap gap-3 border-t border-slate-200/80 pt-3">
+                <label className="block min-w-0 flex-1 sm:min-w-[12rem]">
+                  <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-slate-400">
+                    Location
+                  </span>
                   <input
                     type="text"
                     value={locationQuery}
@@ -277,156 +300,128 @@ export function FindJobsApp() {
                       setLocationQuery(e.target.value);
                       resetPage();
                     }}
-                    placeholder="e.g. Remote, San Francisco"
-                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+                    placeholder="e.g. Remote, NYC"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
                   />
                 </label>
-                <label className="block">
-                  <span className="mb-1 block text-xs font-medium text-slate-500">Employment type</span>
-                  <select
-                    value={employmentType}
-                    onChange={(e) => {
-                      setEmploymentType(e.target.value);
-                      resetPage();
-                    }}
-                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white"
-                  >
-                    <option value="all">All</option>
-                    {EMPLOYMENT_TYPES.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block">
-                  <span className="mb-1 block text-xs font-medium text-slate-500">Experience level</span>
-                  <select
-                    value={experienceLevel}
-                    onChange={(e) => {
-                      setExperienceLevel(e.target.value);
-                      resetPage();
-                    }}
-                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white"
-                  >
-                    <option value="all">All</option>
-                    {EXPERIENCE_LEVELS.map((l) => (
-                      <option key={l} value={l}>
-                        {l}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block">
-                  <span className="mb-1 block text-xs font-medium text-slate-500">Role category</span>
-                  <select
-                    value={roleCategory}
-                    onChange={(e) => {
-                      setRoleCategory(e.target.value);
-                      resetPage();
-                    }}
-                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white"
-                  >
-                    {ROLE_CATEGORIES.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <FilterSelect
+                  label="Experience"
+                  value={experienceLevel}
+                  onChange={(v) => {
+                    setExperienceLevel(v);
+                    resetPage();
+                  }}
+                >
+                  <option value="all">All levels</option>
+                  {EXPERIENCE_LEVELS.map((l) => (
+                    <option key={l} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </FilterSelect>
               </div>
             )}
-          </div>
+          </section>
 
-          {/* Sort */}
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className="text-xs text-slate-400">Sort by:</span>
-            {(
-              [
-                { field: "posted" as JobSortField, label: "Date posted" },
-                { field: "company" as JobSortField, label: "Company" },
-                { field: "role" as JobSortField, label: "Role" },
-                { field: "location" as JobSortField, label: "Location" },
-              ] as const
-            ).map(({ field, label }) => (
-              <button
-                key={field}
-                type="button"
-                onClick={() => handleSort(field)}
-                className={`px-3 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-1 ${
-                  sortField === field
-                    ? "bg-slate-800 text-white shadow-sm"
-                    : "text-slate-500 hover:bg-slate-100"
-                }`}
-              >
-                {label}
-                {sortField === field && (
-                  <span className="text-[10px]">{sortDir === "asc" ? "▲" : "▼"}</span>
-                )}
-              </button>
-            ))}
-          </div>
-
-          {/* Results */}
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-slate-400">
-              {filtered.length} job{filtered.length !== 1 ? "s" : ""}
-              {search.trim() ? ` for "${search.trim()}"` : ""}
+          {/* Results toolbar */}
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-slate-600">
+              <span className="font-semibold text-slate-900">{filtered.length}</span>
+              {filtered.length === 1 ? " job" : " jobs"}
+              {search.trim() ? (
+                <span className="text-slate-500"> matching &ldquo;{search.trim()}&rdquo;</span>
+              ) : null}
             </p>
-            <div className="flex items-center gap-2">
-              <label className="text-xs text-slate-400">Per page:</label>
-              <select
-                value={pageSize}
-                onChange={(e) => {
-                  setPageSize(Number(e.target.value));
-                  setPage(1);
-                }}
-                className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
-              >
-                {PAGE_SIZE_OPTIONS.map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-2 text-xs text-slate-500">
+                Sort
+                <select
+                  value={`${sortField}-${sortDir}`}
+                  onChange={(e) => {
+                    const [field, dir] = e.target.value.split("-") as [JobSortField, SortDir];
+                    setSortField(field);
+                    setSortDir(dir);
+                    setPage(1);
+                  }}
+                  className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700 focus:border-blue-400 focus:outline-none"
+                >
+                  {SORT_OPTIONS.flatMap((o) => [
+                    <option key={`${o.value}-asc`} value={`${o.value}-asc`}>
+                      {o.label} (A→Z / newest)
+                    </option>,
+                    <option key={`${o.value}-desc`} value={`${o.value}-desc`}>
+                      {o.label} (Z→A / oldest)
+                    </option>,
+                  ])}
+                </select>
+              </label>
+              <label className="flex items-center gap-2 text-xs text-slate-500">
+                Show
+                <select
+                  value={pageSize}
+                  onChange={(e) => {
+                    setPageSize(Number(e.target.value));
+                    setPage(1);
+                  }}
+                  className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700 focus:border-blue-400 focus:outline-none"
+                >
+                  {PAGE_SIZE_OPTIONS.map((n) => (
+                    <option key={n} value={n}>
+                      {n}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
           </div>
 
-          <div className="space-y-3">
+          {/* Job list */}
+          <div className="space-y-2">
             {paginated.map((job) => (
               <FindJobListCard key={job.id} job={job} />
             ))}
             {paginated.length === 0 && (
-              <p className="text-sm text-slate-500 text-center py-12">
-                No jobs match your filters. Try clearing advanced filters or widening the date range.
-              </p>
+              <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-14 text-center">
+                <p className="text-sm font-medium text-slate-700">No jobs match these filters</p>
+                <p className="mt-1 text-xs text-slate-500">Try clearing filters or widening the date range.</p>
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="mt-4 text-xs font-semibold text-blue-600 hover:text-blue-700"
+                >
+                  Clear filters
+                </button>
+              </div>
             )}
           </div>
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-between mt-6 pt-5 border-t border-slate-200">
+            <nav
+              className="mt-6 flex items-center justify-between border-t border-slate-200 pt-5"
+              aria-label="Pagination"
+            >
               <p className="text-xs text-slate-400">
                 Page {safePage} of {totalPages}
               </p>
-              <div className="flex items-center gap-1">
+              <div className="flex gap-1">
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={safePage <= 1}
-                  className="px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="rounded-lg px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
                 >
-                  ← Prev
+                  Previous
                 </button>
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={safePage >= totalPages}
-                  className="px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="rounded-lg px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
                 >
-                  Next →
+                  Next
                 </button>
               </div>
-            </div>
+            </nav>
           )}
         </div>
       </main>

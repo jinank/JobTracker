@@ -1,8 +1,6 @@
 {
-  "/api/user/goals/route": "app/api/user/goals/route.js",
-  "/api/chains/route": "app/api/chains/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/chains/response-prompts/route": "app/api/chains/response-prompts/route.js",
   "/page": "app/page.js",
-  "/api/leaderboard/route": "app/api/leaderboard/route.js"
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/chains/route": "app/api/chains/route.js",
+  "/find-jobs/page": "app/find-jobs/page.js"
 }
