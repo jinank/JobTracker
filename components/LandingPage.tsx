@@ -23,24 +23,39 @@ function Reveal({
   const [on, setOn] = useState(false);
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el) {
+      setOn(true);
+      return;
+    }
+
+    const reveal = () => setOn(true);
+    const fallback = window.setTimeout(reveal, 600);
+
+    if (typeof IntersectionObserver === "undefined") {
+      reveal();
+      return () => clearTimeout(fallback);
+    }
+
     const ob = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
-          setOn(true);
+          reveal();
           ob.disconnect();
         }
       },
-      { threshold: 0.08, rootMargin: "0px 0px -32px 0px" }
+      { threshold: 0.05, rootMargin: "0px 0px -24px 0px" }
     );
     ob.observe(el);
-    return () => ob.disconnect();
+    return () => {
+      clearTimeout(fallback);
+      ob.disconnect();
+    };
   }, []);
   return (
     <div
       ref={ref}
-      className={`transition-all duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:opacity-100 motion-reduce:translate-y-0 ${
-        on ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      className={`transition-all duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:translate-y-0 ${
+        on ? "translate-y-0" : "translate-y-3"
       } ${className}`}
     >
       {children}
@@ -152,8 +167,8 @@ export function LandingPage() {
             </p>
             <div className="mx-auto mb-8 grid max-w-md gap-3 sm:grid-cols-2 lg:mx-0 lg:max-w-none">
               <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-scale-purple/10 text-scale-purple">
-                  <CheckIcon className="h-5 w-5" />
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+                  <CheckIcon className="h-5 w-5 text-violet-600" />
                 </div>
                 <p className="text-sm font-semibold text-slate-900">Gmail sync</p>
                 <p className="mt-1 text-xs leading-relaxed text-slate-500">Read-only access. No manual copy-paste.</p>
@@ -311,7 +326,10 @@ export function LandingPage() {
             ].map((s, i) => (
               <Reveal key={s.step} className={i === 1 ? "md:mt-6" : i === 2 ? "md:mt-12" : ""}>
                 <div className="group h-full rounded-3xl border border-slate-200/80 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-scale-purple/25 hover:shadow-scale-soft">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-scale-purple to-violet-600 text-lg font-bold text-white shadow-lg shadow-scale-purple/30">
+                  <div
+                    className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6B46FE] text-lg font-bold text-white shadow-lg shadow-violet-500/25"
+                    aria-hidden
+                  >
                     {s.step}
                   </div>
                   <h3 className="mb-2 text-lg font-bold text-slate-900">{s.title}</h3>

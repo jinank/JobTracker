@@ -9,9 +9,11 @@ export function LogoMark({
   return (
     <div
       className={`flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-sm ${className}`}
+      role="img"
+      aria-label="RethinkJobs"
     >
       <svg
-        className={`text-white ${iconClassName}`}
+        className={`shrink-0 text-white ${iconClassName}`}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
