@@ -4080,6 +4080,18 @@ body {
 
 @media (min-width: 1280px) {
 
+  .xl\:sticky {
+    position: sticky;
+  }
+
+  .xl\:top-\[4\.5rem\] {
+    top: 4.5rem;
+  }
+
+  .xl\:top-28 {
+    top: 7rem;
+  }
+
   .xl\:block {
     display: block;
   }
@@ -4092,8 +4104,28 @@ body {
     display: none;
   }
 
+  .xl\:max-h-\[calc\(100vh-5\.5rem\)\] {
+    max-height: calc(100vh - 5.5rem);
+  }
+
+  .xl\:max-h-\[calc\(100vh-8rem\)\] {
+    max-height: calc(100vh - 8rem);
+  }
+
+  .xl\:w-72 {
+    width: 18rem;
+  }
+
+  .xl\:max-w-3xl {
+    max-width: 48rem;
+  }
+
   .xl\:flex-row {
     flex-direction: row;
+  }
+
+  .xl\:items-start {
+    align-items: flex-start;
   }
 
   .xl\:items-center {
@@ -4110,6 +4142,14 @@ body {
 
   .xl\:gap-6 {
     gap: 1.5rem;
+  }
+
+  .xl\:gap-8 {
+    gap: 2rem;
+  }
+
+  .xl\:overflow-y-auto {
+    overflow-y: auto;
   }
 }
 

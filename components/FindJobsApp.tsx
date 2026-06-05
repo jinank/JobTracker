@@ -38,7 +38,7 @@ const SORT_OPTIONS: { value: JobSortField; label: string }[] = [
   { value: "location", label: "Location" },
 ];
 
-function FilterSelect({
+function FilterField({
   label,
   value,
   onChange,
@@ -50,10 +50,8 @@ function FilterSelect({
   children: ReactNode;
 }) {
   return (
-    <label className="block min-w-0 flex-1 sm:flex-none sm:min-w-[9rem]">
-      <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-slate-400">
-        {label}
-      </span>
+    <label className="block">
+      <span className="mb-1.5 block text-xs font-medium text-slate-600">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -79,11 +77,11 @@ export function FindJobsApp() {
   const [experienceLevel, setExperienceLevel] = useState("all");
   const [postedPreset, setPostedPreset] = useState<PostedPreset>("all");
   const [locationQuery, setLocationQuery] = useState("");
-  const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [sortField, setSortField] = useState<JobSortField>("posted");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const list = filterHiddenJobs(HIDDEN_JOBS_PREVIEW, {
@@ -116,6 +114,7 @@ export function FindJobsApp() {
 
   const activeFilterCount = useMemo(() => {
     let n = 0;
+    if (search.trim()) n++;
     if (roleCategory !== "All roles") n++;
     if (workType !== "all") n++;
     if (employmentType !== "all") n++;
@@ -123,7 +122,7 @@ export function FindJobsApp() {
     if (postedPreset !== "all") n++;
     if (locationQuery.trim()) n++;
     return n;
-  }, [roleCategory, workType, employmentType, experienceLevel, postedPreset, locationQuery]);
+  }, [search, roleCategory, workType, employmentType, experienceLevel, postedPreset, locationQuery]);
 
   function clearFilters() {
     setRoleCategory("All roles");
@@ -135,6 +134,176 @@ export function FindJobsApp() {
     setSearch("");
     setPage(1);
   }
+
+  const filtersPanel = (
+    <div className="space-y-4">
+      <div className="relative">
+        <svg
+          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+          />
+        </svg>
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            resetPage();
+          }}
+          placeholder="Search company, role, location"
+          className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+        />
+      </div>
+
+      <FilterField
+        label="Date posted"
+        value={postedPreset}
+        onChange={(v) => {
+          setPostedPreset(v as PostedPreset);
+          resetPage();
+        }}
+      >
+        {POSTED_OPTIONS.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </FilterField>
+
+      <FilterField
+        label="Role category"
+        value={roleCategory}
+        onChange={(v) => {
+          setRoleCategory(v);
+          resetPage();
+        }}
+      >
+        {ROLE_CATEGORIES.map((r) => (
+          <option key={r} value={r}>
+            {r}
+          </option>
+        ))}
+      </FilterField>
+
+      <FilterField
+        label="Work type"
+        value={workType}
+        onChange={(v) => {
+          setWorkType(v as WorkTypeFilter);
+          resetPage();
+        }}
+      >
+        <option value="all">All</option>
+        {WORK_TYPES.map((w) => (
+          <option key={w} value={w}>
+            {w}
+          </option>
+        ))}
+      </FilterField>
+
+      <FilterField
+        label="Employment type"
+        value={employmentType}
+        onChange={(v) => {
+          setEmploymentType(v);
+          resetPage();
+        }}
+      >
+        <option value="all">All</option>
+        {EMPLOYMENT_TYPES.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </FilterField>
+
+      <label className="block">
+        <span className="mb-1.5 block text-xs font-medium text-slate-600">Location</span>
+        <input
+          type="text"
+          value={locationQuery}
+          onChange={(e) => {
+            setLocationQuery(e.target.value);
+            resetPage();
+          }}
+          placeholder="e.g. Remote, NYC"
+          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+        />
+      </label>
+
+      <FilterField
+        label="Experience level"
+        value={experienceLevel}
+        onChange={(v) => {
+          setExperienceLevel(v);
+          resetPage();
+        }}
+      >
+        <option value="all">All levels</option>
+        {EXPERIENCE_LEVELS.map((l) => (
+          <option key={l} value={l}>
+            {l}
+          </option>
+        ))}
+      </FilterField>
+
+      <div className="border-t border-slate-200 pt-4 space-y-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">List</p>
+        <FilterField
+          label="Sort by"
+          value={`${sortField}-${sortDir}`}
+          onChange={(v) => {
+            const [field, dir] = v.split("-") as [JobSortField, SortDir];
+            setSortField(field);
+            setSortDir(dir);
+            setPage(1);
+          }}
+        >
+          {SORT_OPTIONS.flatMap((o) => [
+            <option key={`${o.value}-asc`} value={`${o.value}-asc`}>
+              {o.label} (newest / A→Z)
+            </option>,
+            <option key={`${o.value}-desc`} value={`${o.value}-desc`}>
+              {o.label} (oldest / Z→A)
+            </option>,
+          ])}
+        </FilterField>
+
+        <FilterField
+          label="Jobs per page"
+          value={String(pageSize)}
+          onChange={(v) => {
+            setPageSize(Number(v));
+            setPage(1);
+          }}
+        >
+          {PAGE_SIZE_OPTIONS.map((n) => (
+            <option key={n} value={n}>
+              {n}
+            </option>
+          ))}
+        </FilterField>
+      </div>
+
+      {activeFilterCount > 0 && (
+        <button
+          type="button"
+          onClick={clearFilters}
+          className="w-full rounded-lg border border-slate-200 py-2 text-xs font-semibold text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50"
+        >
+          Clear all filters
+        </button>
+      )}
+    </div>
+  );
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
@@ -163,266 +332,120 @@ export function FindJobsApp() {
       </SiteNavApp>
 
       <main className="flex-1">
-        <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
-          <header className="mb-6">
-            <h1 className="text-lg font-bold text-slate-900">Find Jobs</h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Company career pages — less competition than job boards.
-            </p>
-          </header>
-
-          {/* Filters */}
-          <section
-            className="mb-6 rounded-xl border border-slate-200/80 bg-slate-50/50 p-4"
-            aria-label="Job filters"
-          >
-            <div className="relative mb-4">
-              <svg
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                />
-              </svg>
-              <input
-                type="search"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  resetPage();
-                }}
-                placeholder="Search company, role, or location"
-                className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
-              />
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <FilterSelect
-                label="Posted"
-                value={postedPreset}
-                onChange={(v) => {
-                  setPostedPreset(v as PostedPreset);
-                  resetPage();
-                }}
-              >
-                {POSTED_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Role"
-                value={roleCategory}
-                onChange={(v) => {
-                  setRoleCategory(v);
-                  resetPage();
-                }}
-              >
-                {ROLE_CATEGORIES.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Work type"
-                value={workType}
-                onChange={(v) => {
-                  setWorkType(v as WorkTypeFilter);
-                  resetPage();
-                }}
-              >
-                <option value="all">All</option>
-                {WORK_TYPES.map((w) => (
-                  <option key={w} value={w}>
-                    {w}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Employment"
-                value={employmentType}
-                onChange={(v) => {
-                  setEmploymentType(v);
-                  resetPage();
-                }}
-              >
-                <option value="all">All</option>
-                {EMPLOYMENT_TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </FilterSelect>
-            </div>
-
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setShowMoreFilters((v) => !v)}
-                className="text-xs font-medium text-slate-600 hover:text-slate-900"
-                aria-expanded={showMoreFilters}
-              >
-                {showMoreFilters ? "Hide" : "More"} filters
-                {activeFilterCount > 0 && !showMoreFilters ? ` (${activeFilterCount})` : ""}
-              </button>
-              {(activeFilterCount > 0 || search.trim()) && (
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+          <div className="flex flex-col items-start gap-8 xl:flex-row">
+            {/* Job list — same width as Track Jobs main column */}
+            <div className="min-w-0 w-full max-w-4xl flex-1">
+              {/* Mobile filter toggle */}
+              <div className="mb-4 xl:hidden">
                 <button
                   type="button"
-                  onClick={clearFilters}
-                  className="text-xs font-medium text-blue-600 hover:text-blue-700"
+                  onClick={() => setMobileFiltersOpen((o) => !o)}
+                  className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800"
+                  aria-expanded={mobileFiltersOpen}
                 >
-                  Clear all
+                  <span>
+                    Filters
+                    {activeFilterCount > 0 ? (
+                      <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                        {activeFilterCount}
+                      </span>
+                    ) : null}
+                  </span>
+                  <svg
+                    className={`h-4 w-4 text-slate-500 transition-transform ${mobileFiltersOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
                 </button>
+                {mobileFiltersOpen && (
+                  <div className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    {filtersPanel}
+                  </div>
+                )}
+              </div>
+
+              <p className="mb-3 text-sm text-slate-600">
+                <span className="font-semibold text-slate-900">{filtered.length}</span>
+                {filtered.length === 1 ? " job" : " jobs"}
+                {search.trim() ? (
+                  <span className="text-slate-500"> matching &ldquo;{search.trim()}&rdquo;</span>
+                ) : null}
+              </p>
+
+              <div className="space-y-2">
+                {paginated.map((job) => (
+                  <FindJobListCard key={job.id} job={job} />
+                ))}
+                {paginated.length === 0 && (
+                  <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-14 text-center">
+                    <p className="text-sm font-medium text-slate-700">No jobs match these filters</p>
+                    <p className="mt-1 text-xs text-slate-500">
+                      Try clearing filters or widening the date range.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      className="mt-4 text-xs font-semibold text-blue-600 hover:text-blue-700"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {totalPages > 1 && (
+                <nav
+                  className="mt-6 flex items-center justify-between border-t border-slate-200 pt-5"
+                  aria-label="Pagination"
+                >
+                  <p className="text-xs text-slate-400">
+                    Page {safePage} of {totalPages}
+                  </p>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={safePage <= 1}
+                      className="rounded-lg px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={safePage >= totalPages}
+                      className="rounded-lg px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </nav>
               )}
             </div>
 
-            {showMoreFilters && (
-              <div className="mt-3 flex flex-wrap gap-3 border-t border-slate-200/80 pt-3">
-                <label className="block min-w-0 flex-1 sm:min-w-[12rem]">
-                  <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-slate-400">
-                    Location
-                  </span>
-                  <input
-                    type="text"
-                    value={locationQuery}
-                    onChange={(e) => {
-                      setLocationQuery(e.target.value);
-                      resetPage();
-                    }}
-                    placeholder="e.g. Remote, NYC"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
-                  />
-                </label>
-                <FilterSelect
-                  label="Experience"
-                  value={experienceLevel}
-                  onChange={(v) => {
-                    setExperienceLevel(v);
-                    resetPage();
-                  }}
-                >
-                  <option value="all">All levels</option>
-                  {EXPERIENCE_LEVELS.map((l) => (
-                    <option key={l} value={l}>
-                      {l}
-                    </option>
-                  ))}
-                </FilterSelect>
-              </div>
-            )}
-          </section>
-
-          {/* Results toolbar */}
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-slate-600">
-              <span className="font-semibold text-slate-900">{filtered.length}</span>
-              {filtered.length === 1 ? " job" : " jobs"}
-              {search.trim() ? (
-                <span className="text-slate-500"> matching &ldquo;{search.trim()}&rdquo;</span>
-              ) : null}
-            </p>
-            <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 text-xs text-slate-500">
-                Sort
-                <select
-                  value={`${sortField}-${sortDir}`}
-                  onChange={(e) => {
-                    const [field, dir] = e.target.value.split("-") as [JobSortField, SortDir];
-                    setSortField(field);
-                    setSortDir(dir);
-                    setPage(1);
-                  }}
-                  className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700 focus:border-blue-400 focus:outline-none"
-                >
-                  {SORT_OPTIONS.flatMap((o) => [
-                    <option key={`${o.value}-asc`} value={`${o.value}-asc`}>
-                      {o.label} (A→Z / newest)
-                    </option>,
-                    <option key={`${o.value}-desc`} value={`${o.value}-desc`}>
-                      {o.label} (Z→A / oldest)
-                    </option>,
-                  ])}
-                </select>
-              </label>
-              <label className="flex items-center gap-2 text-xs text-slate-500">
-                Show
-                <select
-                  value={pageSize}
-                  onChange={(e) => {
-                    setPageSize(Number(e.target.value));
-                    setPage(1);
-                  }}
-                  className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700 focus:border-blue-400 focus:outline-none"
-                >
-                  {PAGE_SIZE_OPTIONS.map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          </div>
-
-          {/* Job list */}
-          <div className="space-y-2">
-            {paginated.map((job) => (
-              <FindJobListCard key={job.id} job={job} />
-            ))}
-            {paginated.length === 0 && (
-              <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-14 text-center">
-                <p className="text-sm font-medium text-slate-700">No jobs match these filters</p>
-                <p className="mt-1 text-xs text-slate-500">Try clearing filters or widening the date range.</p>
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="mt-4 text-xs font-semibold text-blue-600 hover:text-blue-700"
-                >
-                  Clear filters
-                </button>
-              </div>
-            )}
-          </div>
-
-          {totalPages > 1 && (
-            <nav
-              className="mt-6 flex items-center justify-between border-t border-slate-200 pt-5"
-              aria-label="Pagination"
+            {/* Filters — right sidebar on desktop */}
+            <aside
+              className="hidden w-72 shrink-0 self-start xl:sticky xl:top-28 xl:block"
+              aria-label="Job filters"
             >
-              <p className="text-xs text-slate-400">
-                Page {safePage} of {totalPages}
-              </p>
-              <div className="flex gap-1">
-                <button
-                  type="button"
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  disabled={safePage <= 1}
-                  className="rounded-lg px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
-                >
-                  Previous
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={safePage >= totalPages}
-                  className="rounded-lg px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
-                >
-                  Next
-                </button>
+              <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 shadow-sm">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="text-sm font-bold text-slate-900">Filters</h2>
+                  {activeFilterCount > 0 && (
+                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">
+                      {activeFilterCount} active
+                    </span>
+                  )}
+                </div>
+                {filtersPanel}
               </div>
-            </nav>
-          )}
+            </aside>
+          </div>
         </div>
       </main>
     </div>
