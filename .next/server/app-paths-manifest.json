@@ -5,5 +5,7 @@
   "/api/user/goals/route": "app/api/user/goals/route.js",
   "/api/leaderboard/route": "app/api/leaderboard/route.js",
   "/api/chains/response-prompts/route": "app/api/chains/response-prompts/route.js",
-  "/find-jobs/page": "app/find-jobs/page.js"
+  "/find-jobs/page": "app/find-jobs/page.js",
+  "/practice-interviews/page": "app/practice-interviews/page.js",
+  "/resources/page": "app/resources/page.js"
 }

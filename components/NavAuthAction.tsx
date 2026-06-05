@@ -29,7 +29,7 @@ export function NavAuthAction({
   if (status === "loading") {
     return (
       <span
-        className={`inline-block min-w-[7rem] rounded-full bg-slate-100 animate-pulse ${className}`}
+        className={`inline-flex h-10 w-[10.5rem] items-center justify-center rounded-full bg-slate-100 animate-pulse ${className}`}
         aria-hidden
       />
     );

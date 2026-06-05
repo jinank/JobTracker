@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useMemo, useState, type ReactNode } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { SiteNavApp } from "@/components/SiteNav";
+import { AppHeaderActions } from "@/components/AppHeaderActions";
 import { FindJobListCard } from "@/components/FindJobListCard";
 import { useChains } from "@/hooks/useChains";
 import {
@@ -308,27 +309,7 @@ export function FindJobsApp() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <SiteNavApp activeCount={activeCount}>
-        <div className="flex items-center gap-2 border-l border-slate-200 pl-2">
-          {session?.user?.email && (
-            <span className="hidden max-w-[140px] truncate text-xs text-slate-500 md:inline">
-              {session.user.email}
-            </span>
-          )}
-          <button
-            type="button"
-            onClick={() => signOut()}
-            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
-            title="Sign out"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-              />
-            </svg>
-          </button>
-        </div>
+        <AppHeaderActions email={session?.user?.email} />
       </SiteNavApp>
 
       <main className="flex-1">
