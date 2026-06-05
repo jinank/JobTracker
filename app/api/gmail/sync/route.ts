@@ -21,6 +21,10 @@ import {
   CLASSIFY_BATCH_SIZE,
   EXTRACTION_VERSION,
 } from "@/lib/constants";
+import {
+  GMAIL_AUTH_EXPIRED_CODE,
+  isGmailReauthError,
+} from "@/lib/gmailAuthErrors";
 
 const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
   "REJECTION",
@@ -44,6 +48,7 @@ export async function POST() {
       {
         error: "Connect Gmail from the dashboard to sync applications (Track Jobs only).",
         code: "GMAIL_NOT_CONNECTED",
+        needsReauth: true,
       },
       { status: 403 }
     );
@@ -436,17 +441,18 @@ export async function POST() {
     const message =
       error instanceof Error ? error.message : "Failed to sync Gmail";
 
-    if (
-      message.includes("ACCESS_TOKEN_SCOPE_INSUFFICIENT") ||
-      message.includes("insufficient authentication scopes")
-    ) {
+    if (isGmailReauthError(message)) {
+      const is401 =
+        message.includes("Gmail API error 401") ||
+        message.toLowerCase().includes("unauthenticated");
       return NextResponse.json(
         {
-          code: "GMAIL_SCOPE_INSUFFICIENT",
+          code: is401 ? GMAIL_AUTH_EXPIRED_CODE : "GMAIL_SCOPE_INSUFFICIENT",
+          needsReauth: true,
           error:
-            "Gmail access is missing or expired. Use Connect Gmail on the dashboard and approve read-only mail when Google asks.",
+            "Your Gmail connection expired or was revoked. Reconnect Gmail to continue syncing.",
         },
-        { status: 403 }
+        { status: is401 ? 401 : 403 }
       );
     }
 

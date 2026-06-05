@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
+import { isGmailReauthError } from "@/lib/gmailAuthErrors";
 
 const LEGACY_LAST_SYNC_KEY = "rethinkjobs_last_sync_at_ms";
 
@@ -45,6 +46,8 @@ interface SyncState {
   error: string | null;
   newCount: number;
   paymentRequired: boolean;
+  /** True when Gmail OAuth expired — show Reconnect Gmail. */
+  needsGmailReauth: boolean;
   /** True when the server capped this sync; run Sync again to pull more mail. */
   syncHasMore: boolean;
 }
@@ -65,6 +68,7 @@ export function useSync(
     error: null,
     newCount: 0,
     paymentRequired: false,
+    needsGmailReauth: false,
     syncHasMore: false,
   });
 
@@ -81,6 +85,7 @@ export function useSync(
       progress: "Syncing emails and classifying with AI...",
       newCount: 0,
       paymentRequired: false,
+      needsGmailReauth: false,
       syncHasMore: false,
     }));
 
@@ -89,6 +94,7 @@ export function useSync(
       const data = (await res.json().catch(() => ({}))) as {
         code?: string;
         error?: string;
+        needsReauth?: boolean;
         newCount?: number;
         total?: number;
         hasMore?: boolean;
@@ -109,23 +115,27 @@ export function useSync(
           onComplete();
           return;
         }
-        if (res.status === 403 && data.code === "GMAIL_SCOPE_INSUFFICIENT") {
+
+        const errText =
+          typeof data.error === "string" ? data.error : "Sync failed";
+        const needsReauth =
+          data.needsReauth === true ||
+          isGmailReauthError(errText, data.code);
+
+        if (needsReauth) {
           setState((s) => ({
             ...s,
             syncing: false,
             progress: "",
-            error:
-              typeof data.error === "string"
-                ? data.error
-                : "Gmail access missing. Use Connect Gmail on the dashboard (Track Jobs).",
+            error: errText,
+            needsGmailReauth: true,
             syncHasMore: false,
           }));
           onComplete();
           return;
         }
-        throw new Error(
-          typeof data.error === "string" ? data.error : "Sync failed"
-        );
+
+        throw new Error(errText);
       }
 
       const now = Date.now();
@@ -137,15 +147,21 @@ export function useSync(
         error: null,
         newCount: data.newCount ?? 0,
         paymentRequired: false,
+        needsGmailReauth: false,
         syncHasMore: data.hasMore === true,
       });
       onComplete();
     } catch (error) {
+      const errText = error instanceof Error ? error.message : "Sync failed";
+      const needsReauth = isGmailReauthError(errText);
       setState((s) => ({
         ...s,
         syncing: false,
         progress: "",
-        error: error instanceof Error ? error.message : "Sync failed",
+        error: needsReauth
+          ? "Your Gmail connection expired or was revoked. Reconnect Gmail to continue syncing."
+          : errText,
+        needsGmailReauth: needsReauth,
         syncHasMore: false,
       }));
     }

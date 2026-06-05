@@ -7,6 +7,7 @@ import { useSync } from "@/hooks/useSync";
 import { useNotifications } from "@/hooks/useNotifications";
 import { Header } from "./Header";
 import { GmailConnectBanner } from "./GmailConnectBanner";
+import { GmailReauthAlert } from "./GmailReauthAlert";
 import { PipelineBar } from "./PipelineBar";
 import { ChainCard } from "./ChainCard";
 import { ChainView } from "./ChainView";
@@ -64,11 +65,16 @@ export function Dashboard() {
     error: chainsError,
     refresh,
   } = useChains();
-  const { syncing, progress, error, newCount, syncHasMore, lastSyncAt, sync } =
-    useSync(
-    refresh,
-    session?.user?.email
-  );
+  const {
+    syncing,
+    progress,
+    error,
+    needsGmailReauth,
+    newCount,
+    syncHasMore,
+    lastSyncAt,
+    sync,
+  } = useSync(refresh, session?.user?.email);
   const { notifications, unreadCount, markAllRead, clearAll } =
     useNotifications(chains);
 
@@ -365,7 +371,8 @@ export function Dashboard() {
             {chainsError}
           </div>
         )}
-        {error && (
+        {needsGmailReauth && <GmailReauthAlert message={error} />}
+        {error && !needsGmailReauth && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
             {error}
           </div>
