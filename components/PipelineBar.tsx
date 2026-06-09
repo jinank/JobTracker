@@ -2,6 +2,10 @@
 
 import type { Chain, ChainStatus } from "@/types/chain";
 import { chainCreatedMs } from "@/lib/chainCreatedAt";
+import {
+  applicationDedupeKey,
+  representativeChains,
+} from "@/lib/uniqueApplications";
 import { WeeklyGrowthPill } from "./WeeklyGrowthPill";
 
 const PIPELINE_STAGES: { status: ChainStatus; label: string; color: string; bg: string }[] = [
@@ -27,18 +31,26 @@ export function PipelineBar({
   growthToMs: number;
   growthLabel: string;
 }) {
-  const inGrowthWindow = (c: Chain) => {
-    const t = chainCreatedMs(c);
-    return t >= growthFromMs && t <= growthToMs;
+  const uniqueChains = representativeChains(chains);
+
+  const countAddedInPeriod = (status: ChainStatus) => {
+    const keys = new Set<string>();
+    for (const c of chains) {
+      if (c.status !== status) continue;
+      const t = chainCreatedMs(c);
+      if (t >= growthFromMs && t <= growthToMs) {
+        keys.add(applicationDedupeKey(c));
+      }
+    }
+    return keys.size;
   };
 
   const counts = PIPELINE_STAGES.map((stage) => {
-    const inStage = chains.filter((c) => c.status === stage.status);
-    const addedInPeriod = inStage.filter(inGrowthWindow).length;
+    const inStage = uniqueChains.filter((c) => c.status === stage.status);
     return {
       ...stage,
       count: inStage.length,
-      addedInPeriod,
+      addedInPeriod: countAddedInPeriod(stage.status),
     };
   });
 

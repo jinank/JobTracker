@@ -6,6 +6,7 @@ import { SiteNavApp } from "@/components/SiteNav";
 import { AppHeaderActions } from "@/components/AppHeaderActions";
 import { FindJobListCard } from "@/components/FindJobListCard";
 import { useChains } from "@/hooks/useChains";
+import { countUniqueApplications } from "@/lib/uniqueApplications";
 import {
   EMPLOYMENT_TYPES,
   EXPERIENCE_LEVELS,
@@ -67,9 +68,11 @@ function FilterField({
 export function FindJobsApp() {
   const { data: session } = useSession();
   const { chains } = useChains();
-  const activeCount = chains.filter(
-    (c) => !["REJECTED", "GHOSTED", "WITHDRAWN"].includes(c.status)
-  ).length;
+  const activeCount = countUniqueApplications(
+    chains.filter(
+      (c) => !["REJECTED", "GHOSTED", "WITHDRAWN"].includes(c.status)
+    )
+  );
 
   const [search, setSearch] = useState("");
   const [roleCategory, setRoleCategory] = useState("All roles");

@@ -1,6 +1,7 @@
 import type { Chain } from "@/types/chain";
 import { chainCreatedMs } from "@/lib/chainCreatedAt";
 import { startOfCalendarWeekMs } from "@/lib/utils";
+import { applicationDedupeKey } from "@/lib/uniqueApplications";
 
 function endOfLocalDayMs(d: Date): number {
   return new Date(
@@ -27,10 +28,14 @@ function countChainsCreatedInRange(
   fromMs: number,
   toMs: number
 ): number {
-  return chains.filter((c) => {
+  const keys = new Set<string>();
+  for (const c of chains) {
     const t = chainCreatedMs(c);
-    return t >= fromMs && t <= toMs;
-  }).length;
+    if (t >= fromMs && t <= toMs) {
+      keys.add(applicationDedupeKey(c));
+    }
+  }
+  return keys.size;
 }
 
 export function weeklyApplicationCount(

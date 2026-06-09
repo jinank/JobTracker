@@ -18,6 +18,7 @@ import { InviteResponseBanner } from "./InviteResponseBanner";
 import type { Chain, ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
 import { startOfCalendarWeekMs } from "@/lib/utils";
+import { countUniqueApplications } from "@/lib/uniqueApplications";
 
 const TERMINAL_STATUSES: ChainStatus[] = ["REJECTED", "GHOSTED", "WITHDRAWN"];
 const PAGE_SIZE_OPTIONS = [5, 10, 25, 50];
@@ -223,6 +224,19 @@ export function Dashboard() {
     TERMINAL_STATUSES.includes(c.status)
   );
 
+  const uniqueDateFilteredCount = useMemo(
+    () => countUniqueApplications(dateFilteredChains),
+    [dateFilteredChains]
+  );
+  const uniqueActiveCount = useMemo(
+    () => countUniqueApplications(activeChains),
+    [activeChains]
+  );
+  const uniqueClosedCount = useMemo(
+    () => countUniqueApplications(closedChains),
+    [closedChains]
+  );
+
   const displayChains = useMemo(() => {
     let result: Chain[];
     if (filter === "all") {
@@ -246,6 +260,12 @@ export function Dashboard() {
 
     return sortChains(result, sortField, sortDir);
   }, [dateFilteredChains, activeChains, closedChains, filter, search, sortField, sortDir]);
+
+  const uniqueDisplayCount = useMemo(
+    () => countUniqueApplications(displayChains),
+    [displayChains]
+  );
+  const threadCount = displayChains.length;
 
   const groupedChains = useMemo(
     () => (groupByCompany ? buildCompanyGroups(displayChains) : null),
@@ -311,7 +331,7 @@ export function Dashboard() {
       <div>
         <Header
           email={session?.user?.email}
-          activeCount={activeChains.length}
+          activeCount={uniqueActiveCount}
           syncing={syncing}
           progress={progress}
           paid={paid}
@@ -347,7 +367,7 @@ export function Dashboard() {
     <div>
       <Header
         email={session?.user?.email}
-        activeCount={activeChains.length}
+        activeCount={uniqueActiveCount}
         syncing={syncing}
         progress={progress}
         paid={paid}
@@ -544,9 +564,9 @@ export function Dashboard() {
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 {([
-                  { key: "all", label: "All", count: dateFilteredChains.length },
-                  { key: "active", label: "Active", count: activeChains.length },
-                  { key: "closed", label: "Closed", count: closedChains.length },
+                  { key: "all", label: "All", count: uniqueDateFilteredCount },
+                  { key: "active", label: "Active", count: uniqueActiveCount },
+                  { key: "closed", label: "Closed", count: uniqueClosedCount },
                 ] as const).map(({ key, label, count }) => (
                   <button
                     key={key}
@@ -626,8 +646,13 @@ export function Dashboard() {
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs text-slate-400">
                 {groupedChains
-                  ? `${groupedChains.length} compan${groupedChains.length !== 1 ? "ies" : "y"} · ${displayChains.length} application${displayChains.length !== 1 ? "s" : ""}`
-                  : `${displayChains.length} application${displayChains.length !== 1 ? "s" : ""}`}
+                  ? `${groupedChains.length} compan${groupedChains.length !== 1 ? "ies" : "y"} · ${uniqueDisplayCount} application${uniqueDisplayCount !== 1 ? "s" : ""}`
+                  : `${uniqueDisplayCount} application${uniqueDisplayCount !== 1 ? "s" : ""}`}
+                {threadCount > uniqueDisplayCount && (
+                  <span className="ml-1">
+                    ({threadCount} email thread{threadCount !== 1 ? "s" : ""})
+                  </span>
+                )}
                 {search.trim() ? ` for "${search.trim()}"` : ""}
                 {datePreset !== "all" && (
                   <span className="ml-1 text-blue-500 font-medium">

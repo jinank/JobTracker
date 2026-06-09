@@ -1,6 +1,7 @@
 import type { ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
 import { levenshtein, normalizeDomain, domainToCompanyName } from "@/lib/utils";
+import { isGenericRole } from "@/lib/uniqueApplications";
 
 export interface ChainRow {
   chain_id: string;
@@ -72,6 +73,15 @@ function companyLevenshteinThreshold(lenA: number, lenB: number): number {
   return Math.max(2, Math.floor(short * 0.2));
 }
 
+function pickBestCompanyMatch(chains: ChainRow[]): ChainRow {
+  return [...chains].sort((a, b) => {
+    const aGeneric = isGenericRole(a.role_title) ? 1 : 0;
+    const bGeneric = isGenericRole(b.role_title) ? 1 : 0;
+    if (aGeneric !== bGeneric) return aGeneric - bGeneric;
+    return b.last_event_at - a.last_event_at;
+  })[0];
+}
+
 export function findBestMatch(
   chains: ChainRow[],
   company: string,
@@ -80,25 +90,40 @@ export function findBestMatch(
   if (!company) return null;
   const companyNorm = company.toLowerCase();
   const roleNorm = role.toLowerCase();
+  const roleIsGeneric = isGenericRole(role);
+
+  const companyMatches: ChainRow[] = [];
 
   for (const chain of chains) {
     const chainCompany = chain.canonical_company.toLowerCase();
-    const chainRole = chain.role_title.toLowerCase();
-
     const companyDist = levenshtein(companyNorm, chainCompany);
     const companyThreshold = companyLevenshteinThreshold(
       companyNorm.length,
       chainCompany.length
     );
-    if (companyDist > companyThreshold) continue;
+    if (companyDist <= companyThreshold) {
+      companyMatches.push(chain);
+    }
+  }
 
-    if (role && chainRole) {
-      const roleDist = levenshtein(roleNorm, chainRole);
-      const roleThreshold = Math.max(3, Math.floor(roleNorm.length * 0.3));
-      if (roleDist > roleThreshold) continue;
+  if (companyMatches.length === 0) return null;
+
+  if (roleIsGeneric || !role) {
+    return pickBestCompanyMatch(companyMatches);
+  }
+
+  for (const chain of companyMatches) {
+    const chainRole = (chain.role_title || "").toLowerCase();
+
+    if (isGenericRole(chain.role_title) || !chainRole) {
+      return chain;
     }
 
-    return chain;
+    const roleDist = levenshtein(roleNorm, chainRole);
+    const roleThreshold = Math.max(3, Math.floor(roleNorm.length * 0.3));
+    if (roleDist <= roleThreshold) {
+      return chain;
+    }
   }
 
   return null;

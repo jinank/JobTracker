@@ -1,0 +1,11 @@
+---
+description: Session discipline — scope, verification, guardrails (Paxel-derived)
+alwaysApply: true
+---
+
+Read `AGENTS.md` at repo root before making changes.
+
+1. Confirm scope: this repo only, one-sentence goal, what's out of scope.
+2. Define success: a command or visible check before editing (not "check and test").
+3. After redirects: re-state success check and run one verification before new work.
+4. Auth/payments/keys: env only, never commit secrets; test login after auth changes.

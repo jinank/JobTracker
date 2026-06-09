@@ -25,6 +25,7 @@ import {
   GMAIL_AUTH_EXPIRED_CODE,
   isGmailReauthError,
 } from "@/lib/gmailAuthErrors";
+import { mergeDuplicateChainsForUser } from "@/lib/mergeDuplicateChains";
 
 const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
   "REJECTION",
@@ -426,16 +427,22 @@ export async function POST() {
       }
     }
 
+    const mergedDuplicates = await mergeDuplicateChainsForUser(
+      supabase,
+      user.userId
+    );
+
     void recordUserActivity({
       userId: user.userId,
       action: "gmail_sync",
-      meta: { newCount, total: allMessageIds.length },
+      meta: { newCount, total: allMessageIds.length, mergedDuplicates },
     });
 
     return NextResponse.json({
       newCount,
       total: allMessageIds.length,
       hasMore: hasMorePending,
+      mergedDuplicates,
     });
   } catch (error) {
     const message =
