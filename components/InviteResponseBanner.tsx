@@ -170,7 +170,7 @@ export function InviteResponseBanner({
   if (!current) return null;
 
   return (
-    <div className="bg-amber-50 border border-amber-200/90 text-amber-950 rounded-xl px-4 py-3 mb-5 shadow-sm animate-fade-in">
+    <div className="bg-amber-50 border border-amber-200/90 text-amber-950 rounded-xl px-4 py-3 mb-5 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-wide text-amber-800/90 mb-1">

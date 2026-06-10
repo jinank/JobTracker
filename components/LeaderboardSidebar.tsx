@@ -180,11 +180,14 @@ function LeaderboardSettingsButton({
 }
 
 export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
-  const [lbReady, setLbReady] = useState(false);
   const [visibility, setVisibility] = useState<
     "visible" | "snoozed" | "disabled"
-  >("visible");
-  const [snoozeUntil, setSnoozeUntil] = useState<number | null>(null);
+  >(() =>
+    typeof window !== "undefined" ? readLeaderboardVisibility() : "visible"
+  );
+  const [snoozeUntil, setSnoozeUntil] = useState<number | null>(() =>
+    typeof window !== "undefined" ? leaderboardSnoozeEndsAtMs() : null
+  );
 
   const [data, setData] = useState<LeaderboardPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -197,12 +200,11 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
 
   useEffect(() => {
     refreshLbPrefs();
-    setLbReady(true);
   }, [refreshLbPrefs]);
 
   useEffect(() => {
-    if (!lbReady || visibility !== "visible") {
-      if (visibility !== "visible") setLoading(false);
+    if (visibility !== "visible") {
+      setLoading(false);
       return;
     }
 
@@ -239,7 +241,7 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
     return () => {
       cancelled = true;
     };
-  }, [lbReady, visibility]);
+  }, [visibility]);
 
   const handleSnooze1d = () => {
     snoozeLeaderboard(MS_DAY);
@@ -269,26 +271,7 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
   return (
     <aside className="hidden xl:block w-72 shrink-0 self-start sticky top-28 space-y-4">
       <GoalProgressSection chains={chains} />
-      {!lbReady ? (
-        <div
-          className="rounded-2xl border border-slate-200/80 bg-white shadow-card overflow-hidden animate-pulse"
-          aria-hidden
-        >
-          <div className="h-10 border-b border-slate-100 bg-slate-50" />
-          <div className="p-3 space-y-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="h-4 w-5 rounded bg-slate-100" />
-                <div className="h-9 w-9 rounded-full bg-slate-100" />
-                <div className="flex-1 space-y-1.5">
-                  <div className="h-3 w-20 rounded bg-slate-100" />
-                  <div className="h-2 w-14 rounded bg-slate-100" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : visibility !== "visible" ? (
+      {visibility !== "visible" ? (
         <div className="rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50 to-blue-50/25 shadow-card px-4 py-3 text-center">
           <p className="text-[11px] text-slate-600 leading-snug">
             {visibility === "disabled"
@@ -323,19 +306,8 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
           </div>
 
           <div className="p-3">
-            {loading && (
-              <div className="space-y-3 animate-pulse">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="h-4 w-5 rounded bg-slate-100" />
-                    <div className="h-9 w-9 rounded-full bg-slate-100" />
-                    <div className="flex-1 space-y-1.5">
-                      <div className="h-3 w-20 rounded bg-slate-100" />
-                      <div className="h-2 w-14 rounded bg-slate-100" />
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {loading && !data && (
+              <p className="text-xs text-slate-400 py-2">Loading…</p>
             )}
 
             {!loading && error && (

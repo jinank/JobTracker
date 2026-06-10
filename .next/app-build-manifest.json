@@ -31,15 +31,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/practice-interviews/layout.js"
     ],
-    "/login/page": [
+    "/resources/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/login/page.js"
+      "static/chunks/app/resources/page.js"
     ],
-    "/login/layout": [
+    "/resources/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/login/layout.js"
+      "static/chunks/app/resources/layout.js"
     ]
   }
 }

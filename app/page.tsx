@@ -15,7 +15,8 @@ export default function Home() {
     router.replace("/admin");
   }, [status, session, router]);
 
-  if (status === "loading") {
+  // Keep dashboard mounted while session revalidates (avoids full-page flash).
+  if (status === "loading" && !session) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />

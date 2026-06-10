@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import type { Chain } from "@/types/chain";
 import type { AppEvent } from "@/types/event";
+import { chainsDataEqual } from "@/lib/chainsSnapshot";
 
 export function useChains() {
   const [chains, setChains] = useState<Chain[]>([]);
@@ -12,9 +13,11 @@ export function useChains() {
   const [limit, setLimit] = useState<number | null>(50);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const hasLoadedOnce = useRef(false);
 
   const refresh = useCallback(async () => {
-    setLoading(true);
+    const showBlockingLoader = !hasLoadedOnce.current;
+    if (showBlockingLoader) setLoading(true);
     setError(null);
 
     try {
@@ -29,16 +32,21 @@ export function useChains() {
         return;
       }
       const data = await res.json();
-      setChains(data.chains ?? []);
+      const nextChains = (data.chains ?? []) as Chain[];
+
+      setChains((prev) =>
+        chainsDataEqual(prev, nextChains) ? prev : nextChains
+      );
       setPaid(data.paid ?? false);
       setStudentVerified(data.studentVerified ?? false);
       setChainCount(data.chainCount ?? 0);
       setLimit(data.limit ?? null);
+      hasLoadedOnce.current = true;
     } catch (e) {
       console.error("Failed to load chains", e);
       setError("Failed to load chains");
     } finally {
-      setLoading(false);
+      if (showBlockingLoader) setLoading(false);
     }
   }, []);
 

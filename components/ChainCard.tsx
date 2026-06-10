@@ -41,7 +41,7 @@ export function ChainCard({
   const reachOutUrl = `/reach-out?company=${encodeURIComponent(chain.canonical_company)}&chainId=${chain.chain_id}${chain.role_title ? `&role=${encodeURIComponent(chain.role_title)}` : ""}`;
 
   return (
-    <div className="w-full bg-white rounded-xl border border-slate-200/80 p-4 shadow-card hover:shadow-card-hover hover:border-blue-200/80 transition-all duration-200 group animate-fade-in flex items-center gap-3">
+    <div className="w-full bg-white rounded-xl border border-slate-200/80 p-4 shadow-card hover:shadow-card-hover hover:border-blue-200/80 transition-all duration-200 group flex items-center gap-3">
       <button
         onClick={onClick}
         className="flex-1 min-w-0 text-left"

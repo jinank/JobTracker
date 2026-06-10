@@ -63,7 +63,7 @@ export function SyncButton({
       </button>
       <p
         className={`pointer-events-none absolute inset-x-0 top-full mt-0.5 h-4 truncate text-center text-[10px] leading-4 ${
-          syncing ? "animate-pulse text-slate-500" : "text-slate-400"
+          syncing ? "text-slate-500" : "text-slate-400"
         }`}
         title={statusTitle}
       >

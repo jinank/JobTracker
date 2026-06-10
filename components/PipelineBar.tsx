@@ -55,7 +55,7 @@ export function PipelineBar({
   });
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 animate-fade-in">
+    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
       {counts.map((stage) => {
         const isSelected = selectedFilter === stage.status;
         return (

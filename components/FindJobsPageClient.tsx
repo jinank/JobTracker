@@ -6,9 +6,9 @@ import { HiddenJobsLanding } from "@/components/HiddenJobsLanding";
 import { SiteNavMarketing } from "@/components/SiteNav";
 
 export function FindJobsPageClient() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
 
-  if (status === "loading") {
+  if (status === "loading" && !session) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <SiteNavMarketing />

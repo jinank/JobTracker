@@ -96,6 +96,12 @@ body {
     animation: none;
     transform: none;
   }
+
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .landing-hero-mesh {

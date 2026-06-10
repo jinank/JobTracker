@@ -344,7 +344,7 @@ export function Dashboard() {
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <InviteResponseBanner
-            chainsLoading={loading}
+            chainsLoading={loading && chains.length === 0}
             onChainsRefresh={refresh}
           />
           <div className="flex flex-col xl:flex-row gap-8 items-start">
@@ -380,7 +380,7 @@ export function Dashboard() {
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <InviteResponseBanner
-          chainsLoading={loading}
+          chainsLoading={loading && chains.length === 0}
           onChainsRefresh={refresh}
         />
         {!gmailConnected && <GmailConnectBanner />}
@@ -399,7 +399,7 @@ export function Dashboard() {
         )}
 
         {showStudentApprovedNotif && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm rounded-xl px-4 py-3 mb-5 animate-fade-in">
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm rounded-xl px-4 py-3 mb-5">
             <div className="font-semibold">Student verification approved</div>
             <div className="text-xs text-emerald-700/90 mt-1">
               You now have free student access. Reach out and manage your
@@ -417,7 +417,7 @@ export function Dashboard() {
         )}
 
         {!paid && (
-          <div className="bg-white rounded-xl border border-slate-200/80 shadow-card p-4 mb-5 animate-fade-in">
+          <div className="bg-white rounded-xl border border-slate-200/80 shadow-card p-4 mb-5">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-medium text-slate-600">
                 Free plan: {chainCount}/{freeLimit} applications
@@ -463,7 +463,7 @@ export function Dashboard() {
           </div>
         )}
 
-        {loading ? (
+        {loading && chains.length === 0 ? (
           <div className="flex justify-center py-20">
             <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
           </div>

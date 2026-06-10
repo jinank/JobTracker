@@ -104,7 +104,7 @@ export function CompanyGroupCard({
   };
 
   return (
-    <div className="w-full bg-white rounded-xl border border-slate-200/80 shadow-card hover:shadow-card-hover hover:border-blue-200/80 transition-all duration-200 group animate-fade-in overflow-hidden">
+    <div className="w-full bg-white rounded-xl border border-slate-200/80 shadow-card hover:shadow-card-hover hover:border-blue-200/80 transition-all duration-200 group overflow-hidden">
       <div className="p-4 flex items-center gap-3">
         <button
           onClick={handleHeaderActivate}

@@ -64,11 +64,11 @@ function AppLogoBlock({ activeCount }: { activeCount?: number }) {
       <div className="min-w-0">
         <p className="truncate text-sm font-bold text-slate-900 sm:text-base">RethinkJobs</p>
         {activeCount != null ? (
-          <p className="truncate text-[11px] text-slate-500 sm:text-xs">
+          <p className="truncate text-[11px] text-slate-500 sm:text-xs min-h-[1.125rem] sm:min-h-[1.25rem]">
             {activeCount} active application{activeCount !== 1 ? "s" : ""}
           </p>
         ) : (
-          <p className="hidden text-[11px] text-slate-500 sm:block sm:text-xs sm:opacity-0" aria-hidden>
+          <p className="hidden text-[11px] text-slate-500 sm:block sm:text-xs min-h-[1.25rem] opacity-0" aria-hidden>
             &nbsp;
           </p>
         )}
