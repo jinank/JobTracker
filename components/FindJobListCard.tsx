@@ -1,6 +1,6 @@
 "use client";
 
-import type { HiddenJob } from "@/lib/hiddenJobsData";
+import type { JobListing } from "@/types/jobListing";
 
 function companyInitials(name: string): string {
   return name
@@ -31,13 +31,13 @@ function postedLabel(days: number): string {
   return `${days} days ago`;
 }
 
-const WORK_TYPE_STYLES: Record<HiddenJob["workType"], string> = {
+const WORK_TYPE_STYLES: Record<JobListing["workType"], string> = {
   Remote: "bg-emerald-50 text-emerald-700 ring-emerald-100",
   Hybrid: "bg-blue-50 text-blue-700 ring-blue-100",
   "On-site": "bg-amber-50 text-amber-800 ring-amber-100",
 };
 
-export function FindJobListCard({ job }: { job: HiddenJob }) {
+export function FindJobListCard({ job }: { job: JobListing }) {
   return (
     <article className="group flex items-center gap-3 sm:gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-card transition-all duration-200 hover:border-blue-200/80 hover:shadow-card-hover">
       <div
@@ -68,7 +68,7 @@ export function FindJobListCard({ job }: { job: HiddenJob }) {
           <span className="text-slate-300" aria-hidden>
             ·
           </span>
-          <span className="shrink-0">{job.employmentType}</span>
+          <span className="shrink-0">Internship</span>
           {job.salaryRange ? (
             <>
               <span className="text-slate-300" aria-hidden>

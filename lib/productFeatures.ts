@@ -12,9 +12,9 @@ export const PRODUCT_FEATURES: ProductFeature[] = [
   {
     id: "find-jobs",
     href: "/find-jobs",
-    label: "Hidden Job Search",
-    shortLabel: "Find Jobs",
-    description: "Roles posted on company sites, not buried on crowded job boards.",
+    label: "Find Internships",
+    shortLabel: "Find Internships",
+    description: "USA internships from company career pages—built for students.",
     icon: "search",
   },
   {

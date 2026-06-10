@@ -40,7 +40,7 @@ export function Footer() {
             </Link>
             <nav className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-300">
               <Link href="/find-jobs" className="hover:text-white transition-colors">
-                Find Jobs
+                Find Internships
               </Link>
               <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/" className="hover:text-white transition-colors">

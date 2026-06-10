@@ -6,21 +6,14 @@ import { SiteNavApp } from "@/components/SiteNav";
 import { AppHeaderActions } from "@/components/AppHeaderActions";
 import { FindJobListCard } from "@/components/FindJobListCard";
 import { useChains } from "@/hooks/useChains";
+import { useInternships } from "@/hooks/useInternships";
 import { countUniqueApplications } from "@/lib/uniqueApplications";
-import {
-  EMPLOYMENT_TYPES,
-  EXPERIENCE_LEVELS,
-  HIDDEN_JOBS_PREVIEW,
-  ROLE_CATEGORIES,
-  WORK_TYPES,
-} from "@/lib/hiddenJobsData";
-import {
-  filterHiddenJobs,
-  sortHiddenJobs,
-  type JobSortField,
-  type PostedPreset,
-  type SortDir,
-  type WorkTypeFilter,
+import { ROLE_CATEGORIES, WORK_TYPES } from "@/lib/jobs/constants";
+import type {
+  JobSortField,
+  PostedPreset,
+  SortDir,
+  WorkTypeFilter,
 } from "@/lib/findJobsFilters";
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
@@ -77,42 +70,44 @@ export function FindJobsApp() {
   const [search, setSearch] = useState("");
   const [roleCategory, setRoleCategory] = useState("All roles");
   const [workType, setWorkType] = useState<WorkTypeFilter>("all");
-  const [employmentType, setEmploymentType] = useState("all");
-  const [experienceLevel, setExperienceLevel] = useState("all");
   const [postedPreset, setPostedPreset] = useState<PostedPreset>("all");
   const [locationQuery, setLocationQuery] = useState("");
   const [sortField, setSortField] = useState<JobSortField>("posted");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize, setPageSize] = useState<number>(25);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const filtered = useMemo(() => {
-    const list = filterHiddenJobs(HIDDEN_JOBS_PREVIEW, {
+  const filters = useMemo(
+    () => ({
       search,
       roleCategory,
       workType,
-      employmentType,
-      experienceLevel,
+      experienceLevel: "all",
       postedPreset,
       locationQuery,
-    });
-    return sortHiddenJobs(list, sortField, sortDir);
-  }, [
-    search,
-    roleCategory,
-    workType,
-    employmentType,
-    experienceLevel,
-    postedPreset,
-    locationQuery,
-    sortField,
-    sortDir,
-  ]);
+      sortField,
+      sortDir,
+      page,
+      pageSize,
+    }),
+    [
+      search,
+      roleCategory,
+      workType,
+      postedPreset,
+      locationQuery,
+      sortField,
+      sortDir,
+      page,
+      pageSize,
+    ]
+  );
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const { jobs, total, stats, loading, error, refresh } = useInternships(filters);
+
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const safePage = Math.min(page, totalPages);
-  const paginated = filtered.slice((safePage - 1) * pageSize, safePage * pageSize);
 
   const resetPage = useCallback(() => setPage(1), []);
 
@@ -121,18 +116,14 @@ export function FindJobsApp() {
     if (search.trim()) n++;
     if (roleCategory !== "All roles") n++;
     if (workType !== "all") n++;
-    if (employmentType !== "all") n++;
-    if (experienceLevel !== "all") n++;
     if (postedPreset !== "all") n++;
     if (locationQuery.trim()) n++;
     return n;
-  }, [search, roleCategory, workType, employmentType, experienceLevel, postedPreset, locationQuery]);
+  }, [search, roleCategory, workType, postedPreset, locationQuery]);
 
   function clearFilters() {
     setRoleCategory("All roles");
     setWorkType("all");
-    setEmploymentType("all");
-    setExperienceLevel("all");
     setPostedPreset("all");
     setLocationQuery("");
     setSearch("");
@@ -141,6 +132,10 @@ export function FindJobsApp() {
 
   const filtersPanel = (
     <div className="space-y-4">
+      <p className="rounded-lg border border-violet-100 bg-violet-50/80 px-3 py-2 text-xs text-violet-900">
+        USA internships only — sourced from company career pages.
+      </p>
+
       <div className="relative">
         <svg
           className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
@@ -162,7 +157,7 @@ export function FindJobsApp() {
             setSearch(e.target.value);
             resetPage();
           }}
-          placeholder="Search company, role, location"
+          placeholder="Search company, role, city"
           className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
         />
       </div>
@@ -213,24 +208,10 @@ export function FindJobsApp() {
         ))}
       </FilterField>
 
-      <FilterField
-        label="Employment type"
-        value={employmentType}
-        onChange={(v) => {
-          setEmploymentType(v);
-          resetPage();
-        }}
-      >
-        <option value="all">All</option>
-        {EMPLOYMENT_TYPES.map((t) => (
-          <option key={t} value={t}>
-            {t}
-          </option>
-        ))}
-      </FilterField>
-
       <label className="block">
-        <span className="mb-1.5 block text-xs font-medium text-slate-600">Location</span>
+        <span className="mb-1.5 block text-xs font-medium text-slate-600">
+          US location
+        </span>
         <input
           type="text"
           value={locationQuery}
@@ -238,26 +219,10 @@ export function FindJobsApp() {
             setLocationQuery(e.target.value);
             resetPage();
           }}
-          placeholder="e.g. Remote, NYC"
+          placeholder="e.g. San Francisco, CA, Remote"
           className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
         />
       </label>
-
-      <FilterField
-        label="Experience level"
-        value={experienceLevel}
-        onChange={(v) => {
-          setExperienceLevel(v);
-          resetPage();
-        }}
-      >
-        <option value="all">All levels</option>
-        {EXPERIENCE_LEVELS.map((l) => (
-          <option key={l} value={l}>
-            {l}
-          </option>
-        ))}
-      </FilterField>
 
       <div className="border-t border-slate-200 pt-4 space-y-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">List</p>
@@ -318,9 +283,7 @@ export function FindJobsApp() {
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
           <div className="flex flex-col items-start gap-8 xl:flex-row">
-            {/* Job list — same width as Track Jobs main column */}
             <div className="min-w-0 w-full max-w-4xl flex-1">
-              {/* Mobile filter toggle */}
               <div className="mb-4 xl:hidden">
                 <button
                   type="button"
@@ -353,34 +316,61 @@ export function FindJobsApp() {
                 )}
               </div>
 
+              {error && (
+                <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                  {error}
+                  <button
+                    type="button"
+                    onClick={() => refresh()}
+                    className="ml-2 font-semibold text-amber-950 underline"
+                  >
+                    Retry
+                  </button>
+                </div>
+              )}
+
               <p className="mb-3 text-sm text-slate-600">
-                <span className="font-semibold text-slate-900">{filtered.length}</span>
-                {filtered.length === 1 ? " job" : " jobs"}
+                <span className="font-semibold text-slate-900">{total}</span>
+                {total === 1 ? " internship" : " internships"}
+                {stats.companies > 0 ? (
+                  <span className="text-slate-500">
+                    {" "}
+                    · {stats.companies} companies
+                  </span>
+                ) : null}
                 {search.trim() ? (
                   <span className="text-slate-500"> matching &ldquo;{search.trim()}&rdquo;</span>
                 ) : null}
               </p>
 
-              <div className="space-y-2">
-                {paginated.map((job) => (
-                  <FindJobListCard key={job.id} job={job} />
-                ))}
-                {paginated.length === 0 && (
-                  <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-14 text-center">
-                    <p className="text-sm font-medium text-slate-700">No jobs match these filters</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      Try clearing filters or widening the date range.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={clearFilters}
-                      className="mt-4 text-xs font-semibold text-blue-600 hover:text-blue-700"
-                    >
-                      Clear filters
-                    </button>
-                  </div>
-                )}
-              </div>
+              {loading && jobs.length === 0 ? (
+                <div className="flex justify-center py-16">
+                  <div className="h-10 w-10 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {jobs.map((job) => (
+                    <FindJobListCard key={job.id} job={job} />
+                  ))}
+                  {jobs.length === 0 && (
+                    <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-14 text-center">
+                      <p className="text-sm font-medium text-slate-700">
+                        No internships match these filters
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        Listings sync daily from company career pages. Try clearing filters or check back after the next sync.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={clearFilters}
+                        className="mt-4 text-xs font-semibold text-blue-600 hover:text-blue-700"
+                      >
+                        Clear filters
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {totalPages > 1 && (
                 <nav
@@ -412,10 +402,9 @@ export function FindJobsApp() {
               )}
             </div>
 
-            {/* Filters — right sidebar on desktop */}
             <aside
               className="hidden w-72 shrink-0 self-start xl:sticky xl:top-28 xl:block"
-              aria-label="Job filters"
+              aria-label="Internship filters"
             >
               <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 shadow-sm">
                 <div className="mb-4 flex items-center justify-between">

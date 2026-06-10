@@ -10,7 +10,8 @@
     "lint": "eslint src --ext .ts,.tsx",
     "web:dev": "next dev",
     "web:build": "next build",
-    "web:start": "next start"
+    "web:start": "next start",
+    "seed:internships": "node scripts/seed-internship-sources.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",

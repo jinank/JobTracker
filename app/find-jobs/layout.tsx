@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Hidden Job Search – Find roles on company sites | Rethinkjobs",
+  title: "Find USA Internships – Student internship search | RethinkJobs",
   description:
-    "Discover jobs posted on company career pages—not buried on LinkedIn or Indeed. Less competition, apply directly.",
+    "Discover US internships on company career pages—not buried on LinkedIn or Indeed. Built for students. Apply directly and track applications.",
 };
 
 export default function FindJobsLayout({ children }: { children: ReactNode }) {

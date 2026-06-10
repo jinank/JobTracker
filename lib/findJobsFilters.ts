@@ -1,9 +1,24 @@
+import type { JobListing } from "@/types/jobListing";
 import type { HiddenJob } from "@/lib/hiddenJobsData";
 
 export type PostedPreset = "all" | "today" | "week" | "month" | "30d";
-export type WorkTypeFilter = "all" | HiddenJob["workType"];
+export type WorkTypeFilter = "all" | JobListing["workType"];
 export type JobSortField = "posted" | "company" | "role" | "location";
 export type SortDir = "asc" | "desc";
+
+export type InternshipQueryParams = {
+  search: string;
+  roleCategory: string;
+  workType: WorkTypeFilter;
+  experienceLevel: string;
+  postedPreset: PostedPreset;
+  locationQuery: string;
+  sortField: JobSortField;
+  sortDir: SortDir;
+  page?: number;
+  pageSize?: number;
+  limit?: number;
+};
 
 export function postedDaysForPreset(preset: PostedPreset): number | null {
   switch (preset) {
@@ -20,6 +35,69 @@ export function postedDaysForPreset(preset: PostedPreset): number | null {
   }
 }
 
+export function filterJobListings(
+  jobs: JobListing[],
+  opts: Pick<
+    InternshipQueryParams,
+    | "search"
+    | "roleCategory"
+    | "workType"
+    | "experienceLevel"
+    | "postedPreset"
+    | "locationQuery"
+  >
+): JobListing[] {
+  const q = opts.search.trim().toLowerCase();
+  const locQ = opts.locationQuery.trim().toLowerCase();
+  const maxDays = postedDaysForPreset(opts.postedPreset);
+
+  return jobs.filter((j) => {
+    if (opts.roleCategory !== "All roles" && j.roleCategory !== opts.roleCategory) {
+      return false;
+    }
+    if (opts.workType !== "all" && j.workType !== opts.workType) return false;
+    if (
+      opts.experienceLevel !== "all" &&
+      j.experienceLevel !== opts.experienceLevel
+    ) {
+      return false;
+    }
+    if (maxDays != null && j.postedDaysAgo > maxDays) return false;
+    if (locQ && !j.location.toLowerCase().includes(locQ)) return false;
+    if (!q) return true;
+    const blob = `${j.company} ${j.title} ${j.location} ${j.roleCategory} ${j.description} ${(j.tags ?? []).join(" ")}`.toLowerCase();
+    return blob.includes(q);
+  });
+}
+
+export function sortJobListings(
+  jobs: JobListing[],
+  field: JobSortField,
+  dir: SortDir
+): JobListing[] {
+  const sorted = [...jobs];
+  sorted.sort((a, b) => {
+    let cmp = 0;
+    switch (field) {
+      case "posted":
+        cmp = a.postedDaysAgo - b.postedDaysAgo;
+        break;
+      case "company":
+        cmp = a.company.localeCompare(b.company);
+        break;
+      case "role":
+        cmp = a.title.localeCompare(b.title);
+        break;
+      case "location":
+        cmp = a.location.localeCompare(b.location);
+        break;
+    }
+    return dir === "asc" ? cmp : -cmp;
+  });
+  return sorted;
+}
+
+/** @deprecated Use filterJobListings — static preview only */
 export function filterHiddenJobs(
   jobs: HiddenJob[],
   opts: {
@@ -61,12 +139,14 @@ export function filterHiddenJobs(
   });
 }
 
+/** @deprecated Use sortJobListings */
 export function sortHiddenJobs(
   jobs: HiddenJob[],
   field: JobSortField,
   dir: SortDir
 ): HiddenJob[] {
-  const sorted = [...jobs].sort((a, b) => {
+  const sorted = [...jobs];
+  sorted.sort((a, b) => {
     let cmp = 0;
     switch (field) {
       case "posted":
@@ -85,4 +165,30 @@ export function sortHiddenJobs(
     return dir === "asc" ? cmp : -cmp;
   });
   return sorted;
+}
+
+export function parseInternshipQueryParams(
+  searchParams: URLSearchParams
+): InternshipQueryParams {
+  const sortRaw = searchParams.get("sort") || "posted-asc";
+  const [sortField, sortDir] = sortRaw.split("-") as [JobSortField, SortDir];
+
+  return {
+    search: searchParams.get("search") || "",
+    roleCategory: searchParams.get("role") || "All roles",
+    workType: (searchParams.get("workType") || "all") as WorkTypeFilter,
+    experienceLevel: searchParams.get("experience") || "all",
+    postedPreset: (searchParams.get("posted") || "all") as PostedPreset,
+    locationQuery: searchParams.get("location") || "",
+    sortField: sortField || "posted",
+    sortDir: sortDir === "desc" ? "desc" : "asc",
+    page: Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1),
+    pageSize: Math.min(
+      100,
+      Math.max(1, parseInt(searchParams.get("pageSize") || "25", 10) || 25)
+    ),
+    limit: searchParams.get("limit")
+      ? parseInt(searchParams.get("limit")!, 10)
+      : undefined,
+  };
 }
