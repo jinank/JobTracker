@@ -99,13 +99,13 @@ export function PracticeInterviewsExplorer() {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6">
       <div className="mb-8">
-        <p className="text-sm font-medium text-slate-500">Practice Interviews</p>
+        <p className="text-sm font-semibold text-amber-600">Interview Prep</p>
         <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          Improve your interview skills
+          Practice before it counts
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-slate-600">
-          AI-powered mock interviews tailored to different companies and roles. Search, filter,
-          and practice at your own pace.
+          AI mock interviews tailored to the companies and roles you&apos;re applying to.
+          No scheduling, no judgment — practice as many times as you want.
         </p>
       </div>
 

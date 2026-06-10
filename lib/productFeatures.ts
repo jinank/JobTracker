@@ -4,7 +4,7 @@ export type ProductFeature = {
   label: string;
   shortLabel: string;
   description: string;
-  icon: "search" | "track" | "interview" | "resources";
+  icon: "search" | "track" | "interview" | "mentors" | "resources";
 };
 
 /** Core product areas shown in the main nav pill. */
@@ -13,32 +13,40 @@ export const PRODUCT_FEATURES: ProductFeature[] = [
     id: "find-jobs",
     href: "/find-jobs",
     label: "Find Internships",
-    shortLabel: "Find Internships",
-    description: "USA internships from company career pages—built for students.",
+    shortLabel: "Internships",
+    description: "US internships pulled straight from company career pages.",
     icon: "search",
   },
   {
     id: "track-jobs",
     href: "/",
-    label: "Track Jobs",
-    shortLabel: "Track Jobs",
-    description: "Sync Gmail and build a live pipeline from applied to offer.",
+    label: "Track Applications",
+    shortLabel: "Tracker",
+    description: "Sync Gmail and watch every application move from applied to offer.",
     icon: "track",
   },
   {
     id: "interview-prep",
     href: "/practice-interviews",
     label: "Interview Prep",
-    shortLabel: "Interview Prep",
-    description: "AI mock interviews tailored to company and role.",
+    shortLabel: "Interviews",
+    description: "AI mock interviews tailored to the company and role you want.",
     icon: "interview",
+  },
+  {
+    id: "find-mentors",
+    href: "/find-mentors",
+    label: "Find Mentors",
+    shortLabel: "Mentors",
+    description: "Find mentors, recruiters, and hiring contacts at any company.",
+    icon: "mentors",
   },
   {
     id: "resources",
     href: "/resources",
-    label: "Resources",
+    label: "Student Resources",
     shortLabel: "Resources",
-    description: "Student discounts, tools, and job-search perks.",
+    description: "Free tools, student discounts, and job-search perks.",
     icon: "resources",
   },
 ];

@@ -17,7 +17,7 @@ module.exports = {
           600: "#2563eb",
           700: "#1d4ed8",
         },
-        /** SendScale-inspired landing accents */
+        /** Brand accents (violet core, kept under the legacy `scale-` prefix). */
         scale: {
           purple: "#6B46FE",
           "purple-dark": "#5B36E6",
@@ -25,9 +25,18 @@ module.exports = {
           lavender: "#F4F0FF",
           mist: "#FAF8FF",
         },
+        /** Per-pillar accents for the five student product areas. */
+        pillar: {
+          internships: "#059669", // emerald-600
+          track: "#6B46FE", // brand violet
+          interviews: "#D97706", // amber-600
+          mentors: "#E11D48", // rose-600
+          resources: "#0284C7", // sky-600
+        },
       },
       fontFamily: {
         sans: [
+          "var(--font-jakarta)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",

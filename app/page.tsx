@@ -19,7 +19,7 @@ export default function Home() {
   if (status === "loading" && !session) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
       </div>
     );
   }
@@ -31,7 +31,7 @@ export default function Home() {
   if (session.adminCredential) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
       </div>
     );
   }

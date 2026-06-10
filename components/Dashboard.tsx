@@ -429,7 +429,7 @@ export function Dashboard() {
               ) : (
                 <a
                   href="/pricing"
-                  className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+                  className="text-xs font-semibold text-scale-purple hover:text-scale-purple-dark transition-colors"
                 >
                   Upgrade to Pro →
                 </a>
@@ -438,7 +438,7 @@ export function Dashboard() {
             <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  atLimit ? "bg-red-500" : chainCount > freeLimit * 0.8 ? "bg-amber-500" : "bg-blue-500"
+                  atLimit ? "bg-red-500" : chainCount > freeLimit * 0.8 ? "bg-amber-500" : "bg-scale-purple"
                 }`}
                 style={{ width: `${Math.min(100, (chainCount / freeLimit) * 100)}%` }}
               />
@@ -465,7 +465,7 @@ export function Dashboard() {
 
         {loading && chains.length === 0 ? (
           <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-10 h-10 border-2 border-scale-purple border-t-transparent rounded-full animate-spin" />
           </div>
         ) : chains.length === 0 ? (
           <EmptyState onSync={sync} onRetry={refresh} />
@@ -515,14 +515,14 @@ export function Dashboard() {
                     type="date"
                     value={dateFrom}
                     onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
-                    className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+                    className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-700 focus:outline-none focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20"
                   />
                   <span className="text-xs text-slate-400">to</span>
                   <input
                     type="date"
                     value={dateTo}
                     onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
-                    className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+                    className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-700 focus:outline-none focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20"
                   />
                 </div>
               )}
@@ -559,7 +559,7 @@ export function Dashboard() {
                   value={search}
                   onChange={handleSearchChange}
                   placeholder="Search company or role..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20 transition-all"
                 />
               </div>
               <div className="flex items-center gap-2 flex-wrap">
@@ -573,7 +573,7 @@ export function Dashboard() {
                     onClick={() => handleFilterChange(key)}
                     className={`px-3.5 py-2 rounded-xl text-xs font-medium transition-all ${
                       filter === key
-                        ? "bg-blue-600 text-white shadow-sm"
+                        ? "bg-scale-purple text-white shadow-sm"
                         : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300"
                     }`}
                   >
@@ -621,7 +621,7 @@ export function Dashboard() {
                 title="Merge threads from the same company into one row"
                 className={`ml-auto inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all border ${
                   groupByCompany
-                    ? "bg-blue-600 text-white border-blue-600 shadow-sm hover:bg-blue-700"
+                    ? "bg-scale-purple text-white border-scale-purple shadow-sm hover:bg-scale-purple-dark"
                     : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-slate-300"
                 }`}
               >
@@ -655,7 +655,7 @@ export function Dashboard() {
                 )}
                 {search.trim() ? ` for "${search.trim()}"` : ""}
                 {datePreset !== "all" && (
-                  <span className="ml-1 text-blue-500 font-medium">
+                  <span className="ml-1 text-scale-purple font-medium">
                     ({datePreset === "custom"
                       ? `${dateFrom || "..."} – ${dateTo || "..."}`
                       : datePreset === "today" ? "today"
@@ -671,7 +671,7 @@ export function Dashboard() {
                 <select
                   value={pageSize}
                   onChange={handlePageSizeChange}
-                  className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+                  className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-700 focus:outline-none focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20"
                 >
                   {PAGE_SIZE_OPTIONS.map((n) => (
                     <option key={n} value={n}>
@@ -754,7 +754,7 @@ export function Dashboard() {
                           onClick={() => setPage(item as number)}
                           className={`w-8 h-8 rounded text-xs font-medium transition-colors ${
                             safePage === item
-                              ? "bg-blue-600 text-white"
+                              ? "bg-scale-purple text-white"
                               : "text-slate-600 hover:bg-slate-100"
                           }`}
                         >

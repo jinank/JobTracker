@@ -9,9 +9,9 @@ export function EmptyState({
 }) {
   return (
     <div className="text-center py-20 animate-fade-in">
-      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mx-auto mb-6 border border-blue-100/50">
+      <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-scale-lavender to-scale-mist flex items-center justify-center mx-auto mb-6 border border-scale-purple/10">
         <svg
-          className="w-10 h-10 text-blue-500"
+          className="w-10 h-10 text-scale-purple"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -25,16 +25,16 @@ export function EmptyState({
         </svg>
       </div>
       <h3 className="text-xl font-semibold text-slate-800 mb-2">
-        No applications tracked yet
+        Let&apos;s find your applications
       </h3>
       <p className="text-sm text-slate-500 mb-8 max-w-sm mx-auto leading-relaxed">
-        Click the button below to sync your Gmail and automatically detect job
-        application emails.
+        Sync your Gmail once and we&apos;ll automatically pull in every application,
+        interview invite, and offer — no manual entry needed.
       </p>
       <div className="flex flex-col gap-3 items-center justify-center">
         <button
           onClick={onSync}
-          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/30"
+          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-scale-purple to-violet-600 text-white text-sm font-semibold hover:from-scale-purple-dark hover:to-violet-700 transition-all shadow-lg shadow-violet-500/25 hover:shadow-violet-500/30"
         >
           <svg
             className="w-4 h-4"

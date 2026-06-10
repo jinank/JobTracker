@@ -10,6 +10,7 @@ import "./globals.css";
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-jakarta",
 });
 
 const SITE_TITLE_DEFAULT =
@@ -94,7 +95,7 @@ export default function RootLayout({
         <RootJsonLd />
       </head>
       <body
-        className={`${jakarta.className} min-h-screen bg-slate-50 antialiased flex flex-col`}
+        className={`${jakarta.variable} ${jakarta.className} min-h-screen bg-slate-50 antialiased flex flex-col`}
       >
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-HT0DDBS8E3"

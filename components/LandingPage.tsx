@@ -6,10 +6,13 @@ import { LoginLink } from "@/components/LoginLink";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { ProductHubCards } from "@/components/ProductHubCards";
 
+/** Honest product facts — no invented users. */
 const TICKER_LINES = [
-  "Marcus Harper got 10 assessments in his first month",
-  "Sam Ruiz closed 17 interviews in 3 months",
-  "William Torres improved daily applications to 50 using RethinkJobs",
+  "US internships synced daily from real company career pages",
+  "AI reads your Gmail (read-only) and tracks every application for you",
+  "25+ AI mock interviews for top companies — practice before the real thing",
+  "50+ student discounts and free tools in one place",
+  "Verified students get unlimited tracking, completely free",
 ] as const;
 
 function Reveal({
@@ -94,44 +97,52 @@ function GoogleIcon() {
   );
 }
 
-function StarRow() {
-  return (
-    <div className="flex gap-0.5 text-amber-400" aria-hidden>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-const COMPARISON_ROWS: { feature: string; us: boolean; them: boolean }[] = [
-  { feature: "Automatic Gmail sync (read-only)", us: true, them: false },
-  { feature: "AI extracts company, role & status", us: true, them: false },
-  { feature: "Pipeline dashboard & filters", us: true, them: false },
-  { feature: "Timeline & deadline tracking", us: true, them: false },
-  { feature: "Free tier for students", us: true, them: false },
-  { feature: "Manual copy-paste from inbox", us: false, them: true },
-];
-
 const FAQ_ITEMS: { q: string; a: string }[] = [
   {
+    q: "Is RethinkJobs really free for students?",
+    a: "Yes. Verify your student status once and you get unlimited application tracking, Gmail syncs, and all five tools at no cost — no card required.",
+  },
+  {
     q: "What is RethinkJobs?",
-    a: "RethinkJobs is a job application tracker that connects to your Gmail (read-only), finds job-related emails, and uses AI to build a structured pipeline with company, role, status, and more, so you can track applications without living in a spreadsheet.",
+    a: "RethinkJobs is a student job-search hub: find US internships from company career pages, track applications automatically from Gmail, practice AI mock interviews, find mentors and recruiters at any company, and grab student discounts — all in one account.",
   },
   {
     q: "Is my email data secure?",
-    a: "We request minimal Gmail scopes for reading job-related messages. Your data is used to power your dashboard and is handled according to our privacy policy. You can revoke access anytime from your Google account.",
+    a: "We request minimal, read-only Gmail scopes for job-related messages only. Your data powers your dashboard and is handled according to our privacy policy. You can revoke access anytime from your Google account.",
   },
   {
     q: "Can I fix a wrong status?",
-    a: "Yes. You can edit any application’s status and details if the AI misclassifies something.",
+    a: "Yes. You can edit any application's status and details if the AI misclassifies something.",
   },
   {
-    q: "What’s the difference between Free, Student, and Pro?",
-    a: "Free includes core tracking with limits. Verified students get unlimited tracking at no cost. Professional unlocks unlimited applications and syncs for serious job seekers at $9.99/month.",
+    q: "I'm not a student — can I still use it?",
+    a: "Absolutely. The Free plan tracks up to 50 applications, and Professional unlocks unlimited tracking for $9.99/month.",
   },
+];
+
+const HOW_IT_WORKS = [
+  {
+    step: "1",
+    title: "Create your free account",
+    desc: "Sign in with Google or email in seconds. Students: verify once and everything is free, forever.",
+  },
+  {
+    step: "2",
+    title: "Find roles & apply",
+    desc: "Browse US internships pulled straight from company career pages — fewer applicants than the big job boards.",
+  },
+  {
+    step: "3",
+    title: "We track everything",
+    desc: "Connect Gmail (read-only) and AI builds your pipeline automatically: interviews, assessments, offers, deadlines.",
+  },
+];
+
+const STUDENT_STATS: [string, string][] = [
+  ["$0", "for verified students"],
+  ["Daily", "internship syncs from career pages"],
+  ["25+", "AI mock interviews"],
+  ["50+", "student deals & free tools"],
 ];
 
 export function LandingPage() {
@@ -149,38 +160,41 @@ export function LandingPage() {
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
         <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20">
           <div className="landing-hero-stagger text-center lg:text-left">
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-scale-purple/20 bg-white/80 px-4 py-1.5 text-xs font-semibold text-scale-purple shadow-sm backdrop-blur-sm">
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm">
               <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
-              Free to start · Gmail optional for tracking
+              Built for students · Free with student verification
             </p>
             <h1
               id="hero-heading"
-              className="mb-6 text-[2rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]"
+              className="mb-6 text-[2.1rem] font-extrabold leading-[1.08] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem]"
             >
-              Track every{" "}
-              <span className="text-hero-gradient">job application</span>
+              Land your{" "}
+              <span className="text-hero-gradient">first internship</span>
               <br className="hidden sm:block" />
-              {" "}in one place
+              {" "}without the chaos
             </h1>
             <p className="mx-auto mb-8 max-w-lg text-base leading-relaxed text-slate-600 lg:mx-0 lg:text-lg">
-              Sign in with email or Google, then connect Gmail when you are ready to sync applications.
+              Find real internships, track every application automatically, practice
+              interviews with AI, and meet mentors who can refer you — all in one place.
             </p>
             <div className="mx-auto mb-8 grid max-w-md gap-3 sm:grid-cols-2 lg:mx-0 lg:max-w-none">
               <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
-                  <CheckIcon className="h-5 w-5 text-violet-600" />
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
                 </div>
-                <p className="text-sm font-semibold text-slate-900">Gmail sync</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">Read-only access. No manual copy-paste.</p>
+                <p className="text-sm font-semibold text-slate-900">Real internships</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">Straight from company career pages, not crowded boards.</p>
               </div>
               <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600">
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
                   </svg>
                 </div>
-                <p className="text-sm font-semibold text-slate-900">Live pipeline</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">Every stage, filter, and deadline in one view.</p>
+                <p className="text-sm font-semibold text-slate-900">Auto-tracked</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">Gmail sync builds your pipeline. No spreadsheets, ever.</p>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
@@ -189,21 +203,19 @@ export function LandingPage() {
                 className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-scale-purple px-8 py-4 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(107,70,254,0.3),0_12px_32px_-8px_rgba(107,70,254,0.45)] transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98] sm:w-auto"
               >
                 <GoogleIcon />
-                Get started free
+                Start free — no card needed
               </LoginLink>
               <a
                 href="#products"
                 className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
               >
-                Explore features
+                See the five tools
               </a>
             </div>
             <p className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-500 lg:justify-start">
-              <span>Free for students</span>
-              <span className="text-slate-300" aria-hidden>
-                ·
-              </span>
-              <span>No card to start</span>
+              <span>Free for verified students</span>
+              <span className="text-slate-300" aria-hidden>·</span>
+              <span>Gmail is optional</span>
             </p>
           </div>
 
@@ -215,11 +227,11 @@ export function LandingPage() {
               <div className="rounded-[1.35rem] bg-gradient-to-br from-scale-lavender/90 via-white to-slate-50 p-6 sm:p-8">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-semibold tracking-wide text-scale-purple">Pipeline preview</p>
-                    <p className="text-2xl font-bold text-slate-900">Job application tracker</p>
+                    <p className="text-xs font-semibold tracking-wide text-scale-purple">Your pipeline</p>
+                    <p className="text-2xl font-bold text-slate-900">Internship tracker</p>
                   </div>
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-scale-purple/10">
-                    <span className="text-lg font-bold text-scale-purple">92%</span>
+                    <span className="text-lg font-bold text-scale-purple">🎓</span>
                   </div>
                 </div>
                 <div className="mb-5 flex h-3 gap-1 overflow-hidden rounded-full bg-white/80 p-0.5 shadow-inner">
@@ -281,9 +293,9 @@ export function LandingPage() {
         <section className="border-y border-slate-100 bg-gradient-to-b from-white via-scale-mist/40 to-white py-16 lg:py-20">
           <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
             <p className="text-xl font-bold leading-snug tracking-tight text-slate-800 sm:text-2xl md:text-[1.75rem] md:leading-snug">
-              Built for people who send{" "}
-              <span className="text-scale-purple">dozens of applications</span> and refuse to lose track of a single
-              reply.
+              Built for students juggling{" "}
+              <span className="text-scale-purple">classes, deadlines, and dozens of applications</span>{" "}
+              — so nothing slips through the cracks.
             </p>
           </div>
         </section>
@@ -298,36 +310,20 @@ export function LandingPage() {
                 How it works
               </span>
               <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Seamless sync. Maximum clarity.
+                From “where do I start?” to offer letter
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                Connect once. We handle classification, pipeline updates, and timelines so your job search runs on
-                autopilot.
+                Three steps. Then your whole internship search runs itself while you
+                focus on classes and interviews.
               </p>
             </div>
           </Reveal>
           <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                step: "1",
-                title: "Sign in with Google",
-                desc: "Grant read-only Gmail access. Your applications appear in minutes, not hours of manual entry.",
-              },
-              {
-                step: "2",
-                title: "AI classifies every thread",
-                desc: "Company, role, stage, and deadlines are extracted automatically from real recruiter mail.",
-              },
-              {
-                step: "3",
-                title: "Own your pipeline",
-                desc: "Filter, search, sort, and edit. One dashboard for every application and follow-up.",
-              },
-            ].map((s, i) => (
+            {HOW_IT_WORKS.map((s, i) => (
               <Reveal key={s.step} className={i === 1 ? "md:mt-6" : i === 2 ? "md:mt-12" : ""}>
                 <div className="group h-full rounded-3xl border border-slate-200/80 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-scale-purple/25 hover:shadow-scale-soft">
                   <div
-                    className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6B46FE] text-lg font-bold text-white shadow-lg shadow-violet-500/25"
+                    className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-scale-purple text-lg font-bold text-white shadow-lg shadow-violet-500/25"
                     aria-hidden
                   >
                     {s.step}
@@ -341,62 +337,19 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Comparison */}
-      <section className="bg-scale-lavender/40 py-20 lg:py-28">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <div className="mb-12 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                Comparison
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                RethinkJobs vs. the spreadsheet grind
-              </h2>
-            </div>
-          </Reveal>
-          <Reveal>
-            <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-scale-soft">
-              <div className="grid grid-cols-[1fr_minmax(0,120px)_minmax(0,120px)] gap-0 text-sm sm:grid-cols-[1fr_140px_140px]">
-                <div className="border-b border-slate-100 bg-slate-50/80 px-4 py-4 font-semibold text-slate-700 sm:px-6">
-                  Capability
-                </div>
-                <div className="border-b border-slate-100 bg-scale-purple/10 px-2 py-4 text-center font-bold text-scale-purple sm:px-4">
-                  RethinkJobs
-                </div>
-                <div className="border-b border-slate-100 bg-slate-50 px-2 py-4 text-center font-semibold text-slate-500 sm:px-4">
-                  Manual
-                </div>
-                {COMPARISON_ROWS.map((row) => (
-                  <div key={row.feature} className="contents">
-                    <div className="border-b border-slate-100 px-4 py-3.5 text-slate-700 sm:px-6">{row.feature}</div>
-                    <div className="flex items-center justify-center border-b border-slate-100 bg-violet-50/50 py-3.5">
-                      {row.us ? (
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white shadow-sm">
-                          <CheckIcon className="h-4 w-4 text-white" />
-                        </span>
-                      ) : (
-                        <span className="text-xs font-medium text-slate-400">No</span>
-                      )}
-                    </div>
-                    <div className="flex items-center justify-center border-b border-slate-100 py-3.5">
-                      {row.them ? (
-                        <span
-                          className="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold text-amber-800"
-                          title="You handle this manually"
-                        >
-                          Yes
-                        </span>
-                      ) : (
-                        <span className="text-lg font-bold text-rose-400">✕</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+      {/* Student stats strip */}
+      <Reveal>
+        <section className="border-y border-scale-purple/10 bg-scale-lavender/50 py-12">
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 sm:px-6">
+            {STUDENT_STATS.map(([n, l]) => (
+              <div key={l} className="text-center">
+                <p className="text-2xl font-extrabold text-scale-purple sm:text-3xl">{n}</p>
+                <p className="mt-1 text-xs text-slate-600 sm:text-sm">{l}</p>
               </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      </Reveal>
 
       {/* Feature grid */}
       <section id="features" className="py-20 lg:py-28" aria-labelledby="features-heading">
@@ -404,18 +357,17 @@ export function LandingPage() {
           <Reveal>
             <div className="mb-14 text-center">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                Product
+                The tracker
               </span>
               <h2
                 id="features-heading"
                 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl"
               >
-                AI job search tool features to organize every application
+                Your internship search, organized for you
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                From first application to final offer: organized, searchable, and always up to date. Perfect whether
-                you need a lightweight <strong className="font-semibold text-slate-800">internship tracker</strong> or
-                a full offer-stage pipeline.
+                From first application to final offer — searchable, sorted, and always
+                up to date. Built to survive campus recruiting season.
               </p>
             </div>
           </Reveal>
@@ -437,18 +389,18 @@ export function LandingPage() {
                 path: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
               },
               {
-                title: "Timeline & deadlines",
-                desc: "Never miss a follow-up. Every touchpoint in one chronological view.",
+                title: "Deadline reminders",
+                desc: "Assessments and offer deadlines surface before they sneak up on you.",
                 path: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",
               },
               {
                 title: "Search & filters",
-                desc: "Slice by status, company, role, or time window however you think about the search.",
+                desc: "Slice by status, company, role, or time window — however you think about your search.",
                 path: "M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z",
               },
               {
-                title: "Reach-out tools",
-                desc: "Find hiring contacts when you’re ready to go beyond the application portal.",
+                title: "Mentor reach-out",
+                desc: "Find recruiters and hiring contacts at any company when you're ready to go beyond the portal.",
                 path: "M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.646-6.374-1.666m13.5-1.372A8.25 8.25 0 0119.5 10.5",
               },
             ].map((f) => (
@@ -468,85 +420,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="border-t border-slate-100 bg-white py-20 lg:py-28">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <div className="mb-14 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                Social proof
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Trusted by focused job seekers
-              </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-slate-600">
-                Real workflows. Less chaos. More interviews.
-              </p>
-            </div>
-          </Reveal>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                quote:
-                  "I finally stopped maintaining a spreadsheet. RethinkJobs pulls everything from Gmail and my pipeline is always current.",
-                name: "Alex M.",
-                role: "Software engineer",
-              },
-              {
-                quote:
-                  "The AI isn’t perfect, but editing a status beats hunting through thousands of emails. Huge time saver.",
-                name: "Jordan K.",
-                role: "Product manager",
-              },
-              {
-                quote:
-                  "Student verification was quick. Unlimited tracking for free is exactly what I needed during campus recruiting.",
-                name: "Sam T.",
-                role: "New grad",
-              },
-            ].map((t) => (
-              <Reveal key={t.name}>
-                <div className="flex h-full flex-col rounded-2xl border border-slate-200/80 bg-scale-mist/30 p-6 shadow-sm transition-all hover:shadow-md">
-                  <StarRow />
-                  <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-700">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="mt-6 flex items-center gap-3 border-t border-slate-200/60 pt-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-scale-purple to-violet-600 text-xs font-bold text-white">
-                      {t.name
-                        .split(" ")
-                        .map((p) => p[0])
-                        .join("")}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">{t.name}</p>
-                      <p className="text-xs text-slate-500">{t.role}</p>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Metrics strip */}
-      <Reveal>
-        <section className="border-y border-slate-100 bg-gradient-to-r from-slate-900 via-slate-900 to-scale-purple-deep py-12 text-white">
-          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 sm:px-6">
-            {[
-              ["50+", "Apps tracked free"],
-              ["1", "Gmail connection"],
-              ["AI", "Smart classification"],
-              ["24/7", "Your data, your view"],
-            ].map(([n, l]) => (
-              <div key={l} className="text-center">
-                <p className="text-2xl font-extrabold sm:text-3xl">{n}</p>
-                <p className="mt-1 text-xs text-white/70 sm:text-sm">{l}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </Reveal>
-
       {/* Pricing */}
       <section id="pricing" className="bg-scale-lavender/30 py-20 lg:py-28" aria-labelledby="pricing-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -556,10 +429,11 @@ export function LandingPage() {
                 Pricing
               </span>
               <h2 id="pricing-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Simple pricing for your job application tracker
+                Students never pay. Seriously.
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
-                Start free. Upgrade when you need unlimited tracking.{" "}
+                Verify your student status once and everything is free. Everyone else
+                starts free and can upgrade anytime.{" "}
                 <Link href="/blog" className="font-semibold text-scale-purple hover:underline">
                   Read the blog
                 </Link>{" "}
@@ -582,7 +456,7 @@ export function LandingPage() {
                 </div>
                 <p className="mt-2 text-center text-sm text-slate-500">Perfect for getting started</p>
                 <ul className="mt-6 flex-1 space-y-2.5 border-t border-slate-100 pt-6">
-                  {["Track up to 50 applications", "AI email classification", "Pipeline dashboard", "Edit & manage"].map(
+                  {["Track up to 50 applications", "AI email classification", "Pipeline dashboard", "All five tools included"].map(
                     (x) => (
                       <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
                         <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-scale-purple" />
@@ -599,25 +473,26 @@ export function LandingPage() {
               </article>
             </Reveal>
 
-            {/* Student */}
+            {/* Student — the hero plan */}
             <Reveal className="min-w-0 lg:min-h-0">
-              <article className="flex h-full flex-col rounded-2xl border-2 border-emerald-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-7">
+              <article className="flex h-full flex-col rounded-2xl border-2 border-emerald-400 bg-gradient-to-b from-white to-emerald-50/50 p-6 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)] sm:p-7">
                 <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
                   <span className="rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-                    Students
+                    For students
                   </span>
                 </div>
                 <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-emerald-700">Student</h3>
                 <div className="mt-3 flex justify-center">
                   <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">Free</span>
                 </div>
-                <p className="mt-2 text-center text-sm text-slate-500">Verify your student status</p>
+                <p className="mt-2 text-center text-sm text-slate-500">Verify once with your school</p>
                 <ul className="mt-6 flex-1 space-y-2.5 border-t border-emerald-100/80 pt-6">
                   {[
                     "Unlimited applications",
                     "Unlimited Gmail syncs",
-                    "AI classification",
-                    "Full pipeline & timeline",
+                    "AI mock interviews",
+                    "Mentor & recruiter search",
+                    "All student deals",
                   ].map((x) => (
                     <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
                       <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
@@ -627,7 +502,7 @@ export function LandingPage() {
                 </ul>
                 <LoginLink
                   callbackUrl="/"
-                  label="Verify & get access"
+                  label="Verify & get everything free"
                   className="mt-8 block w-full rounded-xl bg-emerald-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
                 />
               </article>
@@ -635,10 +510,10 @@ export function LandingPage() {
 
             {/* Pro */}
             <Reveal className="min-w-0 lg:min-h-0">
-              <article className="flex h-full flex-col rounded-2xl border-2 border-scale-purple bg-gradient-to-b from-white to-scale-lavender/30 p-6 shadow-[0_8px_30px_-8px_rgba(107,70,254,0.25)] sm:p-7">
+              <article className="flex h-full flex-col rounded-2xl border-2 border-scale-purple/40 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-7">
                 <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
                   <span className="rounded-full bg-scale-purple px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-                    Most popular
+                    Professionals
                   </span>
                 </div>
                 <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-scale-purple">Professional</h3>
@@ -646,7 +521,7 @@ export function LandingPage() {
                   <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">$9.99</span>
                   <span className="text-sm text-slate-500">/mo</span>
                 </div>
-                <p className="mt-2 text-center text-sm text-slate-500">For serious job seekers</p>
+                <p className="mt-2 text-center text-sm text-slate-500">For everyone out of school</p>
                 <ul className="mt-6 flex-1 space-y-2.5 border-t border-scale-purple/15 pt-6">
                   {[
                     "Unlimited applications",
@@ -733,10 +608,11 @@ export function LandingPage() {
         <Reveal>
           <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
             <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-              Ready to organize your job search?
+              Your future self will thank you
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-violet-100">
-              Create your account in seconds. Connect Gmail later when you want to track applications.
+              Set up your account in seconds — find internships, track applications,
+              and start practicing today. Free for students.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <LoginLink

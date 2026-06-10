@@ -50,7 +50,7 @@ function FilterField({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus:border-scale-purple focus:outline-none focus:ring-2 focus:ring-scale-purple/20"
       >
         {children}
       </select>
@@ -158,7 +158,7 @@ export function FindJobsApp() {
             resetPage();
           }}
           placeholder="Search company, role, city"
-          className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+          className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-scale-purple focus:outline-none focus:ring-2 focus:ring-scale-purple/20"
         />
       </div>
 
@@ -220,7 +220,7 @@ export function FindJobsApp() {
             resetPage();
           }}
           placeholder="e.g. San Francisco, CA, Remote"
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-scale-purple focus:outline-none focus:ring-2 focus:ring-scale-purple/20"
         />
       </label>
 
@@ -282,6 +282,15 @@ export function FindJobsApp() {
 
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+          <div className="mb-6">
+            <p className="text-sm font-semibold text-emerald-600">Find Internships</p>
+            <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              Fresh US internships, straight from the source
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-600">
+              Synced daily from company career pages — apply early, before the crowd finds them.
+            </p>
+          </div>
           <div className="flex flex-col items-start gap-8 xl:flex-row">
             <div className="min-w-0 w-full max-w-4xl flex-1">
               <div className="mb-4 xl:hidden">
@@ -294,7 +303,7 @@ export function FindJobsApp() {
                   <span>
                     Filters
                     {activeFilterCount > 0 ? (
-                      <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                      <span className="ml-2 rounded-full bg-scale-purple px-2 py-0.5 text-[10px] font-bold text-white">
                         {activeFilterCount}
                       </span>
                     ) : null}
@@ -345,7 +354,7 @@ export function FindJobsApp() {
 
               {loading && jobs.length === 0 ? (
                 <div className="flex justify-center py-16">
-                  <div className="h-10 w-10 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+                  <div className="h-10 w-10 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -363,7 +372,7 @@ export function FindJobsApp() {
                       <button
                         type="button"
                         onClick={clearFilters}
-                        className="mt-4 text-xs font-semibold text-blue-600 hover:text-blue-700"
+                        className="mt-4 text-xs font-semibold text-scale-purple hover:text-scale-purple-dark"
                       >
                         Clear filters
                       </button>
@@ -410,7 +419,7 @@ export function FindJobsApp() {
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-sm font-bold text-slate-900">Filters</h2>
                   {activeFilterCount > 0 && (
-                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">
+                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
                       {activeFilterCount} active
                     </span>
                   )}

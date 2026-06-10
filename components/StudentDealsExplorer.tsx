@@ -153,12 +153,16 @@ export function StudentDealsExplorer() {
 
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500">
+          <p className="text-sm font-semibold text-sky-600">
             {STUDENT_DEALS.length} curated programs
           </p>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Student discounts &amp; education offers
+            Free tools &amp; student discounts
           </h1>
+          <p className="mt-2 text-sm text-slate-600">
+            Your student email is worth more than you think — software, courses, and
+            perks you can claim right now.
+          </p>
         </div>
         <label className="block w-full sm:max-w-sm">
           <span className="sr-only">Search deals</span>

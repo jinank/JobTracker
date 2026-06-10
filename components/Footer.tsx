@@ -44,11 +44,15 @@ export function Footer() {
               </Link>
               <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/" className="hover:text-white transition-colors">
-                Track Jobs
+                Track Applications
               </Link>
               <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/practice-interviews" className="hover:text-white transition-colors">
                 Interview Prep
+              </Link>
+              <span className="text-slate-700 hidden sm:inline">•</span>
+              <Link href="/find-mentors" className="hover:text-white transition-colors">
+                Find Mentors
               </Link>
               <span className="text-slate-700 hidden sm:inline">•</span>
               <Link href="/resources" className="hover:text-white transition-colors">
