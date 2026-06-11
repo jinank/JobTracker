@@ -1,4 +1,5 @@
 {
+  "buildCommand": "npm run web:build",
   "crons": [
     {
       "path": "/api/cron/sync-internships",
