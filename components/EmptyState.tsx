@@ -3,12 +3,14 @@
 export function EmptyState({
   onSync,
   onRetry,
+  loading = false,
 }: {
   onSync: () => void;
   onRetry?: () => void;
+  loading?: boolean;
 }) {
   return (
-    <div className="text-center py-20 animate-fade-in">
+    <div className="text-center py-20">
       <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-scale-lavender to-scale-mist flex items-center justify-center mx-auto mb-6 border border-scale-purple/10">
         <svg
           className="w-10 h-10 text-scale-purple"
@@ -25,16 +27,18 @@ export function EmptyState({
         </svg>
       </div>
       <h3 className="text-xl font-semibold text-slate-800 mb-2">
-        Let&apos;s find your applications
+        {loading ? "Loading your applications…" : "Let\u2019s find your applications"}
       </h3>
       <p className="text-sm text-slate-500 mb-8 max-w-sm mx-auto leading-relaxed">
-        Sync your Gmail once and we&apos;ll automatically pull in every application,
-        interview invite, and offer — no manual entry needed.
+        {loading
+          ? "One moment while we fetch your tracker."
+          : "Sync your Gmail once and we\u2019ll automatically pull in every application, interview invite, and offer — no manual entry needed."}
       </p>
       <div className="flex flex-col gap-3 items-center justify-center">
         <button
           onClick={onSync}
-          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-scale-purple to-violet-600 text-white text-sm font-semibold hover:from-scale-purple-dark hover:to-violet-700 transition-all shadow-lg shadow-violet-500/25 hover:shadow-violet-500/30"
+          disabled={loading}
+          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-scale-purple to-violet-600 text-white text-sm font-semibold hover:from-scale-purple-dark hover:to-violet-700 transition-all shadow-lg shadow-violet-500/25 hover:shadow-violet-500/30 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <svg
             className="w-4 h-4"
@@ -54,7 +58,8 @@ export function EmptyState({
         {onRetry ? (
           <button
             onClick={onRetry}
-            className="inline-flex items-center justify-center px-5 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-50 transition-all"
+            disabled={loading}
+            className="inline-flex items-center justify-center px-5 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           >
             Retry loading applications
           </button>

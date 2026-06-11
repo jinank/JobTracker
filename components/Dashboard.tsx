@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useChains } from "@/hooks/useChains";
 import { useSync } from "@/hooks/useSync";
@@ -54,7 +54,7 @@ function sortChains(
 }
 
 export function Dashboard() {
-  const { data: session, update: updateSession } = useSession();
+  const { data: session } = useSession();
   const gmailConnected = session?.gmailConnected === true;
   const {
     chains,
@@ -113,13 +113,6 @@ export function Dashboard() {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [groupByCompany, setGroupByCompany] = useState(true);
-
-  const refreshedSessionForGmail = useRef(false);
-  useEffect(() => {
-    if (refreshedSessionForGmail.current || session?.gmailConnected) return;
-    refreshedSessionForGmail.current = true;
-    void updateSession();
-  }, [session?.gmailConnected, updateSession]);
 
   useEffect(() => {
     setSelectedChain((prev) => {
@@ -463,12 +456,8 @@ export function Dashboard() {
           </div>
         )}
 
-        {loading && chains.length === 0 ? (
-          <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-2 border-scale-purple border-t-transparent rounded-full animate-spin" />
-          </div>
-        ) : chains.length === 0 ? (
-          <EmptyState onSync={sync} onRetry={refresh} />
+        {chains.length === 0 ? (
+          <EmptyState onSync={sync} onRetry={refresh} loading={loading} />
         ) : (
           <>
             {/* Date Filter - above pipeline so it filters the stats */}

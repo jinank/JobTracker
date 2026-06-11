@@ -192,6 +192,7 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
   const [data, setData] = useState<LeaderboardPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const hasLoadedOnce = useRef(false);
 
   const refreshLbPrefs = useCallback(() => {
     setVisibility(readLeaderboardVisibility());
@@ -209,7 +210,8 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
     }
 
     let cancelled = false;
-    setLoading(true);
+    const showBlockingLoader = !hasLoadedOnce.current;
+    if (showBlockingLoader) setLoading(true);
     (async () => {
       try {
         const res = await fetch("/api/leaderboard");
@@ -228,6 +230,7 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
         if (!cancelled) {
           setData(json as LeaderboardPayload);
           setError(null);
+          hasLoadedOnce.current = true;
         }
       } catch {
         if (!cancelled) {
@@ -235,7 +238,7 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
           setData(null);
         }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled && showBlockingLoader) setLoading(false);
       }
     })();
     return () => {

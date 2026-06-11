@@ -30,11 +30,14 @@ function formatResumeTime(ts: number): string {
 }
 
 export function GitaQuoteCard() {
-  const [ready, setReady] = useState(false);
   const [visibility, setVisibility] = useState<
     "visible" | "snoozed" | "disabled"
-  >("visible");
-  const [snoozeUntil, setSnoozeUntil] = useState<number | null>(null);
+  >(() =>
+    typeof window !== "undefined" ? readGitaQuoteVisibility() : "visible"
+  );
+  const [snoozeUntil, setSnoozeUntil] = useState<number | null>(() =>
+    typeof window !== "undefined" ? snoozeEndsAtMs() : null
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const menuWrapRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +48,6 @@ export function GitaQuoteCard() {
 
   useEffect(() => {
     refreshPrefs();
-    setReady(true);
   }, [refreshPrefs]);
 
   useEffect(() => {
@@ -90,17 +92,6 @@ export function GitaQuoteCard() {
     restoreGitaQuotes();
     refreshPrefs();
   };
-
-  if (!ready) {
-    return (
-      <div
-        className="rounded-2xl border border-slate-200/80 bg-white shadow-card overflow-hidden animate-pulse"
-        aria-hidden
-      >
-        <div className="h-24 bg-slate-50 m-3 rounded-xl" />
-      </div>
-    );
-  }
 
   if (visibility !== "visible") {
     return (
