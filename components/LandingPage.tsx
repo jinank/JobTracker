@@ -4,16 +4,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { LoginLink } from "@/components/LoginLink";
 import { SiteNavMarketing } from "@/components/SiteNav";
-import { ProductHubCards } from "@/components/ProductHubCards";
-
-/** Honest product facts — no invented users. */
-const TICKER_LINES = [
-  "US internships synced daily from real company career pages",
-  "AI reads your Gmail (read-only) and tracks every application for you",
-  "25+ AI mock interviews for top companies — practice before the real thing",
-  "50+ student discounts and free tools in one place",
-  "Verified students get unlimited tracking, completely free",
-] as const;
 
 function Reveal({
   children,
@@ -66,14 +56,6 @@ function Reveal({
   );
 }
 
-function CheckIcon({ className = "w-4 h-4 text-emerald-500" }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-    </svg>
-  );
-}
-
 function GoogleIcon() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -97,52 +79,160 @@ function GoogleIcon() {
   );
 }
 
+/** Hand-drawn squiggle under a hero word — the one playful flourish. */
+function Squiggle() {
+  return (
+    <svg
+      className="absolute -bottom-2 left-0 h-3 w-full text-scale-purple/70"
+      viewBox="0 0 220 12"
+      preserveAspectRatio="none"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M3 9c18-7 36-7 54 0s36 7 54 0 36-7 54 0 36 7 52 0"
+        stroke="currentColor"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/** Faux browser window with a live-looking pipeline — honest preview of the dashboard. */
+function ProductWindow() {
+  const rows = [
+    { letter: "G", grad: "from-blue-500 to-blue-600", company: "Google", role: "STEP Intern, Summer 2027", status: "Interviewing", chip: "bg-violet-100 text-violet-700", when: "2h ago" },
+    { letter: "F", grad: "from-rose-500 to-orange-500", company: "Figma", role: "Product Design Intern", status: "Offer 🎉", chip: "bg-emerald-100 text-emerald-700", when: "1d ago" },
+    { letter: "S", grad: "from-indigo-500 to-violet-600", company: "Stripe", role: "Software Engineer Intern", status: "Assessment", chip: "bg-amber-100 text-amber-800", when: "3d ago" },
+    { letter: "N", grad: "from-slate-700 to-slate-900", company: "Notion", role: "Growth Marketing Intern", status: "Applied", chip: "bg-blue-100 text-blue-700", when: "4d ago" },
+  ];
+  return (
+    <div className="landing-pipeline-glow overflow-hidden rounded-3xl border border-slate-200/80 bg-white">
+      {/* Window chrome */}
+      <div className="flex items-center gap-3 border-b border-slate-100 bg-slate-50/80 px-4 py-3">
+        <div className="flex gap-1.5" aria-hidden>
+          <span className="h-2.5 w-2.5 rounded-full bg-rose-300" />
+          <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-300" />
+        </div>
+        <div className="mx-auto flex w-full max-w-xs items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-1 text-[11px] text-slate-400 ring-1 ring-slate-200/80">
+          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+          rethinkjobs.com
+        </div>
+        <div className="w-10" aria-hidden />
+      </div>
+
+      <div className="p-5 sm:p-7">
+        {/* Stage summary chips */}
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          {[
+            ["Applied", "24", "bg-blue-50 text-blue-700 ring-blue-100"],
+            ["Assessment", "6", "bg-amber-50 text-amber-800 ring-amber-100"],
+            ["Interview", "4", "bg-violet-50 text-violet-700 ring-violet-100"],
+            ["Offer", "1", "bg-emerald-50 text-emerald-700 ring-emerald-100"],
+          ].map(([label, n, cls]) => (
+            <span key={label} className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ${cls}`}>
+              {label}
+              <span className="font-extrabold">{n}</span>
+            </span>
+          ))}
+          <span className="ml-auto hidden items-center gap-1 rounded-full bg-scale-purple/10 px-3 py-1.5 text-xs font-bold text-scale-purple sm:inline-flex">
+            +12 this week
+          </span>
+        </div>
+
+        {/* Application rows */}
+        <div className="space-y-2">
+          {rows.map((r) => (
+            <div
+              key={r.company}
+              className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white px-3.5 py-3 shadow-sm sm:gap-4 sm:px-4"
+            >
+              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${r.grad} text-sm font-bold text-white`} aria-hidden>
+                {r.letter}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-slate-900">{r.company}</p>
+                <p className="truncate text-xs text-slate-500">{r.role}</p>
+              </div>
+              <span className="hidden text-[11px] text-slate-400 sm:block">{r.when}</span>
+              <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${r.chip}`}>{r.status}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Recruiting-season journey, mapped to the four core tools. */
+const TIMELINE = [
+  {
+    season: "Fall semester",
+    title: "Find real openings",
+    desc: "Browse US internships synced daily from company career pages — before the crowd finds them.",
+    href: "/find-jobs",
+    accent: "border-emerald-200 bg-emerald-50/60",
+    dot: "bg-emerald-500",
+    link: "text-emerald-700",
+    label: "Find Internships",
+  },
+  {
+    season: "Application season",
+    title: "Apply & let it track itself",
+    desc: "Connect Gmail once. Every confirmation, assessment, and interview invite lands in your pipeline automatically.",
+    href: "/",
+    accent: "border-scale-purple/20 bg-scale-lavender/60",
+    dot: "bg-scale-purple",
+    link: "text-scale-purple",
+    label: "Track Applications",
+  },
+  {
+    season: "Interview weeks",
+    title: "Practice till it's boring",
+    desc: "AI mock interviews tailored to the exact company and role. No scheduling, no judgment, unlimited retries.",
+    href: "/practice-interviews",
+    accent: "border-amber-200 bg-amber-50/60",
+    dot: "bg-amber-500",
+    link: "text-amber-700",
+    label: "Interview Prep",
+  },
+  {
+    season: "Crunch time",
+    title: "Get a human on your side",
+    desc: "Find recruiters and campus hiring contacts at any company — for advice, referrals, and real answers.",
+    href: "/find-mentors",
+    accent: "border-rose-200 bg-rose-50/60",
+    dot: "bg-rose-500",
+    link: "text-rose-600",
+    label: "Find Mentors",
+  },
+];
+
 const FAQ_ITEMS: { q: string; a: string }[] = [
   {
-    q: "Is RethinkJobs really free for students?",
-    a: "Yes. Verify your student status once and you get unlimited application tracking, Gmail syncs, and all five tools at no cost — no card required.",
+    q: "Is it actually free for students?",
+    a: "Yes. Verify your student status once and everything is unlocked — unlimited tracking, Gmail syncs, mock interviews, mentor search, and all the deals. No card, no trial that expires mid-semester.",
   },
   {
-    q: "What is RethinkJobs?",
-    a: "RethinkJobs is a student job-search hub: find US internships from company career pages, track applications automatically from Gmail, practice AI mock interviews, find mentors and recruiters at any company, and grab student discounts — all in one account.",
+    q: "What does RethinkJobs do with my Gmail?",
+    a: "We request minimal, read-only access and only look for job-related threads — confirmations, assessments, interview invites, offers. You can revoke access anytime from your Google account, and Gmail is optional to start.",
   },
   {
-    q: "Is my email data secure?",
-    a: "We request minimal, read-only Gmail scopes for job-related messages only. Your data powers your dashboard and is handled according to our privacy policy. You can revoke access anytime from your Google account.",
+    q: "How is this different from LinkedIn or Handshake?",
+    a: "Internship listings come straight from company career pages, not crowded job boards. And instead of you maintaining a spreadsheet, AI builds your pipeline from your own inbox.",
   },
   {
-    q: "Can I fix a wrong status?",
-    a: "Yes. You can edit any application's status and details if the AI misclassifies something.",
+    q: "What if the AI gets a status wrong?",
+    a: "Click and fix it. You can edit any application's company, role, or stage whenever the AI misreads something.",
   },
   {
-    q: "I'm not a student — can I still use it?",
-    a: "Absolutely. The Free plan tracks up to 50 applications, and Professional unlocks unlimited tracking for $9.99/month.",
+    q: "I'm not a student — can I use it?",
+    a: "Sure. The Free plan tracks up to 50 applications, and Professional unlocks unlimited everything for $9.99/month.",
   },
-];
-
-const HOW_IT_WORKS = [
-  {
-    step: "1",
-    title: "Create your free account",
-    desc: "Sign in with Google or email in seconds. Students: verify once and everything is free, forever.",
-  },
-  {
-    step: "2",
-    title: "Find roles & apply",
-    desc: "Browse US internships pulled straight from company career pages — fewer applicants than the big job boards.",
-  },
-  {
-    step: "3",
-    title: "We track everything",
-    desc: "Connect Gmail (read-only) and AI builds your pipeline automatically: interviews, assessments, offers, deadlines.",
-  },
-];
-
-const STUDENT_STATS: [string, string][] = [
-  ["$0", "for verified students"],
-  ["Daily", "internship syncs from career pages"],
-  ["25+", "AI mock interviews"],
-  ["50+", "student deals & free tools"],
 ];
 
 export function LandingPage() {
@@ -152,411 +242,332 @@ export function LandingPage() {
     <div className="min-h-screen bg-white text-slate-900">
       <SiteNavMarketing />
       <main id="main-content">
-      {/* Hero */}
+
+      {/* ── Hero ───────────────────────────────────────────── */}
       <section
-        className="relative overflow-hidden landing-hero-mesh pb-20 pt-10 sm:pb-28 sm:pt-14 lg:pb-32 lg:pt-16"
+        className="relative overflow-hidden landing-hero-mesh pb-16 pt-14 sm:pt-20"
         aria-labelledby="hero-heading"
       >
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20">
-          <div className="landing-hero-stagger text-center lg:text-left">
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm">
-              <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
-              Built for students · Free with student verification
+        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <div className="landing-hero-stagger">
+            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm">
+              🎓 Free for students — verify once, everything unlocked
             </p>
             <h1
               id="hero-heading"
-              className="mb-6 text-[2.1rem] font-extrabold leading-[1.08] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem]"
+              className="mx-auto mb-6 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-6xl"
             >
-              Land your{" "}
-              <span className="text-hero-gradient">first internship</span>
-              <br className="hidden sm:block" />
-              {" "}without the chaos
+              Your whole internship search,{" "}
+              <span className="relative inline-block whitespace-nowrap text-hero-gradient">
+                in one tab
+                <Squiggle />
+              </span>
             </h1>
-            <p className="mx-auto mb-8 max-w-lg text-base leading-relaxed text-slate-600 lg:mx-0 lg:text-lg">
-              Find real internships, track every application automatically, practice
-              interviews with AI, and meet mentors who can refer you — all in one place.
+            <p className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              Find real openings, track every application straight from Gmail, practice
+              interviews with AI, and meet the people who can refer you. Close the other
+              forty tabs.
             </p>
-            <div className="mx-auto mb-8 grid max-w-md gap-3 sm:grid-cols-2 lg:mx-0 lg:max-w-none">
-              <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                  </svg>
-                </div>
-                <p className="text-sm font-semibold text-slate-900">Real internships</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">Straight from company career pages, not crowded boards.</p>
-              </div>
-              <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-                  </svg>
-                </div>
-                <p className="text-sm font-semibold text-slate-900">Auto-tracked</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">Gmail sync builds your pipeline. No spreadsheets, ever.</p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
               <LoginLink
                 callbackUrl="/"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-scale-purple px-8 py-4 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(107,70,254,0.3),0_12px_32px_-8px_rgba(107,70,254,0.45)] transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98] sm:w-auto"
               >
                 <GoogleIcon />
-                Start free — no card needed
+                Get started free
               </LoginLink>
-              <a
-                href="#products"
-                className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
+              <Link
+                href="/find-jobs"
+                className="inline-flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
               >
-                See the five tools
-              </a>
+                Browse internships
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
             </div>
-            <p className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-500 lg:justify-start">
-              <span>Free for verified students</span>
-              <span className="text-slate-300" aria-hidden>·</span>
-              <span>Gmail is optional</span>
+            <p className="mt-5 text-xs text-slate-500">
+              No card · No trial countdown · Gmail optional
             </p>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none">
-            <div
-              className="relative landing-pipeline-glow rounded-3xl border border-white/80 bg-white/95 p-1 backdrop-blur-sm animate-float-slow motion-reduce:animate-none"
-              style={{ animationDelay: "-1s" }}
-            >
-              <div className="rounded-[1.35rem] bg-gradient-to-br from-scale-lavender/90 via-white to-slate-50 p-6 sm:p-8">
-                <div className="mb-4 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-semibold tracking-wide text-scale-purple">Your pipeline</p>
-                    <p className="text-2xl font-bold text-slate-900">Internship tracker</p>
-                  </div>
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-scale-purple/10">
-                    <span className="text-lg font-bold text-scale-purple">🎓</span>
-                  </div>
-                </div>
-                <div className="mb-5 flex h-3 gap-1 overflow-hidden rounded-full bg-white/80 p-0.5 shadow-inner">
-                  <div className="w-[38%] rounded-full bg-scale-purple" />
-                  <div className="w-[18%] rounded-full bg-violet-400" />
-                  <div className="w-[22%] rounded-full bg-amber-400" />
-                  <div className="w-[14%] rounded-full bg-emerald-400" />
-                  <div className="flex-1 rounded-full bg-slate-200" />
-                </div>
-                <div className="space-y-2.5">
-                  {[
-                    { company: "Google", role: "Software Engineering Intern", status: "Interviewing", chip: "bg-violet-100 text-violet-700" },
-                    { company: "Stripe", role: "New Grad Engineer", status: "Applied", chip: "bg-blue-100 text-blue-700" },
-                    { company: "Shopify", role: "Frontend Intern", status: "Assessment", chip: "bg-amber-100 text-amber-800" },
-                    { company: "Figma", role: "Product Design Intern", status: "Offer", chip: "bg-emerald-100 text-emerald-700" },
-                  ].map((r) => (
-                    <div
-                      key={r.company}
-                      className="flex items-center justify-between rounded-2xl border border-white/60 bg-white/80 px-4 py-3 shadow-sm transition-transform hover:scale-[1.01]"
-                    >
-                      <div>
-                        <p className="text-sm font-semibold text-slate-900">{r.company}</p>
-                        <p className="text-xs text-slate-500">{r.role}</p>
-                      </div>
-                      <span className={`rounded-full px-3 py-1 text-[11px] font-bold ${r.chip}`}>{r.status}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Ticker */}
-        <div className="relative mx-auto mt-16 max-w-6xl px-4 sm:px-6">
-          <div className="overflow-hidden rounded-2xl border border-scale-purple/10 bg-white/70 py-4 shadow-sm backdrop-blur-md ring-1 ring-slate-200/50">
-            <div className="flex animate-[scroll_56s_linear_infinite] gap-8 motion-reduce:animate-none">
-              {Array.from({ length: 2 }).map((_, i) => (
-                <div key={i} className="flex shrink-0 items-stretch gap-6 pl-6">
-                  {TICKER_LINES.map((line) => (
-                    <div
-                      key={`${i}-${line}`}
-                      className="flex max-w-[min(100vw-3rem,26rem)] shrink-0 items-center rounded-2xl border border-scale-purple/15 bg-white/95 px-4 py-3 text-left shadow-sm sm:max-w-[26rem]"
-                    >
-                      <span className="text-[11px] font-semibold leading-snug text-slate-700 sm:text-xs">{line}</span>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="relative mx-auto mt-14 max-w-4xl px-4 sm:px-6">
+          <Reveal>
+            <ProductWindow />
+          </Reveal>
         </div>
       </section>
 
-      <ProductHubCards />
-
-      {/* Big stat line */}
-      <Reveal>
-        <section className="border-y border-slate-100 bg-gradient-to-b from-white via-scale-mist/40 to-white py-16 lg:py-20">
-          <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-            <p className="text-xl font-bold leading-snug tracking-tight text-slate-800 sm:text-2xl md:text-[1.75rem] md:leading-snug">
-              Built for students juggling{" "}
-              <span className="text-scale-purple">classes, deadlines, and dozens of applications</span>{" "}
-              — so nothing slips through the cracks.
-            </p>
-          </div>
-        </section>
-      </Reveal>
-
-      {/* How it works */}
-      <section id="how-it-works" className="py-20 lg:py-28">
+      {/* ── Semester timeline ──────────────────────────────── */}
+      <section className="py-20 lg:py-28" aria-labelledby="timeline-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="mb-14 text-center">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                How it works
+                One school year, sorted
               </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                From “where do I start?” to offer letter
+              <h2 id="timeline-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                A tool for every part of the season
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                Three steps. Then your whole internship search runs itself while you
-                focus on classes and interviews.
+                Recruiting season has phases. RethinkJobs is built around them.
               </p>
             </div>
           </Reveal>
-          <div className="grid gap-6 md:grid-cols-3">
-            {HOW_IT_WORKS.map((s, i) => (
-              <Reveal key={s.step} className={i === 1 ? "md:mt-6" : i === 2 ? "md:mt-12" : ""}>
-                <div className="group h-full rounded-3xl border border-slate-200/80 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-scale-purple/25 hover:shadow-scale-soft">
-                  <div
-                    className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-scale-purple text-lg font-bold text-white shadow-lg shadow-violet-500/25"
-                    aria-hidden
-                  >
-                    {s.step}
+          <ol className="relative grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {TIMELINE.map((t, i) => (
+              <Reveal key={t.title} className="h-full">
+                <li className={`flex h-full flex-col rounded-3xl border-2 p-6 ${t.accent}`}>
+                  <div className="mb-4 flex items-center gap-2.5">
+                    <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-extrabold text-white ${t.dot}`} aria-hidden>
+                      {i + 1}
+                    </span>
+                    <span className="text-xs font-bold uppercase tracking-wide text-slate-500">{t.season}</span>
                   </div>
-                  <h3 className="mb-2 text-lg font-bold text-slate-900">{s.title}</h3>
-                  <p className="text-sm leading-relaxed text-slate-600">{s.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Student stats strip */}
-      <Reveal>
-        <section className="border-y border-scale-purple/10 bg-scale-lavender/50 py-12">
-          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 sm:px-6">
-            {STUDENT_STATS.map(([n, l]) => (
-              <div key={l} className="text-center">
-                <p className="text-2xl font-extrabold text-scale-purple sm:text-3xl">{n}</p>
-                <p className="mt-1 text-xs text-slate-600 sm:text-sm">{l}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </Reveal>
-
-      {/* Feature grid */}
-      <section id="features" className="py-20 lg:py-28" aria-labelledby="features-heading">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <div className="mb-14 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                The tracker
-              </span>
-              <h2
-                id="features-heading"
-                className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl"
-              >
-                Your internship search, organized for you
-              </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                From first application to final offer — searchable, sorted, and always
-                up to date. Built to survive campus recruiting season.
-              </p>
-            </div>
-          </Reveal>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "Full Gmail sync",
-                desc: "Read-only access. We scan for job threads and keep your pipeline in sync.",
-                path: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75",
-              },
-              {
-                title: "AI classification",
-                desc: "Extracts company, role, status, recruiters, and deadlines automatically.",
-                path: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z",
-              },
-              {
-                title: "Pipeline dashboard",
-                desc: "Applied through offer: visual stages, filters, and date ranges at a glance.",
-                path: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
-              },
-              {
-                title: "Deadline reminders",
-                desc: "Assessments and offer deadlines surface before they sneak up on you.",
-                path: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",
-              },
-              {
-                title: "Search & filters",
-                desc: "Slice by status, company, role, or time window — however you think about your search.",
-                path: "M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z",
-              },
-              {
-                title: "Mentor reach-out",
-                desc: "Find recruiters and hiring contacts at any company when you're ready to go beyond the portal.",
-                path: "M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.646-6.374-1.666m13.5-1.372A8.25 8.25 0 0119.5 10.5",
-              },
-            ].map((f) => (
-              <Reveal key={f.title}>
-                <div className="group h-full rounded-2xl border border-slate-200/80 bg-white p-6 shadow-card transition-all duration-300 hover:border-scale-purple/20 hover:shadow-scale-soft">
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-scale-purple/10 text-scale-purple transition-colors group-hover:bg-scale-purple group-hover:text-white">
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d={f.path} />
+                  <h3 className="text-lg font-bold text-slate-900">{t.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{t.desc}</p>
+                  <Link href={t.href} className={`mt-5 inline-flex items-center gap-1 text-sm font-semibold ${t.link}`}>
+                    {t.label}
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
-                  </div>
-                  <h3 className="mb-1.5 text-base font-bold text-slate-900">{f.title}</h3>
-                  <p className="text-sm leading-relaxed text-slate-600">{f.desc}</p>
-                </div>
+                  </Link>
+                </li>
               </Reveal>
             ))}
-          </div>
+          </ol>
+          <Reveal>
+            <Link
+              href="/resources"
+              className="mt-5 flex flex-col items-center justify-between gap-3 rounded-3xl border-2 border-sky-200 bg-sky-50/60 px-6 py-5 text-center transition-colors hover:bg-sky-50 sm:flex-row sm:text-left"
+            >
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-slate-500">All year long</p>
+                <p className="mt-1 text-sm text-slate-700">
+                  <span className="font-bold text-slate-900">Student Resources:</span>{" "}
+                  50+ discounts and free tools your student email unlocks — laptops to design software.
+                </p>
+              </div>
+              <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-sky-700">
+                Browse perks
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </span>
+            </Link>
+          </Reveal>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="bg-scale-lavender/30 py-20 lg:py-28" aria-labelledby="pricing-heading">
+      {/* ── Bento grid ─────────────────────────────────────── */}
+      <section className="bg-gradient-to-b from-white via-scale-mist/60 to-white py-20 lg:py-28" aria-labelledby="bento-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <div className="mb-12 text-center sm:mb-14">
+            <div className="mb-14 text-center">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                Pricing
+                The toolkit
               </span>
-              <h2 id="pricing-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Students never pay. Seriously.
+              <h2 id="bento-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                Five tools. Zero spreadsheets.
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
-                Verify your student status once and everything is free. Everyone else
-                starts free and can upgrade anytime.{" "}
-                <Link href="/blog" className="font-semibold text-scale-purple hover:underline">
-                  Read the blog
-                </Link>{" "}
-                for job-search playbooks.
-              </p>
             </div>
           </Reveal>
-
-          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:gap-6 lg:grid-cols-3 lg:items-stretch lg:gap-5 xl:gap-6">
-            {/* Free */}
-            <Reveal className="min-w-0 lg:min-h-0">
-              <article className="flex h-full flex-col rounded-2xl border-2 border-slate-200/90 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-7">
-                <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
-                  <span className="sr-only">No badge</span>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {/* Track — hero card */}
+            <Reveal className="md:col-span-2 lg:row-span-2">
+              <Link
+                href="/"
+                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-scale-purple/40 hover:shadow-scale-soft"
+              >
+                <p className="text-xs font-bold uppercase tracking-wide text-scale-purple">Track Applications</p>
+                <h3 className="mt-2 text-xl font-bold text-slate-900">
+                  Your inbox becomes your pipeline
+                </h3>
+                <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-600">
+                  Read-only Gmail sync. AI extracts the company, role, stage, and deadline
+                  from every recruiter email — you just watch the board update.
+                </p>
+                <div className="mt-6 flex-1 space-y-2">
+                  <div className="flex h-2.5 gap-1 overflow-hidden rounded-full bg-slate-100 p-0.5">
+                    <div className="w-[42%] rounded-full bg-scale-purple" />
+                    <div className="w-[20%] rounded-full bg-amber-400" />
+                    <div className="w-[14%] rounded-full bg-violet-400" />
+                    <div className="w-[10%] rounded-full bg-emerald-400" />
+                  </div>
+                  <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-3">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">Datadog</p>
+                      <p className="text-xs text-slate-500">SWE Intern · Final round Thursday</p>
+                    </div>
+                    <span className="rounded-full bg-violet-100 px-2.5 py-1 text-[11px] font-bold text-violet-700">Interviewing</span>
+                  </div>
+                  <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-3">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">Duolingo</p>
+                      <p className="text-xs text-slate-500">PM Intern · Assessment due in 2 days</p>
+                    </div>
+                    <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold text-amber-800">Assessment</span>
+                  </div>
                 </div>
-                <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Free</h3>
-                <div className="mt-3 flex items-baseline justify-center gap-1">
-                  <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">$0</span>
-                  <span className="text-sm text-slate-500">forever</span>
-                </div>
-                <p className="mt-2 text-center text-sm text-slate-500">Perfect for getting started</p>
-                <ul className="mt-6 flex-1 space-y-2.5 border-t border-slate-100 pt-6">
-                  {["Track up to 50 applications", "AI email classification", "Pipeline dashboard", "All five tools included"].map(
-                    (x) => (
-                      <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
-                        <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-scale-purple" />
-                        <span>{x}</span>
-                      </li>
-                    )
-                  )}
-                </ul>
-                <LoginLink
-                  callbackUrl="/"
-                  label="Get started free"
-                  className="mt-8 block w-full rounded-xl border-2 border-slate-200 bg-white py-3 text-center text-sm font-semibold text-slate-800 transition-colors hover:border-scale-purple/35 hover:bg-scale-mist/80"
-                />
-              </article>
+                <span className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-scale-purple">
+                  Open the tracker
+                  <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </span>
+              </Link>
             </Reveal>
 
-            {/* Student — the hero plan */}
-            <Reveal className="min-w-0 lg:min-h-0">
-              <article className="flex h-full flex-col rounded-2xl border-2 border-emerald-400 bg-gradient-to-b from-white to-emerald-50/50 p-6 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)] sm:p-7">
-                <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
-                  <span className="rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-                    For students
-                  </span>
+            {/* Find internships */}
+            <Reveal className="h-full">
+              <Link
+                href="/find-jobs"
+                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-card-hover"
+              >
+                <p className="text-xs font-bold uppercase tracking-wide text-emerald-600">Find Internships</p>
+                <h3 className="mt-2 text-lg font-bold text-slate-900">Fresh roles, less competition</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                  US internships synced daily from Greenhouse and Lever career pages.
+                </p>
+                <div className="mt-4 space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between rounded-xl bg-emerald-50/70 px-3 py-2">
+                    <span className="font-semibold text-slate-800">Anthropic · Research Intern</span>
+                    <span className="font-bold text-emerald-700">New</span>
+                  </div>
+                  <div className="flex items-center justify-between rounded-xl bg-emerald-50/70 px-3 py-2">
+                    <span className="font-semibold text-slate-800">Ramp · Data Intern</span>
+                    <span className="text-slate-400">2d</span>
+                  </div>
                 </div>
-                <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-emerald-700">Student</h3>
-                <div className="mt-3 flex justify-center">
-                  <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">Free</span>
+              </Link>
+            </Reveal>
+
+            {/* Interview prep */}
+            <Reveal className="h-full">
+              <Link
+                href="/practice-interviews"
+                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-card-hover"
+              >
+                <p className="text-xs font-bold uppercase tracking-wide text-amber-600">Interview Prep</p>
+                <h3 className="mt-2 text-lg font-bold text-slate-900">Rehearse with AI</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                  Company-specific mock interviews — behavioral, technical, case.
+                </p>
+                <div className="mt-4 rounded-2xl bg-amber-50/80 px-4 py-3 text-xs italic leading-relaxed text-slate-700">
+                  “Tell me about a time you shipped something under a deadline…”
                 </div>
-                <p className="mt-2 text-center text-sm text-slate-500">Verify once with your school</p>
-                <ul className="mt-6 flex-1 space-y-2.5 border-t border-emerald-100/80 pt-6">
-                  {[
-                    "Unlimited applications",
-                    "Unlimited Gmail syncs",
-                    "AI mock interviews",
-                    "Mentor & recruiter search",
-                    "All student deals",
-                  ].map((x) => (
-                    <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
-                      <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                      <span>{x}</span>
-                    </li>
+              </Link>
+            </Reveal>
+
+            {/* Mentors */}
+            <Reveal className="h-full">
+              <Link
+                href="/find-mentors"
+                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-rose-300 hover:shadow-card-hover"
+              >
+                <p className="text-xs font-bold uppercase tracking-wide text-rose-600">Find Mentors</p>
+                <h3 className="mt-2 text-lg font-bold text-slate-900">Referrals beat portals</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                  Recruiters and campus hiring contacts at any company, ready for a coffee chat.
+                </p>
+                <div className="mt-4 flex -space-x-2" aria-hidden>
+                  {["bg-rose-400", "bg-violet-400", "bg-emerald-400", "bg-amber-400"].map((c, i) => (
+                    <span key={i} className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold text-white ${c}`}>
+                      {["AK", "JL", "MR", "+9"][i]}
+                    </span>
                   ))}
-                </ul>
+                </div>
+              </Link>
+            </Reveal>
+
+            {/* Resources */}
+            <Reveal className="h-full">
+              <Link
+                href="/resources"
+                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-sky-300 hover:shadow-card-hover"
+              >
+                <p className="text-xs font-bold uppercase tracking-wide text-sky-600">Student Resources</p>
+                <h3 className="mt-2 text-lg font-bold text-slate-900">Your .edu email is a coupon</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                  50+ curated student discounts and free tools, all in one list.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-1.5 text-[11px] font-semibold">
+                  <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 ring-1 ring-sky-100">GitHub Pack</span>
+                  <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 ring-1 ring-sky-100">Figma free</span>
+                  <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 ring-1 ring-sky-100">Notion free</span>
+                </div>
+              </Link>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Free means free ────────────────────────────────── */}
+      <section id="pricing" className="py-20 lg:py-28" aria-labelledby="pricing-heading">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <Reveal>
+            <div className="rounded-[2rem] border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/80 via-white to-scale-mist p-8 sm:p-12">
+              <div className="text-center">
+                <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+                  Pricing
+                </span>
+                <h2 id="pricing-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                  Students never pay. That&apos;s the pricing page.
+                </h2>
+                <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
+                  Verify your student status once — unlimited everything, free forever.
+                  No card, no countdown.
+                </p>
+              </div>
+              <div className="mt-10 grid gap-4 sm:grid-cols-3">
+                {[
+                  { name: "Student", price: "Free", note: "Unlimited everything with verification", highlight: true },
+                  { name: "Free", price: "$0", note: "Up to 50 tracked applications", highlight: false },
+                  { name: "Pro", price: "$9.99/mo", note: "Unlimited, for non-students", highlight: false },
+                ].map((p) => (
+                  <div
+                    key={p.name}
+                    className={`rounded-2xl border-2 bg-white p-5 text-center ${
+                      p.highlight ? "border-emerald-400 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)]" : "border-slate-200/80"
+                    }`}
+                  >
+                    <p className={`text-xs font-bold uppercase tracking-wide ${p.highlight ? "text-emerald-700" : "text-slate-400"}`}>
+                      {p.name}
+                    </p>
+                    <p className="mt-2 text-2xl font-extrabold text-slate-900">{p.price}</p>
+                    <p className="mt-1 text-xs text-slate-500">{p.note}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <LoginLink
                   callbackUrl="/"
                   label="Verify & get everything free"
-                  className="mt-8 block w-full rounded-xl bg-emerald-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+                  className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-600 px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 sm:w-auto"
                 />
-              </article>
-            </Reveal>
-
-            {/* Pro */}
-            <Reveal className="min-w-0 lg:min-h-0">
-              <article className="flex h-full flex-col rounded-2xl border-2 border-scale-purple/40 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-7">
-                <div className="mb-4 flex min-h-[1.75rem] items-center justify-center">
-                  <span className="rounded-full bg-scale-purple px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-                    Professionals
-                  </span>
-                </div>
-                <h3 className="text-center text-xs font-bold uppercase tracking-[0.15em] text-scale-purple">Professional</h3>
-                <div className="mt-3 flex items-baseline justify-center gap-1">
-                  <span className="text-4xl font-extrabold tabular-nums text-slate-900 sm:text-5xl">$9.99</span>
-                  <span className="text-sm text-slate-500">/mo</span>
-                </div>
-                <p className="mt-2 text-center text-sm text-slate-500">For everyone out of school</p>
-                <ul className="mt-6 flex-1 space-y-2.5 border-t border-scale-purple/15 pt-6">
-                  {[
-                    "Unlimited applications",
-                    "Unlimited Gmail syncs",
-                    "AI classification",
-                    "Full pipeline & timeline",
-                    "Priority support",
-                  ].map((x) => (
-                    <li key={x} className="flex gap-2.5 text-sm leading-snug text-slate-600">
-                      <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-scale-purple" />
-                      <span>{x}</span>
-                    </li>
-                  ))}
-                </ul>
-                <LoginLink
-                  callbackUrl="/"
-                  label="Start Pro"
-                  className="mt-8 block w-full rounded-xl bg-scale-purple py-3 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-scale-purple-dark"
-                />
-                <p className="mt-3 text-center text-xs text-slate-400">Cancel anytime · Stripe</p>
-              </article>
-            </Reveal>
-          </div>
+                <Link
+                  href="/pricing"
+                  className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-900 hover:underline"
+                >
+                  Compare plans in detail
+                </Link>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="py-20 lg:py-28">
+      {/* ── FAQ ────────────────────────────────────────────── */}
+      <section id="faq" className="pb-20 lg:pb-28">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-12">
           <Reveal className="lg:col-span-4">
             <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Frequently asked questions
+              Questions students actually ask
             </h2>
             <p className="mt-4 text-slate-600">
-              Still stuck?{" "}
+              Something else on your mind?{" "}
               <Link
                 href="/contact-us"
                 className="font-semibold text-scale-purple hover:underline"
@@ -602,35 +613,39 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-scale-purple via-violet-600 to-scale-purple-deep py-20 lg:py-24">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_50%)]" />
-        <Reveal>
-          <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-              Your future self will thank you
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-violet-100">
-              Set up your account in seconds — find internships, track applications,
-              and start practicing today. Free for students.
-            </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <LoginLink
-                callbackUrl="/"
-                className="inline-flex items-center gap-3 rounded-2xl bg-white px-10 py-4 text-sm font-bold text-scale-purple shadow-xl transition-all hover:bg-scale-mist hover:shadow-2xl active:scale-[0.98]"
-              >
-                <GoogleIcon />
-                Get started free
-              </LoginLink>
-              <LoginLink
-                callbackUrl="/"
-                label="Sign in"
-                className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-transparent px-10 py-4 text-sm font-bold text-white shadow-lg transition-all hover:bg-white/10 active:scale-[0.98]"
-              />
+      {/* ── Final CTA ──────────────────────────────────────── */}
+      <section className="pb-20 lg:pb-28">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-scale-purple via-violet-600 to-scale-purple-deep px-6 py-16 text-center sm:px-12">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_50%)]" aria-hidden />
+              <div className="relative">
+                <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                  This semester&apos;s the one.
+                </h2>
+                <p className="mx-auto mt-4 max-w-xl text-lg text-violet-100">
+                  Set up in under a minute. Free for students, forever.
+                </p>
+                <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <LoginLink
+                    callbackUrl="/"
+                    className="inline-flex items-center gap-3 rounded-2xl bg-white px-10 py-4 text-sm font-bold text-scale-purple shadow-xl transition-all hover:bg-scale-mist hover:shadow-2xl active:scale-[0.98]"
+                  >
+                    <GoogleIcon />
+                    Get started free
+                  </LoginLink>
+                  <LoginLink
+                    callbackUrl="/"
+                    label="Sign in"
+                    className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-transparent px-10 py-4 text-sm font-bold text-white shadow-lg transition-all hover:bg-white/10 active:scale-[0.98]"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </section>
+
       </main>
     </div>
   );
