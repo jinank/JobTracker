@@ -43,7 +43,7 @@ export function Footer() {
                 Find Internships
               </Link>
               <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/" className="hover:text-white transition-colors">
+              <Link href="/tracker" className="hover:text-white transition-colors">
                 Track Applications
               </Link>
               <span className="text-slate-700 hidden sm:inline">•</span>

@@ -56,6 +56,14 @@ function Reveal({
   );
 }
 
+function CheckIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  );
+}
+
 function GoogleIcon() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -168,47 +176,276 @@ function ProductWindow() {
   );
 }
 
-/** Recruiting-season journey, mapped to the four core tools. */
-const TIMELINE = [
+/* ── Tool deep-dive vignettes ─────────────────────────────── */
+
+function VignetteFindJobs() {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">1,200+ open internships</span>
+        <span className="text-xs text-slate-400">Synced today</span>
+      </div>
+      {[
+        ["Anthropic", "Research Intern · San Francisco, CA", "New"],
+        ["Ramp", "Data Science Intern · New York, NY", "1d"],
+        ["Vercel", "Frontend Intern · Remote (US)", "2d"],
+      ].map(([co, role, age]) => (
+        <div key={co} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-sm">
+          <div>
+            <p className="text-sm font-semibold text-slate-900">{co}</p>
+            <p className="text-xs text-slate-500">{role}</p>
+          </div>
+          <span className={`text-[11px] font-bold ${age === "New" ? "text-emerald-600" : "text-slate-400"}`}>{age}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function VignetteTrack() {
+  return (
+    <div className="space-y-2.5">
+      <div className="flex h-3 gap-1 overflow-hidden rounded-full bg-slate-100 p-0.5">
+        <div className="w-[42%] rounded-full bg-scale-purple" />
+        <div className="w-[20%] rounded-full bg-amber-400" />
+        <div className="w-[14%] rounded-full bg-violet-400" />
+        <div className="w-[10%] rounded-full bg-emerald-400" />
+      </div>
+      {[
+        ["Datadog", "SWE Intern · Final round Thursday", "Interviewing", "bg-violet-100 text-violet-700"],
+        ["Duolingo", "PM Intern · Assessment due in 2 days", "Assessment", "bg-amber-100 text-amber-800"],
+        ["Spotify", "Backend Intern · Recruiter replied", "Applied", "bg-blue-100 text-blue-700"],
+      ].map(([co, role, status, chip]) => (
+        <div key={co} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-sm">
+          <div>
+            <p className="text-sm font-semibold text-slate-900">{co}</p>
+            <p className="text-xs text-slate-500">{role}</p>
+          </div>
+          <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${chip}`}>{status}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function VignetteInterview() {
+  return (
+    <div className="space-y-3">
+      <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-white px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm ring-1 ring-slate-100">
+        <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-amber-600">AI Interviewer · Google · SWE</p>
+        “Tell me about a time you had to ship something with an unrealistic deadline. What did you cut, and why?”
+      </div>
+      <div className="ml-auto max-w-[85%] rounded-2xl rounded-tr-md bg-amber-500/90 px-4 py-3 text-sm leading-relaxed text-white shadow-sm">
+        “In my robotics club we had two weeks to demo, so I scoped the controller down to…”
+      </div>
+      <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-white px-4 py-3 text-xs leading-relaxed text-slate-600 shadow-sm ring-1 ring-slate-100">
+        <span className="font-bold text-emerald-600">Good structure.</span> Try quantifying the result — what did the demo win you?
+      </div>
+    </div>
+  );
+}
+
+function VignetteMentors() {
+  return (
+    <div className="space-y-2">
+      {[
+        ["AK", "from-rose-500 to-rose-600", "Alicia K.", "University Recruiter · Stripe"],
+        ["JM", "from-violet-500 to-violet-600", "Jordan M.", "Campus Hiring Lead · Figma"],
+        ["RT", "from-emerald-500 to-emerald-600", "Ravi T.", "Talent Partner · Notion"],
+      ].map(([init, grad, name, title]) => (
+        <div key={name} className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-sm">
+          <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${grad} text-xs font-bold text-white`} aria-hidden>
+            {init}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-slate-900">{name}</p>
+            <p className="truncate text-xs text-slate-500">{title}</p>
+          </div>
+          <span className="rounded-lg bg-[#0A66C2] px-3 py-1.5 text-[11px] font-bold text-white">Connect</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function VignetteResources() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {[
+        "GitHub Student Pack — free",
+        "Figma Education — free",
+        "Notion Plus — free",
+        "JetBrains — free",
+        "Spotify Premium — 50% off",
+        "Adobe CC — 60% off",
+        "AWS Educate — credits",
+        "+ 40 more",
+      ].map((d) => (
+        <span key={d} className="rounded-full bg-white px-3.5 py-2 text-xs font-semibold text-sky-800 shadow-sm ring-1 ring-sky-100">
+          {d}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/* ── Page data ────────────────────────────────────────────── */
+
+const QUICK_FACTS: [string, string][] = [
+  ["$0", "for verified students — every tool included"],
+  ["Daily", "internship syncs from company career pages"],
+  ["25+", "AI mock interviews by company & role"],
+  ["50+", "student discounts & free tools"],
+];
+
+type ToolSection = {
+  id: string;
+  eyebrow: string;
+  eyebrowColor: string;
+  title: string;
+  desc: string;
+  bullets: string[];
+  checkColor: string;
+  href: string;
+  linkLabel: string;
+  linkColor: string;
+  panelBg: string;
+  vignette: ReactNode;
+};
+
+const TOOL_SECTIONS: ToolSection[] = [
   {
-    season: "Fall semester",
-    title: "Find real openings",
-    desc: "Browse US internships synced daily from company career pages — before the crowd finds them.",
+    id: "tool-find-internships",
+    eyebrow: "Find Internships",
+    eyebrowColor: "text-emerald-600",
+    title: "Real openings, straight from company career pages",
+    desc: "We sync US internships every day from employers' own job boards (Greenhouse and Lever) — so you see real, current roles instead of expired reposts on crowded aggregators.",
+    bullets: [
+      "US-based internships, including US-eligible remote roles",
+      "Filter by role category, work type, location, and date posted",
+      "Software, product, design, data, marketing, and operations roles",
+      "Apply directly on the company's site — then track the reply here",
+    ],
+    checkColor: "text-emerald-600",
     href: "/find-jobs",
-    accent: "border-emerald-200 bg-emerald-50/60",
-    dot: "bg-emerald-500",
-    link: "text-emerald-700",
-    label: "Find Internships",
+    linkLabel: "Browse internships",
+    linkColor: "text-emerald-700",
+    panelBg: "border-emerald-100 bg-emerald-50/60",
+    vignette: <VignetteFindJobs />,
   },
   {
-    season: "Application season",
-    title: "Apply & let it track itself",
-    desc: "Connect Gmail once. Every confirmation, assessment, and interview invite lands in your pipeline automatically.",
-    href: "/",
-    accent: "border-scale-purple/20 bg-scale-lavender/60",
-    dot: "bg-scale-purple",
-    link: "text-scale-purple",
-    label: "Track Applications",
+    id: "tool-track",
+    eyebrow: "Track Applications",
+    eyebrowColor: "text-scale-purple",
+    title: "Your inbox becomes your pipeline — automatically",
+    desc: "Connect Gmail once (read-only). AI scans for job-related threads and builds a live board with every application's company, role, stage, and deadline. No spreadsheet, no manual logging.",
+    bullets: [
+      "AI extracts company, role, status, recruiters, and deadlines",
+      "Pipeline stages from applied to offer, with search, filters, and sorting",
+      "Deadline reminders for assessments and expiring offers",
+      "Weekly goals and a leaderboard to keep momentum during recruiting season",
+      "Edit anything the AI gets wrong with one click",
+    ],
+    checkColor: "text-scale-purple",
+    href: "/tracker",
+    linkLabel: "Open the tracker",
+    linkColor: "text-scale-purple",
+    panelBg: "border-scale-purple/15 bg-scale-lavender/60",
+    vignette: <VignetteTrack />,
   },
   {
-    season: "Interview weeks",
-    title: "Practice till it's boring",
-    desc: "AI mock interviews tailored to the exact company and role. No scheduling, no judgment, unlimited retries.",
+    id: "tool-interviews",
+    eyebrow: "Interview Prep",
+    eyebrowColor: "text-amber-600",
+    title: "Practice interviews until the real one feels easy",
+    desc: "AI mock interviews tailored to the exact company and role you're chasing — behavioral, technical, and case formats. Practice at 2am in your dorm if you want; nobody's judging.",
+    bullets: [
+      "25+ interviews modeled on top companies' real formats",
+      "Behavioral, technical, and role-specific question styles",
+      "Instant feedback on your answers as you go",
+      "Unlimited retries — repeat until your answers are second nature",
+    ],
+    checkColor: "text-amber-600",
     href: "/practice-interviews",
-    accent: "border-amber-200 bg-amber-50/60",
-    dot: "bg-amber-500",
-    link: "text-amber-700",
-    label: "Interview Prep",
+    linkLabel: "Start practicing",
+    linkColor: "text-amber-700",
+    panelBg: "border-amber-100 bg-amber-50/60",
+    vignette: <VignetteInterview />,
   },
   {
-    season: "Crunch time",
-    title: "Get a human on your side",
-    desc: "Find recruiters and campus hiring contacts at any company — for advice, referrals, and real answers.",
+    id: "tool-mentors",
+    eyebrow: "Find Mentors",
+    eyebrowColor: "text-rose-600",
+    title: "Meet the people who can actually open doors",
+    desc: "A referral or a fifteen-minute chat beats a hundred cold applications. Search any company and we'll surface recruiters, campus hiring teams, and people-team contacts you can reach on LinkedIn.",
+    bullets: [
+      "Search recruiters and hiring contacts at any company",
+      "Campus recruiting and university-relations contacts highlighted",
+      "One-click LinkedIn connect for advice, referrals, or coffee chats",
+      "Outreach tips written for students, not sales reps",
+    ],
+    checkColor: "text-rose-600",
     href: "/find-mentors",
-    accent: "border-rose-200 bg-rose-50/60",
-    dot: "bg-rose-500",
-    link: "text-rose-600",
-    label: "Find Mentors",
+    linkLabel: "Find your people",
+    linkColor: "text-rose-600",
+    panelBg: "border-rose-100 bg-rose-50/60",
+    vignette: <VignetteMentors />,
+  },
+  {
+    id: "tool-resources",
+    eyebrow: "Student Resources",
+    eyebrowColor: "text-sky-600",
+    title: "Your .edu email is worth hundreds of dollars",
+    desc: "A curated, searchable list of 50+ student discounts and free tools — developer software, design apps, courses, and more. Plus free member perks launching soon: resume reviews, LinkedIn profile reviews, and headshots.",
+    bullets: [
+      "50+ verified student deals across software, courses, and services",
+      "Filter by category — dev tools, design, productivity, learning",
+      "Direct links to each provider's official student offer",
+      "Free member resources launching soon (resume & LinkedIn reviews)",
+    ],
+    checkColor: "text-sky-600",
+    href: "/resources",
+    linkLabel: "Browse perks",
+    linkColor: "text-sky-700",
+    panelBg: "border-sky-100 bg-sky-50/60",
+    vignette: <VignetteResources />,
+  },
+];
+
+const HOW_IT_WORKS = [
+  {
+    step: "1",
+    title: "Create your free account",
+    desc: "Sign in with Google or email in seconds. Students: verify once with your school and everything unlocks, free forever.",
+  },
+  {
+    step: "2",
+    title: "Find roles & apply",
+    desc: "Browse internships synced daily from company career pages, then apply on the employer's own site.",
+  },
+  {
+    step: "3",
+    title: "Let RethinkJobs run the rest",
+    desc: "Connect Gmail (read-only) and your pipeline tracks itself — while you prep interviews and message mentors from the same account.",
+  },
+];
+
+const PRIVACY_POINTS = [
+  {
+    title: "Read-only Gmail access",
+    desc: "We can read job-related threads to build your pipeline — we can never send, delete, or modify your email.",
+  },
+  {
+    title: "Only job-search emails",
+    desc: "Scanning targets application confirmations, assessments, interview invites, offers, and rejections. Your personal mail isn't what we're here for.",
+  },
+  {
+    title: "Revoke anytime",
+    desc: "Disconnect from your Google account settings in two clicks. Gmail is optional in the first place — you can use every other tool without it.",
+  },
+  {
+    title: "You stay in control",
+    desc: "Every AI-classified application can be edited or corrected. Your data powers your dashboard, governed by our privacy policy.",
   },
 ];
 
@@ -232,6 +469,36 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
   {
     q: "I'm not a student — can I use it?",
     a: "Sure. The Free plan tracks up to 50 applications, and Professional unlocks unlimited everything for $9.99/month.",
+  },
+];
+
+const PLANS = [
+  {
+    name: "Free",
+    price: "$0",
+    cadence: "forever",
+    note: "Perfect for getting started",
+    features: ["Track up to 50 applications", "AI email classification", "Pipeline dashboard with filters", "All five tools included"],
+    cta: "Get started free",
+    highlight: false,
+  },
+  {
+    name: "Student",
+    price: "Free",
+    cadence: "with verification",
+    note: "Verify once with your school",
+    features: ["Unlimited applications & syncs", "AI mock interviews", "Mentor & recruiter search", "All student deals & resources"],
+    cta: "Verify & unlock everything",
+    highlight: true,
+  },
+  {
+    name: "Professional",
+    price: "$9.99",
+    cadence: "/month",
+    note: "For everyone out of school",
+    features: ["Unlimited applications & syncs", "Full pipeline & timeline", "Priority support", "Cancel anytime via Stripe"],
+    cta: "Start Pro",
+    highlight: false,
   },
 ];
 
@@ -300,262 +567,230 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── Semester timeline ──────────────────────────────── */}
-      <section className="py-20 lg:py-28" aria-labelledby="timeline-heading">
+      {/* ── What is RethinkJobs ────────────────────────────── */}
+      <section id="about" className="border-b border-slate-100 py-16 lg:py-20" aria-labelledby="about-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <div className="mb-14 text-center">
+            <div className="mx-auto max-w-3xl text-center">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                One school year, sorted
+                What is RethinkJobs?
               </span>
-              <h2 id="timeline-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                A tool for every part of the season
+              <h2 id="about-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                One account for the entire internship hunt
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                Recruiting season has phases. RethinkJobs is built around them.
+              <p className="mt-5 text-lg leading-relaxed text-slate-600">
+                RethinkJobs is a student job-search hub that puts the whole process in one
+                place: a daily-updated board of US internships, an AI tracker that builds
+                your application pipeline from Gmail, mock interviews tailored to real
+                companies, a mentor finder for referrals and advice, and a library of
+                student discounts. Five tools, one login — free for verified students.
               </p>
             </div>
           </Reveal>
-          <ol className="relative grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {TIMELINE.map((t, i) => (
-              <Reveal key={t.title} className="h-full">
-                <li className={`flex h-full flex-col rounded-3xl border-2 p-6 ${t.accent}`}>
-                  <div className="mb-4 flex items-center gap-2.5">
-                    <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-extrabold text-white ${t.dot}`} aria-hidden>
-                      {i + 1}
-                    </span>
-                    <span className="text-xs font-bold uppercase tracking-wide text-slate-500">{t.season}</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900">{t.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{t.desc}</p>
-                  <Link href={t.href} className={`mt-5 inline-flex items-center gap-1 text-sm font-semibold ${t.link}`}>
-                    {t.label}
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                  </Link>
-                </li>
+          <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {QUICK_FACTS.map(([n, l]) => (
+              <Reveal key={l} className="h-full">
+                <div className="h-full rounded-3xl border border-slate-200/80 bg-scale-mist/60 p-6 text-center">
+                  <p className="text-3xl font-extrabold text-scale-purple">{n}</p>
+                  <p className="mt-2 text-sm leading-snug text-slate-600">{l}</p>
+                </div>
               </Reveal>
             ))}
-          </ol>
-          <Reveal>
-            <Link
-              href="/resources"
-              className="mt-5 flex flex-col items-center justify-between gap-3 rounded-3xl border-2 border-sky-200 bg-sky-50/60 px-6 py-5 text-center transition-colors hover:bg-sky-50 sm:flex-row sm:text-left"
-            >
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-slate-500">All year long</p>
-                <p className="mt-1 text-sm text-slate-700">
-                  <span className="font-bold text-slate-900">Student Resources:</span>{" "}
-                  50+ discounts and free tools your student email unlocks — laptops to design software.
-                </p>
-              </div>
-              <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-sky-700">
-                Browse perks
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </span>
-            </Link>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Bento grid ─────────────────────────────────────── */}
-      <section className="bg-gradient-to-b from-white via-scale-mist/60 to-white py-20 lg:py-28" aria-labelledby="bento-heading">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <div className="mb-14 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                The toolkit
-              </span>
-              <h2 id="bento-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Five tools. Zero spreadsheets.
-              </h2>
-            </div>
-          </Reveal>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {/* Track — hero card */}
-            <Reveal className="md:col-span-2 lg:row-span-2">
-              <Link
-                href="/"
-                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-scale-purple/40 hover:shadow-scale-soft"
-              >
-                <p className="text-xs font-bold uppercase tracking-wide text-scale-purple">Track Applications</p>
-                <h3 className="mt-2 text-xl font-bold text-slate-900">
-                  Your inbox becomes your pipeline
-                </h3>
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-600">
-                  Read-only Gmail sync. AI extracts the company, role, stage, and deadline
-                  from every recruiter email — you just watch the board update.
-                </p>
-                <div className="mt-6 flex-1 space-y-2">
-                  <div className="flex h-2.5 gap-1 overflow-hidden rounded-full bg-slate-100 p-0.5">
-                    <div className="w-[42%] rounded-full bg-scale-purple" />
-                    <div className="w-[20%] rounded-full bg-amber-400" />
-                    <div className="w-[14%] rounded-full bg-violet-400" />
-                    <div className="w-[10%] rounded-full bg-emerald-400" />
-                  </div>
-                  <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-3">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">Datadog</p>
-                      <p className="text-xs text-slate-500">SWE Intern · Final round Thursday</p>
-                    </div>
-                    <span className="rounded-full bg-violet-100 px-2.5 py-1 text-[11px] font-bold text-violet-700">Interviewing</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-3">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">Duolingo</p>
-                      <p className="text-xs text-slate-500">PM Intern · Assessment due in 2 days</p>
-                    </div>
-                    <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold text-amber-800">Assessment</span>
-                  </div>
-                </div>
-                <span className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-scale-purple">
-                  Open the tracker
-                  <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </span>
-              </Link>
-            </Reveal>
-
-            {/* Find internships */}
-            <Reveal className="h-full">
-              <Link
-                href="/find-jobs"
-                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-card-hover"
-              >
-                <p className="text-xs font-bold uppercase tracking-wide text-emerald-600">Find Internships</p>
-                <h3 className="mt-2 text-lg font-bold text-slate-900">Fresh roles, less competition</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                  US internships synced daily from Greenhouse and Lever career pages.
-                </p>
-                <div className="mt-4 space-y-1.5 text-xs">
-                  <div className="flex items-center justify-between rounded-xl bg-emerald-50/70 px-3 py-2">
-                    <span className="font-semibold text-slate-800">Anthropic · Research Intern</span>
-                    <span className="font-bold text-emerald-700">New</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-xl bg-emerald-50/70 px-3 py-2">
-                    <span className="font-semibold text-slate-800">Ramp · Data Intern</span>
-                    <span className="text-slate-400">2d</span>
-                  </div>
-                </div>
-              </Link>
-            </Reveal>
-
-            {/* Interview prep */}
-            <Reveal className="h-full">
-              <Link
-                href="/practice-interviews"
-                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-card-hover"
-              >
-                <p className="text-xs font-bold uppercase tracking-wide text-amber-600">Interview Prep</p>
-                <h3 className="mt-2 text-lg font-bold text-slate-900">Rehearse with AI</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                  Company-specific mock interviews — behavioral, technical, case.
-                </p>
-                <div className="mt-4 rounded-2xl bg-amber-50/80 px-4 py-3 text-xs italic leading-relaxed text-slate-700">
-                  “Tell me about a time you shipped something under a deadline…”
-                </div>
-              </Link>
-            </Reveal>
-
-            {/* Mentors */}
-            <Reveal className="h-full">
-              <Link
-                href="/find-mentors"
-                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-rose-300 hover:shadow-card-hover"
-              >
-                <p className="text-xs font-bold uppercase tracking-wide text-rose-600">Find Mentors</p>
-                <h3 className="mt-2 text-lg font-bold text-slate-900">Referrals beat portals</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                  Recruiters and campus hiring contacts at any company, ready for a coffee chat.
-                </p>
-                <div className="mt-4 flex -space-x-2" aria-hidden>
-                  {["bg-rose-400", "bg-violet-400", "bg-emerald-400", "bg-amber-400"].map((c, i) => (
-                    <span key={i} className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold text-white ${c}`}>
-                      {["AK", "JL", "MR", "+9"][i]}
-                    </span>
-                  ))}
-                </div>
-              </Link>
-            </Reveal>
-
-            {/* Resources */}
-            <Reveal className="h-full">
-              <Link
-                href="/resources"
-                className="group flex h-full flex-col rounded-3xl border-2 border-slate-200/80 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-sky-300 hover:shadow-card-hover"
-              >
-                <p className="text-xs font-bold uppercase tracking-wide text-sky-600">Student Resources</p>
-                <h3 className="mt-2 text-lg font-bold text-slate-900">Your .edu email is a coupon</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                  50+ curated student discounts and free tools, all in one list.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-1.5 text-[11px] font-semibold">
-                  <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 ring-1 ring-sky-100">GitHub Pack</span>
-                  <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 ring-1 ring-sky-100">Figma free</span>
-                  <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 ring-1 ring-sky-100">Notion free</span>
-                </div>
-              </Link>
-            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ── Free means free ────────────────────────────────── */}
-      <section id="pricing" className="py-20 lg:py-28" aria-labelledby="pricing-heading">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+      {/* ── Tool deep-dives ────────────────────────────────── */}
+      <section id="features" className="py-20 lg:py-28" aria-labelledby="features-heading">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <div className="rounded-[2rem] border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/80 via-white to-scale-mist p-8 sm:p-12">
-              <div className="text-center">
-                <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
-                  Pricing
-                </span>
-                <h2 id="pricing-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                  Students never pay. That&apos;s the pricing page.
-                </h2>
-                <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
-                  Verify your student status once — unlimited everything, free forever.
-                  No card, no countdown.
-                </p>
-              </div>
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                {[
-                  { name: "Student", price: "Free", note: "Unlimited everything with verification", highlight: true },
-                  { name: "Free", price: "$0", note: "Up to 50 tracked applications", highlight: false },
-                  { name: "Pro", price: "$9.99/mo", note: "Unlimited, for non-students", highlight: false },
-                ].map((p) => (
-                  <div
-                    key={p.name}
-                    className={`rounded-2xl border-2 bg-white p-5 text-center ${
-                      p.highlight ? "border-emerald-400 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)]" : "border-slate-200/80"
-                    }`}
-                  >
-                    <p className={`text-xs font-bold uppercase tracking-wide ${p.highlight ? "text-emerald-700" : "text-slate-400"}`}>
-                      {p.name}
-                    </p>
-                    <p className="mt-2 text-2xl font-extrabold text-slate-900">{p.price}</p>
-                    <p className="mt-1 text-xs text-slate-500">{p.note}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <LoginLink
-                  callbackUrl="/"
-                  label="Verify & get everything free"
-                  className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-600 px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 sm:w-auto"
-                />
-                <Link
-                  href="/pricing"
-                  className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-900 hover:underline"
-                >
-                  Compare plans in detail
-                </Link>
-              </div>
+            <div className="mb-16 text-center">
+              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+                The toolkit
+              </span>
+              <h2 id="features-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                Five tools. Zero spreadsheets.
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+                Everything below is included with every account — here&apos;s exactly what
+                each one does.
+              </p>
             </div>
           </Reveal>
+
+          <div className="space-y-16 lg:space-y-20">
+            {TOOL_SECTIONS.map((t, i) => (
+              <Reveal key={t.id}>
+                <div id={t.id} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+                  <div className={i % 2 === 1 ? "lg:order-2" : ""}>
+                    <p className={`text-xs font-bold uppercase tracking-[0.15em] ${t.eyebrowColor}`}>{t.eyebrow}</p>
+                    <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+                      {t.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-relaxed text-slate-600">{t.desc}</p>
+                    <ul className="mt-5 space-y-2.5">
+                      {t.bullets.map((b) => (
+                        <li key={b} className="flex gap-2.5 text-sm leading-snug text-slate-700">
+                          <CheckIcon className={`mt-0.5 h-4 w-4 shrink-0 ${t.checkColor}`} />
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href={t.href} className={`mt-6 inline-flex items-center gap-1 text-sm font-semibold ${t.linkColor}`}>
+                      {t.linkLabel}
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                      </svg>
+                    </Link>
+                  </div>
+                  <div className={i % 2 === 1 ? "lg:order-1" : ""}>
+                    <div className={`rounded-[2rem] border-2 p-5 sm:p-7 ${t.panelBg}`}>{t.vignette}</div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── How it works ───────────────────────────────────── */}
+      <section id="how-it-works" className="bg-gradient-to-b from-white via-scale-mist/60 to-white py-20 lg:py-28" aria-labelledby="how-heading">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <div className="mb-14 text-center">
+              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+                How it works
+              </span>
+              <h2 id="how-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                Up and running in under a minute
+              </h2>
+            </div>
+          </Reveal>
+          <div className="grid gap-6 md:grid-cols-3">
+            {HOW_IT_WORKS.map((s, i) => (
+              <Reveal key={s.step} className={i === 1 ? "md:mt-6" : i === 2 ? "md:mt-12" : ""}>
+                <div className="h-full rounded-3xl border border-slate-200/80 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-scale-purple/25 hover:shadow-scale-soft">
+                  <div
+                    className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-scale-purple text-lg font-bold text-white shadow-lg shadow-violet-500/25"
+                    aria-hidden
+                  >
+                    {s.step}
+                  </div>
+                  <h3 className="mb-2 text-lg font-bold text-slate-900">{s.title}</h3>
+                  <p className="text-sm leading-relaxed text-slate-600">{s.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Privacy & trust ────────────────────────────────── */}
+      <section id="privacy" className="py-20 lg:py-28" aria-labelledby="privacy-heading">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+            <Reveal className="lg:col-span-5">
+              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+                Privacy
+              </span>
+              <h2 id="privacy-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                Your inbox stays yours
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-slate-600">
+                The Gmail connection is the most personal thing you could hand a job-search
+                tool, so the rules are strict and simple.
+              </p>
+              <Link href="/privacy" className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-scale-purple hover:underline">
+                Read the privacy policy
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            </Reveal>
+            <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+              {PRIVACY_POINTS.map((p) => (
+                <Reveal key={p.title} className="h-full">
+                  <div className="h-full rounded-3xl border border-slate-200/80 bg-white p-6 shadow-card">
+                    <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+                      <CheckIcon className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-sm font-bold text-slate-900">{p.title}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{p.desc}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Pricing ────────────────────────────────────────── */}
+      <section id="pricing" className="bg-gradient-to-b from-white via-emerald-50/40 to-white py-20 lg:py-28" aria-labelledby="pricing-heading">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <div className="mb-12 text-center">
+              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+                Pricing
+              </span>
+              <h2 id="pricing-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                Students never pay. That&apos;s the pricing page.
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
+                Verify your student status once — unlimited everything, free forever.
+                Everyone else starts free.{" "}
+                <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
+                  Full comparison
+                </Link>
+                .
+              </p>
+            </div>
+          </Reveal>
+          <div className="mx-auto grid max-w-5xl gap-5 lg:grid-cols-3">
+            {PLANS.map((p) => (
+              <Reveal key={p.name} className="h-full">
+                <article
+                  className={`flex h-full flex-col rounded-3xl border-2 bg-white p-7 ${
+                    p.highlight
+                      ? "border-emerald-400 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)]"
+                      : "border-slate-200/80 shadow-card"
+                  }`}
+                >
+                  <div className="flex items-baseline justify-between">
+                    <h3 className={`text-xs font-bold uppercase tracking-[0.15em] ${p.highlight ? "text-emerald-700" : "text-slate-400"}`}>
+                      {p.name}
+                    </h3>
+                    {p.highlight && (
+                      <span className="rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+                        For students
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-4 flex items-baseline gap-1.5">
+                    <span className="text-4xl font-extrabold tabular-nums text-slate-900">{p.price}</span>
+                    <span className="text-sm text-slate-500">{p.cadence}</span>
+                  </div>
+                  <p className="mt-1 text-sm text-slate-500">{p.note}</p>
+                  <ul className="mt-6 flex-1 space-y-2.5 border-t border-slate-100 pt-6">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex gap-2.5 text-sm leading-snug text-slate-600">
+                        <CheckIcon className={`mt-0.5 h-4 w-4 shrink-0 ${p.highlight ? "text-emerald-600" : "text-scale-purple"}`} />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <LoginLink
+                    callbackUrl="/"
+                    label={p.cta}
+                    className={`mt-7 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${
+                      p.highlight
+                        ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                        : "border-2 border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-scale-mist/80"
+                    }`}
+                  />
+                </article>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

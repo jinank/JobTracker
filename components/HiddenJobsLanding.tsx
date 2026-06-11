@@ -259,8 +259,8 @@ export function HiddenJobsLanding() {
           <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50/90 px-4 py-3 text-sm text-amber-950">
             <strong>Preview:</strong> Sample internships below. Sign in to browse the full catalog with filters
             and apply links, then sync applications to{" "}
-            <Link href="/" className="font-semibold text-scale-purple hover:underline">
-              Track Jobs
+            <Link href="/tracker" className="font-semibold text-scale-purple hover:underline">
+              Track Applications
             </Link>
             .
           </div>

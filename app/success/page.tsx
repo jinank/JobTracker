@@ -7,7 +7,7 @@ export default function SuccessPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => router.push("/"), 4000);
+    const timer = setTimeout(() => router.push("/tracker"), 4000);
     return () => clearTimeout(timer);
   }, [router]);
 
@@ -37,10 +37,10 @@ export default function SuccessPage() {
           tracking. Start syncing your Gmail!
         </p>
         <button
-          onClick={() => router.push("/")}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
+          onClick={() => router.push("/tracker")}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-scale-purple text-white text-sm font-medium hover:bg-scale-purple-dark transition-colors"
         >
-          Go to Dashboard
+          Go to Tracker
         </button>
         <p className="text-xs text-slate-400 mt-4">
           Redirecting automatically...

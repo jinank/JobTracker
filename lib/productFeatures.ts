@@ -19,7 +19,7 @@ export const PRODUCT_FEATURES: ProductFeature[] = [
   },
   {
     id: "track-jobs",
-    href: "/",
+    href: "/tracker",
     label: "Track Applications",
     shortLabel: "Tracker",
     description: "Sync Gmail and watch every application move from applied to offer.",
