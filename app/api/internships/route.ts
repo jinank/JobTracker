@@ -1,12 +1,23 @@
 import { NextResponse } from "next/server";
 import { queryInternships } from "@/lib/jobs/queryInternships";
+import { getInternshipUserPrefs } from "@/lib/jobs/getInternshipUserPrefs";
 import { parseInternshipQueryParams } from "@/lib/findJobsFilters";
+import { getAppUser } from "@/lib/requirePaid";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const params = parseInternshipQueryParams(searchParams);
-    const result = await queryInternships(params);
+
+    let userPrefs = null;
+    if (params.forMe) {
+      const user = await getAppUser();
+      if (user) {
+        userPrefs = await getInternshipUserPrefs(user.userId);
+      }
+    }
+
+    const result = await queryInternships(params, userPrefs);
     return NextResponse.json(result);
   } catch (error) {
     const message =

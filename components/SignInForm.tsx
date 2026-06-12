@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import { signInWithGoogleBasic } from "@/lib/authSignIn";
+import {
+  US_STATES,
+  normalizeUserLocation,
+  savePendingLocation,
+} from "@/lib/userLocation";
 
 function GoogleIcon() {
   return (
@@ -26,6 +31,94 @@ function GoogleIcon() {
   );
 }
 
+function LocationFields({
+  city,
+  state,
+  country,
+  onCityChange,
+  onStateChange,
+  onCountryChange,
+}: {
+  city: string;
+  state: string;
+  country: string;
+  onCityChange: (v: string) => void;
+  onStateChange: (v: string) => void;
+  onCountryChange: (v: string) => void;
+}) {
+  const isUs = country === "United States";
+
+  return (
+    <div className="mb-5 space-y-3 rounded-xl border border-slate-200/80 bg-slate-50/60 p-4">
+      <p className="text-xs font-semibold text-slate-700">Where are you based?</p>
+      <p className="text-[11px] text-slate-500">New users: add your city so we can tailor internships near you.</p>
+      <div>
+        <label htmlFor="login-country" className="block text-xs font-medium text-slate-600">
+          Country
+        </label>
+        <select
+          id="login-country"
+          value={country}
+          onChange={(e) => onCountryChange(e.target.value)}
+          className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20"
+        >
+          <option value="United States">United States</option>
+          <option value="Canada">Canada</option>
+          <option value="United Kingdom">United Kingdom</option>
+          <option value="India">India</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label htmlFor="login-city" className="block text-xs font-medium text-slate-600">
+            City
+          </label>
+          <input
+            id="login-city"
+            type="text"
+            autoComplete="address-level2"
+            value={city}
+            onChange={(e) => onCityChange(e.target.value)}
+            placeholder="Austin"
+            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20"
+          />
+        </div>
+        <div>
+          <label htmlFor="login-state" className="block text-xs font-medium text-slate-600">
+            {isUs ? "State" : "State / region"}
+          </label>
+          {isUs ? (
+            <select
+              id="login-state"
+              value={state}
+              onChange={(e) => onStateChange(e.target.value)}
+              className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20"
+            >
+              <option value="">Select state</option>
+              {US_STATES.map((s) => (
+                <option key={s.code} value={s.code}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              id="login-state"
+              type="text"
+              autoComplete="address-level1"
+              value={state}
+              onChange={(e) => onStateChange(e.target.value)}
+              placeholder="Ontario"
+              className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm focus:border-scale-purple focus:ring-2 focus:ring-scale-purple/20"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function SignInForm({
   callbackUrl,
   errorBanner,
@@ -34,9 +127,24 @@ export function SignInForm({
   errorBanner?: string | null;
 }) {
   const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("United States");
   const [emailSent, setEmailSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  function maybeSaveLocation(): boolean {
+    const hasAny = city.trim() || state.trim() || country.trim();
+    const location = normalizeUserLocation({ city, state, country });
+    if (!hasAny) return true;
+    if (!location) {
+      setError("Complete city, state, and country, or leave all blank.");
+      return false;
+    }
+    savePendingLocation(location);
+    return true;
+  }
 
   async function sendMagicLink() {
     const trimmed = email.trim().toLowerCase();
@@ -44,8 +152,11 @@ export function SignInForm({
       setError("Enter your email address.");
       return;
     }
+    if (!maybeSaveLocation()) return;
+
     setLoading(true);
     setError(null);
+
     try {
       const res = await fetch("/api/auth/email-otp", {
         method: "POST",
@@ -65,6 +176,12 @@ export function SignInForm({
     }
   }
 
+  function handleGoogleSignIn() {
+    if (!maybeSaveLocation()) return;
+    setError(null);
+    void signInWithGoogleBasic(callbackUrl);
+  }
+
   return (
     <div className="w-full max-w-md">
       {errorBanner && (
@@ -72,6 +189,18 @@ export function SignInForm({
           {errorBanner}
         </div>
       )}
+
+      <LocationFields
+        city={city}
+        state={state}
+        country={country}
+        onCityChange={setCity}
+        onStateChange={setState}
+        onCountryChange={(v) => {
+          setCountry(v);
+          if (v !== "United States") setState("");
+        }}
+      />
 
       <div>
         {emailSent ? (
@@ -114,7 +243,7 @@ export function SignInForm({
 
       <button
         type="button"
-        onClick={() => void signInWithGoogleBasic(callbackUrl)}
+        onClick={handleGoogleSignIn}
         className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-slate-200 bg-white py-3.5 text-sm font-semibold text-slate-800 hover:border-scale-purple/40 hover:bg-scale-mist/30"
       >
         <GoogleIcon />
@@ -122,11 +251,6 @@ export function SignInForm({
       </button>
       <p className="mt-3 text-center text-xs text-slate-500 leading-relaxed">
         Google sign-in uses your profile only. We do not request Gmail on this step.
-      </p>
-
-      <p className="mt-6 rounded-xl border border-scale-purple/15 bg-scale-mist/40 px-4 py-3 text-xs text-slate-600 leading-relaxed">
-        Want to <strong className="text-slate-800">track applications from Gmail</strong>? After you sign in, open
-        Track Jobs and use <strong className="text-slate-800">Connect Gmail</strong> for read-only mail access.
       </p>
 
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}

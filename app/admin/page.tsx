@@ -10,7 +10,7 @@ export default function AdminHomePage() {
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-bold text-slate-900">Admin overview</h1>
       <p className="mt-2 max-w-2xl text-sm text-slate-600">
-        Signed in as <span className="font-medium text-slate-800">{session?.user?.email ?? "—"}</span>
+        Signed in as <span className="font-medium text-slate-800">{session?.user?.email ?? "N/A"}</span>
         {session?.adminCredential ? (
           <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
             Admin login

@@ -133,7 +133,7 @@ function MentorsSearch() {
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
           Search any company to find recruiters, campus hiring teams, and people-team
-          contacts — then reach out on LinkedIn for advice, referrals, or a coffee chat.
+          contacts, then reach out on LinkedIn for advice, referrals, or a coffee chat.
         </p>
       </div>
 
@@ -210,7 +210,7 @@ function MentorsSearch() {
           </ul>
           <p className="mt-6 rounded-2xl bg-scale-mist px-4 py-3 text-xs leading-relaxed text-slate-600">
             <span className="font-semibold text-slate-800">Tip:</span> a short, specific
-            message works best — mention your school, what you&apos;re studying, and one
+            message works best, mention your school, what you&apos;re studying, and one
             thing you admire about their team. Ask for advice before asking for a referral.
           </p>
         </>
@@ -281,7 +281,7 @@ export function FindMentorsApp() {
               </h1>
               <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
                 Search any company and we&apos;ll surface recruiters, campus hiring teams,
-                and people-team contacts you can message on LinkedIn — for advice,
+                and people-team contacts you can message on LinkedIn, for advice,
                 referrals, or a quick coffee chat.
               </p>
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">

@@ -122,7 +122,7 @@ export function GitaQuoteCard() {
             A moment of steadiness
           </h2>
           <p className="text-[10px] text-amber-900/55 mt-0.5 leading-snug">
-            From the Bhagavad Gita — for difficult days in the search.
+            From the Bhagavad Gita, for difficult days in the search.
           </p>
         </div>
         <div className="relative shrink-0" ref={menuWrapRef}>
@@ -202,7 +202,7 @@ export function GitaQuoteCard() {
           </span>
         </blockquote>
         <cite className="not-italic block text-[11px] text-slate-500 mt-3 text-right">
-          — {quote.ref}
+          ({quote.ref})
         </cite>
       </div>
     </div>

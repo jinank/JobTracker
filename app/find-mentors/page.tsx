@@ -5,7 +5,7 @@ import { FindMentorsApp } from "@/components/FindMentorsApp";
 export const metadata: Metadata = {
   title: "Find Mentors",
   description:
-    "Find mentors, recruiters, and campus hiring contacts at any company. Reach out on LinkedIn for advice, referrals, and coffee chats — free for students.",
+    "Find mentors, recruiters, and campus hiring contacts at any company. Reach out on LinkedIn for advice, referrals, and coffee chats, free for students.",
   alternates: { canonical: "/find-mentors" },
 };
 

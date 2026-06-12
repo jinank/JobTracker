@@ -18,7 +18,7 @@ const SITE_TITLE_DEFAULT =
 
 /** ~155 characters, primary keyword + CTA */
 const SITE_DESCRIPTION =
-  "RethinkJobs is the AI job application tracker that syncs Gmail to track job applications and internships. Free for students. Start free today—organize your entire pipeline.";
+  "RethinkJobs is the AI job application tracker that syncs Gmail to track job applications and internships. Free for students. Start free today. Organize your entire pipeline.";
 
 const SITE_KEYWORDS = [
   "job application tracker",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "RethinkJobs — AI-powered job application tracker",
+        alt: "RethinkJobs | AI-powered job application tracker",
       },
     ],
   },
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE_DEFAULT,
     description: SITE_DESCRIPTION,
-    images: [{ url: "/opengraph-image", alt: "RethinkJobs — AI job application tracker" }],
+    images: [{ url: "/opengraph-image", alt: "RethinkJobs | AI job application tracker" }],
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],

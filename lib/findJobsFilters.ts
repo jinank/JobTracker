@@ -18,6 +18,7 @@ export type InternshipQueryParams = {
   page?: number;
   pageSize?: number;
   limit?: number;
+  forMe?: boolean;
 };
 
 export function postedDaysForPreset(preset: PostedPreset): number | null {
@@ -190,5 +191,6 @@ export function parseInternshipQueryParams(
     limit: searchParams.get("limit")
       ? parseInt(searchParams.get("limit")!, 10)
       : undefined,
+    forMe: searchParams.get("forMe") === "1",
   };
 }

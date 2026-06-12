@@ -165,7 +165,7 @@ export function Dashboard() {
     }
   }, [datePreset, dateFrom, dateTo]);
 
-  /** Pipeline “+N …” badge window + label — matches selected date preset. */
+  /** Pipeline “+N …” badge window + label, matches selected date preset. */
   const pipelineGrowth = useMemo(() => {
     const now = new Date();
     const endOfDay = (d: Date) =>
@@ -450,7 +450,7 @@ export function Dashboard() {
             )}
             {syncHasMore && (
               <span className="block mt-2 text-xs text-emerald-800/90 font-medium">
-                More messages are queued — press Sync again to continue importing.
+                More messages are queued, press Sync again to continue importing.
               </span>
             )}
           </div>

@@ -10,7 +10,7 @@ export const BHAGAVAD_GITA_QUOTES: GitaQuote[] = [
     ref: "Bhagavad Gita 2.47",
   },
   {
-    text: "Heat and cold, pleasure and pain, gain and loss come and go—they are fleeting. Endure them calmly, one who seeks steadiness.",
+    text: "Heat and cold, pleasure and pain, gain and loss come and go. They are fleeting. Endure them calmly, one who seeks steadiness.",
     ref: "Bhagavad Gita 2.14",
   },
   {
@@ -42,11 +42,11 @@ export const BHAGAVAD_GITA_QUOTES: GitaQuote[] = [
     ref: "Bhagavad Gita 6.26",
   },
   {
-    text: "He who is the same to friend and foe, and in honor and dishonor, who is the same in heat and cold, in pleasure and pain—he is dear to Me.",
+    text: "He who is the same to friend and foe, and in honor and dishonor, who is the same in heat and cold, in pleasure and pain; he is dear to Me.",
     ref: "Bhagavad Gita 12.18",
   },
   {
-    text: "Whatever you do, whatever you eat, whatever you offer or give away, whatever austerity you practice—do that as an offering.",
+    text: "Whatever you do, whatever you eat, whatever you offer or give away, whatever austerity you practice, do that as an offering.",
     ref: "Bhagavad Gita 9.27",
   },
   {

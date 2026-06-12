@@ -87,7 +87,7 @@ function GoogleIcon() {
   );
 }
 
-/** Hand-drawn squiggle under a hero word — the one playful flourish. */
+/** Hand-drawn squiggle under a hero word, the one playful flourish. */
 function Squiggle() {
   return (
     <svg
@@ -107,7 +107,7 @@ function Squiggle() {
   );
 }
 
-/** Faux browser window with a live-looking pipeline — honest preview of the dashboard. */
+/** Faux browser window with a live-looking pipeline, honest preview of the dashboard. */
 function ProductWindow() {
   const rows = [
     { letter: "G", grad: "from-blue-500 to-blue-600", company: "Google", role: "STEP Intern, Summer 2027", status: "Interviewing", chip: "bg-violet-100 text-violet-700", when: "2h ago" },
@@ -239,7 +239,7 @@ function VignetteInterview() {
         “In my robotics club we had two weeks to demo, so I scoped the controller down to…”
       </div>
       <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-white px-4 py-3 text-xs leading-relaxed text-slate-600 shadow-sm ring-1 ring-slate-100">
-        <span className="font-bold text-emerald-600">Good structure.</span> Try quantifying the result — what did the demo win you?
+        <span className="font-bold text-emerald-600">Good structure.</span> Try quantifying the result, what did the demo win you?
       </div>
     </div>
   );
@@ -272,13 +272,13 @@ function VignetteResources() {
   return (
     <div className="flex flex-wrap gap-2">
       {[
-        "GitHub Student Pack — free",
-        "Figma Education — free",
-        "Notion Plus — free",
-        "JetBrains — free",
-        "Spotify Premium — 50% off",
-        "Adobe CC — 60% off",
-        "AWS Educate — credits",
+        "GitHub Student Pack, free",
+        "Figma Education, free",
+        "Notion Plus, free",
+        "JetBrains, free",
+        "Spotify Premium, 50% off",
+        "Adobe CC, 60% off",
+        "AWS Educate, credits",
         "+ 40 more",
       ].map((d) => (
         <span key={d} className="rounded-full bg-white px-3.5 py-2 text-xs font-semibold text-sky-800 shadow-sm ring-1 ring-sky-100">
@@ -292,7 +292,7 @@ function VignetteResources() {
 /* ── Page data ────────────────────────────────────────────── */
 
 const QUICK_FACTS: [string, string][] = [
-  ["$0", "for verified students — every tool included"],
+  ["$0", "for verified students, every tool included"],
   ["Daily", "internship syncs from company career pages"],
   ["25+", "AI mock interviews by company & role"],
   ["50+", "student discounts & free tools"],
@@ -319,12 +319,12 @@ const TOOL_SECTIONS: ToolSection[] = [
     eyebrow: "Find Internships",
     eyebrowColor: "text-emerald-600",
     title: "Real openings, straight from company career pages",
-    desc: "We sync US internships every day from employers' own job boards (Greenhouse and Lever) — so you see real, current roles instead of expired reposts on crowded aggregators.",
+    desc: "We sync US internships every day from employers' own job boards (Greenhouse and Lever), so you see real, current roles instead of expired reposts on crowded aggregators.",
     bullets: [
       "US-based internships, including US-eligible remote roles",
       "Filter by role category, work type, location, and date posted",
       "Software, product, design, data, marketing, and operations roles",
-      "Apply directly on the company's site — then track the reply here",
+      "Apply directly on the company's site, then track the reply here",
     ],
     checkColor: "text-emerald-600",
     href: "/find-jobs",
@@ -337,7 +337,7 @@ const TOOL_SECTIONS: ToolSection[] = [
     id: "tool-track",
     eyebrow: "Track Applications",
     eyebrowColor: "text-scale-purple",
-    title: "Your inbox becomes your pipeline — automatically",
+    title: "Your inbox becomes your pipeline, automatically",
     desc: "Connect Gmail once (read-only). AI scans for job-related threads and builds a live board with every application's company, role, stage, and deadline. No spreadsheet, no manual logging.",
     bullets: [
       "AI extracts company, role, status, recruiters, and deadlines",
@@ -358,12 +358,12 @@ const TOOL_SECTIONS: ToolSection[] = [
     eyebrow: "Interview Prep",
     eyebrowColor: "text-amber-600",
     title: "Practice interviews until the real one feels easy",
-    desc: "AI mock interviews tailored to the exact company and role you're chasing — behavioral, technical, and case formats. Practice at 2am in your dorm if you want; nobody's judging.",
+    desc: "AI mock interviews tailored to the exact company and role you're chasing, behavioral, technical, and case formats. Practice at 2am in your dorm if you want; nobody's judging.",
     bullets: [
       "25+ interviews modeled on top companies' real formats",
       "Behavioral, technical, and role-specific question styles",
       "Instant feedback on your answers as you go",
-      "Unlimited retries — repeat until your answers are second nature",
+      "Unlimited retries, repeat until your answers are second nature",
     ],
     checkColor: "text-amber-600",
     href: "/practice-interviews",
@@ -396,10 +396,10 @@ const TOOL_SECTIONS: ToolSection[] = [
     eyebrow: "Student Resources",
     eyebrowColor: "text-sky-600",
     title: "Your .edu email is worth hundreds of dollars",
-    desc: "A curated, searchable list of 50+ student discounts and free tools — developer software, design apps, courses, and more. Plus free member perks launching soon: resume reviews, LinkedIn profile reviews, and headshots.",
+    desc: "A curated, searchable list of 50+ student discounts and free tools, developer software, design apps, courses, and more. Plus free member perks launching soon: resume reviews, LinkedIn profile reviews, and headshots.",
     bullets: [
       "50+ verified student deals across software, courses, and services",
-      "Filter by category — dev tools, design, productivity, learning",
+      "Filter by category, dev tools, design, productivity, learning",
       "Direct links to each provider's official student offer",
       "Free member resources launching soon (resume & LinkedIn reviews)",
     ],
@@ -426,14 +426,14 @@ const HOW_IT_WORKS = [
   {
     step: "3",
     title: "Let RethinkJobs run the rest",
-    desc: "Connect Gmail (read-only) and your pipeline tracks itself — while you prep interviews and message mentors from the same account.",
+    desc: "Connect Gmail (read-only) and your pipeline tracks itself, while you prep interviews and message mentors from the same account.",
   },
 ];
 
 const PRIVACY_POINTS = [
   {
     title: "Read-only Gmail access",
-    desc: "We can read job-related threads to build your pipeline — we can never send, delete, or modify your email.",
+    desc: "We can read job-related threads to build your pipeline, we can never send, delete, or modify your email.",
   },
   {
     title: "Only job-search emails",
@@ -441,7 +441,7 @@ const PRIVACY_POINTS = [
   },
   {
     title: "Revoke anytime",
-    desc: "Disconnect from your Google account settings in two clicks. Gmail is optional in the first place — you can use every other tool without it.",
+    desc: "Disconnect from your Google account settings in two clicks. Gmail is optional in the first place, you can use every other tool without it.",
   },
   {
     title: "You stay in control",
@@ -452,11 +452,11 @@ const PRIVACY_POINTS = [
 const FAQ_ITEMS: { q: string; a: string }[] = [
   {
     q: "Is it actually free for students?",
-    a: "Yes. Verify your student status once and everything is unlocked — unlimited tracking, Gmail syncs, mock interviews, mentor search, and all the deals. No card, no trial that expires mid-semester.",
+    a: "Yes. Verify your student status once and everything is unlocked, unlimited tracking, Gmail syncs, mock interviews, mentor search, and all the deals. No card, no trial that expires mid-semester.",
   },
   {
     q: "What does RethinkJobs do with my Gmail?",
-    a: "We request minimal, read-only access and only look for job-related threads — confirmations, assessments, interview invites, offers. You can revoke access anytime from your Google account, and Gmail is optional to start.",
+    a: "We request minimal, read-only access and only look for job-related threads, confirmations, assessments, interview invites, offers. You can revoke access anytime from your Google account, and Gmail is optional to start.",
   },
   {
     q: "How is this different from LinkedIn or Handshake?",
@@ -467,7 +467,7 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
     a: "Click and fix it. You can edit any application's company, role, or stage whenever the AI misreads something.",
   },
   {
-    q: "I'm not a student — can I use it?",
+    q: "I'm not a student. Can I use it?",
     a: "Sure. The Free plan tracks up to 50 applications, and Professional unlocks unlimited everything for $9.99/month.",
   },
 ];
@@ -518,8 +518,11 @@ export function LandingPage() {
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <div className="landing-hero-stagger">
-            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm">
-              🎓 Free for students — verify once, everything unlocked
+            <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm">
+              🎓 Free for students: verify once, everything unlocked
+            </p>
+            <p className="mb-6 text-sm font-medium text-emerald-700/90">
+              Your first 100 internships are on us. We&apos;ll apply on your behalf. FREE.
             </p>
             <h1
               id="hero-heading"
@@ -583,7 +586,7 @@ export function LandingPage() {
                 place: a daily-updated board of US internships, an AI tracker that builds
                 your application pipeline from Gmail, mock interviews tailored to real
                 companies, a mentor finder for referrals and advice, and a library of
-                student discounts. Five tools, one login — free for verified students.
+                student discounts. Five tools, one login, free for verified students.
               </p>
             </div>
           </Reveal>
@@ -612,7 +615,7 @@ export function LandingPage() {
                 Five tools. Zero spreadsheets.
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-                Everything below is included with every account — here&apos;s exactly what
+                Everything below is included with every account, here&apos;s exactly what
                 each one does.
               </p>
             </div>
@@ -736,7 +739,7 @@ export function LandingPage() {
                 Students never pay. That&apos;s the pricing page.
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
-                Verify your student status once — unlimited everything, free forever.
+                Verify your student status once, unlimited everything, free forever.
                 Everyone else starts free.{" "}
                 <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
                   Full comparison

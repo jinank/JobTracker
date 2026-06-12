@@ -7,6 +7,8 @@ import { AppHeaderActions } from "@/components/AppHeaderActions";
 import { FindJobListCard } from "@/components/FindJobListCard";
 import { useChains } from "@/hooks/useChains";
 import { useInternships } from "@/hooks/useInternships";
+import { useInternshipPreferences } from "@/hooks/useInternshipPreferences";
+import { InternshipMatchPanel } from "@/components/InternshipMatchPanel";
 import { countUniqueApplications } from "@/lib/uniqueApplications";
 import { ROLE_CATEGORIES, WORK_TYPES } from "@/lib/jobs/constants";
 import type {
@@ -78,6 +80,18 @@ export function FindJobsApp() {
   const [pageSize, setPageSize] = useState<number>(25);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+  const {
+    prefs: matchPrefs,
+    loading: matchLoading,
+    saving: matchSaving,
+    uploading: matchUploading,
+    error: matchError,
+    refresh: refreshMatchPrefs,
+    savePrefs,
+    uploadResume,
+    removeResume,
+  } = useInternshipPreferences();
+
   const filters = useMemo(
     () => ({
       search,
@@ -90,6 +104,7 @@ export function FindJobsApp() {
       sortDir,
       page,
       pageSize,
+      forMe: matchPrefs.matchEnabled,
     }),
     [
       search,
@@ -101,10 +116,30 @@ export function FindJobsApp() {
       sortDir,
       page,
       pageSize,
+      matchPrefs.matchEnabled,
     ]
   );
 
   const { jobs, total, stats, loading, error, refresh } = useInternships(filters);
+
+  const handleMatchChange = useCallback(() => {
+    refreshMatchPrefs();
+    refresh();
+  }, [refreshMatchPrefs, refresh]);
+
+  const matchPanel = (
+    <InternshipMatchPanel
+      prefs={matchPrefs}
+      loading={matchLoading}
+      saving={matchSaving}
+      uploading={matchUploading}
+      error={matchError}
+      onSavePrefs={savePrefs}
+      onUploadResume={uploadResume}
+      onRemoveResume={removeResume}
+      onPreferencesChange={handleMatchChange}
+    />
+  );
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const safePage = Math.min(page, totalPages);
@@ -113,13 +148,14 @@ export function FindJobsApp() {
 
   const activeFilterCount = useMemo(() => {
     let n = 0;
+    if (matchPrefs.matchEnabled) n++;
     if (search.trim()) n++;
     if (roleCategory !== "All roles") n++;
     if (workType !== "all") n++;
     if (postedPreset !== "all") n++;
     if (locationQuery.trim()) n++;
     return n;
-  }, [search, roleCategory, workType, postedPreset, locationQuery]);
+  }, [matchPrefs.matchEnabled, search, roleCategory, workType, postedPreset, locationQuery]);
 
   function clearFilters() {
     setRoleCategory("All roles");
@@ -133,7 +169,7 @@ export function FindJobsApp() {
   const filtersPanel = (
     <div className="space-y-4">
       <p className="rounded-lg border border-violet-100 bg-violet-50/80 px-3 py-2 text-xs text-violet-900">
-        USA internships only — sourced from company career pages.
+        USA internships only, sourced from company career pages.
       </p>
 
       <div className="relative">
@@ -288,7 +324,7 @@ export function FindJobsApp() {
               Fresh US internships, straight from the source
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-slate-600">
-              Synced daily from company career pages — apply early, before the crowd finds them.
+              Synced daily from company career pages, apply early, before the crowd finds them.
             </p>
           </div>
           <div className="flex flex-col items-start gap-8 xl:flex-row">
@@ -319,8 +355,11 @@ export function FindJobsApp() {
                   </svg>
                 </button>
                 {mobileFiltersOpen && (
-                  <div className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                    {filtersPanel}
+                  <div className="mt-3 space-y-3">
+                    {matchPanel}
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                      {filtersPanel}
+                    </div>
                   </div>
                 )}
               </div>
@@ -341,6 +380,9 @@ export function FindJobsApp() {
               <p className="mb-3 text-sm text-slate-600">
                 <span className="font-semibold text-slate-900">{total}</span>
                 {total === 1 ? " internship" : " internships"}
+                {matchPrefs.matchEnabled ? (
+                  <span className="text-violet-700"> matched for you</span>
+                ) : null}
                 {stats.companies > 0 ? (
                   <span className="text-slate-500">
                     {" "}
@@ -367,7 +409,9 @@ export function FindJobsApp() {
                         No internships match these filters
                       </p>
                       <p className="mt-1 text-xs text-slate-500">
-                        Listings sync daily from company career pages. Try clearing filters or check back after the next sync.
+                        {matchPrefs.matchEnabled
+                          ? "Try turning off “Show only relevant internships” or broaden your role picks."
+                          : "Listings sync daily from company career pages. Try clearing filters or check back after the next sync."}
                       </p>
                       <button
                         type="button"
@@ -412,9 +456,10 @@ export function FindJobsApp() {
             </div>
 
             <aside
-              className="hidden w-72 shrink-0 self-start xl:sticky xl:top-28 xl:block"
+              className="hidden w-72 shrink-0 self-start space-y-4 xl:sticky xl:top-28 xl:block"
               aria-label="Internship filters"
             >
+              {matchPanel}
               <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 shadow-sm">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-sm font-bold text-slate-900">Filters</h2>

@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 
 export const alt =
-  "RethinkJobs — AI-powered job application tracker for students and professionals";
+  "RethinkJobs | AI-powered job application tracker for students and professionals";
 
 export const size = { width: 1200, height: 630 };
 

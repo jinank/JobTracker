@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 
-/** Email + sign out — shared across app headers. */
+/** Email + sign out, shared across app headers. */
 export function AppNavAccountMenu({ email }: { email?: string | null }) {
   return (
     <div className="flex items-center gap-2 border-l border-slate-200 pl-2">

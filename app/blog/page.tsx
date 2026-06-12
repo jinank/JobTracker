@@ -5,10 +5,10 @@ import { SiteNavMarketing } from "@/components/SiteNav";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Job search tips, internship advice, and product updates from RethinkJobs—the AI job application tracker built for students and professionals.",
+    "Job search tips, internship advice, and product updates from RethinkJobs, the AI job application tracker built for students and professionals.",
   alternates: { canonical: "/blog" },
   openGraph: {
-    title: "RethinkJobs Blog — Job search & internship tips",
+    title: "RethinkJobs Blog, Job search & internship tips",
     description:
       "Guides and updates to help you track job applications and run a smarter internship search.",
     url: "/blog",

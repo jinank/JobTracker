@@ -51,7 +51,7 @@ function inviteLabel(kind: PromptKind): string {
 
 function questionLine(p: InvitePrompt): string {
   const role = p.role.trim();
-  const tail = role ? ` — ${role}` : "";
+  const tail = role ? `, ${role}` : "";
   const what = inviteLabel(p.kind);
   if (p.kind === "offer") {
     return `Did you respond about the ${what} from ${p.company}${tail}?`;
@@ -67,9 +67,9 @@ function noteForAnswer(
   const ctx = role ? `${p.company} (${role})` : p.company;
   const what = inviteLabel(p.kind);
   if (answeredYes) {
-    return `Responded to ${what}: yes (self-reported) — ${ctx}.`;
+    return `Responded to ${what}: yes (self-reported), ${ctx}.`;
   }
-  return `Responded to ${what}: not yet (self-reported) — ${ctx}.`;
+  return `Responded to ${what}: not yet (self-reported), ${ctx}.`;
 }
 
 export function InviteResponseBanner({

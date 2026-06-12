@@ -1,7 +1,9 @@
 import { US_STATE_ABBREVS } from "@/lib/jobs/constants";
 
 const INTERNSHIP_TITLE_RE =
-  /\b(intern(ship)?|co-?op|summer\s+(analyst|associate|intern)|new\s+grad\s+intern)/i;
+  /\b(internship|co-?op|summer\s+(analyst|associate|intern)|new\s+grad\s+intern)\b/i;
+
+const INTERN_WORD_RE = /\bintern\b(?!al|ational|et|ally)/i;
 
 const NON_US_MARKERS = [
   /\bcanada\b/i,
@@ -32,7 +34,7 @@ const US_MARKERS = [
 
 export function isInternshipTitle(title: string, forceInternship = false): boolean {
   if (forceInternship) return true;
-  return INTERNSHIP_TITLE_RE.test(title);
+  return INTERNSHIP_TITLE_RE.test(title) || INTERN_WORD_RE.test(title);
 }
 
 export function parseUsLocation(locationRaw: string): {

@@ -1,3 +1,4 @@
+import { resolveGreenhouseLocation } from "@/lib/jobs/resolveGreenhouseLocation";
 import type { GreenhouseJob } from "@/lib/jobs/fetchers/greenhouse";
 import type { LeverPosting } from "@/lib/jobs/fetchers/lever";
 import {
@@ -39,7 +40,7 @@ export function normalizeGreenhouseJob(
   source: JobSourceRow,
   job: GreenhouseJob
 ): NormalizedJobDraft | null {
-  const locationRaw = job.location?.name?.trim() || "United States";
+  const locationRaw = resolveGreenhouseLocation(job);
   if (
     !isUsInternship(job.title, locationRaw, {
       forceInternship: source.force_internship,

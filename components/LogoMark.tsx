@@ -1,4 +1,4 @@
-/** Same mark as `public/icon.svg` — blue→indigo tile + lightning. */
+/** Same mark as `public/icon.svg`, blue→indigo tile + lightning. */
 export function LogoMark({
   className = "w-9 h-9",
   iconClassName = "w-5 h-5",

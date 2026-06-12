@@ -5,7 +5,8 @@ import {
   normalizeGreenhouseJob,
   normalizeLeverPosting,
 } from "@/lib/jobs/normalizeListing";
-import { isUsInternship } from "@/lib/jobs/isUsInternship";
+import { isUsInternship, isInternshipTitle } from "@/lib/jobs/isUsInternship";
+import { resolveGreenhouseLocation } from "@/lib/jobs/resolveGreenhouseLocation";
 import type { JobSourceRow } from "@/types/jobListing";
 
 export type SyncInternshipsResult = {
@@ -81,15 +82,12 @@ export async function syncInternships(): Promise<SyncInternshipsResult> {
         fetchedCount = jobs.length;
         for (const job of jobs) {
           const title = job.title;
-          const loc = job.location?.name?.trim() || "";
-          if (
-            !/\b(intern|co-?op)/i.test(title) &&
-            !source.force_internship
-          ) {
+          const loc = resolveGreenhouseLocation(job);
+          if (!isInternshipTitle(title, source.force_internship)) {
             continue;
           }
           result.internshipsKept++;
-          if (!isUsInternship(title, loc || "United States", { forceInternship: source.force_internship })) {
+          if (!isUsInternship(title, loc, { forceInternship: source.force_internship })) {
             continue;
           }
           result.usKept++;
@@ -102,10 +100,7 @@ export async function syncInternships(): Promise<SyncInternshipsResult> {
         for (const posting of postings) {
           const title = posting.text;
           const loc = posting.categories?.location?.trim() || "";
-          if (
-            !/\b(intern|co-?op)/i.test(title) &&
-            !source.force_internship
-          ) {
+          if (!isInternshipTitle(title, source.force_internship)) {
             continue;
           }
           result.internshipsKept++;
@@ -204,6 +199,21 @@ export async function syncInternships(): Promise<SyncInternshipsResult> {
 
 export async function seedJobSources(): Promise<number> {
   const { INTERNSHIP_SOURCE_SEED } = await import("@/lib/jobs/seedSources");
+  const activeKeys = new Set(
+    INTERNSHIP_SOURCE_SEED.map((r) => `${r.ats}:${r.board_token}`)
+  );
+
+  const { data: existing } = await supabase
+    .from("job_sources")
+    .select("id, ats, board_token");
+
+  for (const row of existing ?? []) {
+    const key = `${row.ats}:${row.board_token}`;
+    if (!activeKeys.has(key)) {
+      await supabase.from("job_sources").update({ enabled: false }).eq("id", row.id);
+    }
+  }
+
   let count = 0;
   for (const row of INTERNSHIP_SOURCE_SEED) {
     const { error } = await supabase.from("job_sources").upsert(

@@ -118,7 +118,7 @@ export function HiddenJobsLanding() {
               <span className="text-hero-gradient">internships in the US</span>
             </h1>
             <p className="mx-auto mb-8 max-w-lg text-base leading-relaxed text-slate-600 lg:mx-0 lg:text-lg">
-              Built for students. Discover internships on company career sites—not buried on crowded job boards.
+              Built for students. Discover internships on company career sites, not buried on crowded job boards.
             </p>
             <div className="mx-auto mb-8 grid max-w-md gap-3 sm:grid-cols-2 lg:mx-0 lg:max-w-none">
               <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
@@ -139,7 +139,7 @@ export function HiddenJobsLanding() {
                   </svg>
                 </div>
                 <p className="text-sm font-semibold text-slate-900">Student-focused</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">Engineering, product, design, data, and more—internships only.</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">Engineering, product, design, data, and more, internships only.</p>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
@@ -328,7 +328,7 @@ export function HiddenJobsLanding() {
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
           <h2 className="text-2xl font-bold text-slate-900">Find internships. Track every reply.</h2>
           <p className="mt-3 text-slate-600">
-            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline—all in RethinkJobs.
+            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline, all in RethinkJobs.
           </p>
           <div className="mt-6 flex justify-center">
             <NavAuthAction

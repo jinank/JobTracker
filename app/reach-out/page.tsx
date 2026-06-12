@@ -126,7 +126,7 @@ function ReachOutContent() {
             <div className="min-w-0">
               <h1 className="truncate text-base font-bold text-slate-900">Reach Out</h1>
               <p className="truncate text-xs text-slate-500">
-                {company || "—"}
+                {company || "N/A"}
                 {role ? ` · ${role}` : ""}
               </p>
             </div>

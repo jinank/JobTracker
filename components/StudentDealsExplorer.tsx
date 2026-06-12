@@ -160,7 +160,7 @@ export function StudentDealsExplorer() {
             Free tools &amp; student discounts
           </h1>
           <p className="mt-2 text-sm text-slate-600">
-            Your student email is worth more than you think — software, courses, and
+            Your student email is worth more than you think, software, courses, and
             perks you can claim right now.
           </p>
         </div>

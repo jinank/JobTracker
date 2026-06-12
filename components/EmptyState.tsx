@@ -32,7 +32,7 @@ export function EmptyState({
       <p className="text-sm text-slate-500 mb-8 max-w-sm mx-auto leading-relaxed">
         {loading
           ? "One moment while we fetch your tracker."
-          : "Sync your Gmail once and we\u2019ll automatically pull in every application, interview invite, and offer — no manual entry needed."}
+          : "Sync your Gmail once and we\u2019ll automatically pull in every application, interview invite, and offer, no manual entry needed."}
       </p>
       <div className="flex flex-col gap-3 items-center justify-center">
         <button

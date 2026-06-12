@@ -25,13 +25,13 @@ export function RootJsonLd() {
         url: origin,
         publisher: { "@id": `${origin}/#organization` },
         description:
-          "AI job application tracker and internship tracker for students and professionals—sync Gmail, organize your pipeline, and track job applications in one place.",
+          "AI job application tracker and internship tracker for students and professionals. Sync Gmail, organize your pipeline, and track job applications in one place.",
         inLanguage: "en-US",
       },
       {
         "@type": "SoftwareApplication",
         "@id": `${origin}/#software`,
-        name: `${SITE_NAME} — Job application tracker`,
+        name: `${SITE_NAME}, Job application tracker`,
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",
         browserRequirements: "Requires JavaScript. Modern browser recommended.",

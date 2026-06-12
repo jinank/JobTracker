@@ -584,7 +584,7 @@ async function fetchRecruitersFromHappenstance(args: {
         rawStatus: lastStatus,
         message:
           people.length > 0
-            ? "Matches from your Happenstance network (connections/groups)—warmer paths than raw domain lists."
+            ? "Matches from your Happenstance network (connections/groups), warmer paths than raw domain lists."
             : undefined,
       };
     }

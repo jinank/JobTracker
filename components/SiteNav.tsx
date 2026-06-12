@@ -77,7 +77,7 @@ function AppLogoBlock({ activeCount }: { activeCount?: number }) {
   );
 }
 
-/** Marketing site header — landing, resources, practice interviews, blog, etc. */
+/** Marketing site header, landing, resources, practice interviews, blog, etc. */
 export function SiteNavMarketing() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -151,7 +151,7 @@ export function SiteNavMarketing() {
   );
 }
 
-/** Logged-in app header — fixed bar height + reserved action column. */
+/** Logged-in app header, fixed bar height + reserved action column. */
 export function SiteNavApp({
   activeCount,
   children,

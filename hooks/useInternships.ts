@@ -27,6 +27,7 @@ export type InternshipFilters = {
   sortDir: SortDir;
   page: number;
   pageSize: number;
+  forMe?: boolean;
 };
 
 function buildQueryString(filters: InternshipFilters): string {
@@ -40,6 +41,7 @@ function buildQueryString(filters: InternshipFilters): string {
   p.set("sort", `${filters.sortField}-${filters.sortDir}`);
   p.set("page", String(filters.page));
   p.set("pageSize", String(filters.pageSize));
+  if (filters.forMe) p.set("forMe", "1");
   return p.toString();
 }
 

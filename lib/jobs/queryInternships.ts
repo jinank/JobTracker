@@ -5,6 +5,8 @@ import {
   sortJobListings,
   type InternshipQueryParams,
 } from "@/lib/findJobsFilters";
+import { personalizeInternships } from "@/lib/jobs/personalizeInternships";
+import type { InternshipUserPrefs } from "@/lib/jobs/personalizeInternships";
 import type { JobListing, JobListingRow } from "@/types/jobListing";
 
 export type InternshipsQueryResult = {
@@ -18,7 +20,8 @@ export type InternshipsQueryResult = {
 };
 
 export async function queryInternships(
-  params: InternshipQueryParams
+  params: InternshipQueryParams,
+  userPrefs?: InternshipUserPrefs | null
 ): Promise<InternshipsQueryResult> {
   const { data, error } = await supabase
     .from("job_listings")
@@ -35,7 +38,10 @@ export async function queryInternships(
   const rows = (data ?? []) as JobListingRow[];
   const listings = rows.map(rowToJobListing);
 
-  const filtered = filterJobListings(listings, params);
+  let filtered = filterJobListings(listings, params);
+  if (params.forMe && userPrefs?.matchEnabled) {
+    filtered = personalizeInternships(filtered, userPrefs);
+  }
   const sorted = sortJobListings(filtered, params.sortField, params.sortDir);
 
   const total = sorted.length;

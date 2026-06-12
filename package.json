@@ -11,7 +11,8 @@
     "web:dev": "next dev",
     "web:build": "next build",
     "web:start": "next start",
-    "seed:internships": "node scripts/seed-internship-sources.cjs"
+    "seed:internships": "npx tsx scripts/seed-internship-sources.ts",
+    "sync:internships": "npx tsx scripts/sync-internships.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",
@@ -20,6 +21,7 @@
     "next": "14.2.35",
     "next-auth": "^4.24.13",
     "openai": "^4.104.0",
+    "pdf-parse": "^2.4.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "stripe": "^20.4.1",

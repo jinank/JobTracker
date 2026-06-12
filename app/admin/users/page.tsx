@@ -16,15 +16,21 @@ interface AdminUserRow {
   chain_count: number;
   indexed_messages_count: number;
   ai_tokens_total: number;
+  city: string | null;
+  state: string | null;
+  country: string | null;
 }
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [withLocationOnly, setWithLocationOnly] = useState(false);
 
   useEffect(() => {
-    fetch("/api/admin/users")
+    setLoading(true);
+    const qs = withLocationOnly ? "?withLocation=1" : "";
+    fetch(`/api/admin/users${qs}`)
       .then((res) => {
         if (res.status === 403) throw new Error("Access denied");
         if (!res.ok) throw new Error("Failed to load users");
@@ -33,7 +39,7 @@ export default function AdminUsersPage() {
       .then((data) => setUsers(data.users ?? []))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [withLocationOnly]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
@@ -41,6 +47,16 @@ export default function AdminUsersPage() {
       <p className="mt-1 text-sm text-slate-600">
         Accounts, usage, and sign-in stats. Open a row for full activity and token history.
       </p>
+
+      <label className="mt-4 inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <input
+          type="checkbox"
+          checked={withLocationOnly}
+          onChange={(e) => setWithLocationOnly(e.target.checked)}
+          className="rounded border-slate-300 text-scale-purple focus:ring-scale-purple/30"
+        />
+        Only users with city, state, and country
+      </label>
 
       {error && (
         <div className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
@@ -56,6 +72,7 @@ export default function AdminUsersPage() {
             <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
               <tr>
                 <th className="px-4 py-3">User</th>
+                <th className="px-4 py-3">Location</th>
                 <th className="px-4 py-3">Plan</th>
                 <th className="px-4 py-3 text-right">Chains</th>
                 <th className="px-4 py-3 text-right">Msgs</th>
@@ -73,6 +90,16 @@ export default function AdminUsersPage() {
                       {u.name && <span className="mt-0.5 block truncate text-xs text-slate-500">{u.name}</span>}
                     </Link>
                   </td>
+                  <td className="px-4 py-3 text-xs text-slate-600">
+                    {u.city && u.state && u.country ? (
+                      <span>
+                        {u.city}, {u.state}
+                        <span className="block text-slate-400">{u.country}</span>
+                      </span>
+                    ) : (
+                      <span className="text-slate-400">N/A</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3">
                     <span className="text-xs font-medium text-slate-700">
                       {u.student_verified ? "Student" : u.paid ? "Paid" : u.subscription_status || "Free"}
@@ -84,13 +111,13 @@ export default function AdminUsersPage() {
                     {u.ai_tokens_total.toLocaleString()}
                   </td>
                   <td className="px-4 py-3 text-xs text-slate-600">
-                    {u.last_login_at ? new Date(u.last_login_at).toLocaleString() : "—"}
+                    {u.last_login_at ? new Date(u.last_login_at).toLocaleString() : "N/A"}
                     {u.login_count != null && u.login_count > 0 && (
                       <span className="ml-1 text-slate-400">({u.login_count}×)</span>
                     )}
                   </td>
                   <td className="px-4 py-3 text-xs text-slate-500">
-                    {u.created_at ? new Date(u.created_at).toLocaleDateString() : "—"}
+                    {u.created_at ? new Date(u.created_at).toLocaleDateString() : "N/A"}
                   </td>
                 </tr>
               ))}

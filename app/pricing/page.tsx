@@ -166,7 +166,7 @@ export default function PricingPage() {
                   disabled={loading}
                   className="w-full py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? "Redirecting to checkout..." : "Upgrade to Pro — $9.99/mo"}
+                  {loading ? "Redirecting to checkout..." : "Upgrade to Pro ($9.99/mo)"}
                 </button>
 
                 <p className="text-xs text-slate-400 mt-3 text-center">
