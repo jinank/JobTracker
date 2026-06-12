@@ -9,7 +9,7 @@ export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // Signed-in home is Find Internships; admins go to the admin panel.
+  // Signed-in home is Find Internships; admins go to the admin panel 
   useEffect(() => {
     if (status !== "authenticated") return;
     router.replace(session?.adminCredential ? "/admin" : "/find-jobs");
