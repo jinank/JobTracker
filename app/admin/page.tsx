@@ -44,6 +44,16 @@ export default function AdminHomePage() {
             LinkedIn review, resume review, and headshot access requests from students.
           </p>
         </Link>
+        <Link
+          href="/admin/internships"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-emerald-200 hover:shadow-md"
+        >
+          <h2 className="text-lg font-bold text-slate-900">Internship sync</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Fetch live US internships from company boards. Updates Find Internships for all
+            students immediately.
+          </p>
+        </Link>
       </div>
 
       <p className="mt-10 text-xs text-slate-400">

@@ -4,6 +4,8 @@ import { getInternshipUserPrefs } from "@/lib/jobs/getInternshipUserPrefs";
 import { parseInternshipQueryParams } from "@/lib/findJobsFilters";
 import { getAppUser } from "@/lib/requirePaid";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);

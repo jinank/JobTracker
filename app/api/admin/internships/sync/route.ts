@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth";
 import { isAdminSession } from "@/lib/isAdmin";
 import { syncInternships } from "@/lib/jobs/syncInternships";
 
+export const maxDuration = 300;
+
 export async function POST() {
   const session = await getServerSession(authOptions);
   if (!isAdminSession(session)) {
