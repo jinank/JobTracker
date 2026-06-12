@@ -18,7 +18,7 @@ export default function AdminHomePage() {
         ) : null}
       </p>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/admin/users"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-blue-200 hover:shadow-md"
@@ -34,6 +34,15 @@ export default function AdminHomePage() {
         >
           <h2 className="text-lg font-bold text-slate-900">Student verification</h2>
           <p className="mt-2 text-sm text-slate-600">Approve or reject student access requests.</p>
+        </Link>
+        <Link
+          href="/admin/resources"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-blue-200 hover:shadow-md"
+        >
+          <h2 className="text-lg font-bold text-slate-900">Member resource requests</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            LinkedIn review, resume review, and headshot access requests from students.
+          </p>
         </Link>
       </div>
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { LoginLink } from "@/components/LoginLink";
-import { RETHINKJOBS_COMING_SOON_RESOURCES } from "@/lib/rethinkJobsResources";
+import { RETHINKJOBS_MEMBER_RESOURCES } from "@/lib/rethinkJobsResources";
 import {
   STUDENT_DEALS,
   STUDENT_DEAL_CATEGORY_OPTIONS,
@@ -31,8 +31,23 @@ const RESOURCE_ICONS: Record<string, ReactNode> = {
   ),
 };
 
-function ComingSoonResourceCard({ resource }: { resource: RethinkJobsResource }) {
+function RequestAccessResourceCard({
+  resource,
+  signedIn,
+  requestStatus,
+  requesting,
+  onRequest,
+}: {
+  resource: RethinkJobsResource;
+  signedIn: boolean;
+  requestStatus?: string;
+  requesting: boolean;
+  onRequest: () => void;
+}) {
   const icon = RESOURCE_ICONS[resource.id];
+  const pending = requestStatus === "pending";
+  const approved = requestStatus === "approved";
+
   return (
     <article className="flex h-full min-h-[11rem] flex-col items-center rounded-2xl border border-slate-200/90 bg-white px-5 py-6 text-center shadow-sm">
       <div className="mb-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-scale-purple/10 text-scale-purple">
@@ -40,9 +55,32 @@ function ComingSoonResourceCard({ resource }: { resource: RethinkJobsResource })
       </div>
       <h2 className="text-base font-bold text-slate-900">{resource.title}</h2>
       <p className="mt-2 text-sm text-slate-500 leading-snug">{resource.tagline}</p>
-      <span className="mt-auto pt-5 rounded-full bg-scale-mist px-3 py-1 text-[11px] font-semibold text-scale-purple">
-        Coming soon
-      </span>
+      <div className="mt-auto pt-5">
+        {!signedIn ? (
+          <LoginLink
+            callbackUrl="/resources"
+            label="Request Access"
+            className="inline-flex rounded-full bg-scale-purple px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-scale-purple-dark"
+          />
+        ) : approved ? (
+          <span className="inline-flex rounded-full bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100">
+            Access approved
+          </span>
+        ) : pending ? (
+          <span className="inline-flex rounded-full bg-amber-50 px-4 py-2 text-xs font-semibold text-amber-800 ring-1 ring-amber-100">
+            Request sent
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={onRequest}
+            disabled={requesting}
+            className="inline-flex rounded-full bg-scale-purple px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-scale-purple-dark disabled:opacity-60"
+          >
+            {requesting ? "Sending…" : "Request Access"}
+          </button>
+        )}
+      </div>
     </article>
   );
 }
@@ -99,7 +137,50 @@ export function StudentDealsExplorer() {
   const { status } = useSession();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
+  const [accessRequests, setAccessRequests] = useState<
+    Record<string, { status: string; createdAt: string }>
+  >({});
+  const [requestingId, setRequestingId] = useState<string | null>(null);
+  const [accessError, setAccessError] = useState<string | null>(null);
   const signedIn = status === "authenticated";
+
+  useEffect(() => {
+    if (!signedIn) {
+      setAccessRequests({});
+      return;
+    }
+    fetch("/api/user/resource-access")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.requests) setAccessRequests(data.requests);
+      })
+      .catch(() => {});
+  }, [signedIn]);
+
+  async function handleRequestAccess(resourceId: string) {
+    setRequestingId(resourceId);
+    setAccessError(null);
+    try {
+      const res = await fetch("/api/user/resource-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resourceId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setAccessError(data.hint ? `${data.error} ${data.hint}` : data.error ?? "Request failed");
+        return;
+      }
+      setAccessRequests((prev) => ({
+        ...prev,
+        [resourceId]: { status: data.status ?? "pending", createdAt: new Date().toISOString() },
+      }));
+    } catch {
+      setAccessError("Request failed. Try again.");
+    } finally {
+      setRequestingId(null);
+    }
+  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -122,7 +203,7 @@ export function StudentDealsExplorer() {
             Free for members
           </h2>
           <p className="mt-2 text-sm text-slate-500">
-            Free with your RethinkJobs account. Launching soon.
+            Free with your RethinkJobs account. Request access to unlock member perks.
             {!signedIn && (
               <>
                 {" "}
@@ -135,10 +216,21 @@ export function StudentDealsExplorer() {
             )}
           </p>
         </div>
+        {accessError && (
+          <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+            {accessError}
+          </p>
+        )}
         <ul className="grid gap-5 sm:grid-cols-3">
-          {RETHINKJOBS_COMING_SOON_RESOURCES.map((resource) => (
+          {RETHINKJOBS_MEMBER_RESOURCES.map((resource) => (
             <li key={resource.id} className="h-full">
-              <ComingSoonResourceCard resource={resource} />
+              <RequestAccessResourceCard
+                resource={resource}
+                signedIn={signedIn}
+                requestStatus={accessRequests[resource.id]?.status}
+                requesting={requestingId === resource.id}
+                onRequest={() => handleRequestAccess(resource.id)}
+              />
             </li>
           ))}
         </ul>

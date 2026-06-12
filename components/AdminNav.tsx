@@ -8,6 +8,7 @@ const links: { href: string; label: string }[] = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/students", label: "Student requests" },
+  { href: "/admin/resources", label: "Resource requests" },
 ];
 
 export function AdminNav() {
