@@ -108,7 +108,7 @@ export function SignInForm({
               onClick={() => void sendMagicLink()}
               className="mt-3 w-full rounded-xl bg-slate-900 py-3.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
             >
-              {loading ? "Sending…" : "Continue with email"}
+              {loading ? "Sending..." : "Continue with email"}
             </button>
             <p className="mt-2 text-center text-[11px] text-slate-500">
               New here? Same link creates your account.
