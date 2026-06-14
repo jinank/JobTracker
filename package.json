@@ -12,7 +12,8 @@
     "web:build": "next build",
     "web:start": "next start",
     "seed:internships": "npx tsx scripts/seed-internship-sources.ts",
-    "sync:internships": "npx tsx scripts/sync-internships.mjs"
+    "sync:internships": "npx tsx scripts/sync-internships.mjs",
+    "diagnose:internships": "node scripts/diagnose-internships.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",

@@ -67,7 +67,15 @@ export default function AdminInternshipsPage() {
       const res = await fetch("/api/admin/internships/sync", { method: "POST" });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error ?? "Sync failed");
+        const msg = [data.error, data.hint].filter(Boolean).join(" ");
+        throw new Error(msg || "Sync failed");
+      }
+      if (
+        data.errors?.length > 0 &&
+        data.upserted === 0 &&
+        data.usKept === 0
+      ) {
+        throw new Error(data.errors.join("; "));
       }
       setSyncResult(data as SyncInternshipsResult);
       await refresh();
@@ -163,7 +171,8 @@ export default function AdminInternshipsPage() {
             <h2 className="text-lg font-bold text-slate-900">Fetch internships now</h2>
             <p className="mt-2 text-sm text-slate-600">
               Scans all enabled Greenhouse and Lever boards, filters to US internships, and
-              upserts into the database. Usually takes 30–60 seconds.
+              upserts into the database. Usually takes 30–60 seconds. Listing count depends on
+              how many companies currently have open US intern roles on their career pages.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <button

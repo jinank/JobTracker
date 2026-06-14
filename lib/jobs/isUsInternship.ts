@@ -3,6 +3,9 @@ import { US_STATE_ABBREVS } from "@/lib/jobs/constants";
 const INTERNSHIP_TITLE_RE =
   /\b(internship|co-?op|summer\s+(analyst|associate|intern)|new\s+grad\s+intern)\b/i;
 
+const SEASON_INTERN_RE =
+  /\b(20\d{2}\s+)?(summer|fall|spring|winter)\s+(intern(ship)?|analyst)\b/i;
+
 const INTERN_WORD_RE = /\bintern\b(?!al|ational|et|ally)/i;
 
 const NON_US_MARKERS = [
@@ -34,7 +37,11 @@ const US_MARKERS = [
 
 export function isInternshipTitle(title: string, forceInternship = false): boolean {
   if (forceInternship) return true;
-  return INTERNSHIP_TITLE_RE.test(title) || INTERN_WORD_RE.test(title);
+  return (
+    INTERNSHIP_TITLE_RE.test(title) ||
+    INTERN_WORD_RE.test(title) ||
+    SEASON_INTERN_RE.test(title)
+  );
 }
 
 export function parseUsLocation(locationRaw: string): {
@@ -55,6 +62,20 @@ export function parseUsLocation(locationRaw: string): {
     return { country: "US", city: null, state: null };
   }
 
+  // Multi-office strings: "San Francisco; New York" or "Remote - US; London"
+  if (loc.includes(";") || loc.includes("|")) {
+    const parts = loc.split(/[;|]/).map((p) => p.trim()).filter(Boolean);
+    for (const part of parts) {
+      if (NON_US_MARKERS.some((re) => re.test(part)) && !US_MARKERS.some((u) => u.test(part))) {
+        continue;
+      }
+      const sub = parseUsLocation(part);
+      if (sub.country === "US") {
+        return { country: "US", city: sub.city, state: sub.state };
+      }
+    }
+  }
+
   const stateMatch = loc.match(/,\s*([A-Z]{2})\b/);
   if (stateMatch && US_STATE_ABBREVS.has(stateMatch[1])) {
     const city = loc.split(",")[0]?.trim() || null;
@@ -67,6 +88,10 @@ export function parseUsLocation(locationRaw: string): {
   }
 
   if (/\bremote\b/i.test(loc) && !NON_US_MARKERS.some((re) => re.test(loc))) {
+    return { country: "US", city: null, state: null };
+  }
+
+  if (/\b(usa|u\.?s\.?)\b/i.test(loc)) {
     return { country: "US", city: null, state: null };
   }
 

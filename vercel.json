@@ -1,5 +1,13 @@
 {
   "buildCommand": "npm run web:build",
+  "functions": {
+    "app/api/admin/internships/sync/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/sync-internships/route.ts": {
+      "maxDuration": 300
+    }
+  },
   "crons": [
     {
       "path": "/api/cron/sync-internships",

@@ -46,4 +46,11 @@ export const INTERNSHIP_SOURCE_SEED: Array<{
   { company: "Chime", company_slug: "chime", ats: "greenhouse", board_token: "chime", careers_url: "https://www.chime.com/careers" },
   { company: "Duolingo", company_slug: "duolingo", ats: "greenhouse", board_token: "duolingo", careers_url: "https://careers.duolingo.com" },
   { company: "Jane Street", company_slug: "janestreet", ats: "greenhouse", board_token: "janestreet", careers_url: "https://www.janestreet.com/join-jane-street" },
+  { company: "Palantir", company_slug: "palantir", ats: "lever", board_token: "palantir", careers_url: "https://www.palantir.com/careers" },
+  { company: "Verkada", company_slug: "verkada", ats: "greenhouse", board_token: "verkada", careers_url: "https://www.verkada.com/careers" },
+  { company: "Zscaler", company_slug: "zscaler", ats: "greenhouse", board_token: "zscaler", careers_url: "https://www.zscaler.com/careers" },
+  { company: "Labelbox", company_slug: "labelbox", ats: "greenhouse", board_token: "labelbox", careers_url: "https://labelbox.com/careers" },
+  { company: "Rubrik", company_slug: "rubrik", ats: "greenhouse", board_token: "rubrik", careers_url: "https://www.rubrik.com/company/careers" },
+  { company: "Epic Games", company_slug: "epicgames", ats: "greenhouse", board_token: "epicgames", careers_url: "https://www.epicgames.com/site/careers" },
+  { company: "SpaceX", company_slug: "spacex", ats: "greenhouse", board_token: "spacex", careers_url: "https://www.spacex.com/careers" },
 ];
