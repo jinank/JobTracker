@@ -98,7 +98,7 @@ export default function RootLayout({
         className={`${jakarta.variable} ${jakarta.className} min-h-screen bg-slate-50 antialiased flex flex-col`}
       >
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-HT0DDBS8E3"
+          src="https://www.googletagmanager.com/gtag/js?id=G-L0WY604E6K"
           strategy="afterInteractive"
         />
         <Script id="google-gtag" strategy="afterInteractive">
@@ -106,7 +106,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-HT0DDBS8E3');
+            gtag('config', 'G-L0WY604E6K');
             gtag('config', 'AW-18093007265');
           `}
         </Script>
