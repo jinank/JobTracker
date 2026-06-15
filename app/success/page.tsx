@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { GoogleAdsPurchaseConversion } from "@/components/GoogleAdsPurchaseConversion";
 
-export default function SuccessPage() {
+function SuccessPageInner() {
   const router = useRouter();
 
   useEffect(() => {
@@ -12,40 +13,57 @@ export default function SuccessPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-10 max-w-md w-full text-center">
-        <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
-          <svg
-            className="w-8 h-8 text-emerald-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+    <>
+      <GoogleAdsPurchaseConversion />
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-10 max-w-md w-full text-center">
+          <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
+            <svg
+              className="w-8 h-8 text-emerald-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 12.75l6 6 9-13.5"
+              />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">
+            Welcome to Pro!
+          </h1>
+          <p className="text-slate-500 text-sm mb-6">
+            Your subscription is active. You now have unlimited application
+            tracking. Start syncing your Gmail!
+          </p>
+          <button
+            onClick={() => router.push("/tracker")}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-scale-purple text-white text-sm font-medium hover:bg-scale-purple-dark transition-colors"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-            />
-          </svg>
+            Go to Tracker
+          </button>
+          <p className="text-xs text-slate-400 mt-4">
+            Redirecting automatically...
+          </p>
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
-          Welcome to Pro!
-        </h1>
-        <p className="text-slate-500 text-sm mb-6">
-          Your subscription is active. You now have unlimited application
-          tracking. Start syncing your Gmail!
-        </p>
-        <button
-          onClick={() => router.push("/tracker")}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-scale-purple text-white text-sm font-medium hover:bg-scale-purple-dark transition-colors"
-        >
-          Go to Tracker
-        </button>
-        <p className="text-xs text-slate-400 mt-4">
-          Redirecting automatically...
-        </p>
       </div>
-    </div>
+    </>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
+        </div>
+      }
+    >
+      <SuccessPageInner />
+    </Suspense>
   );
 }
