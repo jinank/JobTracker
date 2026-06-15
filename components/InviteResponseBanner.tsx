@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-const STORAGE_KEY = "rethinkjobs_invite_response_prompts";
+const STORAGE_KEY = "summer_internships_invite_response_prompts";
 
 type PromptKind = "assessment" | "interview" | "offer";
 

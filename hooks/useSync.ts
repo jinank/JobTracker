@@ -4,11 +4,12 @@ import { useState, useCallback, useEffect, useMemo } from "react";
 import { isGmailReauthError } from "@/lib/gmailAuthErrors";
 
 const LEGACY_LAST_SYNC_KEY = "rethinkjobs_last_sync_at_ms";
+const LAST_SYNC_KEY = "summer_internships_last_sync_at_ms";
 
 function lastSyncStorageKey(accountEmail?: string | null): string {
   const e = (accountEmail ?? "").trim().toLowerCase();
-  if (!e) return LEGACY_LAST_SYNC_KEY;
-  return `rethinkjobs_last_sync_at_ms::${e}`;
+  if (!e) return LAST_SYNC_KEY;
+  return `${LAST_SYNC_KEY}::${e}`;
 }
 
 function readStoredLastSyncAt(key: string): number | null {
@@ -16,7 +17,9 @@ function readStoredLastSyncAt(key: string): number | null {
   try {
     let raw = localStorage.getItem(key);
     if (!raw && key !== LEGACY_LAST_SYNC_KEY) {
-      raw = localStorage.getItem(LEGACY_LAST_SYNC_KEY);
+      raw =
+        localStorage.getItem(LEGACY_LAST_SYNC_KEY) ??
+        localStorage.getItem(`${LEGACY_LAST_SYNC_KEY}::${key.split("::")[1] ?? ""}`);
     }
     if (!raw) return null;
     const n = parseInt(raw, 10);

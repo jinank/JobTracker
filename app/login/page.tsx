@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { LogoMark } from "@/components/LogoMark";
 import { SignInForm } from "@/components/SignInForm";
 import { resolveCallbackUrl } from "@/lib/loginUrl";
+import { SITE_NAME } from "@/lib/site";
 
 function loginErrorMessage(code: string | null): string | null {
   if (code === "confirm_failed") {
@@ -44,9 +45,9 @@ function LoginPageInner() {
       <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
       <header className="relative border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2" aria-label="RethinkJobs home">
+          <Link href="/" className="flex items-center gap-2" aria-label={`${SITE_NAME} home`}>
             <LogoMark />
-            <span className="text-lg font-bold text-slate-900 hidden sm:inline">RethinkJobs</span>
+            <span className="text-lg font-bold text-slate-900 hidden sm:inline">{SITE_NAME}</span>
           </Link>
           <Link
             href="/"

@@ -116,7 +116,7 @@ export function PracticeInterviewSession({ interview }: { interview: PracticeInt
         <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-900">
           <p className="font-semibold">Sign in to start this mock interview</p>
           <p className="mt-1 text-amber-800/90">
-            Practice interviews use AI and require a RethinkJobs account.
+            Practice interviews use AI and require a Summer Internships account.
           </p>
           <LoginLink
             href={loginUrl(`/practice-interviews/${interview.id}`)}

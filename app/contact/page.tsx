@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Contact – Rethinkjobs",
-  description: "Get in touch with the Rethinkjobs team.",
+  title: "Contact – Summer Internships",
+  description: "Get in touch with the Summer Internships team.",
 };
 
 export default function ContactPage() {

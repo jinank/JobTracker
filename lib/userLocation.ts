@@ -1,4 +1,4 @@
-export const PENDING_LOCATION_KEY = "rethinkjobs_pending_location_v1";
+export const PENDING_LOCATION_KEY = "summer_internships_pending_location_v1";
 
 export type UserLocation = {
   city: string;

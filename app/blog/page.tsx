@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNavMarketing } from "@/components/SiteNav";
+import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Job search tips, internship advice, and product updates from RethinkJobs, the AI job application tracker built for students and professionals.",
+    `Job search tips, internship advice, and product updates from ${SITE_NAME}, built for students finding USA internships.`,
   alternates: { canonical: "/blog" },
   openGraph: {
-    title: "RethinkJobs Blog, Job search & internship tips",
+    title: `${SITE_NAME} Blog – Job search & internship tips`,
     description:
       "Guides and updates to help you track job applications and run a smarter internship search.",
     url: "/blog",
-    siteName: "RethinkJobs",
+    siteName: SITE_NAME,
     type: "website",
   },
 };
@@ -31,7 +32,7 @@ export default function BlogPage() {
             run a structured <strong className="font-semibold text-slate-800">internship search</strong>.
             Check back soon, or{" "}
             <Link href="/" className="font-semibold text-scale-purple hover:underline">
-              start organizing your pipeline with RethinkJobs
+              start organizing your pipeline with {SITE_NAME}
             </Link>
             .
           </p>

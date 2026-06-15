@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Contact Us – Rethinkjobs",
+  title: "Contact Us – Summer Internships",
   description:
     "Contact support at info.rethinksoft@gmail.com if you have any issues.",
 };
@@ -15,7 +15,7 @@ export default function ContactUsPage() {
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Rethinkjobs
+            ← Summer Internships
           </Link>
           <Link
             href="/pricing"

@@ -34,7 +34,7 @@ export default function PricingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h1 className="text-base font-bold text-slate-900">Rethinkjobs</h1>
+            <h1 className="text-base font-bold text-slate-900">Summer Internships</h1>
           </Link>
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
             ← Back to Dashboard

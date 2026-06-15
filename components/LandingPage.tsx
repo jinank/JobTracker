@@ -128,7 +128,7 @@ function ProductWindow() {
           <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
           </svg>
-          rethinkjobs.com
+          summer2027internships.com
         </div>
         <div className="w-10" aria-hidden />
       </div>
@@ -425,7 +425,7 @@ const HOW_IT_WORKS = [
   },
   {
     step: "3",
-    title: "Let RethinkJobs run the rest",
+    title: "Let Summer Internships run the rest",
     desc: "Connect Gmail (read-only) and your pipeline tracks itself, while you prep interviews and message mentors from the same account.",
   },
 ];
@@ -455,7 +455,7 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
     a: "Yes. Verify your student status once and everything is unlocked, unlimited tracking, Gmail syncs, mock interviews, mentor search, and all the deals. No card, no trial that expires mid-semester.",
   },
   {
-    q: "What does RethinkJobs do with my Gmail?",
+    q: "What does Summer Internships do with my Gmail?",
     a: "We request minimal, read-only access and only look for job-related threads, confirmations, assessments, interview invites, offers. You can revoke access anytime from your Google account, and Gmail is optional to start.",
   },
   {
@@ -570,19 +570,19 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── What is RethinkJobs ────────────────────────────── */}
+      {/* ── What is Summer Internships ─────────────────────── */}
       <section id="about" className="border-b border-slate-100 py-16 lg:py-20" aria-labelledby="about-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="mx-auto max-w-3xl text-center">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                What is RethinkJobs?
+                What is Summer Internships?
               </span>
               <h2 id="about-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
                 One account for the entire internship hunt
               </h2>
               <p className="mt-5 text-lg leading-relaxed text-slate-600">
-                RethinkJobs is a student job-search hub that puts the whole process in one
+                Summer Internships is a student job-search hub that puts the whole process in one
                 place: a daily-updated board of US internships, an AI tracker that builds
                 your application pipeline from Gmail, mock interviews tailored to real
                 companies, a mentor finder for referrals and advice, and a library of

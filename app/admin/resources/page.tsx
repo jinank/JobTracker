@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { resourceTitle } from "@/lib/rethinkJobsResources";
+import { resourceTitle } from "@/lib/memberResources";
 
 interface AccessRequest {
   id: string;

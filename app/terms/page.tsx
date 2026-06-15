@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Terms – Rethinkjobs",
-  description: "Terms of use for Rethinkjobs.",
+  title: "Terms – Summer Internships",
+  description: "Terms of use for Summer Internships.",
 };
 
 export default function TermsPage() {
@@ -14,7 +14,7 @@ export default function TermsPage() {
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Rethinkjobs
+            ← Summer Internships
           </Link>
         </div>
       </header>

@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { RootJsonLd } from "@/components/seo/RootJsonLd";
-import { getMetadataBase, getSiteOrigin } from "@/lib/site";
+import { getMetadataBase, getSiteOrigin, SITE_NAME } from "@/lib/site";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -14,35 +14,34 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 const SITE_TITLE_DEFAULT =
-  "RethinkJobs | AI Job Application Tracker for Students & Professionals";
+  "Summer Internships | USA internship search for students";
 
 /** ~155 characters, primary keyword + CTA */
 const SITE_DESCRIPTION =
-  "RethinkJobs is the AI job application tracker that syncs Gmail to track job applications and internships. Free for students. Start free today. Organize your entire pipeline.";
+  "Summer Internships helps students find USA internships from company career pages, track applications from Gmail, practice interviews with AI, and unlock member perks. Free for students.";
 
 const SITE_KEYWORDS = [
-  "job application tracker",
-  "AI job search tool",
-  "track job applications",
+  "summer internships",
+  "USA internships",
+  "internship search",
+  "student internships",
   "internship tracker",
-  "job search organizer",
-  "Gmail job tracker",
-  "student job search",
-  "application pipeline",
-  "RethinkJobs",
+  "job application tracker",
+  "internship application tracker",
+  "Summer Internships",
 ];
 
 export const metadata: Metadata = {
   metadataBase: getMetadataBase(),
   title: {
     default: SITE_TITLE_DEFAULT,
-    template: "%s | RethinkJobs",
+    template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
   keywords: SITE_KEYWORDS,
-  authors: [{ name: "RethinkJobs" }],
-  creator: "RethinkJobs",
-  publisher: "RethinkJobs",
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   robots: {
     index: true,
     follow: true,
@@ -55,7 +54,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: getSiteOrigin(),
-    siteName: "RethinkJobs",
+    siteName: SITE_NAME,
     title: SITE_TITLE_DEFAULT,
     description: SITE_DESCRIPTION,
     images: [
@@ -63,7 +62,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "RethinkJobs | AI-powered job application tracker",
+        alt: `${SITE_NAME} | USA internship search for students`,
       },
     ],
   },
@@ -71,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE_DEFAULT,
     description: SITE_DESCRIPTION,
-    images: [{ url: "/opengraph-image", alt: "RethinkJobs | AI job application tracker" }],
+    images: [{ url: "/opengraph-image", alt: `${SITE_NAME} | USA internship search` }],
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],

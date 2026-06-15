@@ -1,4 +1,6 @@
 /** Same mark as `public/icon.svg`, blue→indigo tile + lightning. */
+import { SITE_NAME } from "@/lib/site";
+
 export function LogoMark({
   className = "w-9 h-9",
   iconClassName = "w-5 h-5",
@@ -10,7 +12,7 @@ export function LogoMark({
     <div
       className={`flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-sm ${className}`}
       role="img"
-      aria-label="RethinkJobs"
+      aria-label={SITE_NAME}
     >
       <svg
         className={`shrink-0 text-white ${iconClassName}`}

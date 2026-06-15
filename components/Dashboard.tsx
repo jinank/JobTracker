@@ -92,7 +92,7 @@ export function Dashboard() {
     const email = session?.user?.email;
     if (!email) return;
 
-    const key = `rethinkjobs_student_verified_approved_notif_${email.toLowerCase()}`;
+    const key = `summer_internships_student_verified_approved_notif_${email.toLowerCase()}`;
     try {
       if (localStorage.getItem(key)) return;
       localStorage.setItem(key, "1");

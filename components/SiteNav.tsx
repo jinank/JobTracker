@@ -11,6 +11,7 @@ import {
   isNavLinkActive,
   type NavLinkItem,
 } from "@/lib/siteNav";
+import { SITE_NAME } from "@/lib/site";
 
 /** Shared sticky header height (app + marketing). */
 const HEADER_BAR_CLASS = "h-16 sm:h-[4.5rem]";
@@ -62,7 +63,7 @@ function AppLogoBlock({ activeCount }: { activeCount?: number }) {
     <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3">
       <LogoMark />
       <div className="min-w-0">
-        <p className="truncate text-sm font-bold text-slate-900 sm:text-base">RethinkJobs</p>
+        <p className="truncate text-sm font-bold text-slate-900 sm:text-base">{SITE_NAME}</p>
         {activeCount != null ? (
           <p className="truncate text-[11px] text-slate-500 sm:text-xs min-h-[1.125rem] sm:min-h-[1.25rem]">
             {activeCount} active application{activeCount !== 1 ? "s" : ""}
@@ -92,12 +93,12 @@ export function SiteNavMarketing() {
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2"
-          aria-label="RethinkJobs home"
+          aria-label={`${SITE_NAME} home`}
           onClick={closeMenu}
         >
           <LogoMark />
           <span className="hidden text-lg font-bold tracking-tight text-slate-900 sm:inline">
-            RethinkJobs
+            {SITE_NAME}
           </span>
         </Link>
 

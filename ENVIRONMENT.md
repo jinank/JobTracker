@@ -1,4 +1,4 @@
-# Rethinkjobs (Next.js) – environment variables
+# Summer Internships (Next.js) – environment variables
 
 ## Quick start (Reach Out / recruiters)
 
@@ -36,7 +36,7 @@ HAPPENSTANCE_API_KEY="your_key"
 # HAPPENSTANCE_MAX_WAIT_MS=55000
 ```
 
-**Important:** Results are scoped to the **Happenstance account that owns the API key**. In a multi-user product, every Rethinkjobs user shares that same graph unless you issue per-user keys or integrate Happenstance per account.
+**Important:** Results are scoped to the **Happenstance account that owns the API key**. In a multi-user product, every Summer Internships user shares that same graph unless you issue per-user keys or integrate Happenstance per account.
 
 Searches run **asynchronously**; the server polls until `COMPLETED` or timeout (see env above). Uses credits per [Happenstance billing](https://developer.happenstance.ai/).
 
@@ -53,7 +53,7 @@ Searches run **asynchronously**; the server polls until `COMPLETED` or timeout (
 HUNTER_API_KEY="your_key"
 ```
 
-Rethinkjobs calls `GET https://api.hunter.io/v2/domain-search?domain=...` using the guessed company domain. Results are **filtered** toward recruiter/HR-style titles when possible; if none match, it shows a broader slice of contacts at that domain with an info message.
+Summer Internships calls `GET https://api.hunter.io/v2/domain-search?domain=...` using the guessed company domain. Results are **filtered** toward recruiter/HR-style titles when possible; if none match, it shows a broader slice of contacts at that domain with an info message.
 
 ---
 
@@ -85,14 +85,14 @@ Clay often requires **paid credits** to return enrichment data. If you use a Cla
 
 ### Clay table contract
 
-**Request body** (from Rethinkjobs):
+**Request body** (from Summer Internships):
 
 ```json
 {
   "company": "Acme Corp",
   "domain": "acme.com",
   "recruiter_title_filters": ["recruiter", "hiring manager", "..."],
-  "source": "rethinkjobs-reach-out"
+  "source": "summer-internships-reach-out"
 }
 ```
 

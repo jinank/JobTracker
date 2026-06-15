@@ -214,7 +214,7 @@ async function fetchRecruitersFromClay(args: {
     company: args.company,
     domain: args.domain,
     recruiter_title_filters: RECRUITER_TITLES,
-    source: "rethinkjobs-reach-out",
+    source: "summer-internships-reach-out",
   };
 
   const controller = new AbortController();

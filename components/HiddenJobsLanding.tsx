@@ -15,7 +15,7 @@ const COMPARISON = {
     "Generic alerts that miss company career sites",
     "Little signal on US-only student roles",
   ],
-  rethink: [
+  platform: [
     "Internships from company career pages directly",
     "Less competition than big job boards",
     "US-focused: on-site, hybrid, and remote (US)",
@@ -35,7 +35,7 @@ const FAQ = [
   },
   {
     q: "How is this different from LinkedIn or Handshake?",
-    a: "We surface roles from company websites, not crowded job boards. You apply on the employer site and can track replies in RethinkJobs.",
+    a: "We surface roles from company websites, not crowded job boards. You apply on the employer site and can track replies in Summer Internships.",
   },
 ];
 
@@ -239,10 +239,10 @@ export function HiddenJobsLanding() {
             </div>
             <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-6 ring-2 ring-scale-purple/20">
               <h3 className="text-sm font-bold uppercase tracking-wide text-emerald-800 mb-4">
-                RethinkJobs Internships
+                Summer Internships
               </h3>
               <ul className="space-y-2.5">
-                {COMPARISON.rethink.map((line) => (
+                {COMPARISON.platform.map((line) => (
                   <li key={line} className="flex gap-2 text-sm text-emerald-900/90">
                     <span className="text-emerald-600 shrink-0">✓</span>
                     {line}
@@ -328,7 +328,7 @@ export function HiddenJobsLanding() {
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
           <h2 className="text-2xl font-bold text-slate-900">Find internships. Track every reply.</h2>
           <p className="mt-3 text-slate-600">
-            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline, all in RethinkJobs.
+            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline, all in Summer Internships.
           </p>
           <div className="mt-6 flex justify-center">
             <NavAuthAction

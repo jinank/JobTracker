@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAppUser } from "@/lib/requirePaid";
 import { supabase } from "@/lib/supabase";
-import { RESOURCE_IDS } from "@/lib/rethinkJobsResources";
+import { RESOURCE_IDS } from "@/lib/memberResources";
 
 export async function GET() {
   const user = await getAppUser();

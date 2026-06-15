@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Privacy – Rethinkjobs",
-  description: "How Rethinkjobs handles your data.",
+  title: "Privacy – Summer Internships",
+  description: "How Summer Internships handles your data.",
 };
 
 export default function PrivacyPage() {
@@ -14,7 +14,7 @@ export default function PrivacyPage() {
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Rethinkjobs
+            ← Summer Internships
           </Link>
         </div>
       </header>
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
         <h1 className="text-2xl font-bold text-slate-900 mb-4">Privacy policy</h1>
         <p className="text-slate-600 text-sm leading-relaxed mb-4">
           This is a placeholder privacy policy. Replace with your final legal text
-          before launch. Rethinkjobs connects to your Google account to read Gmail
+          before launch. Summer Internships connects to your Google account to read Gmail
           (read-only scope) for job-related messages, stores derived application data
           in your database, and may use third-party APIs (e.g. OpenAI) for
           classification as described in your product.

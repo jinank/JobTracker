@@ -3,14 +3,15 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { LoginLink } from "@/components/LoginLink";
-import { RETHINKJOBS_MEMBER_RESOURCES } from "@/lib/rethinkJobsResources";
+import { MEMBER_RESOURCES } from "@/lib/memberResources";
 import {
   STUDENT_DEALS,
   STUDENT_DEAL_CATEGORY_OPTIONS,
   dealExternalHref,
   type StudentDeal,
 } from "@/lib/studentDealsData";
-import type { RethinkJobsResource } from "@/lib/rethinkJobsResources";
+import type { MemberResource } from "@/lib/memberResources";
+import { SITE_NAME } from "@/lib/site";
 
 const RESOURCE_ICONS: Record<string, ReactNode> = {
   "linkedin-profile-review": (
@@ -38,7 +39,7 @@ function RequestAccessResourceCard({
   requesting,
   onRequest,
 }: {
-  resource: RethinkJobsResource;
+  resource: MemberResource;
   signedIn: boolean;
   requestStatus?: string;
   requesting: boolean;
@@ -194,16 +195,16 @@ export function StudentDealsExplorer() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6">
-      <section className="mb-12" aria-labelledby="rethinkjobs-resources-heading">
+      <section className="mb-12" aria-labelledby="member-resources-heading">
         <div className="mb-8 text-center sm:text-left">
           <h2
-            id="rethinkjobs-resources-heading"
+            id="member-resources-heading"
             className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl"
           >
             Free for members
           </h2>
           <p className="mt-2 text-sm text-slate-500">
-            Free with your RethinkJobs account. Request access to unlock member perks.
+            Free with your {SITE_NAME} account. Request access to unlock member perks.
             {!signedIn && (
               <>
                 {" "}
@@ -222,7 +223,7 @@ export function StudentDealsExplorer() {
           </p>
         )}
         <ul className="grid gap-5 sm:grid-cols-3">
-          {RETHINKJOBS_MEMBER_RESOURCES.map((resource) => (
+          {MEMBER_RESOURCES.map((resource) => (
             <li key={resource.id} className="h-full">
               <RequestAccessResourceCard
                 resource={resource}
@@ -239,7 +240,7 @@ export function StudentDealsExplorer() {
       <div className="mb-8 border-t border-slate-200/80 pt-8">
         <div className="mb-6 rounded-2xl border border-amber-100 bg-amber-50/80 px-4 py-3 text-sm text-amber-950/90">
           <strong className="font-semibold">Heads up:</strong> Programs, prices, and eligibility change
-          often. Always confirm the current offer on the provider&apos;s official site. Rethinkjobs
+          often. Always confirm the current offer on the provider&apos;s official site. {SITE_NAME}
           doesn&apos;t run these programs and may earn nothing from these links.
         </div>
 

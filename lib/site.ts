@@ -1,6 +1,8 @@
+export const SITE_NAME = "Summer Internships";
+
 /**
  * Canonical site origin for metadata, sitemap, and JSON-LD.
- * Set NEXT_PUBLIC_SITE_URL in production (e.g. https://rethinkjobs.com).
+ * Set NEXT_PUBLIC_SITE_URL in production (e.g. https://www.summer2027internships.com).
  */
 export function getSiteOrigin(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();

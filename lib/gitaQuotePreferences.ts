@@ -1,5 +1,5 @@
-const SNOOZE_UNTIL_KEY = "rethinkjobs_gita_snooze_until_ms";
-const DISABLED_KEY = "rethinkjobs_gita_quotes_disabled";
+const SNOOZE_UNTIL_KEY = "summer_internships_gita_snooze_until_ms";
+const DISABLED_KEY = "summer_internships_gita_quotes_disabled";
 
 export type GitaQuoteVisibility = "visible" | "snoozed" | "disabled";
 

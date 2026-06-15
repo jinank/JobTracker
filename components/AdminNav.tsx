@@ -20,7 +20,7 @@ export function AdminNav() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href="/admin" className="flex items-center gap-2 text-slate-900">
           <LogoMark className="h-8 w-8" iconClassName="w-4 h-4" />
-          <span className="text-sm font-bold">Rethinkjobs Admin</span>
+          <span className="text-sm font-bold">Summer Internships Admin</span>
         </Link>
         <nav className="flex flex-wrap items-center gap-1">
           {links.map(({ href, label }) => {
