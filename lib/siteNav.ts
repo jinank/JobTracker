@@ -12,7 +12,10 @@ export { PRODUCT_NAV_LINKS };
 
 export const APP_NAV_LINKS: NavLinkItem[] = PRODUCT_NAV_LINKS;
 
-export const MARKETING_NAV_LINKS: NavLinkItem[] = PRODUCT_NAV_LINKS;
+export const MARKETING_NAV_LINKS: NavLinkItem[] = [
+  ...PRODUCT_NAV_LINKS,
+  { href: "/blog", label: "Blog" },
+];
 
 export function isNavLinkActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { LoginLink } from "@/components/LoginLink";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
+import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
 
 function Reveal({
   children,
@@ -505,6 +506,7 @@ const PLANS = [
 
 export function LandingPage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const latestPosts = getBlogPostsNewestFirst().slice(0, 3);
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -791,6 +793,61 @@ export function LandingPage() {
                         : "border-2 border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-scale-mist/80"
                     }`}
                   />
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Blog ─────────────────────────────────────────── */}
+      <section id="blog" className="border-b border-slate-100 bg-slate-50 py-16 lg:py-20" aria-labelledby="blog-heading">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+                  Blog
+                </span>
+                <h2 id="blog-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                  Internship search guides
+                </h2>
+                <p className="mt-3 max-w-xl text-slate-600">
+                  Tips on finding USA internships, tracking applications, and prepping for interviews.
+                </p>
+              </div>
+              <Link
+                href="/blog"
+                className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-scale-purple hover:underline"
+              >
+                View all articles
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            {latestPosts.map((post) => (
+              <Reveal key={post.slug} className="h-full">
+                <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-scale-purple">
+                    {post.category}
+                  </p>
+                  <h3 className="mt-2 text-lg font-bold text-slate-900">
+                    <Link href={`/blog/${post.slug}`} className="hover:text-scale-purple hover:underline">
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 line-clamp-3">
+                    {post.description}
+                  </p>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-scale-purple hover:underline"
+                  >
+                    Read more
+                  </Link>
                 </article>
               </Reveal>
             ))}
