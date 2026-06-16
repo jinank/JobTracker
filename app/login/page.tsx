@@ -8,7 +8,6 @@ import { LogoMark } from "@/components/LogoMark";
 import { SignInForm } from "@/components/SignInForm";
 import { signInWithSupabaseAccessToken } from "@/lib/authSignIn";
 import { resolveCallbackUrl } from "@/lib/loginUrl";
-import { getSupabaseBrowser } from "@/lib/supabaseBrowser";
 import { SITE_NAME } from "@/lib/site";
 function parseHashSession(): { access_token?: string; refresh_token?: string } {
   if (typeof window === "undefined") return {};
@@ -43,38 +42,17 @@ function LoginPageInner() {
   const errorBanner = completingHash ? null : loginErrorMessage(searchParams.get("error"));
 
   useEffect(() => {
-    const { access_token, refresh_token } = parseHashSession();
-    if (!access_token || !refresh_token) return;
+    const { access_token } = parseHashSession();
+    if (!access_token) return;
 
     setCompletingHash(true);
     let cancelled = false;
 
     async function completeFromHash() {
       const accessToken = access_token!;
-      const refreshToken = refresh_token!;
-      const supabase = getSupabaseBrowser();
       const next = resolveCallbackUrl(searchParams.get("callbackUrl"));
-
-      if (supabase) {
-        const { error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        });
-        if (!error) {
-          const { data } = await supabase.auth.getSession();
-          if (data.session?.access_token) {
-            window.history.replaceState({}, "", `/login?callbackUrl=${encodeURIComponent(next)}`);
-            await signInWithSupabaseAccessToken(data.session.access_token, next);
-            return;
-          }
-        }
-      }
-
-      if (!cancelled) {
-        window.location.replace(
-          `/auth/session-bridge?access_token=${encodeURIComponent(accessToken)}&next=${encodeURIComponent(next)}`
-        );
-      }
+      window.history.replaceState({}, "", `/login?callbackUrl=${encodeURIComponent(next)}`);
+      await signInWithSupabaseAccessToken(accessToken, next);
     }
 
     void completeFromHash();

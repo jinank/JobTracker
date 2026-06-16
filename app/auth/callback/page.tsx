@@ -4,7 +4,6 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signInWithSupabaseAccessToken } from "@/lib/authSignIn";
 import { resolveCallbackUrl } from "@/lib/loginUrl";
-import { getSupabaseBrowser } from "@/lib/supabaseBrowser";
 
 function parseHashSession(): { access_token?: string; refresh_token?: string } {
   const hash = window.location.hash.replace(/^#/, "");
@@ -44,8 +43,8 @@ function AuthCallbackInner() {
           if (!res.ok || !data.access_token) {
             throw new Error(
               data.error === "confirm_failed"
-                ? "That sign-in link expired or was already used."
-                : "Invalid sign-in link."
+                ? "That sign-in link expired or was already used. Request a new email."
+                : "Could not verify sign-in link. Request a new email."
             );
           }
           window.history.replaceState({}, "", `/auth/callback?next=${encodeURIComponent(next)}`);
@@ -57,20 +56,10 @@ function AuthCallbackInner() {
           return;
         }
 
-        const { access_token, refresh_token } = parseHashSession();
-        if (access_token && refresh_token) {
-          const supabase = getSupabaseBrowser();
-          if (!supabase) {
-            throw new Error("Email sign-in is not fully configured on this site.");
-          }
-          const { error } = await supabase.auth.setSession({ access_token, refresh_token });
-          if (error) throw error;
-          const { data, error: sessionError } = await supabase.auth.getSession();
-          if (sessionError || !data.session?.access_token) {
-            throw sessionError ?? new Error("No session from sign-in link");
-          }
+        const { access_token } = parseHashSession();
+        if (access_token) {
           window.history.replaceState({}, "", `/auth/callback?next=${encodeURIComponent(next)}`);
-          const result = await signInWithSupabaseAccessToken(data.session.access_token, next);
+          const result = await signInWithSupabaseAccessToken(access_token, next);
           if (result?.error && !cancelled) {
             setFailed(true);
             setMessage(result.error);

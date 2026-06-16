@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 
+/** Map URL ?type= to Supabase verifyOtp type (magiclink/signup → email). */
+function resolveOtpType(type: string): "email" | "signup" | "invite" | "recovery" | "email_change" {
+  if (type === "signup" || type === "invite" || type === "recovery" || type === "email_change") {
+    return type;
+  }
+  return "email";
+}
+
 export async function POST(request: Request) {
   let body: { code?: string; token_hash?: string; type?: string };
   try {
@@ -29,10 +37,9 @@ export async function POST(request: Request) {
       }
       accessToken = data.session.access_token;
     } else if (token_hash) {
-      const otpType = type === "magiclink" ? "email" : type;
       const { data, error } = await supabase.auth.verifyOtp({
         token_hash,
-        type: otpType as "email" | "signup" | "invite" | "recovery" | "email_change",
+        type: resolveOtpType(type),
       });
       if (error || !data.session?.access_token) {
         console.error("[auth/supabase-callback] verifyOtp:", error?.message);
