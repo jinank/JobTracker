@@ -62,7 +62,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "premium",
     name: "Premium",
-    price: "$149",
+    price: "$49",
     cadence: "one-time",
     note: "We apply for you + launch your site",
     features: [

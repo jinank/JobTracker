@@ -38,7 +38,7 @@ export default function ContactUsPage({
         <h1 className="text-2xl font-bold text-slate-900 mb-2">Contact Us</h1>
         {isPremiumInquiry ? (
           <div className="mb-6 rounded-xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm text-violet-900">
-            <p className="font-semibold">Premium package ($149 one-time)</p>
+            <p className="font-semibold">Premium package ($49 one-time)</p>
             <p className="mt-1 text-violet-800">
               Includes 100 internship applications on your behalf and a free portfolio website.
               Email us with your target roles and we&apos;ll get you started.
