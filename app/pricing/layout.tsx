@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Pricing",
   description:
-    "Free for students with verification. Track up to 50 applications on the free plan, or upgrade to Pro for unlimited Gmail sync and pipeline tracking.",
+    "Free for students. Professional tracking at $9.99/mo. Premium includes 100 applications on your behalf plus a free portfolio website.",
   path: "/pricing",
   keywords: ["internship tracker pricing", "free student plan", "job application tracker"],
 });

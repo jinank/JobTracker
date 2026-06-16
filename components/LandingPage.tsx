@@ -6,6 +6,7 @@ import { LoginLink } from "@/components/LoginLink";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
+import { PRICING_PLANS } from "@/lib/pricingPlans";
 import { CANONICAL_SITE_HOST } from "@/lib/site";
 
 function Reveal({
@@ -471,37 +472,7 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "I'm not a student. Can I use it?",
-    a: "Sure. The Free plan tracks up to 50 applications, and Professional unlocks unlimited everything for $9.99/month.",
-  },
-];
-
-const PLANS = [
-  {
-    name: "Free",
-    price: "$0",
-    cadence: "forever",
-    note: "Perfect for getting started",
-    features: ["Track up to 50 applications", "AI email classification", "Pipeline dashboard with filters", "All five tools included"],
-    cta: "Get started free",
-    highlight: false,
-  },
-  {
-    name: "Student",
-    price: "Free",
-    cadence: "with verification",
-    note: "Verify once with your school",
-    features: ["Unlimited applications & syncs", "AI mock interviews", "Mentor & recruiter search", "All student deals & resources"],
-    cta: "Verify & unlock everything",
-    highlight: true,
-  },
-  {
-    name: "Professional",
-    price: "$9.99",
-    cadence: "/month",
-    note: "For everyone out of school",
-    features: ["Unlimited applications & syncs", "Full pipeline & timeline", "Priority support", "Cancel anytime via Stripe"],
-    cta: "Start Pro",
-    highlight: false,
+    a: "Sure. The Free plan tracks up to 50 applications. Professional is $9.99/month for unlimited tracking, or Premium includes 100 applications on your behalf plus a free portfolio website.",
   },
 ];
 
@@ -525,8 +496,8 @@ export function LandingPage() {
             <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm">
               🎓 Free for students: verify once, everything unlocked
             </p>
-            <p className="mb-6 text-sm font-medium text-emerald-700/90">
-              Your first 100 internships are on us. We&apos;ll apply on your behalf. FREE.
+            <p className="mb-6 text-sm font-medium text-slate-600">
+              Browse US internships, track applications from Gmail, and prep interviews in one place.
             </p>
             <h1
               id="hero-heading"
@@ -752,23 +723,37 @@ export function LandingPage() {
               </p>
             </div>
           </Reveal>
-          <div className="mx-auto grid max-w-5xl gap-5 lg:grid-cols-3">
-            {PLANS.map((p) => (
-              <Reveal key={p.name} className="h-full">
+          <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {PRICING_PLANS.map((p) => (
+              <Reveal key={p.id} className="h-full">
                 <article
                   className={`flex h-full flex-col rounded-3xl border-2 bg-white p-7 ${
                     p.highlight
                       ? "border-emerald-400 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)]"
-                      : "border-slate-200/80 shadow-card"
+                      : p.id === "premium"
+                        ? "border-scale-purple/40 shadow-[0_8px_30px_-8px_rgba(107,70,254,0.25)]"
+                        : "border-slate-200/80 shadow-card"
                   }`}
                 >
-                  <div className="flex items-baseline justify-between">
-                    <h3 className={`text-xs font-bold uppercase tracking-[0.15em] ${p.highlight ? "text-emerald-700" : "text-slate-400"}`}>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3
+                      className={`text-xs font-bold uppercase tracking-[0.15em] ${
+                        p.highlight
+                          ? "text-emerald-700"
+                          : p.id === "premium"
+                            ? "text-scale-purple"
+                            : "text-slate-400"
+                      }`}
+                    >
                       {p.name}
                     </h3>
-                    {p.highlight && (
-                      <span className="rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-                        For students
+                    {p.badge && (
+                      <span
+                        className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white ${
+                          p.highlight ? "bg-emerald-600" : "bg-scale-purple"
+                        }`}
+                      >
+                        {p.badge}
                       </span>
                     )}
                   </div>
@@ -780,20 +765,43 @@ export function LandingPage() {
                   <ul className="mt-6 flex-1 space-y-2.5 border-t border-slate-100 pt-6">
                     {p.features.map((f) => (
                       <li key={f} className="flex gap-2.5 text-sm leading-snug text-slate-600">
-                        <CheckIcon className={`mt-0.5 h-4 w-4 shrink-0 ${p.highlight ? "text-emerald-600" : "text-scale-purple"}`} />
+                        <CheckIcon
+                          className={`mt-0.5 h-4 w-4 shrink-0 ${
+                            p.highlight
+                              ? "text-emerald-600"
+                              : p.id === "premium"
+                                ? "text-scale-purple"
+                                : "text-scale-purple"
+                          }`}
+                        />
                         <span>{f}</span>
                       </li>
                     ))}
                   </ul>
-                  <LoginLink
-                    callbackUrl="/"
-                    label={p.cta}
-                    className={`mt-7 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${
-                      p.highlight
-                        ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                        : "border-2 border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-scale-mist/80"
-                    }`}
-                  />
+                  {p.href ? (
+                    <Link
+                      href={p.href}
+                      className={`mt-7 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${
+                        p.highlight
+                          ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                          : p.id === "premium"
+                            ? "bg-scale-purple text-white hover:bg-scale-purple-dark"
+                            : "border-2 border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-scale-mist/80"
+                      }`}
+                    >
+                      {p.cta}
+                    </Link>
+                  ) : (
+                    <LoginLink
+                      callbackUrl="/"
+                      label={p.cta}
+                      className={`mt-7 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${
+                        p.highlight
+                          ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                          : "border-2 border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-scale-mist/80"
+                      }`}
+                    />
+                  )}
                 </article>
               </Reveal>
             ))}
