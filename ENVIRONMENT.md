@@ -105,3 +105,21 @@ The API key under Clay **Settings → API key** is not a substitute for the tabl
 ## Merging with Gmail data
 
 Whatever provider you use, recruiter names already extracted from **synced job emails** are **merged** in and de-duplicated when possible.
+
+---
+
+## Branded sign-in emails (Supabase / Resend)
+
+Email magic-link sign-in uses Supabase Auth. By default Supabase sends a generic message from `noreply@mail.app.supabase.io` (“Confirm your signup”, powered by Supabase footer).
+
+**Recommended:** set **`RESEND_API_KEY`** so the app sends a branded email from your domain:
+
+```env
+RESEND_API_KEY=re_...
+AUTH_EMAIL_FROM=Summer Internships <auth@summer2027internships.com>
+```
+
+1. Sign up at [resend.com](https://resend.com) and verify `summer2027internships.com` (or use `onboarding@resend.dev` for local testing only).
+2. Add the keys above to `.env.local` and Vercel Production, then redeploy.
+
+**Without Resend:** paste `supabase/email-templates/magic-link.html` into **Supabase Dashboard → Authentication → Email Templates** for **Magic Link** and **Confirm signup**. Set the subject to `Sign in to Summer Internships`. Under **Authentication → Settings**, set the sender name to **Summer Internships**.

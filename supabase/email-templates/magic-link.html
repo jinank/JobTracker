@@ -1,0 +1,22 @@
+<!--
+  Paste into Supabase Dashboard → Authentication → Email Templates → Magic Link
+  (and Confirm signup if you still use signInWithOtp without Resend)
+
+  Subject line:
+  Sign in to Summer Internships
+-->
+<h2 style="margin:0 0 16px;font-size:22px;color:#0f172a;">Your sign-in link</h2>
+<p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#334155;">
+  Tap the button below to sign in to Summer Internships. This link works once and expires in about an hour.
+</p>
+<p style="margin:0 0 28px;">
+  <a
+    href="{{ .ConfirmationURL }}"
+    style="display:inline-block;padding:14px 28px;background:#6B46FE;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:12px;"
+  >
+    Sign in to Summer Internships
+  </a>
+</p>
+<p style="margin:0;font-size:12px;line-height:1.6;color:#94a3b8;">
+  If you didn't request this, you can safely ignore this email.
+</p>

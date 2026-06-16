@@ -85,7 +85,7 @@ export function SignInForm({
           <div className="rounded-xl border border-emerald-200 bg-emerald-50/80 px-4 py-4 text-sm text-emerald-900">
             <p className="font-semibold">Check your email</p>
             <p className="mt-1 text-emerald-800/90">
-              We sent a sign-in link to <strong>{email.trim()}</strong>. Open it on this device to continue.
+              We sent a sign-in link to <strong>{email.trim()}</strong>. Check your inbox for an email from Summer Internships.
             </p>
           </div>
         ) : (
