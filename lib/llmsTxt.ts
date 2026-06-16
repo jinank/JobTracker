@@ -1,5 +1,5 @@
 import { BLOG_POSTS } from "@/lib/blogPosts";
-import { SITE_NAME, getSiteOrigin } from "@/lib/site";
+import { SITE_NAME, getSiteOrigin, CANONICAL_SITE_ORIGIN } from "@/lib/site";
 
 /** Plain-text site guide for LLMs (llms.txt). See https://llmstxt.org */
 export function buildLlmsTxt(): string {
@@ -44,7 +44,7 @@ export function buildLlmsTxt(): string {
     `- [Robots](${line("/robots.txt")}): Crawler rules.`,
     "",
     "## Optional",
-    `- Production URL: set NEXT_PUBLIC_SITE_URL to the canonical domain (e.g. https://www.summer2027internships.com).`,
+    `- Production URL: ${CANONICAL_SITE_ORIGIN} (override with NEXT_PUBLIC_SITE_URL if needed).`,
     `- Internship listings filter to US-based roles from public Greenhouse/Lever boards.`,
     `- Gmail connection is optional and read-only; used only for job-related email classification.`,
   ];

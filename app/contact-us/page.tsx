@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { buildPageMetadata } from "@/lib/seo";
+import { getSupportEmail } from "@/lib/site";
 
 export const metadata = buildPageMetadata({
   title: "Contact us",
@@ -8,6 +9,7 @@ export const metadata = buildPageMetadata({
   path: "/contact-us",
 });
 export default function ContactUsPage() {
+  const supportEmail = getSupportEmail();
   return (
     <div className="min-h-0 flex-1 flex flex-col bg-slate-50">
       <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-sm">
@@ -40,10 +42,10 @@ export default function ContactUsPage() {
               Email
             </h2>
             <a
-              href="mailto:info.rethinksoft@gmail.com"
+              href={`mailto:${supportEmail}`}
               className="text-blue-600 font-medium hover:text-blue-700 text-lg"
             >
-              info.rethinksoft@gmail.com
+              {supportEmail}
             </a>
             <p className="text-xs text-slate-500 mt-2">
               Please include screenshots (if relevant) and the email you use to sign in.

@@ -1,5 +1,16 @@
 export const SITE_NAME = "Summer Internships";
 
+/** Primary production domain — sitemap, metadata, and OAuth should use this. */
+export const CANONICAL_SITE_ORIGIN = "https://www.summer2027internships.com";
+
+export const CANONICAL_SITE_HOST = "www.summer2027internships.com";
+
+const DEPRECATED_ORIGIN_PATTERN = /rethinkjobs\.(tech|com)/i;
+
+export function isDeprecatedSiteOrigin(url: string): boolean {
+  return DEPRECATED_ORIGIN_PATTERN.test(url);
+}
+
 function normalizeOrigin(url: string): string {
   const trimmed = url.trim().replace(/\/$/, "");
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
@@ -8,35 +19,46 @@ function normalizeOrigin(url: string): string {
   return `https://${trimmed}`;
 }
 
+function sanitizeOrigin(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  if (isDeprecatedSiteOrigin(url)) return undefined;
+  return normalizeOrigin(url);
+}
+
+/** Public support inbox (override with NEXT_PUBLIC_SUPPORT_EMAIL). */
+export function getSupportEmail(): string {
+  const fromEnv = process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim();
+  if (fromEnv && !fromEnv.includes("rethinksoft") && !fromEnv.includes("rethinkjobs")) {
+    return fromEnv;
+  }
+  return "support@summer2027internships.com";
+}
+
 /**
  * Canonical site origin for metadata, sitemap, robots, and JSON-LD.
- *
- * **Production:** set `NEXT_PUBLIC_SITE_URL` to the exact URL shown in Google Search
- * Console (including www vs non-www), e.g. `https://www.summer2027internships.com`.
- * Do not rely on `NEXTAUTH_URL` for SEO — it often points at an old or auth-only domain.
+ * Ignores deprecated rethinkjobs.* values in env vars.
  */
 export function getSiteOrigin(): string {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (explicit) return normalizeOrigin(explicit);
+  const explicit = sanitizeOrigin(process.env.NEXT_PUBLIC_SITE_URL);
+  if (explicit) return explicit;
 
-  // Vercel sets this to the project's primary production domain when configured.
-  const vercelProduction = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  const vercelProduction = sanitizeOrigin(process.env.VERCEL_PROJECT_PRODUCTION_URL);
   if (vercelProduction && process.env.VERCEL_ENV === "production") {
-    return normalizeOrigin(vercelProduction);
+    return vercelProduction;
   }
 
-  // Preview deployments only — never use ephemeral URLs in production sitemaps.
   if (process.env.VERCEL_ENV === "preview") {
-    const vercel = process.env.VERCEL_URL?.trim();
-    if (vercel) return normalizeOrigin(vercel);
+    const vercel = sanitizeOrigin(process.env.VERCEL_URL);
+    if (vercel) return vercel;
   }
 
-  if (process.env.NODE_ENV !== "production") {
-    const auth = process.env.NEXTAUTH_URL?.trim();
-    if (auth) return normalizeOrigin(auth);
+  if (process.env.NODE_ENV !== "production" && process.env.VERCEL_ENV !== "production") {
+    const auth = sanitizeOrigin(process.env.NEXTAUTH_URL);
+    if (auth) return auth;
+    return "http://localhost:3000";
   }
 
-  return "http://localhost:3000";
+  return CANONICAL_SITE_ORIGIN;
 }
 
 export function getMetadataBase(): URL {
