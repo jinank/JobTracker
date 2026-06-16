@@ -25,6 +25,14 @@ export function RootJsonLd() {
         description:
           "USA internship search, application tracking, and interview prep for students. Sync Gmail, browse company career pages, and manage your pipeline in one place.",
         inLanguage: "en-US",
+        potentialAction: {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${origin}/find-jobs`,
+          },
+          "query-input": "required name=search_term_string",
+        },
       },
       {
         "@type": "SoftwareApplication",

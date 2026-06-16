@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNavMarketing } from "@/components/SiteNav";
+import { buildPageMetadata } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Blog",
   description:
-    `Job search tips, internship advice, and product updates from ${SITE_NAME}, built for students finding USA internships.`,
-  alternates: { canonical: "/blog" },
-  openGraph: {
-    title: `${SITE_NAME} Blog – Job search & internship tips`,
-    description:
-      "Guides and updates to help you track job applications and run a smarter internship search.",
-    url: "/blog",
-    siteName: SITE_NAME,
-    type: "website",
-  },
-};
+    "Job search tips, internship advice, and product updates from Summer Internships, built for students finding USA internships.",
+  path: "/blog",
+  keywords: ["internship tips", "job search blog", "application tracking"],
+  ogTitle: "Blog — Job search & internship tips",
+});
 
 export default function BlogPage() {
   return (

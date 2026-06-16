@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Contact Us – Summer Internships",
+export const metadata = buildPageMetadata({
+  title: "Contact us",
   description:
-    "Contact support at info.rethinksoft@gmail.com if you have any issues.",
-};
-
+    "Contact Summer Internships support for help with accounts, billing, internships, and student verification.",
+  path: "/contact-us",
+});
 export default function ContactUsPage() {
   return (
     <div className="min-h-0 flex-1 flex flex-col bg-slate-50">
@@ -26,7 +27,7 @@ export default function ContactUsPage() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12 w-full">
+      <main id="main-content" className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12 w-full">
         <h1 className="text-2xl font-bold text-slate-900 mb-2">Contact Us</h1>
         <p className="text-slate-600 text-sm mb-8">
           If any student or user has an issue, you can reach us by email and we&apos;ll

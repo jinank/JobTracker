@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { RootJsonLd } from "@/components/seo/RootJsonLd";
-import { getMetadataBase, getSiteOrigin, SITE_NAME } from "@/lib/site";
+import { buildRootMetadata } from "@/lib/seo";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -13,72 +13,12 @@ const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
 });
 
-const SITE_TITLE_DEFAULT =
-  "Summer Internships | USA internship search for students";
+export const metadata: Metadata = buildRootMetadata();
 
-/** ~155 characters, primary keyword + CTA */
-const SITE_DESCRIPTION =
-  "Summer Internships helps students find USA internships from company career pages, track applications from Gmail, practice interviews with AI, and unlock member perks. Free for students.";
-
-const SITE_KEYWORDS = [
-  "summer internships",
-  "USA internships",
-  "internship search",
-  "student internships",
-  "internship tracker",
-  "job application tracker",
-  "internship application tracker",
-  "Summer Internships",
-];
-
-export const metadata: Metadata = {
-  metadataBase: getMetadataBase(),
-  title: {
-    default: SITE_TITLE_DEFAULT,
-    template: `%s | ${SITE_NAME}`,
-  },
-  description: SITE_DESCRIPTION,
-  keywords: SITE_KEYWORDS,
-  authors: [{ name: SITE_NAME }],
-  creator: SITE_NAME,
-  publisher: SITE_NAME,
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: getSiteOrigin(),
-    siteName: SITE_NAME,
-    title: SITE_TITLE_DEFAULT,
-    description: SITE_DESCRIPTION,
-    images: [
-      {
-        url: "/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: `${SITE_NAME} | USA internship search for students`,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_TITLE_DEFAULT,
-    description: SITE_DESCRIPTION,
-    images: [{ url: "/opengraph-image", alt: `${SITE_NAME} | USA internship search` }],
-  },
-  icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
-  },
-  category: "technology",
-  formatDetection: { telephone: false },
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#6b46fe",
 };
 
 export default function RootLayout({

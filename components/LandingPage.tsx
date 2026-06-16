@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { LoginLink } from "@/components/LoginLink";
 import { SiteNavMarketing } from "@/components/SiteNav";
+import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 
 function Reveal({
   children,
@@ -885,6 +886,7 @@ export function LandingPage() {
       </section>
 
       </main>
+      <MarketingFaqJsonLd />
     </div>
   );
 }
