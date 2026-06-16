@@ -1,13 +1,25 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { LogoMark } from "@/components/LogoMark";
 import { SignInForm } from "@/components/SignInForm";
+import { signInWithSupabaseAccessToken } from "@/lib/authSignIn";
 import { resolveCallbackUrl } from "@/lib/loginUrl";
+import { getSupabaseBrowser } from "@/lib/supabaseBrowser";
 import { SITE_NAME } from "@/lib/site";
+function parseHashSession(): { access_token?: string; refresh_token?: string } {
+  if (typeof window === "undefined") return {};
+  const hash = window.location.hash.replace(/^#/, "");
+  if (!hash) return {};
+  const params = new URLSearchParams(hash);
+  return {
+    access_token: params.get("access_token") ?? undefined,
+    refresh_token: params.get("refresh_token") ?? undefined,
+  };
+}
 
 function loginErrorMessage(code: string | null): string | null {
   if (code === "confirm_failed") {
@@ -23,8 +35,53 @@ function LoginPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { status } = useSession();
+  const [completingHash, setCompletingHash] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.location.hash.includes("access_token");
+  });
   const callbackUrl = resolveCallbackUrl(searchParams.get("callbackUrl"));
-  const errorBanner = loginErrorMessage(searchParams.get("error"));
+  const errorBanner = completingHash ? null : loginErrorMessage(searchParams.get("error"));
+
+  useEffect(() => {
+    const { access_token, refresh_token } = parseHashSession();
+    if (!access_token || !refresh_token) return;
+
+    setCompletingHash(true);
+    let cancelled = false;
+
+    async function completeFromHash() {
+      const accessToken = access_token!;
+      const refreshToken = refresh_token!;
+      const supabase = getSupabaseBrowser();
+      const next = resolveCallbackUrl(searchParams.get("callbackUrl"));
+
+      if (supabase) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        if (!error) {
+          const { data } = await supabase.auth.getSession();
+          if (data.session?.access_token) {
+            window.history.replaceState({}, "", `/login?callbackUrl=${encodeURIComponent(next)}`);
+            await signInWithSupabaseAccessToken(data.session.access_token, next);
+            return;
+          }
+        }
+      }
+
+      if (!cancelled) {
+        window.location.replace(
+          `/auth/session-bridge?access_token=${encodeURIComponent(accessToken)}&next=${encodeURIComponent(next)}`
+        );
+      }
+    }
+
+    void completeFromHash();
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams]);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -32,7 +89,7 @@ function LoginPageInner() {
     }
   }, [status, router, callbackUrl]);
 
-  if (status === "loading" || status === "authenticated") {
+  if (status === "loading" || status === "authenticated" || completingHash) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
