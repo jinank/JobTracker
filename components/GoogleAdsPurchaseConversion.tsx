@@ -12,23 +12,27 @@ declare global {
   }
 }
 
-/** Fires Google Ads purchase conversion once per Stripe checkout session on /success. */
+/** Fires Google Ads purchase conversion on /success (Stripe session_id or PayPal return). */
 export function GoogleAdsPurchaseConversion() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const sessionId = searchParams.get("session_id")?.trim();
-    if (!sessionId) return;
 
-    const key = `${STORAGE_PREFIX}${sessionId}`;
+    if (!sessionId) {
+      const fromPayPal = typeof document !== "undefined" && /paypal\.com/i.test(document.referrer);
+      if (!fromPayPal) return;
+    }
+
+    const key = sessionId ? `${STORAGE_PREFIX}${sessionId}` : `${STORAGE_PREFIX}paypal-return`;
 
     try {
       if (typeof window === "undefined" || localStorage.getItem(key)) return;
 
-      window.gtag?.("event", "ads_conversion_PURCHASE_1", {
+      window.gtag?.("event", "conversion_event_purchase", {
         value: PRO_SUBSCRIPTION_VALUE_USD,
         currency: "USD",
-        transaction_id: sessionId,
+        transaction_id: sessionId ?? `paypal-${Date.now()}`,
       });
       localStorage.setItem(key, "1");
     } catch {

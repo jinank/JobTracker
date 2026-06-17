@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useChains } from "@/hooks/useChains";
 import Link from "next/link";
 import { getPricingPlan } from "@/lib/pricingPlans";
+import { getPayPalProCheckoutUrl } from "@/lib/payments";
 
 function FeatureList({ items, accent }: { items: string[]; accent: "emerald" | "blue" | "purple" }) {
   const iconClass =
@@ -44,15 +45,9 @@ export default function PricingPage() {
   const proPlan = getPricingPlan("professional")!;
   const premiumPlan = getPricingPlan("premium")!;
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     setLoading(true);
-    try {
-      const res = await fetch("/api/checkout", { method: "POST" });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch {
-      setLoading(false);
-    }
+    window.location.href = getPayPalProCheckoutUrl();
   };
 
   return (
@@ -174,7 +169,7 @@ export default function PricingPage() {
                   {loading ? "Redirecting to checkout..." : "Upgrade to Pro ($9.99/mo)"}
                 </button>
 
-                <p className="text-xs text-slate-400 mt-3 text-center">Secure payment via Stripe</p>
+                <p className="text-xs text-slate-400 mt-3 text-center">Secure payment via PayPal</p>
               </div>
 
               {/* Premium Plan */}

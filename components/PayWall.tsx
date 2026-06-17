@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getPayPalProCheckoutUrl } from "@/lib/payments";
 
 interface PayWallProps {
   chainCount?: number;
@@ -10,17 +11,9 @@ interface PayWallProps {
 export function PayWall({ chainCount = 0, limit = 50 }: PayWallProps) {
   const [loading, setLoading] = useState(false);
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     setLoading(true);
-    try {
-      const res = await fetch("/api/checkout", { method: "POST" });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch {
-      setLoading(false);
-    }
+    window.location.href = getPayPalProCheckoutUrl();
   };
 
   const atLimit = chainCount >= limit;
@@ -101,7 +94,7 @@ export function PayWall({ chainCount = 0, limit = 50 }: PayWallProps) {
       </button>
 
       <p className="text-xs text-slate-400 mt-4">
-        Secure payment via Stripe. Cancel anytime.
+        Secure payment via PayPal. Cancel anytime.
       </p>
     </div>
   );
