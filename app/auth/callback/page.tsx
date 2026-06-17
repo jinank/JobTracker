@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { signInWithSupabaseAccessToken } from "@/lib/authSignIn";
 import { resolveCallbackUrl } from "@/lib/loginUrl";
 
+const CALLBACK_TOKEN_KEY = "summer_internships_auth_callback_token";
+
 function parseHashSession(): { access_token?: string; refresh_token?: string } {
   const hash = window.location.hash.replace(/^#/, "");
   if (!hash) return {};
@@ -13,6 +15,30 @@ function parseHashSession(): { access_token?: string; refresh_token?: string } {
     access_token: params.get("access_token") ?? undefined,
     refresh_token: params.get("refresh_token") ?? undefined,
   };
+}
+
+function readStoredToken(): string | null {
+  try {
+    return sessionStorage.getItem(CALLBACK_TOKEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function storeToken(token: string): void {
+  try {
+    sessionStorage.setItem(CALLBACK_TOKEN_KEY, token);
+  } catch {
+    /* ignore */
+  }
+}
+
+function clearStoredToken(): void {
+  try {
+    sessionStorage.removeItem(CALLBACK_TOKEN_KEY);
+  } catch {
+    /* ignore */
+  }
 }
 
 function AuthCallbackInner() {
@@ -28,6 +54,11 @@ function AuthCallbackInner() {
       const code = searchParams.get("code");
       const token_hash = searchParams.get("token_hash");
       const type = searchParams.get("type");
+
+      let accessToken = parseHashSession().access_token ?? readStoredToken();
+      if (parseHashSession().access_token) {
+        storeToken(parseHashSession().access_token!);
+      }
 
       try {
         if (code || token_hash) {
@@ -47,30 +78,35 @@ function AuthCallbackInner() {
                 : "Could not verify sign-in link. Request a new email."
             );
           }
-          window.history.replaceState({}, "", `/auth/callback?next=${encodeURIComponent(next)}`);
-          const result = await signInWithSupabaseAccessToken(data.access_token, next);
-          if (result?.error && !cancelled) {
+          accessToken = data.access_token;
+          storeToken(accessToken);
+        }
+
+        if (!accessToken) {
+          // Hash can appear a tick after mount; avoid flashing an error during redirect.
+          await new Promise((resolve) => requestAnimationFrame(resolve));
+          accessToken = parseHashSession().access_token ?? readStoredToken();
+        }
+
+        if (!accessToken) {
+          if (!cancelled) {
+            setFailed(true);
+            setMessage("Invalid sign-in link. Request a new email below.");
+          }
+          return;
+        }
+
+        const result = await signInWithSupabaseAccessToken(accessToken, next);
+        if (result?.error) {
+          if (!cancelled) {
             setFailed(true);
             setMessage(result.error);
           }
           return;
         }
 
-        const { access_token } = parseHashSession();
-        if (access_token) {
-          window.history.replaceState({}, "", `/auth/callback?next=${encodeURIComponent(next)}`);
-          const result = await signInWithSupabaseAccessToken(access_token, next);
-          if (result?.error && !cancelled) {
-            setFailed(true);
-            setMessage(result.error);
-          }
-          return;
-        }
-
-        if (!cancelled) {
-          setFailed(true);
-          setMessage("Invalid sign-in link. Request a new email below.");
-        }
+        clearStoredToken();
+        window.history.replaceState({}, "", next);
       } catch (e) {
         if (!cancelled) {
           setFailed(true);
