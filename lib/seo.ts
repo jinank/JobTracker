@@ -120,9 +120,12 @@ export function buildRootMetadata(): Metadata {
       images: [{ url: DEFAULT_OG_IMAGE, alt: `${SITE_NAME} | USA internship search` }],
     },
     icons: {
-      icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-      shortcut: "/icon.svg",
-      apple: "/icon.svg",
+      icon: [
+        { url: "/icon.png", type: "image/png", sizes: "512x512" },
+        { url: "/icon.svg", type: "image/svg+xml" },
+      ],
+      shortcut: "/icon.png",
+      apple: "/icon.png",
     },
     category: "technology",
     formatDetection: { telephone: false },
