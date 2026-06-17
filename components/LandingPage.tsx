@@ -489,7 +489,7 @@ export function LandingPage() {
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <div className="landing-hero-stagger">
-            <p className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-emerald-200 bg-white/80 px-5 py-2.5 text-sm font-semibold text-emerald-700 shadow-sm backdrop-blur-sm sm:px-6 sm:py-3 sm:text-base">
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-2 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm sm:px-5 sm:py-2.5 sm:text-sm">
               🎓 Free for students: verify once, everything unlocked
             </p>
             <p className="mb-6 text-sm font-medium text-slate-600">
@@ -529,7 +529,7 @@ export function LandingPage() {
               </Link>
             </div>
             <p className="mt-5 text-xs text-slate-500">
-              No card · No trial countdown · Gmail optional
+              Find from everywhere · Apply or let us apply · Track and reach out
             </p>
           </div>
         </div>
