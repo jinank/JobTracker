@@ -220,42 +220,6 @@ export function HiddenJobsLanding() {
         </div>
       </section>
 
-      <section className="py-14 sm:py-16 bg-slate-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-center text-2xl font-bold text-slate-900 mb-10">
-            Skip the internship posting pile-on
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-red-200/80 bg-red-50/50 p-6">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-red-800 mb-4">
-                LinkedIn / Indeed
-              </h3>
-              <ul className="space-y-2.5">
-                {COMPARISON.boards.map((line) => (
-                  <li key={line} className="flex gap-2 text-sm text-red-900/90">
-                    <span className="text-red-500 shrink-0">✕</span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-6 ring-2 ring-scale-purple/20">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-emerald-800 mb-4">
-                SuperInterns
-              </h3>
-              <ul className="space-y-2.5">
-                {COMPARISON.platform.map((line) => (
-                  <li key={line} className="flex gap-2 text-sm text-emerald-900/90">
-                    <span className="text-emerald-600 shrink-0">✓</span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section id="job-listings" className="py-14 sm:py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50/90 px-4 py-3 text-sm text-amber-950">
@@ -309,6 +273,42 @@ export function HiddenJobsLanding() {
               No internships match your filters yet. Listings sync daily from company career pages.
             </p>
           )}
+        </div>
+      </section>
+
+      <section className="py-14 sm:py-16 bg-slate-50 border-t border-slate-100">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-center text-2xl font-bold text-slate-900 mb-10">
+            Skip the internship posting pile-on
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-red-200/80 bg-red-50/50 p-6">
+              <h3 className="text-sm font-bold uppercase tracking-wide text-red-800 mb-4">
+                LinkedIn / Indeed
+              </h3>
+              <ul className="space-y-2.5">
+                {COMPARISON.boards.map((line) => (
+                  <li key={line} className="flex gap-2 text-sm text-red-900/90">
+                    <span className="text-red-500 shrink-0">✕</span>
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-6 ring-2 ring-scale-purple/20">
+              <h3 className="text-sm font-bold uppercase tracking-wide text-emerald-800 mb-4">
+                SuperInterns
+              </h3>
+              <ul className="space-y-2.5">
+                {COMPARISON.platform.map((line) => (
+                  <li key={line} className="flex gap-2 text-sm text-emerald-900/90">
+                    <span className="text-emerald-600 shrink-0">✓</span>
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
