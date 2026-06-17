@@ -22,7 +22,7 @@ export function InternshipSearchChecklist() {
         <li>
           Browse live US listings on{" "}
           <Link href="/find-jobs" className="font-semibold text-scale-purple hover:underline">
-            Summer Internships
+            SuperInterns
           </Link>{" "}
           to spot roles synced from company boards.
         </li>
@@ -57,7 +57,7 @@ export function InternshipSearchChecklist() {
         <li>
           Run mock interviews for your target companies on{" "}
           <Link href="/practice-interviews" className="font-semibold text-scale-purple hover:underline">
-            Summer Internships interview prep
+            SuperInterns interview prep
           </Link>
           .
         </li>
@@ -75,7 +75,7 @@ export function InternshipSearchChecklist() {
       <h2 className="pt-2 text-2xl font-bold text-slate-900">Student advantage: verify once, stay organized free</h2>
       <p>
         Verified students get unlimited tracking, Gmail sync, mock interviews, and member resources on
-        Summer Internships. If you are eligible,{" "}
+        SuperInterns. If you are eligible,{" "}
         <Link href="/verify-student" className="font-semibold text-scale-purple hover:underline">
           verify your student status
         </Link>{" "}

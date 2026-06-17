@@ -66,7 +66,7 @@ export default function PricingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h1 className="text-base font-bold text-slate-900">Summer Internships</h1>
+            <h1 className="text-base font-bold text-slate-900">SuperInterns</h1>
           </Link>
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
             ← Back to home
@@ -100,7 +100,7 @@ export default function PricingPage() {
               <p className="text-sm text-slate-500 max-w-2xl mx-auto">
                 {session
                   ? `You're using ${chainCount} of ${freeLimit} free applications.`
-                  : "Start free, verify as a student, or upgrade for unlimited tracking and done-for-you applications."}
+                  : "Verify as a student for free unlimited access, or choose Pro / Premium for unlimited tracking and done-for-you applications."}
               </p>
             </div>
 
@@ -142,7 +142,7 @@ export default function PricingPage() {
               <div className="bg-white rounded-2xl border-2 border-blue-500 shadow-sm p-7 flex flex-col relative">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold bg-blue-600 text-white">
-                    Most Popular
+                    {proPlan.badge}
                   </span>
                 </div>
 

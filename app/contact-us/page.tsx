@@ -5,7 +5,7 @@ import { getSupportEmail } from "@/lib/site";
 export const metadata = buildPageMetadata({
   title: "Contact us",
   description:
-    "Contact Summer Internships support for help with accounts, billing, internships, and student verification.",
+    "Contact SuperInterns support for help with accounts, billing, internships, and student verification.",
   path: "/contact-us",
 });
 export default function ContactUsPage({
@@ -23,7 +23,7 @@ export default function ContactUsPage({
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Summer Internships
+            ← SuperInterns
           </Link>
           <Link
             href="/pricing"

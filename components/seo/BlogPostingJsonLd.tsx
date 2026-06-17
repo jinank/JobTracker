@@ -1,8 +1,7 @@
-import { getSiteOrigin } from "@/lib/site";
+import { getSiteOrigin, SITE_NAME } from "@/lib/site";
 import type { BlogPost } from "@/lib/blogPosts";
 
-export function BlogPostingJsonLd({ post }: { post: BlogPost }) {
-  const origin = getSiteOrigin();
+export function BlogPostingJsonLd({ post }: { post: BlogPost }) {  const origin = getSiteOrigin();
   const url = `${origin}/blog/${post.slug}`;
 
   const schema = {
@@ -14,11 +13,11 @@ export function BlogPostingJsonLd({ post }: { post: BlogPost }) {
     dateModified: post.updatedAt ?? post.publishedAt,
     author: {
       "@type": "Organization",
-      name: "Summer Internships",
+      name: SITE_NAME,
     },
     publisher: {
       "@type": "Organization",
-      name: "Summer Internships",
+      name: SITE_NAME,
       logo: {
         "@type": "ImageObject",
         url: `${origin}/icon.svg`,

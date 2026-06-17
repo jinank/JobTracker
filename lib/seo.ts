@@ -6,10 +6,10 @@ export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 
 export const SITE_TITLE_DEFAULT =
-  "Summer Internships | USA internship search for students";
+  "SuperInterns | USA internship search for students";
 
 export const SITE_DESCRIPTION_DEFAULT =
-  "Summer Internships helps students find USA internships from company career pages, track applications from Gmail, practice interviews with AI, and unlock member perks. Free for students.";
+  "SuperInterns helps students find USA internships from company career pages, track applications from Gmail, practice interviews with AI, and unlock member perks. Free for students.";
 
 export const SITE_KEYWORDS = [
   "summer internships",
@@ -19,11 +19,11 @@ export const SITE_KEYWORDS = [
   "internship tracker",
   "job application tracker",
   "internship application tracker",
-  "Summer Internships",
+  "SuperInterns",
 ];
 
 type BuildPageMetadataOptions = {
-  /** Page title without site suffix (template adds ` | Summer Internships`). */
+  /** Page title without site suffix (template adds ` | SuperInterns`). */
   title: string;
   description: string;
   /** Canonical path, e.g. `/find-jobs`. */

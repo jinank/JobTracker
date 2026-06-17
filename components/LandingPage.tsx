@@ -429,7 +429,7 @@ const HOW_IT_WORKS = [
   },
   {
     step: "3",
-    title: "Let Summer Internships run the rest",
+    title: "Let SuperInterns run the rest",
     desc: "Connect Gmail (read-only) and your pipeline tracks itself, while you prep interviews and message mentors from the same account.",
   },
 ];
@@ -455,11 +455,7 @@ const PRIVACY_POINTS = [
 
 const FAQ_ITEMS: { q: string; a: string }[] = [
   {
-    q: "Is it actually free for students?",
-    a: "Yes. Verify your student status once and everything is unlocked, unlimited tracking, Gmail syncs, mock interviews, mentor search, and all the deals. No card, no trial that expires mid-semester.",
-  },
-  {
-    q: "What does Summer Internships do with my Gmail?",
+    q: "What does SuperInterns do with my Gmail?",
     a: "We request minimal, read-only access and only look for job-related threads, confirmations, assessments, interview invites, offers. You can revoke access anytime from your Google account, and Gmail is optional to start.",
   },
   {
@@ -472,12 +468,12 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "I'm not a student. Can I use it?",
-    a: "Sure. The Free plan tracks up to 50 applications. Professional is $9.99/month for unlimited tracking, or Premium includes 100 applications on your behalf plus a free portfolio website.",
+    a: "Students verify once for unlimited access, free forever. Pro Plan is $9.99/month for unlimited tracking, or Premium includes 100 applications on your behalf plus a free portfolio website.",
   },
 ];
 
 export function LandingPage() {
-  const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const latestPosts = getBlogPostsNewestFirst().slice(0, 3);
 
   return (
@@ -493,7 +489,7 @@ export function LandingPage() {
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <div className="landing-hero-stagger">
-            <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm">
+            <p className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-emerald-200 bg-white/80 px-5 py-2.5 text-sm font-semibold text-emerald-700 shadow-sm backdrop-blur-sm sm:px-6 sm:py-3 sm:text-base">
               🎓 Free for students: verify once, everything unlocked
             </p>
             <p className="mb-6 text-sm font-medium text-slate-600">
@@ -545,19 +541,19 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── What is Summer Internships ─────────────────────── */}
+      {/* ── What is SuperInterns ─────────────────────── */}
       <section id="about" className="border-b border-slate-100 py-16 lg:py-20" aria-labelledby="about-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="mx-auto max-w-3xl text-center">
               <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
-                What is Summer Internships?
+                What is SuperInterns?
               </span>
               <h2 id="about-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
                 One account for the entire internship hunt
               </h2>
               <p className="mt-5 text-lg leading-relaxed text-slate-600">
-                Summer Internships is a student job-search hub that puts the whole process in one
+                SuperInterns is a student job-search hub that puts the whole process in one
                 place: a daily-updated board of US internships, an AI tracker that builds
                 your application pipeline from Gmail, mock interviews tailored to real
                 companies, a mentor finder for referrals and advice, and a library of
@@ -715,7 +711,7 @@ export function LandingPage() {
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
                 Verify your student status once, unlimited everything, free forever.
-                Everyone else starts free.{" "}
+                Pro and Premium add unlimited tracking and done-for-you applications.{" "}
                 <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
                   Full comparison
                 </Link>
@@ -723,7 +719,7 @@ export function LandingPage() {
               </p>
             </div>
           </Reveal>
-          <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {PRICING_PLANS.map((p) => (
               <Reveal key={p.id} className="h-full">
                 <article
@@ -732,7 +728,9 @@ export function LandingPage() {
                       ? "border-emerald-400 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)]"
                       : p.id === "premium"
                         ? "border-scale-purple/40 shadow-[0_8px_30px_-8px_rgba(107,70,254,0.25)]"
-                        : "border-slate-200/80 shadow-card"
+                        : p.id === "professional"
+                          ? "border-blue-500/50 shadow-[0_8px_30px_-8px_rgba(59,130,246,0.2)]"
+                          : "border-slate-200/80 shadow-card"
                   }`}
                 >
                   <div className="flex items-baseline justify-between gap-2">
@@ -742,7 +740,9 @@ export function LandingPage() {
                           ? "text-emerald-700"
                           : p.id === "premium"
                             ? "text-scale-purple"
-                            : "text-slate-400"
+                            : p.id === "professional"
+                              ? "text-blue-600"
+                              : "text-slate-400"
                       }`}
                     >
                       {p.name}
@@ -750,7 +750,11 @@ export function LandingPage() {
                     {p.badge && (
                       <span
                         className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white ${
-                          p.highlight ? "bg-emerald-600" : "bg-scale-purple"
+                          p.highlight
+                            ? "bg-emerald-600"
+                            : p.id === "professional"
+                              ? "bg-blue-600"
+                              : "bg-scale-purple"
                         }`}
                       >
                         {p.badge}
@@ -865,7 +869,7 @@ export function LandingPage() {
       </section>
 
       {/* ── FAQ ────────────────────────────────────────────── */}
-      <section id="faq" className="pb-20 lg:pb-28">
+      <section id="faq" className="pt-20 pb-20 lg:pt-28 lg:pb-28">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-12">
           <Reveal className="lg:col-span-4">
             <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">

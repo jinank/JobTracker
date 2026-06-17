@@ -2,11 +2,7 @@ import { getSiteOrigin, SITE_NAME } from "@/lib/site";
 
 const FAQ = [
   {
-    q: "Is it actually free for students?",
-    a: "Yes. Verify your student status once and everything is unlocked: unlimited tracking, Gmail syncs, mock interviews, mentor search, and member perks. No card required.",
-  },
-  {
-    q: "What does Summer Internships do with my Gmail?",
+    q: "What does SuperInterns do with my Gmail?",
     a: "We request read-only access and only look for job-related threads such as confirmations, assessments, interview invites, and offers. You can revoke access anytime from your Google account.",
   },
   {

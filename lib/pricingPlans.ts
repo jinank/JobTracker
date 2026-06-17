@@ -12,21 +12,15 @@ export type PricingPlan = {
   href?: string;
 };
 
+const SHARED_FEATURES = [
+  "AI email classification",
+  "Pipeline dashboard with filters",
+  "All five tools included",
+] as const;
+
+const UNLIMITED_TRACKING = "Unlimited applications & syncs";
+
 export const PRICING_PLANS: PricingPlan[] = [
-  {
-    id: "free",
-    name: "Free",
-    price: "$0",
-    cadence: "forever",
-    note: "Perfect for getting started",
-    features: [
-      "Track up to 50 applications",
-      "AI email classification",
-      "Pipeline dashboard with filters",
-      "All five tools included",
-    ],
-    cta: "Get started free",
-  },
   {
     id: "student",
     name: "Student",
@@ -34,7 +28,9 @@ export const PRICING_PLANS: PricingPlan[] = [
     cadence: "with verification",
     note: "Verify once with your school",
     features: [
-      "Unlimited applications & syncs",
+      "Track up to 50 applications",
+      ...SHARED_FEATURES,
+      UNLIMITED_TRACKING,
       "AI mock interviews",
       "Mentor & recruiter search",
       "All student deals & resources",
@@ -46,30 +42,32 @@ export const PRICING_PLANS: PricingPlan[] = [
   },
   {
     id: "professional",
-    name: "Professional",
+    name: "Pro Plan",
     price: "$9.99",
     cadence: "/month",
     note: "For everyone out of school",
     features: [
-      "Unlimited applications & syncs",
+      UNLIMITED_TRACKING,
+      ...SHARED_FEATURES,
       "Full pipeline & timeline",
       "Priority support",
       "Cancel anytime via Stripe",
     ],
     cta: "Start Pro",
+    badge: "Most Popular",
     href: "/pricing",
   },
   {
     id: "premium",
     name: "Premium",
     price: "$49",
-    cadence: "one-time",
-    note: "We apply for you + launch your site",
+    cadence: "lifetime",
+    note: "100 applications on your behalf + portfolio website",
     features: [
+      UNLIMITED_TRACKING,
+      ...SHARED_FEATURES,
       "100 internship applications on your behalf",
       "Free portfolio website",
-      "Unlimited application tracking",
-      "Unlimited Gmail syncs & AI classification",
       "AI mock interviews & mentor search",
       "Priority support",
     ],

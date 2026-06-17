@@ -3,7 +3,7 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Contact",
-  description: "Contact the Summer Internships team.",
+  description: "Contact the SuperInterns team.",
   path: "/contact",
 });
 

@@ -39,7 +39,7 @@ export function UsaInternshipsOffJobBoards() {
       </p>
       <p>
         <Link href="/find-jobs" className="font-semibold text-scale-purple hover:underline">
-          Summer Internships
+          SuperInterns
         </Link>{" "}
         pulls from public Greenhouse and Lever boards, filters to US internships, and updates daily.
         You browse openings, apply on the company site, then track replies in your pipeline.

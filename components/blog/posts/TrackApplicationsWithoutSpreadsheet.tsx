@@ -49,7 +49,7 @@ export function TrackApplicationsWithoutSpreadsheet() {
         A better workflow is to classify recruiter mail automatically and push updates into your
         tracker. That is exactly what{" "}
         <Link href="/tracker" className="font-semibold text-scale-purple hover:underline">
-          Summer Internships
+          SuperInterns
         </Link>{" "}
         does with read-only Gmail sync: you apply on company sites, and the pipeline updates when
         employers reply.

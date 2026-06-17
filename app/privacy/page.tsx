@@ -3,7 +3,7 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Privacy policy",
-  description: "How Summer Internships handles your data, Gmail access, and account information.",
+  description: "How SuperInterns handles your data, Gmail access, and account information.",
   path: "/privacy",
 });
 
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Summer Internships
+            ← SuperInterns
           </Link>
         </div>
       </header>
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
           <p>
             This is a placeholder privacy policy. Update with your legal text
-            before launch. Summer Internships connects to your Google account to read Gmail
+            before launch. SuperInterns connects to your Google account to read Gmail
             messages related to job applications only (read-only). We do not send email on
             your behalf.
           </p>

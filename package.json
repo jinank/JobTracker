@@ -13,6 +13,7 @@
     "web:start": "next start",
     "seed:internships": "npx tsx scripts/seed-internship-sources.ts",
     "sync:internships": "npx tsx scripts/sync-internships.mjs",
+    "seed:curated": "npx tsx scripts/seed-curated-internships.mjs",
     "diagnose:internships": "node scripts/diagnose-internships.mjs"
   },
   "dependencies": {

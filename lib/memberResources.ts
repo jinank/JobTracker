@@ -4,7 +4,7 @@ export type MemberResource = {
   tagline: string;
 };
 
-/** Free member perks for Summer Internships accounts. */
+/** Free member perks for SuperInterns accounts. */
 export const MEMBER_RESOURCES: MemberResource[] = [
   {
     id: "linkedin-profile-review",

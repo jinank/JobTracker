@@ -115,7 +115,7 @@ export default function VerifyStudentPage() {
                 />
               </svg>
             </div>
-            <h1 className="text-base font-bold text-slate-900">Summer Internships</h1>
+            <h1 className="text-base font-bold text-slate-900">SuperInterns</h1>
           </Link>
           <Link
             href="/pricing"
@@ -140,7 +140,7 @@ export default function VerifyStudentPage() {
             </div>
             <h2 className="text-xl font-bold text-slate-900 mb-2">You&apos;re Verified!</h2>
             <p className="text-slate-500 text-sm mb-6">
-              Your student status has been verified. You have full free access to Summer Internships.
+              Your student status has been verified. You have full free access to SuperInterns.
             </p>
             <Link
               href="/"
@@ -179,7 +179,7 @@ export default function VerifyStudentPage() {
                 Student Verification
               </h2>
               <p className="text-sm text-slate-500">
-                Students get <span className="font-semibold text-emerald-600">free unlimited access</span> to Summer Internships. Fill out the form below to verify your student status.
+                Students get <span className="font-semibold text-emerald-600">free unlimited access</span> to SuperInterns. Fill out the form below to verify your student status.
               </p>
             </div>
 

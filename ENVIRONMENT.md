@@ -1,4 +1,4 @@
-# Summer Internships (Next.js) – environment variables
+# SuperInterns (Next.js) – environment variables
 
 ## Quick start (Reach Out / recruiters)
 
@@ -36,7 +36,7 @@ HAPPENSTANCE_API_KEY="your_key"
 # HAPPENSTANCE_MAX_WAIT_MS=55000
 ```
 
-**Important:** Results are scoped to the **Happenstance account that owns the API key**. In a multi-user product, every Summer Internships user shares that same graph unless you issue per-user keys or integrate Happenstance per account.
+**Important:** Results are scoped to the **Happenstance account that owns the API key**. In a multi-user product, every SuperInterns user shares that same graph unless you issue per-user keys or integrate Happenstance per account.
 
 Searches run **asynchronously**; the server polls until `COMPLETED` or timeout (see env above). Uses credits per [Happenstance billing](https://developer.happenstance.ai/).
 
@@ -53,7 +53,7 @@ Searches run **asynchronously**; the server polls until `COMPLETED` or timeout (
 HUNTER_API_KEY="your_key"
 ```
 
-Summer Internships calls `GET https://api.hunter.io/v2/domain-search?domain=...` using the guessed company domain. Results are **filtered** toward recruiter/HR-style titles when possible; if none match, it shows a broader slice of contacts at that domain with an info message.
+SuperInterns calls `GET https://api.hunter.io/v2/domain-search?domain=...` using the guessed company domain. Results are **filtered** toward recruiter/HR-style titles when possible; if none match, it shows a broader slice of contacts at that domain with an info message.
 
 ---
 
@@ -85,7 +85,7 @@ Clay often requires **paid credits** to return enrichment data. If you use a Cla
 
 ### Clay table contract
 
-**Request body** (from Summer Internships):
+**Request body** (from SuperInterns):
 
 ```json
 {
@@ -116,10 +116,10 @@ Email magic-link sign-in uses Supabase Auth. By default Supabase sends a generic
 
 ```env
 RESEND_API_KEY=re_...
-AUTH_EMAIL_FROM=Summer Internships <auth@summer2027internships.com>
+AUTH_EMAIL_FROM=SuperInterns <auth@summer2027internships.com>
 ```
 
 1. Sign up at [resend.com](https://resend.com) and verify `summer2027internships.com` (or use `onboarding@resend.dev` for local testing only).
 2. Add the keys above to `.env.local` and Vercel Production, then redeploy.
 
-**Without Resend:** paste `supabase/email-templates/magic-link.html` into **Supabase Dashboard → Authentication → Email Templates** for **Magic Link** and **Confirm signup**. Set the subject to `Sign in to Summer Internships`. Under **Authentication → Settings**, set the sender name to **Summer Internships**.
+**Without Resend:** paste `supabase/email-templates/magic-link.html` into **Supabase Dashboard → Authentication → Email Templates** for **Magic Link** and **Confirm signup**. Set the subject to `Sign in to SuperInterns`. Under **Authentication → Settings**, set the sender name to **SuperInterns**.

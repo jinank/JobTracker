@@ -3,7 +3,7 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Terms of use",
-  description: "Terms of use for Summer Internships, including accounts, subscriptions, and acceptable use.",
+  description: "Terms of use for SuperInterns, including accounts, subscriptions, and acceptable use.",
   path: "/terms",
 });
 
@@ -16,7 +16,7 @@ export default function TermsPage() {
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Summer Internships
+            ← SuperInterns
           </Link>
         </div>
       </header>

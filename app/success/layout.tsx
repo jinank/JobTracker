@@ -4,7 +4,7 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Subscription confirmed",
-  description: "Your Summer Internships Pro subscription is active.",
+  description: "Your SuperInterns Pro subscription is active.",
   path: "/success",
   noIndex: true,
 });

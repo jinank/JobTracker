@@ -35,7 +35,7 @@ const FAQ = [
   },
   {
     q: "How is this different from LinkedIn or Handshake?",
-    a: "We surface roles from company websites, not crowded job boards. You apply on the employer site and can track replies in Summer Internships.",
+    a: "We surface roles from company websites, not crowded job boards. You apply on the employer site and can track replies in SuperInterns.",
   },
 ];
 
@@ -112,10 +112,12 @@ export function HiddenJobsLanding() {
             </p>
             <h1
               id="find-jobs-hero-heading"
-              className="mb-6 text-[2rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]"
+              className="mb-6 text-[1.625rem] font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-[1.875rem] lg:text-[2.25rem]"
             >
-              Find{" "}
-              <span className="text-hero-gradient">internships in the US</span>
+              <span className="block">
+                Find <span className="text-hero-gradient">internships in the US</span>,
+              </span>
+              <span className="block">From Everywhere!</span>
             </h1>
             <p className="mx-auto mb-8 max-w-lg text-base leading-relaxed text-slate-600 lg:mx-0 lg:text-lg">
               Built for students. Discover internships on company career sites, not buried on crowded job boards.
@@ -239,7 +241,7 @@ export function HiddenJobsLanding() {
             </div>
             <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-6 ring-2 ring-scale-purple/20">
               <h3 className="text-sm font-bold uppercase tracking-wide text-emerald-800 mb-4">
-                Summer Internships
+                SuperInterns
               </h3>
               <ul className="space-y-2.5">
                 {COMPARISON.platform.map((line) => (
@@ -328,7 +330,7 @@ export function HiddenJobsLanding() {
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
           <h2 className="text-2xl font-bold text-slate-900">Find internships. Track every reply.</h2>
           <p className="mt-3 text-slate-600">
-            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline, all in Summer Internships.
+            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline, all in SuperInterns.
           </p>
           <div className="mt-6 flex justify-center">
             <NavAuthAction

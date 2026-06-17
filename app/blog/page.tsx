@@ -9,7 +9,7 @@ import { SITE_NAME } from "@/lib/site";
 export const metadata: Metadata = buildPageMetadata({
   title: "Blog",
   description:
-    "Internship search tips, application tracking guides, and USA internship advice from Summer Internships.",
+    "Internship search tips, application tracking guides, and USA internship advice from SuperInterns.",
   path: "/blog",
   keywords: ["internship tips", "job search blog", "application tracking", "summer internships"],
   ogTitle: "Blog — Internship search & application tips",

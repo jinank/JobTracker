@@ -78,7 +78,7 @@ function AppLogoBlock({ activeCount }: { activeCount?: number }) {
   );
 }
 
-/** Marketing site header, landing, resources, practice interviews, blog, etc. */
+/** Marketing site header — landing, resources, practice interviews, etc. */
 export function SiteNavMarketing() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);

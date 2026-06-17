@@ -14,7 +14,7 @@ export function RootJsonLd() {
         url: origin,
         logo: { "@type": "ImageObject", url: logoUrl },
         description:
-          "Summer Internships helps students find USA internships, track applications from Gmail, and prepare for interviews.",
+          "SuperInterns helps students find USA internships, track applications from Gmail, and prepare for interviews.",
       },
       {
         "@type": "WebSite",
@@ -48,7 +48,7 @@ export function RootJsonLd() {
           description: "Free tier available; student and paid plans offered.",
         },
         description:
-          "Summer Internships is a student hub for finding USA internships, tracking applications from Gmail with read-only sync, practicing interviews with AI, and unlocking member perks.",
+          "SuperInterns is a student hub for finding USA internships, tracking applications from Gmail with read-only sync, practicing interviews with AI, and unlocking member perks.",
         url: origin,
         author: { "@id": `${origin}/#organization` },
         publisher: { "@id": `${origin}/#organization` },

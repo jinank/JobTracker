@@ -1,4 +1,4 @@
-export const SITE_NAME = "Summer Internships";
+export const SITE_NAME = "SuperInterns";
 
 /** Primary production domain — sitemap, metadata, and OAuth should use this. */
 export const CANONICAL_SITE_ORIGIN = "https://www.summer2027internships.com";

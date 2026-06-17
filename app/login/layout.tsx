@@ -4,7 +4,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Sign in",
   description:
-    "Create a Summer Internships account with email or Google. Connect Gmail later to track job applications.",
+    "Create a SuperInterns account with email or Google. Connect Gmail later to track job applications.",
   path: "/login",
 });
 
