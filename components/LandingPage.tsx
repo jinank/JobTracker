@@ -91,26 +91,6 @@ function GoogleIcon() {
   );
 }
 
-/** Hand-drawn squiggle under a hero word, the one playful flourish. */
-function Squiggle() {
-  return (
-    <svg
-      className="absolute -bottom-2 left-0 h-3 w-full text-scale-purple/70"
-      viewBox="0 0 220 12"
-      preserveAspectRatio="none"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M3 9c18-7 36-7 54 0s36 7 54 0 36-7 54 0 36 7 52 0"
-        stroke="currentColor"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 /** Faux browser window with a live-looking pipeline, honest preview of the dashboard. */
 function ProductWindow() {
   const rows = [
@@ -483,44 +463,38 @@ export function LandingPage() {
 
       {/* ── Hero ───────────────────────────────────────────── */}
       <section
-        className="relative overflow-hidden landing-hero-mesh pb-16 pt-14 sm:pt-20"
+        className="relative overflow-hidden landing-hero-mesh pb-20 pt-16 sm:pt-24"
         aria-labelledby="hero-heading"
       >
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+        <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
           <div className="landing-hero-stagger">
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-2 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm sm:px-5 sm:py-2.5 sm:text-sm">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-white/70 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm sm:text-sm">
               🎓 Free for students: verify once, everything unlocked
-            </p>
-            <p className="mb-6 text-sm font-medium text-slate-600">
-              Browse US internships, track applications from Gmail, and prep interviews in one place.
-            </p>
+            </span>
             <h1
               id="hero-heading"
-              className="mx-auto mb-6 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-6xl"
+              className="mx-auto max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-6xl"
             >
               Your whole internship search,{" "}
-              <span className="relative inline-block whitespace-nowrap text-hero-gradient">
-                in one tab
-                <Squiggle />
-              </span>
+              <span className="text-hero-gradient">in one tab</span>
             </h1>
-            <p className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg">
               Find real openings, track every application straight from Gmail, practice
               interviews with AI, and meet the people who can refer you. Close the other
               forty tabs.
             </p>
-            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <LoginLink
                 callbackUrl="/"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-scale-purple px-8 py-4 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(107,70,254,0.3),0_12px_32px_-8px_rgba(107,70,254,0.45)] transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98] sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-scale-purple px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-scale-purple-dark active:scale-[0.98] sm:w-auto"
               >
                 <GoogleIcon />
                 Get started free
               </LoginLink>
               <Link
                 href="/find-jobs"
-                className="inline-flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 transition-all hover:border-slate-300 hover:bg-slate-50 sm:w-auto"
               >
                 Browse internships
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -528,13 +502,13 @@ export function LandingPage() {
                 </svg>
               </Link>
             </div>
-            <p className="mt-5 text-xs text-slate-500">
+            <p className="mt-5 text-xs text-slate-400">
               Find from everywhere · Apply or let us apply · Track and reach out
             </p>
           </div>
         </div>
 
-        <div className="relative mx-auto mt-14 max-w-4xl px-4 sm:px-6">
+        <div className="relative mx-auto mt-16 max-w-5xl px-4 sm:px-6">
           <Reveal>
             <ProductWindow />
           </Reveal>
@@ -542,17 +516,17 @@ export function LandingPage() {
       </section>
 
       {/* ── What is SuperInterns ─────────────────────── */}
-      <section id="about" className="border-b border-slate-100 py-16 lg:py-20" aria-labelledby="about-heading">
+      <section id="about" className="py-20 sm:py-24" aria-labelledby="about-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <div className="mx-auto max-w-3xl text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+            <div className="mx-auto max-w-2xl text-center">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 What is SuperInterns?
               </span>
-              <h2 id="about-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              <h2 id="about-heading" className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 One account for the entire internship hunt
               </h2>
-              <p className="mt-5 text-lg leading-relaxed text-slate-600">
+              <p className="mt-5 text-base leading-relaxed text-slate-500 sm:text-lg">
                 SuperInterns is a student job-search hub that puts the whole process in one
                 place: a daily-updated board of US internships, an AI tracker that builds
                 your application pipeline from Gmail, mock interviews tailored to real
@@ -561,12 +535,12 @@ export function LandingPage() {
               </p>
             </div>
           </Reveal>
-          <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-slate-200/70 bg-slate-200/70 lg:grid-cols-4">
             {QUICK_FACTS.map(([n, l]) => (
               <Reveal key={l} className="h-full">
-                <div className="h-full rounded-3xl border border-slate-200/80 bg-scale-mist/60 p-6 text-center">
-                  <p className="text-3xl font-extrabold text-scale-purple">{n}</p>
-                  <p className="mt-2 text-sm leading-snug text-slate-600">{l}</p>
+                <div className="flex h-full flex-col bg-white p-7 text-center">
+                  <p className="text-3xl font-bold tracking-tight text-scale-purple">{n}</p>
+                  <p className="mt-2 text-sm leading-snug text-slate-500">{l}</p>
                 </div>
               </Reveal>
             ))}
@@ -575,36 +549,36 @@ export function LandingPage() {
       </section>
 
       {/* ── Tool deep-dives ────────────────────────────────── */}
-      <section id="features" className="py-20 lg:py-28" aria-labelledby="features-heading">
+      <section id="features" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="features-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <div className="mb-16 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+            <div className="mx-auto mb-16 max-w-2xl text-center">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 The toolkit
               </span>
-              <h2 id="features-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              <h2 id="features-heading" className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 Five tools. Zero spreadsheets.
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+              <p className="mx-auto mt-4 text-base text-slate-500 sm:text-lg">
                 Everything below is included with every account, here&apos;s exactly what
                 each one does.
               </p>
             </div>
           </Reveal>
 
-          <div className="space-y-16 lg:space-y-20">
+          <div className="space-y-14 lg:space-y-20">
             {TOOL_SECTIONS.map((t, i) => (
               <Reveal key={t.id}>
-                <div id={t.id} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+                <div id={t.id} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
                   <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                    <p className={`text-xs font-bold uppercase tracking-[0.15em] ${t.eyebrowColor}`}>{t.eyebrow}</p>
-                    <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+                    <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${t.eyebrowColor}`}>{t.eyebrow}</p>
+                    <h3 className="mt-2.5 text-2xl font-bold tracking-tight text-slate-900 sm:text-[1.75rem]">
                       {t.title}
                     </h3>
-                    <p className="mt-3 text-base leading-relaxed text-slate-600">{t.desc}</p>
+                    <p className="mt-3 text-base leading-relaxed text-slate-500">{t.desc}</p>
                     <ul className="mt-5 space-y-2.5">
                       {t.bullets.map((b) => (
-                        <li key={b} className="flex gap-2.5 text-sm leading-snug text-slate-700">
+                        <li key={b} className="flex gap-2.5 text-sm leading-snug text-slate-600">
                           <CheckIcon className={`mt-0.5 h-4 w-4 shrink-0 ${t.checkColor}`} />
                           <span>{b}</span>
                         </li>
@@ -618,7 +592,7 @@ export function LandingPage() {
                     </Link>
                   </div>
                   <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                    <div className={`rounded-[2rem] border-2 p-5 sm:p-7 ${t.panelBg}`}>{t.vignette}</div>
+                    <div className="rounded-3xl border border-slate-200/70 bg-white p-5 shadow-sm sm:p-7">{t.vignette}</div>
                   </div>
                 </div>
               </Reveal>
@@ -628,30 +602,30 @@ export function LandingPage() {
       </section>
 
       {/* ── How it works ───────────────────────────────────── */}
-      <section id="how-it-works" className="bg-gradient-to-b from-white via-scale-mist/60 to-white py-20 lg:py-28" aria-labelledby="how-heading">
+      <section id="how-it-works" className="py-20 sm:py-24" aria-labelledby="how-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="mb-14 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 How it works
               </span>
-              <h2 id="how-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              <h2 id="how-heading" className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 Up and running in under a minute
               </h2>
             </div>
           </Reveal>
-          <div className="grid gap-6 md:grid-cols-3">
-            {HOW_IT_WORKS.map((s, i) => (
-              <Reveal key={s.step} className={i === 1 ? "md:mt-6" : i === 2 ? "md:mt-12" : ""}>
-                <div className="h-full rounded-3xl border border-slate-200/80 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-scale-purple/25 hover:shadow-scale-soft">
+          <div className="grid gap-5 md:grid-cols-3">
+            {HOW_IT_WORKS.map((s) => (
+              <Reveal key={s.step} className="h-full">
+                <div className="h-full rounded-3xl border border-slate-200/70 bg-white p-8 transition-colors hover:border-scale-purple/30">
                   <div
-                    className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-scale-purple text-lg font-bold text-white shadow-lg shadow-violet-500/25"
+                    className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-scale-purple/10 text-base font-bold text-scale-purple"
                     aria-hidden
                   >
                     {s.step}
                   </div>
                   <h3 className="mb-2 text-lg font-bold text-slate-900">{s.title}</h3>
-                  <p className="text-sm leading-relaxed text-slate-600">{s.desc}</p>
+                  <p className="text-sm leading-relaxed text-slate-500">{s.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -660,17 +634,17 @@ export function LandingPage() {
       </section>
 
       {/* ── Privacy & trust ────────────────────────────────── */}
-      <section id="privacy" className="py-20 lg:py-28" aria-labelledby="privacy-heading">
+      <section id="privacy" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="privacy-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
             <Reveal className="lg:col-span-5">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 Privacy
               </span>
-              <h2 id="privacy-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              <h2 id="privacy-heading" className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 Your inbox stays yours
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-slate-600">
+              <p className="mt-4 text-base leading-relaxed text-slate-500 sm:text-lg">
                 The Gmail connection is the most personal thing you could hand a job-search
                 tool, so the rules are strict and simple.
               </p>
@@ -684,12 +658,12 @@ export function LandingPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
               {PRIVACY_POINTS.map((p) => (
                 <Reveal key={p.title} className="h-full">
-                  <div className="h-full rounded-3xl border border-slate-200/80 bg-white p-6 shadow-card">
+                  <div className="h-full rounded-3xl border border-slate-200/70 bg-white p-6">
                     <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
                       <CheckIcon className="h-5 w-5" />
                     </div>
                     <h3 className="text-sm font-bold text-slate-900">{p.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{p.desc}</p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-slate-500">{p.desc}</p>
                   </div>
                 </Reveal>
               ))}
@@ -699,17 +673,17 @@ export function LandingPage() {
       </section>
 
       {/* ── Pricing ────────────────────────────────────────── */}
-      <section id="pricing" className="bg-gradient-to-b from-white via-emerald-50/40 to-white py-20 lg:py-28" aria-labelledby="pricing-heading">
+      <section id="pricing" className="py-20 sm:py-24" aria-labelledby="pricing-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <div className="mb-12 text-center">
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+            <div className="mx-auto mb-12 max-w-xl text-center">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 Pricing
               </span>
-              <h2 id="pricing-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              <h2 id="pricing-heading" className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 Students never pay. That&apos;s the pricing page.
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
+              <p className="mx-auto mt-4 text-base text-slate-500 sm:text-lg">
                 Verify your student status once, unlimited everything, free forever.
                 Pro and Premium add unlimited tracking and done-for-you applications.{" "}
                 <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
@@ -723,38 +697,22 @@ export function LandingPage() {
             {PRICING_PLANS.map((p) => (
               <Reveal key={p.id} className="h-full">
                 <article
-                  className={`flex h-full flex-col rounded-3xl border-2 bg-white p-7 ${
+                  className={`flex h-full flex-col rounded-3xl bg-white p-7 ${
                     p.highlight
-                      ? "border-emerald-400 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.3)]"
-                      : p.id === "premium"
-                        ? "border-scale-purple/40 shadow-[0_8px_30px_-8px_rgba(107,70,254,0.25)]"
-                        : p.id === "professional"
-                          ? "border-blue-500/50 shadow-[0_8px_30px_-8px_rgba(59,130,246,0.2)]"
-                          : "border-slate-200/80 shadow-card"
+                      ? "border-2 border-scale-purple shadow-sm"
+                      : "border border-slate-200/70"
                   }`}
                 >
                   <div className="flex items-baseline justify-between gap-2">
-                    <h3
-                      className={`text-xs font-bold uppercase tracking-[0.15em] ${
-                        p.highlight
-                          ? "text-emerald-700"
-                          : p.id === "premium"
-                            ? "text-scale-purple"
-                            : p.id === "professional"
-                              ? "text-blue-600"
-                              : "text-slate-400"
-                      }`}
-                    >
+                    <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-400">
                       {p.name}
                     </h3>
                     {p.badge && (
                       <span
-                        className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white ${
+                        className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide ${
                           p.highlight
-                            ? "bg-emerald-600"
-                            : p.id === "professional"
-                              ? "bg-blue-600"
-                              : "bg-scale-purple"
+                            ? "bg-scale-purple text-white"
+                            : "bg-slate-100 text-slate-600"
                         }`}
                       >
                         {p.badge}
@@ -762,22 +720,14 @@ export function LandingPage() {
                     )}
                   </div>
                   <div className="mt-4 flex items-baseline gap-1.5">
-                    <span className="text-4xl font-extrabold tabular-nums text-slate-900">{p.price}</span>
+                    <span className="text-4xl font-bold tabular-nums text-slate-900">{p.price}</span>
                     <span className="text-sm text-slate-500">{p.cadence}</span>
                   </div>
                   <p className="mt-1 text-sm text-slate-500">{p.note}</p>
                   <ul className="mt-6 flex-1 space-y-2.5 border-t border-slate-100 pt-6">
                     {p.features.map((f) => (
                       <li key={f} className="flex gap-2.5 text-sm leading-snug text-slate-600">
-                        <CheckIcon
-                          className={`mt-0.5 h-4 w-4 shrink-0 ${
-                            p.highlight
-                              ? "text-emerald-600"
-                              : p.id === "premium"
-                                ? "text-scale-purple"
-                                : "text-scale-purple"
-                          }`}
-                        />
+                        <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-scale-purple" />
                         <span>{f}</span>
                       </li>
                     ))}
@@ -787,10 +737,8 @@ export function LandingPage() {
                       href={p.href}
                       className={`mt-7 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${
                         p.highlight
-                          ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                          : p.id === "premium"
-                            ? "bg-scale-purple text-white hover:bg-scale-purple-dark"
-                            : "border-2 border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-scale-mist/80"
+                          ? "bg-scale-purple text-white hover:bg-scale-purple-dark"
+                          : "border border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-slate-50"
                       }`}
                     >
                       {p.cta}
@@ -801,8 +749,8 @@ export function LandingPage() {
                       label={p.cta}
                       className={`mt-7 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${
                         p.highlight
-                          ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                          : "border-2 border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-scale-mist/80"
+                          ? "bg-scale-purple text-white hover:bg-scale-purple-dark"
+                          : "border border-slate-200 bg-white text-slate-800 hover:border-scale-purple/35 hover:bg-slate-50"
                       }`}
                     />
                   )}
@@ -814,18 +762,18 @@ export function LandingPage() {
       </section>
 
       {/* ── Blog ─────────────────────────────────────────── */}
-      <section id="blog" className="border-b border-slate-100 bg-slate-50 py-16 lg:py-20" aria-labelledby="blog-heading">
+      <section id="blog" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="blog-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-scale-purple">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                   Blog
                 </span>
-                <h2 id="blog-heading" className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                <h2 id="blog-heading" className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                   Internship search guides
                 </h2>
-                <p className="mt-3 max-w-xl text-slate-600">
+                <p className="mt-3 max-w-xl text-slate-500">
                   Tips on finding USA internships, tracking applications, and prepping for interviews.
                 </p>
               </div>
@@ -843,7 +791,7 @@ export function LandingPage() {
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
             {latestPosts.map((post) => (
               <Reveal key={post.slug} className="h-full">
-                <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover">
+                <article className="flex h-full flex-col rounded-2xl border border-slate-200/70 bg-white p-6 transition-shadow hover:shadow-card">
                   <p className="text-xs font-semibold uppercase tracking-wide text-scale-purple">
                     {post.category}
                   </p>
@@ -852,7 +800,7 @@ export function LandingPage() {
                       {post.title}
                     </Link>
                   </h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 line-clamp-3">
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-500 line-clamp-3">
                     {post.description}
                   </p>
                   <Link
@@ -869,67 +817,67 @@ export function LandingPage() {
       </section>
 
       {/* ── FAQ ────────────────────────────────────────────── */}
-      <section id="faq" className="pt-20 pb-20 lg:pt-28 lg:pb-28">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-12">
-          <Reveal className="lg:col-span-4">
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Questions students actually ask
-            </h2>
-            <p className="mt-4 text-slate-600">
-              Something else on your mind?{" "}
-              <Link
-                href="/contact-us"
-                className="font-semibold text-scale-purple hover:underline"
-              >
-                Contact us
-              </Link>
-              .
-            </p>
+      <section id="faq" className="py-20 sm:py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <Reveal>
+            <div className="mb-10 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Questions students actually ask
+              </h2>
+              <p className="mt-4 text-slate-500">
+                Something else on your mind?{" "}
+                <Link
+                  href="/contact-us"
+                  className="font-semibold text-scale-purple hover:underline"
+                >
+                  Contact us
+                </Link>
+                .
+              </p>
+            </div>
           </Reveal>
-          <div className="lg:col-span-8">
-            <div className="divide-y divide-slate-200 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
-              {FAQ_ITEMS.map((item, i) => {
-                const open = faqOpen === i;
-                return (
-                  <div key={item.q}>
-                    <button
-                      type="button"
-                      onClick={() => setFaqOpen(open ? null : i)}
-                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-scale-mist/50 sm:px-6"
-                      aria-expanded={open}
+          <div className="divide-y divide-slate-200/80 rounded-2xl border border-slate-200/70 bg-white">
+            {FAQ_ITEMS.map((item, i) => {
+              const open = faqOpen === i;
+              return (
+                <div key={item.q}>
+                  <button
+                    type="button"
+                    onClick={() => setFaqOpen(open ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-slate-50 sm:px-6"
+                    aria-expanded={open}
+                  >
+                    <span className="font-semibold text-slate-900">{item.q}</span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-transform ${open ? "rotate-180 bg-scale-purple/10 text-scale-purple" : ""}`}
                     >
-                      <span className="font-semibold text-slate-900">{item.q}</span>
-                      <span
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-transform ${open ? "rotate-180 bg-scale-purple/10 text-scale-purple" : ""}`}
-                      >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </span>
-                    </button>
-                    <div
-                      className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="px-5 pb-4 text-sm leading-relaxed text-slate-600 sm:px-6">{item.a}</p>
-                      </div>
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                  </button>
+                  <div
+                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="px-5 pb-4 text-sm leading-relaxed text-slate-600 sm:px-6">{item.a}</p>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ── Final CTA ──────────────────────────────────────── */}
-      <section className="pb-20 lg:pb-28">
+      <section className="pb-20 sm:pb-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <Reveal>
             <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-scale-purple via-violet-600 to-scale-purple-deep px-6 py-16 text-center sm:px-12">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_50%)]" aria-hidden />
               <div className="relative">
-                <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                   This semester&apos;s the one.
                 </h2>
                 <p className="mx-auto mt-4 max-w-xl text-lg text-violet-100">
@@ -938,7 +886,7 @@ export function LandingPage() {
                 <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <LoginLink
                     callbackUrl="/"
-                    className="inline-flex items-center gap-3 rounded-2xl bg-white px-10 py-4 text-sm font-bold text-scale-purple shadow-xl transition-all hover:bg-scale-mist hover:shadow-2xl active:scale-[0.98]"
+                    className="inline-flex items-center gap-3 rounded-xl bg-white px-9 py-3.5 text-sm font-bold text-scale-purple shadow-lg transition-all hover:bg-scale-mist active:scale-[0.98]"
                   >
                     <GoogleIcon />
                     Get started free
@@ -946,7 +894,7 @@ export function LandingPage() {
                   <LoginLink
                     callbackUrl="/"
                     label="Sign in"
-                    className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-transparent px-10 py-4 text-sm font-bold text-white shadow-lg transition-all hover:bg-white/10 active:scale-[0.98]"
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/70 bg-transparent px-9 py-3.5 text-sm font-bold text-white transition-all hover:bg-white/10 active:scale-[0.98]"
                   />
                 </div>
               </div>
