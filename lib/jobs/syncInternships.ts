@@ -1,12 +1,15 @@
 import { supabase } from "@/lib/supabase";
 import { fetchGreenhouseJobs } from "@/lib/jobs/fetchers/greenhouse";
 import { fetchLeverPostings } from "@/lib/jobs/fetchers/lever";
+import { fetchAshbyJobs } from "@/lib/jobs/fetchers/ashby";
 import {
   normalizeGreenhouseJob,
   normalizeLeverPosting,
+  normalizeAshbyJob,
 } from "@/lib/jobs/normalizeListing";
 import { isUsInternship, isInternshipTitle } from "@/lib/jobs/isUsInternship";
 import { resolveGreenhouseLocation } from "@/lib/jobs/resolveGreenhouseLocation";
+import { resolveAshbyLocation } from "@/lib/jobs/fetchers/ashby";
 import type { JobSourceRow } from "@/types/jobListing";
 
 export type SyncInternshipsResult = {
@@ -61,6 +64,26 @@ async function syncOneSource(
         }
         slice.usKept++;
         const draft = normalizeGreenhouseJob(source, job);
+        if (draft) drafts.push(draft);
+      }
+    } else if (source.ats === "ashby") {
+      const jobs = await fetchAshbyJobs(source.board_token);
+      fetchedCount = jobs.length;
+      for (const job of jobs) {
+        const title = job.title;
+        const loc = resolveAshbyLocation(job);
+        const isIntern =
+          isInternshipTitle(title, source.force_internship) ||
+          job.employmentType?.toLowerCase().includes("intern") === true;
+        if (!isIntern) continue;
+        slice.internshipsKept++;
+        if (
+          !isUsInternship(title, loc, { forceInternship: source.force_internship })
+        ) {
+          continue;
+        }
+        slice.usKept++;
+        const draft = normalizeAshbyJob(source, job);
         if (draft) drafts.push(draft);
       }
     } else {

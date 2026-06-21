@@ -24,7 +24,7 @@ export type JobSourceRow = {
   id: string;
   company: string;
   company_slug: string;
-  ats: "greenhouse" | "lever";
+  ats: "greenhouse" | "lever" | "ashby";
   board_token: string;
   careers_url: string;
   enabled: boolean;

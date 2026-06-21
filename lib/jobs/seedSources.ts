@@ -1,8 +1,8 @@
-/** Curated US companies with public Greenhouse / Lever boards */
+/** Curated US companies with public Greenhouse / Lever / Ashby boards */
 export const INTERNSHIP_SOURCE_SEED: Array<{
   company: string;
   company_slug: string;
-  ats: "greenhouse" | "lever";
+  ats: "greenhouse" | "lever" | "ashby";
   board_token: string;
   careers_url: string;
 }> = [
@@ -53,4 +53,15 @@ export const INTERNSHIP_SOURCE_SEED: Array<{
   { company: "Rubrik", company_slug: "rubrik", ats: "greenhouse", board_token: "rubrik", careers_url: "https://www.rubrik.com/company/careers" },
   { company: "Epic Games", company_slug: "epicgames", ats: "greenhouse", board_token: "epicgames", careers_url: "https://www.epicgames.com/site/careers" },
   { company: "SpaceX", company_slug: "spacex", ats: "greenhouse", board_token: "spacex", careers_url: "https://www.spacex.com/careers" },
+  { company: "Rocket Lab", company_slug: "rocketlab", ats: "greenhouse", board_token: "rocketlab", careers_url: "https://www.rocketlabusa.com/careers" },
+  { company: "Anduril", company_slug: "anduril", ats: "greenhouse", board_token: "andurilindustries", careers_url: "https://www.anduril.com/careers" },
+  { company: "Nuro", company_slug: "nuro", ats: "greenhouse", board_token: "nuro", careers_url: "https://www.nuro.ai/careers" },
+  { company: "Gemini", company_slug: "gemini", ats: "greenhouse", board_token: "gemini", careers_url: "https://www.gemini.com/careers" },
+  { company: "1Password", company_slug: "1password", ats: "ashby", board_token: "1password", careers_url: "https://1password.com/careers" },
+  { company: "Skydio", company_slug: "skydio", ats: "ashby", board_token: "skydio", careers_url: "https://www.skydio.com/careers" },
+  { company: "Cohere", company_slug: "cohere", ats: "ashby", board_token: "cohere", careers_url: "https://cohere.com/careers" },
+  { company: "Snowflake", company_slug: "snowflake", ats: "ashby", board_token: "snowflake", careers_url: "https://careers.snowflake.com" },
+  { company: "Ramp", company_slug: "ramp", ats: "ashby", board_token: "ramp", careers_url: "https://ramp.com/careers" },
+  { company: "Notion", company_slug: "notion", ats: "ashby", board_token: "notion", careers_url: "https://www.notion.so/careers" },
+  { company: "Replit", company_slug: "replit", ats: "ashby", board_token: "replit", careers_url: "https://replit.com/careers" },
 ];
