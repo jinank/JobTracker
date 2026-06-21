@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import { InternshipSearchChecklist } from "@/components/blog/posts/InternshipSearchChecklist";
+import { Summer2027ProgramsOpen } from "@/components/blog/posts/Summer2027ProgramsOpen";
 import { TrackApplicationsWithoutSpreadsheet } from "@/components/blog/posts/TrackApplicationsWithoutSpreadsheet";
 import { UsaInternshipsOffJobBoards } from "@/components/blog/posts/UsaInternshipsOffJobBoards";
 
@@ -16,6 +17,17 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "summer-2027-internship-programs-open-now",
+    title: "Summer 2027 Internship Programs Open Right Now",
+    description:
+      "A running list of Summer 2027 internship applications that are live today—finance, tech, consulting, and more—with direct apply links to company career pages.",
+    publishedAt: "2026-06-20",
+    readMinutes: 6,
+    category: "Internship Strategy",
+    tags: ["summer 2027", "internship programs", "finance internships", "tech internships"],
+    Content: Summer2027ProgramsOpen,
+  },
   {
     slug: "track-internship-applications-without-spreadsheet",
     title: "How to track internship applications without a spreadsheet",
