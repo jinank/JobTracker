@@ -4,6 +4,10 @@ import {
   CURATED_SOURCE,
   type CuratedListingSeed,
 } from "@/lib/jobs/curatedListings2027";
+import {
+  mergeCuratedSeeds,
+  PROGRAMS_OPEN_CURATED_SEEDS,
+} from "@/lib/jobs/programsOpenCurated";
 import { inferRoleCategory } from "@/lib/jobs/inferRoleCategory";
 
 function slugify(text: string): string {
@@ -65,7 +69,15 @@ export async function seedCuratedListings2027(): Promise<SeedCuratedResult> {
 
   result.sourceId = sourceRow.id;
 
-  for (const listing of CURATED_LISTINGS_2027) {
+  const listings = mergeCuratedSeeds(
+    CURATED_LISTINGS_2027,
+    PROGRAMS_OPEN_CURATED_SEEDS
+  );
+
+  const seenExternalIds = new Set<string>();
+
+  for (const listing of listings) {
+    seenExternalIds.add(listing.externalId);
     const companySlug = slugify(listing.company);
     const { city, state } = parsePrimaryLocation(listing.location);
     const roleCategory = inferRoleCategory(listing.title);
@@ -99,6 +111,21 @@ export async function seedCuratedListings2027(): Promise<SeedCuratedResult> {
       result.errors.push(`${listing.company} — ${listing.title}: ${error.message}`);
     } else {
       result.upserted++;
+    }
+  }
+
+  const { data: existing } = await supabase
+    .from("job_listings")
+    .select("id, external_id")
+    .eq("source_id", sourceRow.id)
+    .eq("is_active", true);
+
+  for (const row of existing ?? []) {
+    if (!seenExternalIds.has(row.external_id)) {
+      await supabase
+        .from("job_listings")
+        .update({ is_active: false, updated_at: now })
+        .eq("id", row.id);
     }
   }
 
