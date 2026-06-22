@@ -1,6 +1,10 @@
 "use client";
 
 import type { JobListing } from "@/types/jobListing";
+import {
+  formatTableLocation,
+  locationHasMultipleCities,
+} from "@/lib/jobs/formatTableLocation";
 
 function postedLabel(days: number): string {
   if (days <= 1) return "Today";
@@ -71,14 +75,25 @@ export function InternshipTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {jobs.map((job) => (
+            {jobs.map((job) => {
+              const locationLabel = formatTableLocation(job.location);
+              const locationTitle = locationHasMultipleCities(job.location)
+                ? job.location
+                : undefined;
+
+              return (
               <tr key={job.id} className="group transition-colors hover:bg-slate-50/80">
                 <td className="px-4 py-3.5 font-semibold text-slate-900 sm:px-5">
                   {job.company}
                 </td>
                 <td className="px-4 py-3.5 sm:px-5">
                   <div className="font-medium text-slate-800">{job.title}</div>
-                  <div className="mt-0.5 text-xs text-slate-500 md:hidden">{job.location}</div>
+                  <div
+                    className="mt-0.5 max-w-[14rem] truncate text-xs text-slate-500 md:hidden"
+                    title={locationTitle}
+                  >
+                    {locationLabel}
+                  </div>
                   <div className="mt-1 lg:hidden">
                     <span
                       className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold ring-1 ${WORK_TYPE_STYLES[job.workType]}`}
@@ -87,8 +102,11 @@ export function InternshipTable({
                     </span>
                   </div>
                 </td>
-                <td className="hidden px-4 py-3.5 text-slate-600 md:table-cell sm:px-5">
-                  {job.location}
+                <td
+                  className="hidden max-w-[11rem] truncate px-4 py-3.5 text-slate-600 md:table-cell sm:px-5"
+                  title={locationTitle}
+                >
+                  {locationLabel}
                 </td>
                 <td className="hidden px-4 py-3.5 lg:table-cell sm:px-5">
                   <span
@@ -111,7 +129,8 @@ export function InternshipTable({
                   </a>
                 </td>
               </tr>
-            ))}
+            );
+            })}
           </tbody>
         </table>
       </div>
