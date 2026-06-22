@@ -11,7 +11,7 @@ export function HomePageClient() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    router.replace(session?.adminCredential ? "/admin" : "/find-jobs");
+    router.replace(session?.adminCredential ? "/admin" : "/find-internships");
   }, [status, session, router]);
 
   if (status === "authenticated") {

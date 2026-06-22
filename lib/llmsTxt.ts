@@ -16,7 +16,7 @@ export function buildLlmsTxt(): string {
     "",
     "## Core product",
     `- [Home](${line("")}): Landing page — internship search hub for students.`,
-    `- [Find USA Internships](${line("/find-jobs")}): Browse US internship listings synced daily from company ATS career boards.`,
+    `- [Find USA Internships](${line("/find-internships")}): Browse US internship listings synced daily from company ATS career boards.`,
     `- [Track Applications](${line("/tracker")}): Gmail read-only sync and AI pipeline dashboard (sign-in required).`,
     `- [Practice Interviews](${line("/practice-interviews")}): AI mock interviews by company and role.`,
     `- [Find Mentors](${line("/find-mentors")}): Search mentors and recruiting contacts at target companies.`,

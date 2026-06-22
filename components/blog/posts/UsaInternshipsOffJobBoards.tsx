@@ -38,7 +38,7 @@ export function UsaInternshipsOffJobBoards() {
         careers pages on a schedule—or use a tool that syncs US internship listings automatically.
       </p>
       <p>
-        <Link href="/find-jobs" className="font-semibold text-scale-purple hover:underline">
+        <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">
           SuperInterns
         </Link>{" "}
         pulls from public Greenhouse and Lever boards, filters to US internships, and updates daily.

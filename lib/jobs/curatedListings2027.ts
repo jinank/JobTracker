@@ -18,7 +18,7 @@ export const CURATED_SOURCE = {
   company_slug: "curated",
   ats: "greenhouse" as const,
   board_token: "superinterns-curated-2027",
-  careers_url: "https://www.summer2027internships.com/find-jobs",
+  careers_url: "https://www.summer2027internships.com/find-internships",
 };
 
 export const CURATED_LISTINGS_2027: CuratedListingSeed[] = [

@@ -1,5 +1,5 @@
 import { FindJobsPageClient } from "@/components/FindJobsPageClient";
 
-export default function FindJobsPage() {
+export default function FindInternshipsPage() {
   return <FindJobsPageClient />;
 }

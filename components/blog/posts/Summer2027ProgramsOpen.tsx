@@ -71,7 +71,7 @@ export function Summer2027ProgramsOpen() {
       <p>
         As you apply, log every role in one place so nothing slips through the cracks. Browse live
         listings synced from company career boards on{" "}
-        <Link href="/find-jobs" className="font-semibold text-scale-purple hover:underline">
+        <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">
           SuperInterns
         </Link>
         , or track applications and follow-ups from your dashboard after you{" "}

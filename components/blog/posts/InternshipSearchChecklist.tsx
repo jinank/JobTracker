@@ -21,7 +21,7 @@ export function InternshipSearchChecklist() {
         </li>
         <li>
           Browse live US listings on{" "}
-          <Link href="/find-jobs" className="font-semibold text-scale-purple hover:underline">
+          <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">
             SuperInterns
           </Link>{" "}
           to spot roles synced from company boards.

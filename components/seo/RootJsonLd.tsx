@@ -29,7 +29,7 @@ export function RootJsonLd() {
           "@type": "SearchAction",
           target: {
             "@type": "EntryPoint",
-            urlTemplate: `${origin}/find-jobs`,
+            urlTemplate: `${origin}/find-internships`,
           },
           "query-input": "required name=search_term_string",
         },

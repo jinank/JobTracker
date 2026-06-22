@@ -31,7 +31,7 @@ export function getPublicSitemapPaths(): SitemapPathEntry[] {
 
   return [
     { path: "", changeFrequency: "weekly", priority: 1 },
-    { path: "/find-jobs", changeFrequency: "daily", priority: 0.95 },
+    { path: "/find-internships", changeFrequency: "daily", priority: 0.95 },
     { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
     { path: "/find-mentors", changeFrequency: "weekly", priority: 0.85 },
     { path: "/resources", changeFrequency: "weekly", priority: 0.85 },

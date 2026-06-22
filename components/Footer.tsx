@@ -54,7 +54,7 @@ export function Footer() {
             className="grid grid-cols-2 gap-x-1 gap-y-0 sm:flex sm:flex-wrap sm:items-center sm:gap-x-1 sm:gap-y-1"
             aria-label="Footer"
           >
-            <FooterLink href="/find-jobs">Find Internships</FooterLink>
+            <FooterLink href="/find-internships">Find Internships</FooterLink>
             <FooterLink href="/tracker">Track Applications</FooterLink>
             <FooterLink href="/practice-interviews">Interview Prep</FooterLink>
             <FooterLink href="/find-mentors">Find Mentors</FooterLink>

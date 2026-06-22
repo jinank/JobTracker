@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { SiteNavApp } from "@/components/SiteNav";
 import { AppHeaderActions } from "@/components/AppHeaderActions";
-import { FindJobListCard } from "@/components/FindJobListCard";
+import { InternshipTable } from "@/components/InternshipTable";
 import { useChains } from "@/hooks/useChains";
 import { useInternships } from "@/hooks/useInternships";
 import { useInternshipPreferences } from "@/hooks/useInternshipPreferences";
@@ -399,30 +399,28 @@ export function FindJobsApp() {
                   <div className="h-10 w-10 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
                 </div>
               ) : (
-                <div className="space-y-2">
-                  {jobs.map((job) => (
-                    <FindJobListCard key={job.id} job={job} />
-                  ))}
-                  {jobs.length === 0 && (
-                    <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-14 text-center">
-                      <p className="text-sm font-medium text-slate-700">
-                        No internships match these filters
-                      </p>
-                      <p className="mt-1 text-xs text-slate-500">
-                        {matchPrefs.matchEnabled
-                          ? "Try turning off “Show only relevant internships” or broaden your role picks."
-                          : "Listings sync daily from company career pages. Try clearing filters or check back after the next sync."}
-                      </p>
+                <>
+                  <InternshipTable
+                    jobs={jobs}
+                    loading={loading}
+                    emptyMessage={
+                      matchPrefs.matchEnabled
+                        ? "No internships match these filters. Try turning off “Show only relevant internships” or broaden your role picks."
+                        : "No internships match these filters. Listings sync every few hours from company career pages."
+                    }
+                  />
+                  {jobs.length === 0 && !loading && (
+                    <div className="mt-4 text-center">
                       <button
                         type="button"
                         onClick={clearFilters}
-                        className="mt-4 text-xs font-semibold text-scale-purple hover:text-scale-purple-dark"
+                        className="text-xs font-semibold text-scale-purple hover:text-scale-purple-dark"
                       >
                         Clear filters
                       </button>
                     </div>
                   )}
-                </div>
+                </>
               )}
 
               {totalPages > 1 && (

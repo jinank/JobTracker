@@ -10,8 +10,8 @@ export type ProductFeature = {
 /** Core product areas shown in the main nav pill. */
 export const PRODUCT_FEATURES: ProductFeature[] = [
   {
-    id: "find-jobs",
-    href: "/find-jobs",
+    id: "find-internships",
+    href: "/find-internships",
     label: "Find Internships",
     shortLabel: "Internships",
     description: "US internships pulled straight from company career pages.",

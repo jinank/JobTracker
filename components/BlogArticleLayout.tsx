@@ -54,7 +54,7 @@ export function BlogArticleLayout({ post, children }: BlogArticleLayoutProps) {
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
-                href="/find-jobs"
+                href="/find-internships"
                 className="inline-flex items-center justify-center rounded-xl bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-scale-purple-dark"
               >
                 Find internships

@@ -94,7 +94,7 @@ export function useInternships(filters: InternshipFilters) {
   return { jobs, total, stats, loading, error, refresh };
 }
 
-export function useInternshipPreview(limit = 8) {
+export function useInternshipPreview(limit = 8, sort: "posted-asc" | "posted-desc" = "posted-desc") {
   const [jobs, setJobs] = useState<JobListing[]>([]);
   const [stats, setStats] = useState<InternshipStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -103,7 +103,7 @@ export function useInternshipPreview(limit = 8) {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`/api/internships?limit=${limit}&sort=posted-asc`);
+        const res = await fetch(`/api/internships?limit=${limit}&sort=${sort}`);
         const data = await res.json();
         if (cancelled) return;
         if (res.ok) {
@@ -117,7 +117,7 @@ export function useInternshipPreview(limit = 8) {
     return () => {
       cancelled = true;
     };
-  }, [limit]);
+  }, [limit, sort]);
 
   return { jobs, stats, loading };
 }

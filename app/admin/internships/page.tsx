@@ -114,7 +114,7 @@ export default function AdminInternshipsPage() {
           </p>
         </div>
         <Link
-          href="/find-jobs"
+          href="/find-internships"
           className="shrink-0 text-sm font-semibold text-scale-purple hover:underline"
         >
           View student page →

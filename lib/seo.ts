@@ -28,7 +28,7 @@ type BuildPageMetadataOptions = {
   /** Page title without site suffix (template adds ` | SuperInterns`). */
   title: string;
   description: string;
-  /** Canonical path, e.g. `/find-jobs`. */
+  /** Canonical path, e.g. `/find-internships`. */
   path: string;
   keywords?: string[];
   noIndex?: boolean;

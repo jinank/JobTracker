@@ -12,6 +12,7 @@ import {
 import {
   smoothScrollToSection,
 } from "@/components/landing/LandingSectionNav";
+import { LandingInternshipsSection } from "@/components/LandingInternshipsSection";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
@@ -301,7 +302,7 @@ const TOOL_SECTIONS: ToolSection[] = [
       "Apply directly on the company's site, then track the reply here",
     ],
     checkColor: "text-emerald-600",
-    href: "/find-jobs",
+    href: "/find-internships",
     linkLabel: "Browse internships",
     linkColor: "text-emerald-700",
     panelBg: "border-emerald-100 bg-emerald-50/60",
@@ -491,7 +492,7 @@ export function LandingPage() {
                 Get started free
               </LoginLink>
               <Link
-                href="/find-jobs"
+                href="#latest-internships"
                 className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 transition-all hover:border-slate-300 hover:bg-slate-50 sm:w-auto"
               >
                 Browse internships
@@ -526,6 +527,10 @@ export function LandingPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      <SectionDivider />
+
+      <LandingInternshipsSection />
 
       <SectionDivider />
 

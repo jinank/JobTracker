@@ -186,7 +186,7 @@ export function Summer2027SearchGuide() {
           <br />
           Search directly on employer websites. Many roles appear there before they show up
           elsewhere. Browse live listings on{" "}
-          <Link href="/find-jobs" className="font-semibold text-scale-purple hover:underline">
+          <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">
             SuperInterns
           </Link>
           .
@@ -702,7 +702,7 @@ Thank you for your consideration,
           .
         </li>
         <li>
-          <Link href="/find-jobs" className="font-semibold text-scale-purple hover:underline">
+          <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">
             Browse internship postings
           </Link>{" "}
           and save roles that match your goals.
