@@ -94,7 +94,7 @@ export function useInternships(filters: InternshipFilters) {
   return { jobs, total, stats, loading, error, refresh };
 }
 
-export function useInternshipPreview(limit = 8, sort: "posted-asc" | "posted-desc" = "posted-desc") {
+export function useInternshipPreview(limit = 8, sort: "posted-asc" | "posted-desc" = "posted-asc") {
   const [jobs, setJobs] = useState<JobListing[]>([]);
   const [stats, setStats] = useState<InternshipStats | null>(null);
   const [loading, setLoading] = useState(true);

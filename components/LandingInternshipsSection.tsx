@@ -8,7 +8,7 @@ import { useInternshipPreview } from "@/hooks/useInternships";
 const PREVIEW_LIMIT = 50;
 
 export function LandingInternshipsSection() {
-  const { jobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT, "posted-desc");
+  const { jobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT);
 
   const totalLabel = stats?.totalActive ?? jobs.length;
 

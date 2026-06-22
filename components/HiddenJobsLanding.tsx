@@ -51,7 +51,7 @@ function CheckIcon({ className = "h-5 w-5 text-scale-purple" }: { className?: st
 
 /** Marketing browse page for /find-internships (logged-out visitors). */
 export function HiddenJobsLanding() {
-  const { jobs: previewJobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT, "posted-desc");
+  const { jobs: previewJobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT);
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<string>("All roles");
 

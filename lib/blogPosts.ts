@@ -1,5 +1,7 @@
 import type { ComponentType } from "react";
 import { InternshipSearchChecklist } from "@/components/blog/posts/InternshipSearchChecklist";
+import { SummerInternshipsGuide } from "@/components/blog/posts/SummerInternshipsGuide";
+import { Summer2027InternshipsUsaGuide } from "@/components/blog/posts/Summer2027InternshipsUsaGuide";
 import { Summer2027ProgramsOpen } from "@/components/blog/posts/Summer2027ProgramsOpen";
 import { Summer2027SearchGuide } from "@/components/blog/posts/Summer2027SearchGuide";
 import { TrackApplicationsWithoutSpreadsheet } from "@/components/blog/posts/TrackApplicationsWithoutSpreadsheet";
@@ -18,6 +20,44 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "summer-internships-student-guide",
+    title: "Summer Internships: A Student's Guide to Landing One",
+    description:
+      "When to apply for summer internships, where to find U.S. roles, build a resume, track applications with Gmail, get referrals, and prep for interviews.",
+    publishedAt: "2026-06-23",
+    updatedAt: "2026-06-23",
+    readMinutes: 20,
+    category: "Internship Strategy",
+    tags: [
+      "summer internships",
+      "summer internship search",
+      "USA internships",
+      "college students",
+      "campus recruiting",
+      "internship applications",
+    ],
+    Content: SummerInternshipsGuide,
+  },
+  {
+    slug: "2027-summer-internships-usa",
+    title: "2027 Summer Internships USA: Student Search Guide",
+    description:
+      "When to apply for 2027 summer internships in the USA, where to find roles on company career pages, track applications with Gmail, get referrals, and prep for interviews.",
+    publishedAt: "2026-06-22",
+    updatedAt: "2026-06-22",
+    readMinutes: 22,
+    category: "Internship Strategy",
+    tags: [
+      "2027 summer internships usa",
+      "summer 2027 internships",
+      "USA internships",
+      "internship search",
+      "college students",
+      "campus recruiting",
+    ],
+    Content: Summer2027InternshipsUsaGuide,
+  },
   {
     slug: "summer-2027-internship-search-guide",
     title: "Summer 2027 Internship Search Guide",
