@@ -4,11 +4,17 @@ import { FindMentorsApp } from "@/components/FindMentorsApp";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Find mentors",
+  title: "Find mentors for Summer 2027 internship search",
   description:
-    "Find mentors, recruiters, and campus hiring contacts at any company. Reach out on LinkedIn for advice, referrals, and coffee chats — free for students.",
+    "Find mentors, recruiters, and campus hiring contacts for Summer 2027 internships. Reach out on LinkedIn for advice, referrals, and coffee chats — free for students.",
   path: "/find-mentors",
-  keywords: ["find mentors", "recruiter search", "internship networking", "LinkedIn outreach"],
+  keywords: [
+    "Summer 2027 Internships",
+    "find mentors",
+    "recruiter search",
+    "internship networking",
+    "LinkedIn outreach",
+  ],
 });
 
 export default function FindMentorsPage() {

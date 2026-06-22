@@ -2,7 +2,7 @@ import Link from "next/link";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Terms of use",
+  title: "Terms of use for SuperInterns student accounts",
   description: "Terms of use for SuperInterns, including accounts, subscriptions, and acceptable use.",
   path: "/terms",
 });

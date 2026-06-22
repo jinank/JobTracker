@@ -6,12 +6,14 @@ export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 
 export const SITE_TITLE_DEFAULT =
-  "SuperInterns | USA internship search for students";
+  "Summer 2027 Internships | Find & Track USA Roles";
 
 export const SITE_DESCRIPTION_DEFAULT =
-  "SuperInterns helps students find USA internships from company career pages, track applications from Gmail, practice interviews with AI, and unlock member perks. Free for students.";
+  "Find Summer 2027 internships on company career pages. Track applications from Gmail, practice interviews with AI, and unlock student perks. Free.";
 
 export const SITE_KEYWORDS = [
+  "Summer 2027 Internships",
+  "summer 2027 internships",
   "summer internships",
   "USA internships",
   "internship search",
@@ -111,13 +113,13 @@ export function buildRootMetadata(): Metadata {
       siteName: SITE_NAME,
       title: SITE_TITLE_DEFAULT,
       description: SITE_DESCRIPTION_DEFAULT,
-      images: ogImages(`${SITE_NAME} | USA internship search for students`),
+      images: ogImages(`${SITE_NAME} | Summer 2027 Internships`),
     },
     twitter: {
       card: "summary_large_image",
       title: SITE_TITLE_DEFAULT,
       description: SITE_DESCRIPTION_DEFAULT,
-      images: [{ url: DEFAULT_OG_IMAGE, alt: `${SITE_NAME} | USA internship search` }],
+      images: [{ url: DEFAULT_OG_IMAGE, alt: `${SITE_NAME} | Summer 2027 Internships` }],
     },
     icons: {
       icon: [{ url: "/icon.svg", type: "image/svg+xml" }],

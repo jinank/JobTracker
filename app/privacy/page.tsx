@@ -2,7 +2,7 @@ import Link from "next/link";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Privacy policy",
+  title: "Privacy policy for student internship accounts",
   description: "How SuperInterns handles your data, Gmail access, and account information.",
   path: "/privacy",
 });

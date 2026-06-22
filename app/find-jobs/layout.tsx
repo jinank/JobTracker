@@ -3,11 +3,12 @@ import type { ReactNode } from "react";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Find USA Internships",
+  title: "Summer 2027 Internships — find USA roles",
   description:
-    "Discover US internships on company career pages, not buried on LinkedIn or Indeed. Built for students. Apply directly and track applications.",
+    "Browse Summer 2027 internships on company career pages, not buried on LinkedIn or Indeed. Built for students. Apply directly and track applications.",
   path: "/find-jobs",
   keywords: [
+    "Summer 2027 Internships",
     "USA internships",
     "summer internships",
     "internship search",
@@ -15,7 +16,7 @@ export const metadata: Metadata = buildPageMetadata({
     "Greenhouse internships",
     "Lever internships",
   ],
-  ogTitle: "Find USA Internships — Student internship search",
+  ogTitle: "Summer 2027 Internships — find USA roles",
 });
 
 export default function FindJobsLayout({ children }: { children: ReactNode }) {

@@ -14,7 +14,7 @@ export function RootJsonLd() {
         url: origin,
         logo: { "@type": "ImageObject", url: logoUrl },
         description:
-          "SuperInterns helps students find USA internships, track applications from Gmail, and prepare for interviews.",
+          "SuperInterns helps students find Summer 2027 internships, track applications from Gmail, and prepare for interviews.",
       },
       {
         "@type": "WebSite",
@@ -23,7 +23,7 @@ export function RootJsonLd() {
         url: origin,
         publisher: { "@id": `${origin}/#organization` },
         description:
-          "USA internship search, application tracking, and interview prep for students. Sync Gmail, browse company career pages, and manage your pipeline in one place.",
+          "Summer 2027 internship search, application tracking, and interview prep for students. Sync Gmail, browse company career pages, and manage your pipeline in one place.",
         inLanguage: "en-US",
         potentialAction: {
           "@type": "SearchAction",

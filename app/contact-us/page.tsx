@@ -3,7 +3,7 @@ import { buildPageMetadata } from "@/lib/seo";
 import { getSupportEmail } from "@/lib/site";
 
 export const metadata = buildPageMetadata({
-  title: "Contact us",
+  title: "Contact SuperInterns support for internship help",
   description:
     "Contact SuperInterns support for help with accounts, billing, internships, and student verification.",
   path: "/contact-us",

@@ -7,12 +7,18 @@ import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
 import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Blog",
+  title: "Summer 2027 Internships blog and search guides",
   description:
-    "Internship search tips, application tracking guides, and USA internship advice from SuperInterns.",
+    "Internship search tips, Summer 2027 program updates, application tracking guides, and USA internship advice from SuperInterns.",
   path: "/blog",
-  keywords: ["internship tips", "job search blog", "application tracking", "summer internships"],
-  ogTitle: "Blog — Internship search & application tips",
+  keywords: [
+    "Summer 2027 Internships",
+    "internship tips",
+    "job search blog",
+    "application tracking",
+    "summer internships",
+  ],
+  ogTitle: "Summer 2027 Internships blog — search & application tips",
 });
 
 export default function BlogPage() {

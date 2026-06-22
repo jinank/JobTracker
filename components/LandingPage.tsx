@@ -476,8 +476,8 @@ export function LandingPage() {
               id="hero-heading"
               className="mx-auto max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-6xl"
             >
-              Your whole internship search,{" "}
-              <span className="text-hero-gradient">in one tab</span>
+              Summer 2027 Internships —{" "}
+              <span className="text-hero-gradient">your whole search in one tab</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg">
               Find real openings, track every application straight from Gmail, practice
