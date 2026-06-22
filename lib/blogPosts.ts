@@ -24,6 +24,7 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       "When to apply for summer 2027 internships, where to find roles, how to track applications with Gmail, get referrals, prepare for interviews, and use campus recruiting.",
     publishedAt: "2026-06-21",
+    updatedAt: "2026-06-21",
     readMinutes: 18,
     category: "Internship Strategy",
     tags: [
@@ -41,6 +42,7 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       "A running list of Summer 2027 internship applications that are live today—finance, tech, consulting, and more—with direct apply links to company career pages.",
     publishedAt: "2026-06-20",
+    updatedAt: "2026-06-20",
     readMinutes: 6,
     category: "Internship Strategy",
     tags: ["summer 2027", "internship programs", "finance internships", "tech internships"],
