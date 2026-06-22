@@ -51,8 +51,8 @@ function Reveal({
   return (
     <div
       ref={ref}
-      className={`transition-all duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:translate-y-0 ${
-        on ? "translate-y-0" : "translate-y-3"
+      className={`transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:translate-y-0 ${
+        on ? "translate-y-0 opacity-100" : "translate-y-3 opacity-100"
       } ${className}`}
     >
       {children}
