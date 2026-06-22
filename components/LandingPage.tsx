@@ -9,6 +9,9 @@ import {
   ScrollReveal,
   useScrollParallax,
 } from "@/components/landing/LandingMotion";
+import {
+  smoothScrollToSection,
+} from "@/components/landing/LandingSectionNav";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
@@ -452,7 +455,8 @@ export function LandingPage() {
 
       {/* ── Hero ───────────────────────────────────────────── */}
       <section
-        className="relative overflow-hidden landing-hero-mesh pb-20 pt-16 sm:pt-24"
+        id="hero"
+        className="landing-section relative overflow-hidden landing-hero-mesh pb-20 pt-16 sm:pt-24"
         aria-labelledby="hero-heading"
       >
         <HeroVisuals />
@@ -467,17 +471,16 @@ export function LandingPage() {
               className="mx-auto max-w-3xl font-extrabold leading-[1.1] tracking-tight"
             >
               <span className="block whitespace-nowrap text-[clamp(1.25rem,4.8vw,2.5rem)] text-scale-purple">
-                Summer 2027 Internships,
+                Summer 2027 Internships
               </span>
               <span className="relative mt-1 inline-block whitespace-nowrap text-[clamp(1.25rem,4.8vw,2.5rem)] text-hero-gradient">
-                your whole search in one tab
+                Your internship search in one place
                 <Squiggle />
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg">
-              Find real openings, track every application straight from Gmail, practice
-              interviews with AI, and meet the people who can refer you. Close the other
-              forty tabs.
+              Find real Internships, track every application straight from Gmail, practice
+              interviews, and meet the mentors who can refer you. 
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <LoginLink
@@ -498,17 +501,18 @@ export function LandingPage() {
               </Link>
             </div>
             <p className="mt-5 text-xs text-slate-400">
-              Find from everywhere · Apply or let us apply · Track and reach out
+              Find from everywhere · Apply or let us apply · Track and Reach out to mentors
             </p>
-            <a
-              href="#about"
+            <button
+              type="button"
+              onClick={() => smoothScrollToSection("about")}
               className="landing-scroll-hint mt-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/80 text-slate-400 shadow-sm backdrop-blur-sm transition-colors hover:border-scale-purple/30 hover:text-scale-purple"
-              aria-label="Scroll to learn more"
+              aria-label="Scroll to About section"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -526,7 +530,7 @@ export function LandingPage() {
       <SectionDivider />
 
       {/* ── What is SuperInterns ─────────────────────── */}
-      <section id="about" className="py-20 sm:py-24" aria-labelledby="about-heading">
+      <section id="about" className="landing-section py-20 sm:py-24" aria-labelledby="about-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <ScrollReveal>
             <div className="mx-auto max-w-2xl text-center">
@@ -561,7 +565,7 @@ export function LandingPage() {
       <SectionDivider />
 
       {/* ── Tool deep-dives ────────────────────────────────── */}
-      <section id="features" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="features-heading">
+      <section id="features" className="landing-section bg-slate-50/70 py-20 sm:py-24" aria-labelledby="features-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <ScrollReveal>
             <div className="mx-auto mb-16 max-w-2xl text-center">
@@ -618,7 +622,7 @@ export function LandingPage() {
       <SectionDivider />
 
       {/* ── How it works ───────────────────────────────────── */}
-      <section id="how-it-works" className="py-20 sm:py-24" aria-labelledby="how-heading">
+      <section id="how-it-works" className="landing-section py-20 sm:py-24" aria-labelledby="how-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <ScrollReveal>
             <div className="mb-14 text-center">
@@ -652,7 +656,7 @@ export function LandingPage() {
       <SectionDivider />
 
       {/* ── Privacy & trust ────────────────────────────────── */}
-      <section id="privacy" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="privacy-heading">
+      <section id="privacy" className="landing-section bg-slate-50/70 py-20 sm:py-24" aria-labelledby="privacy-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
             <ScrollReveal className="lg:col-span-5" direction="left">
@@ -693,7 +697,7 @@ export function LandingPage() {
       <SectionDivider />
 
       {/* ── Pricing ────────────────────────────────────────── */}
-      <section id="pricing" className="py-20 sm:py-24" aria-labelledby="pricing-heading">
+      <section id="pricing" className="landing-section py-20 sm:py-24" aria-labelledby="pricing-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <ScrollReveal direction="scale">
             <div className="mx-auto mb-12 max-w-xl text-center">
@@ -784,7 +788,7 @@ export function LandingPage() {
       <SectionDivider />
 
       {/* ── Blog ─────────────────────────────────────────── */}
-      <section id="blog" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="blog-heading">
+      <section id="blog" className="landing-section bg-slate-50/70 py-20 sm:py-24" aria-labelledby="blog-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <ScrollReveal>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -841,7 +845,7 @@ export function LandingPage() {
       <SectionDivider />
 
       {/* ── FAQ ────────────────────────────────────────────── */}
-      <section id="faq" className="py-20 sm:py-24">
+      <section id="faq" className="landing-section py-20 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <ScrollReveal>
             <div className="mb-10 text-center">

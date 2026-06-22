@@ -63,7 +63,7 @@
     "studentPrice": "FREE (1 year promo)",
     "regularPrice": "$19.99/month",
     "categories": ["Writing & Research", "Coding & Programming"],
-    "url": "https://one.google.com"
+    "url": "https://one.google.com/about/"
   },
   {
     "id": "cursor-student",
@@ -96,7 +96,7 @@
     "studentPrice": "85% off",
     "regularPrice": "~$8.75/user/mo",
     "categories": ["Collaboration & Teams"],
-    "url": "https://slack.com/education"
+    "url": "https://slack.com/help/articles/206646877-Apply-for-the-Slack-for-Education-discount"
   },
   {
     "id": "github-student-pack",
@@ -195,6 +195,6 @@
     "studentPrice": "FREE (institution)",
     "regularPrice": "~$20/month consumer",
     "categories": ["Writing & Research", "Study Tools & Exam Prep"],
-    "url": "https://www.anthropic.com/claude/for-education"
+    "url": "https://claude.com/solutions/education"
   }
 ]

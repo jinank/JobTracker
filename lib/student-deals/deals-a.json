@@ -96,7 +96,7 @@
     "studentPrice": "FREE ($200 credits)",
     "regularPrice": "Pay-as-you-go",
     "categories": ["Building Apps & Websites", "Coding & Programming"],
-    "url": "https://www.digitalocean.com/github-students"
+    "url": "https://education.github.com/pack"
   },
   {
     "id": "mongodb-atlas",
@@ -107,7 +107,7 @@
     "studentPrice": "$50 free credits",
     "regularPrice": "See Atlas pricing",
     "categories": ["Coding & Programming", "Data & Analytics"],
-    "url": "https://www.mongodb.com/academia/education/students"
+    "url": "https://www.mongodb.com/students"
   },
   {
     "id": "unreal-engine",
@@ -140,7 +140,7 @@
     "studentPrice": "$24.99/mo (1st year), then $39.99/mo",
     "regularPrice": "$69.99/month",
     "categories": ["Design & Presentations", "Coding & Programming"],
-    "url": "https://www.adobe.com/creativecloud/buy/students.html"
+    "url": "https://www.adobe.com/education/students/creativecloud.html"
   },
   {
     "id": "gcp-vertex-edu",

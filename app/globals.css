@@ -7,6 +7,22 @@ html {
   scrollbar-gutter: stable;
 }
 
+.landing-section {
+  scroll-margin-top: 5rem;
+}
+
+@media (min-width: 640px) {
+  .landing-section {
+    scroll-margin-top: 4.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;

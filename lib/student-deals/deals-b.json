@@ -8,7 +8,7 @@
     "studentPrice": "FREE",
     "regularPrice": "$169/year",
     "categories": ["Coding & Programming", "Building Apps & Websites"],
-    "url": "https://www.jetbrains.com/community/education/"
+    "url": "https://www.jetbrains.com/academy/student-pack/"
   },
   {
     "id": "wolfram-student",
@@ -63,7 +63,7 @@
     "studentPrice": "FREE",
     "regularPrice": "Plus retail",
     "categories": ["Writing & Research", "Collaboration & Teams"],
-    "url": "https://www.notion.so/product/notion-for-education"
+    "url": "https://www.notion.com/product/notion-for-education"
   },
   {
     "id": "azure-students",
@@ -74,7 +74,7 @@
     "studentPrice": "FREE ($100 credits / 12 mo)",
     "regularPrice": "Pay-as-you-go",
     "categories": ["Coding & Programming", "Building Apps & Websites"],
-    "url": "https://azure.microsoft.com/free/students/"
+    "url": "https://azure.microsoft.com/en-us/free/students/"
   },
   {
     "id": "gcp-skills",

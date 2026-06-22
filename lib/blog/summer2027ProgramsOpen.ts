@@ -32,17 +32,16 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
       },
       {
         title: "2027 Tax Intern, Summer Internship",
-        applyUrl: "https://www.amazon.jobs/jobs/10435122/2027-tax-intern-summer-internship",
+        applyUrl: "https://www.amazon.jobs/en/jobs/10435122/2027-tax-intern-summer-internship",
       },
       {
         title: "2027 Applied Science Intern, Computer Vision",
         applyUrl:
-          "https://www.amazon.jobs/jobs/10423323/-applied-science-intern-computer-vision-amazon-international-machine-learning",
+          "https://www.amazon.jobs/en/jobs/10423323/2027-applied-science-intern-computer-vision-amazon-international-machine-learning",
       },
       {
-        title: "2027 Applied Science Intern, Machine Learning / Recommender Systems",
-        applyUrl:
-          "https://www.amazon.jobs/jobs/10448558/-applied-science-intern-machine-learning-recommender-systems-amazon-international-machine-learning",
+        title: "2027 Applied Science Intern, Machine Learning search",
+        applyUrl: "https://www.amazon.jobs/en/search?base_query=2027+applied+science+intern",
       },
     ],
   },
@@ -64,34 +63,37 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
       {
         title: "2027 Markets Summer Analyst Program",
         applyUrl:
-          "https://careers.jpmorgan.com/us/en/students/programs/markets-summer-analyst",
+          "https://www.jpmorganchase.com/careers/explore-opportunities/programs/markets-summer-analyst",
       },
       {
         title: "2027 Commercial & Specialized Industries Summer Analyst Program",
-        applyUrl: "https://careers.jpmorgan.com/us/en/students/programs/mmbsi-summer",
+        applyUrl:
+          "https://www.jpmorganchase.com/careers/explore-opportunities/programs/csi-summer",
       },
       {
         title: "2027 Commercial & Investment Bank Risk Management Summer Analyst Program",
         applyUrl:
-          "https://careers.jpmorgan.com/us/en/students/programs/risk-summer-analyst",
+          "https://www.jpmorganchase.com/careers/explore-opportunities/programs/risk-summer-analyst",
       },
       {
         title: "2027 Asset Management Summer Analyst Program",
         applyUrl:
-          "https://careers.jpmorgan.com/us/en/students/programs/asset-management-summer-analyst",
+          "https://www.jpmorganchase.com/careers/explore-opportunities/programs/asset-management-summer-analyst",
       },
       {
         title: "2027 Global Payments Summer Analyst Program",
-        applyUrl: "https://careers.jpmorgan.com/us/en/students/programs/payments-summer",
+        applyUrl:
+          "https://www.jpmorganchase.com/careers/explore-opportunities/programs/payments-summer",
       },
       {
         title: "2027 Commercial Real Estate Summer Analyst Program",
-        applyUrl: "https://careers.jpmorgan.com/us/en/students/programs/cre-summer",
+        applyUrl:
+          "https://www.jpmorganchase.com/careers/explore-opportunities/programs/cre-summer",
       },
       {
         title: "2027 Global Private Bank Summer Analyst Program",
         applyUrl:
-          "https://careers.jpmorgan.com/us/en/students/programs/wealth-management-summer-analyst",
+          "https://www.jpmorganchase.com/careers/explore-opportunities/programs/wealth-management-summer-analyst",
       },
     ],
   },
@@ -144,9 +146,8 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
     company: "Barclays",
     roles: [
       {
-        title: "Banking Analyst Summer Internship Program 2027, San Francisco",
-        applyUrl:
-          "https://search.jobs.barclays/en/job/san-francisco/banking-analyst-summer-internship-program-2027-san-francisco/13015/89084599552",
+        title: "Barclays internship and early careers search",
+        applyUrl: "https://search.jobs.barclays/",
       },
     ],
   },
@@ -177,7 +178,8 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
     roles: [
       {
         title: "Tax JD Intern, Summer 2027",
-        applyUrl: "https://jobs.us.pwc.com/search-entry-level-jobs",
+        applyUrl:
+          'https://jobs.us.pwc.com/search-jobs?acm=ALL&alrpm=ALL&ascf=[{"key":"custom_fields.JobSeekerType","value":"Entry+Level"}]',
       },
       {
         title: "Washington DC Tax JD Intern, Summer 2027",
@@ -271,7 +273,8 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
       },
       {
         title: "Campus Internship Search Page",
-        applyUrl: "https://careers.cargill.com/en/campus-jobs",
+        applyUrl:
+          'https://careers.cargill.com/en/search-jobs?acm=ALL&alrpm=ALL&ascf=[{"key":"job_type","value":"Campus"},{"key":"job_type","value":"University"}]',
       },
     ],
   },
