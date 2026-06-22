@@ -10,6 +10,7 @@ import {
 import { isUsInternship, isInternshipTitle } from "@/lib/jobs/isUsInternship";
 import { resolveGreenhouseLocation } from "@/lib/jobs/resolveGreenhouseLocation";
 import { resolveAshbyLocation } from "@/lib/jobs/fetchers/ashby";
+import { syncFantasticInternships } from "@/lib/jobs/syncFantasticJobs";
 import type { JobSourceRow } from "@/types/jobListing";
 
 export type SyncInternshipsResult = {
@@ -44,6 +45,10 @@ async function syncOneSource(
     deactivated: 0,
     errors: [],
   };
+
+  if (source.ats === "fantastic") {
+    return slice;
+  }
 
   try {
     let drafts: ReturnType<typeof normalizeGreenhouseJob>[] = [];
@@ -244,7 +249,7 @@ export async function syncInternships(): Promise<SyncInternshipsResult> {
   }
 
   const now = new Date().toISOString();
-  const list = (sources ?? []) as JobSourceRow[];
+  const list = ((sources ?? []) as JobSourceRow[]).filter((s) => s.ats !== "fantastic");
 
   for (let i = 0; i < list.length; i += PARALLEL_SOURCES) {
     const batch = list.slice(i, i + PARALLEL_SOURCES);
@@ -254,6 +259,10 @@ export async function syncInternships(): Promise<SyncInternshipsResult> {
       mergeSlice(result, slice);
     }
   }
+
+  const fantasticSlice = await syncFantasticInternships(now);
+  result.sourcesProcessed += 1;
+  mergeSlice(result, fantasticSlice);
 
   if (runId) {
     await supabase
