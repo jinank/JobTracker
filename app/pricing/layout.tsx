@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Pricing",
+  title: "SuperInterns pricing plans for students",
   description:
     "Free for students. Pro Plan at $9.99/mo. Premium includes 100 applications on your behalf plus a free portfolio website.",
   path: "/pricing",

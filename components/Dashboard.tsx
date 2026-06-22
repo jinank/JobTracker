@@ -379,6 +379,7 @@ export function Dashboard() {
         {!gmailConnected && <GmailConnectBanner />}
         <div className="flex flex-col xl:flex-row gap-8 items-start">
         <main className="flex-1 min-w-0 w-full max-w-4xl">
+        <h1 className="sr-only">Summer 2027 Internship Application Tracker</h1>
         {chainsError && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
             {chainsError}

@@ -20,9 +20,9 @@ export type BlogPost = {
 export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "summer-2027-internship-search-guide",
-    title: "Summer 2027 Internships: A Practical Search Guide for College Students",
+    title: "Summer 2027 Internship Search Guide",
     description:
-      "When to apply for summer 2027 internships, where to find roles, how to track applications with Gmail, get referrals, prepare for interviews, and use campus recruiting.",
+      "When to apply for Summer 2027 internships, where to find US roles, track applications from Gmail, get referrals, and prep for interviews.",
     publishedAt: "2026-06-21",
     updatedAt: "2026-06-21",
     readMinutes: 18,

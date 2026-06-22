@@ -6,7 +6,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Find mentors for Summer 2027 internship search",
   description:
-    "Find mentors, recruiters, and campus hiring contacts for Summer 2027 internships. Reach out on LinkedIn for advice, referrals, and coffee chats — free for students.",
+    "Find mentors and campus hiring contacts for Summer 2027 internships. Reach out on LinkedIn for advice, referrals, and coffee chats. Free for students.",
   path: "/find-mentors",
   keywords: [
     "Summer 2027 Internships",
