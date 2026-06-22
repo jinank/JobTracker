@@ -235,6 +235,7 @@ export function HiddenJobsLanding() {
           <InternshipTable
             jobs={filtered}
             loading={loading}
+            showWorkType={false}
             emptyMessage="No internships match your filters yet. Listings sync every few hours from company career pages."
           />
         </div>

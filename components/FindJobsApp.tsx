@@ -403,6 +403,7 @@ export function FindJobsApp() {
                   <InternshipTable
                     jobs={jobs}
                     loading={loading}
+                    showWorkType={false}
                     emptyMessage={
                       matchPrefs.matchEnabled
                         ? "No internships match these filters. Try turning off “Show only relevant internships” or broaden your role picks."

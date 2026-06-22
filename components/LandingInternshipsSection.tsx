@@ -60,6 +60,7 @@ export function LandingInternshipsSection() {
           <InternshipTable
             jobs={jobs}
             loading={loading}
+            showWorkType={false}
             emptyMessage="Internships sync every few hours. Check back soon."
           />
         </ScrollReveal>

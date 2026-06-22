@@ -22,12 +22,14 @@ type InternshipTableProps = {
   jobs: JobListing[];
   loading?: boolean;
   emptyMessage?: string;
+  showWorkType?: boolean;
 };
 
 export function InternshipTable({
   jobs,
   loading = false,
   emptyMessage = "No internships match your filters yet.",
+  showWorkType = true,
 }: InternshipTableProps) {
   if (loading && jobs.length === 0) {
     return (
@@ -63,9 +65,11 @@ export function InternshipTable({
               <th scope="col" className="hidden px-4 py-3 font-semibold text-slate-700 md:table-cell sm:px-5">
                 Location
               </th>
-              <th scope="col" className="hidden px-4 py-3 font-semibold text-slate-700 lg:table-cell sm:px-5">
-                Type
-              </th>
+              {showWorkType ? (
+                <th scope="col" className="hidden px-4 py-3 font-semibold text-slate-700 lg:table-cell sm:px-5">
+                  Type
+                </th>
+              ) : null}
               <th scope="col" className="px-4 py-3 font-semibold text-slate-700 sm:px-5">
                 Posted
               </th>
@@ -94,13 +98,15 @@ export function InternshipTable({
                   >
                     {locationLabel}
                   </div>
-                  <div className="mt-1 lg:hidden">
-                    <span
-                      className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold ring-1 ${WORK_TYPE_STYLES[job.workType]}`}
-                    >
-                      {job.workType}
-                    </span>
-                  </div>
+                  {showWorkType ? (
+                    <div className="mt-1 lg:hidden">
+                      <span
+                        className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold ring-1 ${WORK_TYPE_STYLES[job.workType]}`}
+                      >
+                        {job.workType}
+                      </span>
+                    </div>
+                  ) : null}
                 </td>
                 <td
                   className="hidden max-w-[11rem] truncate px-4 py-3.5 text-slate-600 md:table-cell sm:px-5"
@@ -108,13 +114,15 @@ export function InternshipTable({
                 >
                   {locationLabel}
                 </td>
-                <td className="hidden px-4 py-3.5 lg:table-cell sm:px-5">
-                  <span
-                    className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold ring-1 ${WORK_TYPE_STYLES[job.workType]}`}
-                  >
-                    {job.workType}
-                  </span>
-                </td>
+                {showWorkType ? (
+                  <td className="hidden px-4 py-3.5 lg:table-cell sm:px-5">
+                    <span
+                      className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold ring-1 ${WORK_TYPE_STYLES[job.workType]}`}
+                    >
+                      {job.workType}
+                    </span>
+                  </td>
+                ) : null}
                 <td className="whitespace-nowrap px-4 py-3.5 text-slate-500 sm:px-5">
                   {postedLabel(job.postedDaysAgo)}
                 </td>
