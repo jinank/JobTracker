@@ -1,62 +1,49 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { LoginLink } from "@/components/LoginLink";
+import {
+  HeroVisuals,
+  ScrollProgress,
+  ScrollReveal,
+  useScrollParallax,
+} from "@/components/landing/LandingMotion";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
 import { PRICING_PLANS } from "@/lib/pricingPlans";
 import { CANONICAL_SITE_HOST } from "@/lib/site";
 
-function Reveal({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) {
-      setOn(true);
-      return;
-    }
-
-    const reveal = () => setOn(true);
-    const fallback = window.setTimeout(reveal, 600);
-
-    if (typeof IntersectionObserver === "undefined") {
-      reveal();
-      return () => clearTimeout(fallback);
-    }
-
-    const ob = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          reveal();
-          ob.disconnect();
-        }
-      },
-      { threshold: 0.05, rootMargin: "0px 0px -24px 0px" }
-    );
-    ob.observe(el);
-    return () => {
-      clearTimeout(fallback);
-      ob.disconnect();
-    };
-  }, []);
+function SectionDivider() {
   return (
-    <div
-      ref={ref}
-      className={`transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:translate-y-0 ${
-        on ? "translate-y-0 opacity-100" : "translate-y-3 opacity-100"
-      } ${className}`}
-    >
-      {children}
+    <div className="py-8 sm:py-10">
+      <ScrollReveal className="mx-auto max-w-6xl px-4 sm:px-6" duration={900}>
+        <div
+          className="h-px w-full bg-gradient-to-r from-transparent via-scale-purple/25 to-transparent"
+          aria-hidden
+        />
+      </ScrollReveal>
     </div>
+  );
+}
+
+function Squiggle() {
+  return (
+    <svg
+      className="absolute -bottom-2 left-0 h-3 w-full text-scale-purple/70"
+      viewBox="0 0 220 12"
+      preserveAspectRatio="none"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M3 9c18-7 36-7 54 0s36 7 54 0 36-7 54 0 36 7 52 0"
+        stroke="currentColor"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
 
@@ -455,9 +442,11 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
 export function LandingPage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const latestPosts = getBlogPostsNewestFirst().slice(0, 3);
+  const productParallaxRef = useScrollParallax<HTMLDivElement>(0.12);
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
+      <ScrollProgress />
       <SiteNavMarketing />
       <main id="main-content">
 
@@ -466,6 +455,7 @@ export function LandingPage() {
         className="relative overflow-hidden landing-hero-mesh pb-20 pt-16 sm:pt-24"
         aria-labelledby="hero-heading"
       >
+        <HeroVisuals />
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
           <div className="landing-hero-stagger">
@@ -474,10 +464,15 @@ export function LandingPage() {
             </span>
             <h1
               id="hero-heading"
-              className="mx-auto max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-6xl"
+              className="mx-auto max-w-3xl font-extrabold leading-[1.1] tracking-tight"
             >
-              Summer 2027 Internships —{" "}
-              <span className="text-hero-gradient">your whole search in one tab</span>
+              <span className="block whitespace-nowrap text-[clamp(1.25rem,4.8vw,2.5rem)] text-scale-purple">
+                Summer 2027 Internships,
+              </span>
+              <span className="relative mt-1 inline-block whitespace-nowrap text-[clamp(1.25rem,4.8vw,2.5rem)] text-hero-gradient">
+                your whole search in one tab
+                <Squiggle />
+              </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg">
               Find real openings, track every application straight from Gmail, practice
@@ -505,20 +500,35 @@ export function LandingPage() {
             <p className="mt-5 text-xs text-slate-400">
               Find from everywhere · Apply or let us apply · Track and reach out
             </p>
+            <a
+              href="#about"
+              className="landing-scroll-hint mt-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/80 text-slate-400 shadow-sm backdrop-blur-sm transition-colors hover:border-scale-purple/30 hover:text-scale-purple"
+              aria-label="Scroll to learn more"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
           </div>
         </div>
 
         <div className="relative mx-auto mt-16 max-w-5xl px-4 sm:px-6">
-          <Reveal>
-            <ProductWindow />
-          </Reveal>
+          <ScrollReveal delay={200} direction="scale" duration={900}>
+            <div ref={productParallaxRef}>
+              <div className="landing-product-float">
+                <ProductWindow />
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
+
+      <SectionDivider />
 
       {/* ── What is SuperInterns ─────────────────────── */}
       <section id="about" className="py-20 sm:py-24" aria-labelledby="about-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal>
             <div className="mx-auto max-w-2xl text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 What is SuperInterns?
@@ -534,24 +544,26 @@ export function LandingPage() {
                 student discounts. Five tools, one login, free for verified students.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
           <div className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-slate-200/70 bg-slate-200/70 lg:grid-cols-4">
-            {QUICK_FACTS.map(([n, l]) => (
-              <Reveal key={l} className="h-full">
-                <div className="flex h-full flex-col bg-white p-7 text-center">
+            {QUICK_FACTS.map(([n, l], i) => (
+              <ScrollReveal key={l} className="h-full" delay={i * 90} direction="scale">
+                <div className="landing-stat-shine flex h-full flex-col bg-white p-7 text-center">
                   <p className="text-3xl font-bold tracking-tight text-scale-purple">{n}</p>
                   <p className="mt-2 text-sm leading-snug text-slate-500">{l}</p>
                 </div>
-              </Reveal>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── Tool deep-dives ────────────────────────────────── */}
       <section id="features" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="features-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal>
             <div className="mx-auto mb-16 max-w-2xl text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 The toolkit
@@ -564,11 +576,11 @@ export function LandingPage() {
                 each one does.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="space-y-14 lg:space-y-20">
             {TOOL_SECTIONS.map((t, i) => (
-              <Reveal key={t.id}>
+              <ScrollReveal key={t.id} direction={i % 2 === 0 ? "left" : "right"} delay={80}>
                 <div id={t.id} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
                   <div className={i % 2 === 1 ? "lg:order-2" : ""}>
                     <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${t.eyebrowColor}`}>{t.eyebrow}</p>
@@ -592,19 +604,23 @@ export function LandingPage() {
                     </Link>
                   </div>
                   <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                    <div className="rounded-3xl border border-slate-200/70 bg-white p-5 shadow-sm sm:p-7">{t.vignette}</div>
+                    <div className="landing-panel-hover rounded-3xl border border-slate-200/70 bg-white p-5 shadow-sm sm:p-7">
+                      {t.vignette}
+                    </div>
                   </div>
                 </div>
-              </Reveal>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── How it works ───────────────────────────────────── */}
       <section id="how-it-works" className="py-20 sm:py-24" aria-labelledby="how-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal>
             <div className="mb-14 text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 How it works
@@ -613,11 +629,11 @@ export function LandingPage() {
                 Up and running in under a minute
               </h2>
             </div>
-          </Reveal>
+          </ScrollReveal>
           <div className="grid gap-5 md:grid-cols-3">
-            {HOW_IT_WORKS.map((s) => (
-              <Reveal key={s.step} className="h-full">
-                <div className="h-full rounded-3xl border border-slate-200/70 bg-white p-8 transition-colors hover:border-scale-purple/30">
+            {HOW_IT_WORKS.map((s, i) => (
+              <ScrollReveal key={s.step} className="h-full" delay={i * 120} direction="up">
+                <div className="landing-panel-hover h-full rounded-3xl border border-slate-200/70 bg-white p-8">
                   <div
                     className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-scale-purple/10 text-base font-bold text-scale-purple"
                     aria-hidden
@@ -627,17 +643,19 @@ export function LandingPage() {
                   <h3 className="mb-2 text-lg font-bold text-slate-900">{s.title}</h3>
                   <p className="text-sm leading-relaxed text-slate-500">{s.desc}</p>
                 </div>
-              </Reveal>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── Privacy & trust ────────────────────────────────── */}
       <section id="privacy" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="privacy-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-            <Reveal className="lg:col-span-5">
+            <ScrollReveal className="lg:col-span-5" direction="left">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 Privacy
               </span>
@@ -654,28 +672,30 @@ export function LandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
               </Link>
-            </Reveal>
+            </ScrollReveal>
             <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
-              {PRIVACY_POINTS.map((p) => (
-                <Reveal key={p.title} className="h-full">
-                  <div className="h-full rounded-3xl border border-slate-200/70 bg-white p-6">
+              {PRIVACY_POINTS.map((p, i) => (
+                <ScrollReveal key={p.title} className="h-full" delay={i * 80} direction="scale">
+                  <div className="landing-panel-hover h-full rounded-3xl border border-slate-200/70 bg-white p-6">
                     <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
                       <CheckIcon className="h-5 w-5" />
                     </div>
                     <h3 className="text-sm font-bold text-slate-900">{p.title}</h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-slate-500">{p.desc}</p>
                   </div>
-                </Reveal>
+                </ScrollReveal>
               ))}
             </div>
           </div>
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── Pricing ────────────────────────────────────────── */}
       <section id="pricing" className="py-20 sm:py-24" aria-labelledby="pricing-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal direction="scale">
             <div className="mx-auto mb-12 max-w-xl text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
                 Pricing
@@ -692,12 +712,12 @@ export function LandingPage() {
                 .
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
           <div className="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {PRICING_PLANS.map((p) => (
-              <Reveal key={p.id} className="h-full">
+            {PRICING_PLANS.map((p, i) => (
+              <ScrollReveal key={p.id} className="h-full" delay={i * 100} direction="up">
                 <article
-                  className={`flex h-full flex-col rounded-3xl bg-white p-7 ${
+                  className={`landing-panel-hover flex h-full flex-col rounded-3xl bg-white p-7 ${
                     p.highlight
                       ? "border-2 border-scale-purple shadow-sm"
                       : "border border-slate-200/70"
@@ -755,16 +775,18 @@ export function LandingPage() {
                     />
                   )}
                 </article>
-              </Reveal>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── Blog ─────────────────────────────────────────── */}
       <section id="blog" className="bg-slate-50/70 py-20 sm:py-24" aria-labelledby="blog-heading">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <span className="text-xs font-semibold uppercase tracking-[0.2em] text-scale-purple">
@@ -787,11 +809,11 @@ export function LandingPage() {
                 </svg>
               </Link>
             </div>
-          </Reveal>
+          </ScrollReveal>
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
-            {latestPosts.map((post) => (
-              <Reveal key={post.slug} className="h-full">
-                <article className="flex h-full flex-col rounded-2xl border border-slate-200/70 bg-white p-6 transition-shadow hover:shadow-card">
+            {latestPosts.map((post, i) => (
+              <ScrollReveal key={post.slug} className="h-full" delay={i * 100} direction="up">
+                <article className="landing-panel-hover flex h-full flex-col rounded-2xl border border-slate-200/70 bg-white p-6">
                   <p className="text-xs font-semibold uppercase tracking-wide text-scale-purple">
                     {post.category}
                   </p>
@@ -810,16 +832,18 @@ export function LandingPage() {
                     Read more
                   </Link>
                 </article>
-              </Reveal>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── FAQ ────────────────────────────────────────────── */}
       <section id="faq" className="py-20 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal>
             <div className="mb-10 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 Questions students actually ask
@@ -835,8 +859,9 @@ export function LandingPage() {
                 .
               </p>
             </div>
-          </Reveal>
-          <div className="divide-y divide-slate-200/80 rounded-2xl border border-slate-200/70 bg-white">
+          </ScrollReveal>
+          <ScrollReveal delay={120}>
+            <div className="divide-y divide-slate-200/80 rounded-2xl border border-slate-200/70 bg-white">
             {FAQ_ITEMS.map((item, i) => {
               const open = faqOpen === i;
               return (
@@ -866,16 +891,22 @@ export function LandingPage() {
                 </div>
               );
             })}
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ── Final CTA ──────────────────────────────────────── */}
       <section className="pb-20 sm:pb-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal direction="scale" duration={900}>
             <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-scale-purple via-violet-600 to-scale-purple-deep px-6 py-16 text-center sm:px-12">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_50%)]" aria-hidden />
+              <div
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_50%)]"
+                aria-hidden
+              />
+              <div className="landing-orb landing-float-slow pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-white/10 blur-3xl" aria-hidden />
+              <div className="landing-orb landing-float pointer-events-none absolute -right-16 bottom-0 h-48 w-48 rounded-full bg-violet-300/20 blur-3xl" aria-hidden />
               <div className="relative">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                   This semester&apos;s the one.
@@ -899,7 +930,7 @@ export function LandingPage() {
                 </div>
               </div>
             </div>
-          </Reveal>
+          </ScrollReveal>
         </div>
       </section>
 

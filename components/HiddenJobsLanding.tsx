@@ -117,7 +117,7 @@ export function HiddenJobsLanding() {
               <span className="block">
                 Find <span className="text-hero-gradient">Summer 2027 Internships</span>
               </span>
-              <span className="block">in the US — from company career pages</span>
+              <span className="block">in the US from company career pages</span>
             </h1>
             <p className="mx-auto mb-8 max-w-lg text-base leading-relaxed text-slate-600 lg:mx-0 lg:text-lg">
               Built for students. Discover internships on company career sites, not buried on crowded job boards.
