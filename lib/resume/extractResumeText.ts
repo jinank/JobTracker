@@ -18,8 +18,17 @@ export async function extractResumeText(
       const parser = new PDFParse({ data: buffer });
       const parsed = await parser.getText();
       await parser.destroy();
-      return trimResumeText(parsed.text ?? "");
-    } catch {
+      const text = (parsed.text ?? "").replace(/\0/g, " ").replace(/\s+/g, " ").trim();
+      if (text.length < 20) {
+        throw new Error(
+          "This PDF has little or no selectable text. Try a .txt export or paste your resume text."
+        );
+      }
+      return trimResumeText(text);
+    } catch (err) {
+      if (err instanceof Error && err.message.includes("selectable text")) {
+        throw err;
+      }
       throw new Error("Could not read this PDF. Try a .txt export or paste your resume text.");
     }
   }

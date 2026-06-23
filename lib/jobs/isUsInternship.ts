@@ -1,4 +1,5 @@
 import { US_STATE_ABBREVS } from "@/lib/jobs/constants";
+import { shouldExcludeInternshipTitle } from "@/lib/jobs/internshipTitleQuality";
 
 const INTERNSHIP_TITLE_RE =
   /\b(internship|co-?op|summer\s+(analyst|associate|intern)|new\s+grad\s+intern)\b/i;
@@ -115,6 +116,7 @@ export function isUsInternship(
   locationRaw: string,
   opts?: { forceInternship?: boolean }
 ): boolean {
+  if (shouldExcludeInternshipTitle(title)) return false;
   if (!isInternshipTitle(title, opts?.forceInternship)) return false;
   const { country } = parseUsLocation(locationRaw);
   return country === "US";

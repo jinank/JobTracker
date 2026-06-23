@@ -44,10 +44,13 @@ export function rowToInternshipPreferences(row: {
 export function toPersonalizePrefs(
   record: InternshipPreferencesRecord
 ): InternshipUserPrefs {
+  const hasCriteria =
+    record.preferredRoles.length > 0 || record.resumeKeywords.length > 0;
+
   return {
     preferredRoles: record.preferredRoles,
     resumeKeywords: record.resumeKeywords,
-    matchEnabled: record.matchEnabled,
+    matchEnabled: record.matchEnabled && hasCriteria,
   };
 }
 

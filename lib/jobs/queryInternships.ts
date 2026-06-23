@@ -7,6 +7,7 @@ import {
 } from "@/lib/findJobsFilters";
 import { personalizeInternships } from "@/lib/jobs/personalizeInternships";
 import type { InternshipUserPrefs } from "@/lib/jobs/personalizeInternships";
+import { shouldExcludeInternshipTitle } from "@/lib/jobs/internshipTitleQuality";
 import type { JobListing, JobListingRow } from "@/types/jobListing";
 
 export type InternshipsQueryResult = {
@@ -37,7 +38,9 @@ export async function queryInternships(
   }
 
   const rows = (data ?? []) as JobListingRow[];
-  const listings = rows.map(rowToJobListing);
+  const listings = rows
+    .map(rowToJobListing)
+    .filter((job) => !shouldExcludeInternshipTitle(job.title));
 
   let filtered = filterJobListings(listings, params);
   if (params.forMe && userPrefs?.matchEnabled) {

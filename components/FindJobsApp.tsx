@@ -35,6 +35,19 @@ const SORT_OPTIONS: { value: JobSortField; label: string }[] = [
   { value: "location", label: "Location" },
 ];
 
+function sortOptionLabel(field: JobSortField, dir: SortDir): string {
+  switch (field) {
+    case "posted":
+      return dir === "asc" ? "Date posted (newest first)" : "Date posted (oldest first)";
+    case "company":
+      return dir === "asc" ? "Company (A→Z)" : "Company (Z→A)";
+    case "role":
+      return dir === "asc" ? "Role (A→Z)" : "Role (Z→A)";
+    case "location":
+      return dir === "asc" ? "Location (A→Z)" : "Location (Z→A)";
+  }
+}
+
 function FilterField({
   label,
   value,
@@ -157,13 +170,17 @@ export function FindJobsApp() {
     return n;
   }, [matchPrefs.matchEnabled, search, roleCategory, workType, postedPreset, locationQuery]);
 
-  function clearFilters() {
+  async function clearFilters() {
     setRoleCategory("All roles");
     setWorkType("all");
     setPostedPreset("all");
     setLocationQuery("");
     setSearch("");
     setPage(1);
+    if (matchPrefs.matchEnabled) {
+      await savePrefs({ matchEnabled: false });
+      handleMatchChange();
+    }
   }
 
   const filtersPanel = (
@@ -274,10 +291,10 @@ export function FindJobsApp() {
         >
           {SORT_OPTIONS.flatMap((o) => [
             <option key={`${o.value}-asc`} value={`${o.value}-asc`}>
-              {o.label} (newest / A→Z)
+              {sortOptionLabel(o.value, "asc")}
             </option>,
             <option key={`${o.value}-desc`} value={`${o.value}-desc`}>
-              {o.label} (oldest / Z→A)
+              {sortOptionLabel(o.value, "desc")}
             </option>,
           ])}
         </FilterField>

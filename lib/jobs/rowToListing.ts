@@ -1,4 +1,4 @@
-import { internSalaryRange } from "@/lib/jobs/inferRoleCategory";
+import { inferRoleCategory, internSalaryRange } from "@/lib/jobs/inferRoleCategory";
 import type { JobListing, JobListingRow } from "@/types/jobListing";
 
 export function postedDaysAgo(postedAt: string | null): number {
@@ -15,7 +15,7 @@ export function rowToJobListing(row: JobListingRow): JobListing {
     companySlug: row.company_slug,
     title: row.title,
     location: row.location_raw,
-    roleCategory: row.role_category,
+    roleCategory: inferRoleCategory(row.title),
     postedDaysAgo: postedDaysAgo(row.posted_at),
     workType: row.work_type,
     applyUrl: row.apply_url,
