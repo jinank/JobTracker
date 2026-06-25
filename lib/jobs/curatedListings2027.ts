@@ -372,4 +372,284 @@ export const CURATED_LISTINGS_2027: CuratedListingSeed[] = [
     description:
       "Autonomy, persistence, and passion for details. Take tasks to completion on hard problems.",
   },
+  {
+    externalId: "linkedin-4432012069",
+    title: "Construction Management Internship - Summer 2027",
+    company: "Enerfab",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/construction-management-internship-summer-2027-at-enerfab-4432012069",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Cincinnati, OH",
+    season: "2027-Summer",
+    industries: ["Construction", "Project Management"],
+    description:
+      "Enerfab is hiring a Summer 2027 construction management intern in Cincinnati. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4317491342",
+    title: "Tax Intern - Summer 2027",
+    company: "Bennett Thrasher",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/tax-intern-summer-2027-at-bennett-thrasher-4317491342",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Denver, CO",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "Bennett Thrasher is hiring a Summer 2027 tax intern in Denver. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4428026778",
+    title: "Software Engineering Intern (Summer 2027)",
+    company: "Circleback",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/software-engineering-intern-summer-2027-at-circleback-4428026778",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "San Francisco, CA",
+    season: "2027-Summer",
+    industries: ["Artificial Intelligence (AI)", "SaaS"],
+    description:
+      "Circleback is hiring a Summer 2027 software engineering intern in San Francisco. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429364433",
+    title: "Philadelphia - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/philadelphia-tax-jd-intern-summer-2027-at-pwc-4429364433",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Philadelphia, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Philadelphia. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429353465",
+    title: "Irvine - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/irvine-tax-jd-intern-summer-2027-at-pwc-4429353465",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Irvine, CA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Irvine. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429353468",
+    title: "Cincinnati - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/cincinnati-tax-jd-intern-summer-2027-at-pwc-4429353468",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Cincinnati, OH",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Cincinnati. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429348729",
+    title: "Detroit - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/detroit-tax-jd-intern-summer-2027-at-pwc-4429348729",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Detroit, MI",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Detroit. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4426875202",
+    title: "Summer 2027 Audit Internship",
+    company: "Baker Tilly US",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/summer-2027-audit-internship-at-baker-tilly-us-4426875202",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Pittston, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Audit"],
+    description:
+      "Baker Tilly US is hiring a Summer 2027 audit intern in Pittston. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4426874196",
+    title: "Summer 2027 Tax Internship",
+    company: "Baker Tilly US",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/summer-2027-tax-internship-at-baker-tilly-us-4426874196",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Philadelphia, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "Baker Tilly US is hiring a Summer 2027 tax intern in Philadelphia. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429367078",
+    title: "Cleveland - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/cleveland-tax-jd-intern-summer-2027-at-pwc-4429367078",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Cleveland, OH",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Cleveland. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429356481",
+    title: "Pittsburgh - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/pittsburgh-tax-jd-intern-summer-2027-at-pwc-4429356481",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Pittsburgh, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Pittsburgh. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429355502",
+    title: "Atlanta - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/atlanta-tax-jd-intern-summer-2027-at-pwc-4429355502",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Atlanta, GA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Atlanta. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429360471",
+    title: "Chicago - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/chicago-tax-jd-intern-summer-2027-at-pwc-4429360471",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Chicago, IL",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Chicago. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4426887079",
+    title: "Summer 2027 Tax Internship",
+    company: "Baker Tilly US",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/summer-2027-tax-internship-at-baker-tilly-us-4426887079",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Lancaster, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "Baker Tilly US is hiring a Summer 2027 tax intern in Lancaster. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4426884130",
+    title: "Summer 2027 Tax Internship",
+    company: "Baker Tilly US",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/summer-2027-tax-internship-at-baker-tilly-us-4426884130",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Lehigh, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "Baker Tilly US is hiring a Summer 2027 tax intern in Lehigh. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4426882116",
+    title: "Summer 2027 Audit Internship",
+    company: "Baker Tilly US",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/summer-2027-audit-internship-at-baker-tilly-us-4426882116",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Lancaster, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Audit"],
+    description:
+      "Baker Tilly US is hiring a Summer 2027 audit intern in Lancaster. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4426874197",
+    title: "Summer 2027 Tax Internship",
+    company: "Baker Tilly US",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/summer-2027-tax-internship-at-baker-tilly-us-4426874197",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Pittston, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "Baker Tilly US is hiring a Summer 2027 tax intern in Pittston. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429349487",
+    title: "Houston - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/houston-tax-jd-intern-summer-2027-at-pwc-4429349487",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Houston, TX",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Houston. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4429349483",
+    title: "Sacramento - Tax JD - Intern - Summer 2027",
+    company: "PwC",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/sacramento-tax-jd-intern-summer-2027-at-pwc-4429349483",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Sacramento, CA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Tax"],
+    description:
+      "PwC is hiring a Summer 2027 Tax JD intern in Sacramento. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
+  {
+    externalId: "linkedin-4426874198",
+    title: "Summer 2027 Audit Internship",
+    company: "Baker Tilly US",
+    applyUrl:
+      "https://www.linkedin.com/jobs/view/summer-2027-audit-internship-at-baker-tilly-us-4426874198",
+    postedAt: "2026-06-25",
+    workType: "On-site",
+    location: "Lehigh, PA",
+    season: "2027-Summer",
+    industries: ["Accounting", "Audit"],
+    description:
+      "Baker Tilly US is hiring a Summer 2027 audit intern in Lehigh. Sourced from InternPilot's Summer 2027 internship index; confirm details on LinkedIn before applying.",
+  },
 ];
