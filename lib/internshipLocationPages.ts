@@ -1033,6 +1033,23 @@ export const INTERNSHIP_CITY_LOCATION_PAGES = INTERNSHIP_LOCATION_PAGES.filter(
   (page) => page.kind === "city"
 );
 
+export const INTERNSHIP_LOCATION_INDEX_PATH = "/internships-by-state";
+
+const FOOTER_FEATURED_STATE_SLUGS = [
+  "new-york-summer-2027-internships",
+  "california-summer-2027-internships",
+  "texas-summer-2027-internships",
+  "illinois-summer-2027-internships",
+  "florida-summer-2027-internships",
+] as const;
+
+export function getFooterFeaturedStatePages(): InternshipLocationPage[] {
+  return FOOTER_FEATURED_STATE_SLUGS.flatMap((slug) => {
+    const page = getInternshipLocationPage(slug);
+    return page ? [page] : [];
+  });
+}
+
 export function getInternshipLocationPage(slug: string): InternshipLocationPage | undefined {
   return INTERNSHIP_LOCATION_PAGES.find((page) => page.slug === slug);
 }

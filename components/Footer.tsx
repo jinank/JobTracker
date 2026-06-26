@@ -2,7 +2,10 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { LogoMark } from "@/components/LogoMark";
 import { PRODUCT_FEATURES } from "@/lib/productFeatures";
-import { INTERNSHIP_CITY_LOCATION_PAGES, INTERNSHIP_STATE_LOCATION_PAGES } from "@/lib/internshipLocationPages";
+import {
+  getFooterFeaturedStatePages,
+  INTERNSHIP_LOCATION_INDEX_PATH,
+} from "@/lib/internshipLocationPages";
 import { SITE_NAME } from "@/lib/site";
 
 const COMPANY_LINKS = [
@@ -67,8 +70,13 @@ function SocialIcon({
   );
 }
 
+function stateShortLabel(title: string): string {
+  return title.replace(/ Summer 2027 Internships$/, "");
+}
+
 export function Footer() {
   const year = new Date().getFullYear();
+  const featuredStates = getFooterFeaturedStatePages();
 
   return (
     <footer className="mt-auto border-t border-slate-200/80 bg-white">
@@ -137,36 +145,18 @@ export function Footer() {
           </FooterColumn>
 
           <FooterColumn title="Browse by location" className="lg:col-span-2">
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                  States
-                </p>
-                <ul className="mt-3 space-y-1">
-                  {INTERNSHIP_STATE_LOCATION_PAGES.map((page) => (
-                    <li key={page.slug}>
-                      <FooterLink href={page.path}>
-                        {page.footerLabel ?? page.title}
-                      </FooterLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                  Cities
-                </p>
-                <ul className="mt-3 space-y-1">
-                  {INTERNSHIP_CITY_LOCATION_PAGES.map((page) => (
-                    <li key={page.slug}>
-                      <FooterLink href={page.path}>
-                        {page.footerLabel ?? page.title}
-                      </FooterLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <ul className="space-y-1">
+              {featuredStates.map((page) => (
+                <li key={page.slug}>
+                  <FooterLink href={page.path}>{stateShortLabel(page.title)}</FooterLink>
+                </li>
+              ))}
+              <li>
+                <FooterLink href={INTERNSHIP_LOCATION_INDEX_PATH}>
+                  See all Statewise Internships
+                </FooterLink>
+              </li>
+            </ul>
           </FooterColumn>
 
           <FooterColumn title="Get started" className="lg:col-span-2">

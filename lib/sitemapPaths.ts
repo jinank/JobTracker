@@ -1,5 +1,5 @@
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
-import { INTERNSHIP_LOCATION_PAGES } from "@/lib/internshipLocationPages";
+import { INTERNSHIP_LOCATION_INDEX_PATH, INTERNSHIP_LOCATION_PAGES } from "@/lib/internshipLocationPages";
 import { PRACTICE_INTERVIEWS } from "@/lib/practiceInterviewsData";
 
 export type SitemapPathEntry = {
@@ -33,6 +33,11 @@ export function getPublicSitemapPaths(): SitemapPathEntry[] {
   return [
     { path: "", changeFrequency: "weekly", priority: 1 },
     { path: "/find-internships", changeFrequency: "daily", priority: 0.95 },
+    {
+      path: INTERNSHIP_LOCATION_INDEX_PATH,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
     ...INTERNSHIP_LOCATION_PAGES.map((page) => ({
       path: page.path,
       changeFrequency: "daily" as const,
