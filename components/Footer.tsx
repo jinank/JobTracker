@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { LogoMark } from "@/components/LogoMark";
 import { PRODUCT_FEATURES } from "@/lib/productFeatures";
-import { getSupportEmail, SITE_NAME } from "@/lib/site";
+import { SITE_NAME } from "@/lib/site";
 
 const COMPANY_LINKS = [
   { href: "/blog", label: "Blog" },
@@ -68,7 +68,6 @@ function SocialIcon({
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const supportEmail = getSupportEmail();
 
   return (
     <footer className="mt-auto border-t border-slate-200/80 bg-white">
@@ -133,11 +132,6 @@ export function Footer() {
                   <FooterLink href={link.href}>{link.label}</FooterLink>
                 </li>
               ))}
-              <li>
-                <a href={`mailto:${supportEmail}`} className={footerLinkClass}>
-                  {supportEmail}
-                </a>
-              </li>
             </ul>
           </FooterColumn>
 
