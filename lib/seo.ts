@@ -6,14 +6,15 @@ export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 
 export const SITE_TITLE_DEFAULT =
-  "Summer 2027 Internships | Find & Track Summer 2027 Internships";
+  "Summer 2027 Internships | Find, Apply & Track USA Summer 2027 Internships";
 
 export const SITE_DESCRIPTION_DEFAULT =
-  "Find Summer 2027 internships on company career pages. Track applications from Gmail, practice interviews with AI, and unlock student perks. Free.";
+  "Find Summer 2027 Internships in USA directly from company career pages. Apply and Track applications from Gmail, practice interviews with AI, and unlock student perks. Free.";
 
 export const SITE_KEYWORDS = [
   "Summer 2027 Internships",
   "summer 2027 internships",
+  " 2027 summer internships",
   "summer internships",
   "USA internships",
   "internship search",
@@ -52,7 +53,7 @@ export function buildPageMetadata(options: BuildPageMetadataOptions): Metadata {
   const canonicalPath = path.startsWith("/") ? path : `/${path}`;
   const pageUrl = `${getSiteOrigin()}${canonicalPath === "/" ? "" : canonicalPath}`;
   const socialTitle = ogTitle ?? title;
-  const imageAlt = `${SITE_NAME}, ${socialTitle}`;
+  const imageAlt = `${SITE_NAME} — ${socialTitle}`;
 
   return {
     title,

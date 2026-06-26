@@ -7,38 +7,6 @@ import { useInternshipPreview } from "@/hooks/useInternships";
 import { ROLE_CATEGORIES } from "@/lib/jobs/constants";
 import { InternshipTable } from "@/components/InternshipTable";
 
-const COMPARISON = {
-  boards: [
-    "Hundreds of applicants per internship posting",
-    "Hard to tell which roles are still open",
-    "Mostly aggregated reposts, not direct employer pages",
-    "Generic alerts that miss company career sites",
-    "Little signal on US-only student roles",
-  ],
-  platform: [
-    "Internships from company career pages directly",
-    "Less competition than big job boards",
-    "US-focused: on-site, hybrid, and remote (US)",
-    "Apply straight to the hiring team",
-    "Sync applications to Track Jobs after you apply",
-  ],
-};
-
-const FAQ = [
-  {
-    q: "What internships are listed?",
-    a: "Software engineering, product, design, data, marketing, and operations internships at US companies. We pull from public Greenhouse and Lever career boards.",
-  },
-  {
-    q: "Are these US-only roles?",
-    a: "Yes. We filter for internships based in the United States, including remote roles that are US-eligible.",
-  },
-  {
-    q: "How is this different from LinkedIn or Handshake?",
-    a: "We surface roles from company websites, not crowded job boards. You apply on the employer site and can track replies in SuperInterns.",
-  },
-];
-
 const PREVIEW_LIMIT = 50;
 
 function CheckIcon({ className = "h-5 w-5 text-scale-purple" }: { className?: string }) {
@@ -238,73 +206,6 @@ export function HiddenJobsLanding() {
             showWorkType={false}
             emptyMessage="No internships match your filters yet. Listings sync every few hours from company career pages."
           />
-        </div>
-      </section>
-
-      <section className="py-14 sm:py-16 bg-slate-50 border-t border-slate-100">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-center text-2xl font-bold text-slate-900 mb-10">
-            Skip the internship posting pile-on
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-red-200/80 bg-red-50/50 p-6">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-red-800 mb-4">
-                LinkedIn / Indeed
-              </h3>
-              <ul className="space-y-2.5">
-                {COMPARISON.boards.map((line) => (
-                  <li key={line} className="flex gap-2 text-sm text-red-900/90">
-                    <span className="text-red-500 shrink-0">✕</span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-6 ring-2 ring-scale-purple/20">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-emerald-800 mb-4">
-                SuperInterns
-              </h3>
-              <ul className="space-y-2.5">
-                {COMPARISON.platform.map((line) => (
-                  <li key={line} className="flex gap-2 text-sm text-emerald-900/90">
-                    <span className="text-emerald-600 shrink-0">✓</span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-slate-100 bg-scale-mist/40 py-14">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h2 className="text-xl font-bold text-slate-900 mb-6 text-center">Frequently asked questions</h2>
-          <div className="space-y-4">
-            {FAQ.map((item) => (
-              <div key={item.q} className="rounded-xl border border-slate-200/80 bg-white p-5">
-                <h3 className="text-sm font-semibold text-slate-900">{item.q}</h3>
-                <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-14">
-        <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
-          <h2 className="text-2xl font-bold text-slate-900">Find internships. Track every reply.</h2>
-          <p className="mt-3 text-slate-600">
-            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline, all in SuperInterns.
-          </p>
-          <div className="mt-6 flex justify-center">
-            <NavAuthAction
-              callbackUrl="/find-internships"
-              signInLabel="Get started free"
-              signedInLabel="Back to Track Jobs"
-              className="rounded-full bg-scale-purple px-8 py-3.5 text-sm font-semibold text-white hover:bg-scale-purple-dark transition-colors"
-            />
-          </div>
         </div>
       </section>
     </div>
