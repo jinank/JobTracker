@@ -13,6 +13,8 @@ export type JobListing = {
   postedDaysAgo: number;
   workType: WorkType;
   applyUrl: string;
+  companyCareersUrl?: string;
+  companyWebsiteUrl?: string;
   description: string;
   employmentType: EmploymentType;
   experienceLevel: ExperienceLevel;

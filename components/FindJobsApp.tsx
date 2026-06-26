@@ -280,26 +280,6 @@ export function FindJobsApp() {
       <div className="border-t border-slate-200 pt-4 space-y-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">List</p>
         <FilterField
-          label="Sort by"
-          value={`${sortField}-${sortDir}`}
-          onChange={(v) => {
-            const [field, dir] = v.split("-") as [JobSortField, SortDir];
-            setSortField(field);
-            setSortDir(dir);
-            setPage(1);
-          }}
-        >
-          {SORT_OPTIONS.flatMap((o) => [
-            <option key={`${o.value}-asc`} value={`${o.value}-asc`}>
-              {sortOptionLabel(o.value, "asc")}
-            </option>,
-            <option key={`${o.value}-desc`} value={`${o.value}-desc`}>
-              {sortOptionLabel(o.value, "desc")}
-            </option>,
-          ])}
-        </FilterField>
-
-        <FilterField
           label="Jobs per page"
           value={String(pageSize)}
           onChange={(v) => {
@@ -410,6 +390,34 @@ export function FindJobsApp() {
                   <span className="text-slate-500"> matching &ldquo;{search.trim()}&rdquo;</span>
                 ) : null}
               </p>
+
+              <div className="mb-3 flex justify-end">
+                <label className="flex shrink-0 items-center gap-2 text-xs font-medium text-slate-600">
+                  <span>Sort by</span>
+                  <select
+                    value={`${sortField}-${sortDir}`}
+                    onChange={(e) => {
+                      const [field, dir] = e.target.value.split("-") as [
+                        JobSortField,
+                        SortDir,
+                      ];
+                      setSortField(field);
+                      setSortDir(dir);
+                      setPage(1);
+                    }}
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm focus:border-scale-purple focus:outline-none focus:ring-2 focus:ring-scale-purple/20"
+                  >
+                    {SORT_OPTIONS.flatMap((o) => [
+                      <option key={`${o.value}-asc`} value={`${o.value}-asc`}>
+                        {sortOptionLabel(o.value, "asc")}
+                      </option>,
+                      <option key={`${o.value}-desc`} value={`${o.value}-desc`}>
+                        {sortOptionLabel(o.value, "desc")}
+                      </option>,
+                    ])}
+                  </select>
+                </label>
+              </div>
 
               {loading && jobs.length === 0 ? (
                 <div className="flex justify-center py-16">

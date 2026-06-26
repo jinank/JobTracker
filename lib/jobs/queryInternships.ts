@@ -10,6 +10,11 @@ import type { InternshipUserPrefs } from "@/lib/jobs/personalizeInternships";
 import { shouldExcludeInternshipTitle } from "@/lib/jobs/internshipTitleQuality";
 import type { JobListing, JobListingRow } from "@/types/jobListing";
 
+type JobSourceSummary = {
+  id: string;
+  careers_url: string | null;
+};
+
 export type InternshipsQueryResult = {
   jobs: JobListing[];
   total: number;
@@ -38,8 +43,22 @@ export async function queryInternships(
   }
 
   const rows = (data ?? []) as JobListingRow[];
+  const sourceIds = Array.from(new Set(rows.map((row) => row.source_id)));
+  const sourceById = new Map<string, JobSourceSummary>();
+
+  if (sourceIds.length > 0) {
+    const { data: sources } = await supabase
+      .from("job_sources")
+      .select("id, careers_url")
+      .in("id", sourceIds);
+
+    for (const source of (sources ?? []) as JobSourceSummary[]) {
+      sourceById.set(source.id, source);
+    }
+  }
+
   const listings = rows
-    .map(rowToJobListing)
+    .map((row) => rowToJobListing(row, sourceById.get(row.source_id)))
     .filter((job) => !shouldExcludeInternshipTitle(job.title));
 
   let filtered = filterJobListings(listings, params);
