@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { LogoMark } from "@/components/LogoMark";
 import { PRODUCT_FEATURES } from "@/lib/productFeatures";
+import { INTERNSHIP_LOCATION_PAGES } from "@/lib/internshipLocationPages";
 import { SITE_NAME } from "@/lib/site";
 
 const COMPANY_LINKS = [
@@ -78,7 +79,7 @@ export function Footer() {
 
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-10">
-          <div className="sm:col-span-2 lg:col-span-5">
+          <div className="sm:col-span-2 lg:col-span-4">
             <Link
               href="/"
               className="inline-flex items-center gap-2.5 rounded-lg transition-opacity hover:opacity-90"
@@ -115,7 +116,7 @@ export function Footer() {
             </div>
           </div>
 
-          <FooterColumn title="Product" className="lg:col-span-3">
+          <FooterColumn title="Product" className="lg:col-span-2">
             <ul className="space-y-1">
               {PRODUCT_FEATURES.map((feature) => (
                 <li key={feature.id}>
@@ -130,6 +131,16 @@ export function Footer() {
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
                   <FooterLink href={link.href}>{link.label}</FooterLink>
+                </li>
+              ))}
+            </ul>
+          </FooterColumn>
+
+          <FooterColumn title="Browse by location" className="lg:col-span-2">
+            <ul className="space-y-1">
+              {INTERNSHIP_LOCATION_PAGES.map((page) => (
+                <li key={page.slug}>
+                  <FooterLink href={page.path}>{page.title}</FooterLink>
                 </li>
               ))}
             </ul>

@@ -1,7 +1,6 @@
 "use client";
 
 import type { JobListing } from "@/types/jobListing";
-import { FindJobListCard } from "@/components/FindJobListCard";
 import {
   formatTableLocation,
   locationHasMultipleCities,
@@ -48,16 +47,6 @@ export function InternshipTable({
       <p className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 py-12 text-center text-sm text-slate-500">
         {emptyMessage}
       </p>
-    );
-  }
-
-  if (!showWorkType) {
-    return (
-      <div className="space-y-4">
-        {jobs.map((job) => (
-          <FindJobListCard key={job.id} job={job} />
-        ))}
-      </div>
     );
   }
 

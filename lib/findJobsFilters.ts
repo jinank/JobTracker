@@ -13,6 +13,8 @@ export type InternshipQueryParams = {
   experienceLevel: string;
   postedPreset: PostedPreset;
   locationQuery: string;
+  /** When set, listing location must match any matcher (overrides locationQuery). */
+  locationMatchers?: string[];
   sortField: JobSortField;
   sortDir: SortDir;
   page?: number;
@@ -46,6 +48,7 @@ export function filterJobListings(
     | "experienceLevel"
     | "postedPreset"
     | "locationQuery"
+    | "locationMatchers"
   >
 ): JobListing[] {
   const q = opts.search.trim().toLowerCase();
@@ -64,7 +67,18 @@ export function filterJobListings(
       return false;
     }
     if (maxDays != null && j.postedDaysAgo > maxDays) return false;
-    if (locQ && !j.location.toLowerCase().includes(locQ)) return false;
+    if (opts.locationMatchers?.length) {
+      const loc = j.location.toLowerCase();
+      if (
+        !opts.locationMatchers.some((matcher) =>
+          loc.includes(matcher.toLowerCase())
+        )
+      ) {
+        return false;
+      }
+    } else if (locQ && !j.location.toLowerCase().includes(locQ)) {
+      return false;
+    }
     if (!q) return true;
     const blob = `${j.company} ${j.title} ${j.location} ${j.roleCategory} ${j.description} ${(j.tags ?? []).join(" ")}`.toLowerCase();
     return blob.includes(q);
