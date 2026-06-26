@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { InternshipSearchChecklist } from "@/components/blog/posts/InternshipSearchChecklist";
 import { SummerInternshipsGuide } from "@/components/blog/posts/SummerInternshipsGuide";
+import { Summer2027InternshipsPracticalGuide } from "@/components/blog/posts/Summer2027InternshipsPracticalGuide";
 import { Summer2027InternshipsTimelineGuide } from "@/components/blog/posts/Summer2027InternshipsTimelineGuide";
 import { Summer2027InternshipsUsaGuide } from "@/components/blog/posts/Summer2027InternshipsUsaGuide";
 import { Summer2027ProgramsOpen } from "@/components/blog/posts/Summer2027ProgramsOpen";
@@ -21,6 +22,26 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "2027-summer-internships-practical-guide",
+    title: "2027 Summer Internships: A Practical Student Guide to Getting Ahead",
+    description:
+      "When to apply for 2027 summer internships, where to find U.S. roles, build a resume, track applications with Gmail, get referrals, and prep for interviews.",
+    publishedAt: "2026-06-26",
+    updatedAt: "2026-06-26",
+    readMinutes: 22,
+    category: "Internship Strategy",
+    tags: [
+      "2027 summer internships",
+      "summer 2027 internships",
+      "USA internships",
+      "internship search",
+      "college students",
+      "campus recruiting",
+      "application tracking",
+    ],
+    Content: Summer2027InternshipsPracticalGuide,
+  },
   {
     slug: "summer-2027-internships",
     title: "Summer 2027 Internships: A Practical Search Timeline for Students",
