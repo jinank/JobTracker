@@ -18,7 +18,7 @@ export const metadata: Metadata = buildPageMetadata({
     "application tracking",
     "summer internships",
   ],
-  ogTitle: "Summer 2027 Internships blog — search & application tips",
+  ogTitle: "Summer 2027 Internships blog, search & application tips",
 });
 
 export default function BlogPage() {
@@ -36,7 +36,7 @@ export default function BlogPage() {
             </h1>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
               Practical advice for finding USA internships, tracking applications, and preparing for
-              interviews—without the spreadsheet chaos.
+              interviews, without the spreadsheet chaos.
             </p>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function BlogPage() {
             <h2 className="text-lg font-bold text-slate-900">Put the advice into practice</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               Use {SITE_NAME} to browse US internships from company career pages, sync your
-              application pipeline from Gmail, and run AI mock interviews—all free for verified
+              application pipeline from Gmail, and run AI mock interviews, all free for verified
               students.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">

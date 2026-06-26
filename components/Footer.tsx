@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { LogoMark } from "@/components/LogoMark";
 import { PRODUCT_FEATURES } from "@/lib/productFeatures";
-import { INTERNSHIP_LOCATION_PAGES } from "@/lib/internshipLocationPages";
+import { INTERNSHIP_CITY_LOCATION_PAGES, INTERNSHIP_STATE_LOCATION_PAGES } from "@/lib/internshipLocationPages";
 import { SITE_NAME } from "@/lib/site";
 
 const COMPANY_LINKS = [
@@ -13,7 +13,7 @@ const COMPANY_LINKS = [
 ] as const;
 
 const FOOTER_TAGLINE =
-  "Find US internships from company career pages, track every application, and prep for interviews — free for students.";
+  "Find US internships from company career pages, track every application, and prep for interviews, free for students.";
 
 const footerLinkClass =
   "inline-flex min-h-11 items-center text-sm text-slate-600 transition-colors hover:text-scale-purple sm:min-h-0";
@@ -137,13 +137,36 @@ export function Footer() {
           </FooterColumn>
 
           <FooterColumn title="Browse by location" className="lg:col-span-2">
-            <ul className="space-y-1">
-              {INTERNSHIP_LOCATION_PAGES.map((page) => (
-                <li key={page.slug}>
-                  <FooterLink href={page.path}>{page.title}</FooterLink>
-                </li>
-              ))}
-            </ul>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                  States
+                </p>
+                <ul className="mt-3 space-y-1">
+                  {INTERNSHIP_STATE_LOCATION_PAGES.map((page) => (
+                    <li key={page.slug}>
+                      <FooterLink href={page.path}>
+                        {page.footerLabel ?? page.title}
+                      </FooterLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                  Cities
+                </p>
+                <ul className="mt-3 space-y-1">
+                  {INTERNSHIP_CITY_LOCATION_PAGES.map((page) => (
+                    <li key={page.slug}>
+                      <FooterLink href={page.path}>
+                        {page.footerLabel ?? page.title}
+                      </FooterLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </FooterColumn>
 
           <FooterColumn title="Get started" className="lg:col-span-2">

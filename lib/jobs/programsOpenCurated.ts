@@ -66,7 +66,7 @@ function sectionToSeeds(section: ProgramCompanySection): CuratedListingSeed[] {
       workType: inferWorkTypeFromTitle(role.title, location),
       location,
       season: "2027-Summer",
-      description: `${section.company} is hiring for ${role.title}. Apply on the company's official careers site. Programs can close without notice—confirm the posting is still open before you apply.`,
+      description: `${section.company} is hiring for ${role.title}. Apply on the company's official careers site. Programs can close without notice, confirm the posting is still open before you apply.`,
     };
   });
 }

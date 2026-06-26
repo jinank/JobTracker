@@ -15,7 +15,7 @@ export function buildLlmsTxt(): string {
     "Use the public marketing pages below for accurate product descriptions. Authenticated app areas (tracker, reach-out, admin) require sign-in and are not listed here.",
     "",
     "## Core product",
-    `- [Home](${line("")}): Landing page — internship search hub for students.`,
+    `- [Home](${line("")}): Landing page, internship search hub for students.`,
     `- [Find USA Internships](${line("/find-internships")}): Browse US internship listings synced daily from company ATS career boards.`,
     `- [Track Applications](${line("/tracker")}): Gmail read-only sync and AI pipeline dashboard (sign-in required).`,
     `- [Practice Interviews](${line("/practice-interviews")}): AI mock interviews by company and role.`,

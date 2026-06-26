@@ -43,9 +43,6 @@ export function Summer2027ProgramsOpen() {
             {section.roles.map((role) => (
               <li key={role.applyUrl} className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span>{role.title}</span>
-                <span className="text-slate-400" aria-hidden>
-                  —
-                </span>
                 <a
                   href={role.applyUrl}
                   target="_blank"

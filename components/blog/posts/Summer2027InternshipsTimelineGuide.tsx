@@ -239,7 +239,7 @@ export function Summer2027InternshipsTimelineGuide() {
       <ul className="list-disc space-y-2 pl-6">
         <li>Internship search platforms with filters for major, location, remote work, and year</li>
         <li>
-          Company career pages —{" "}
+          Company career pages , {" "}
           <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">
             browse USA internships
           </Link>{" "}
@@ -326,7 +326,7 @@ export function Summer2027InternshipsTimelineGuide() {
       </p>
       <p>
         Your tracker can be a spreadsheet, Notion board, Airtable, or an internship platform with a
-        built-in tracker. If you use Gmail, you can make the workflow even easier —{" "}
+        built-in tracker. If you use Gmail, you can make the workflow even easier , {" "}
         <Link href="/tracker" className="font-semibold text-scale-purple hover:underline">
           SuperInterns Track Applications
         </Link>{" "}
@@ -607,7 +607,7 @@ export function Summer2027InternshipsTimelineGuide() {
         <li>Alumni databases</li>
         <li>Library access to career platforms</li>
         <li>
-          Student discounts for productivity tools — see{" "}
+          Student discounts for productivity tools, see{" "}
           <Link href="/resources" className="font-semibold text-scale-purple hover:underline">
             Student Resources
           </Link>{" "}

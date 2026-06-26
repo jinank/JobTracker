@@ -6,7 +6,7 @@ export function UsaInternshipsOffJobBoards() {
       <p>
         LinkedIn and Handshake are useful discovery tools, but they are also where competition
         spikes fastest. When a role is reposted across three aggregators, you may be applicant
-        number 400—not applicant number 12.
+        number 400, not applicant number 12.
       </p>
       <p>
         Many of the best USA internship openings live on company career pages first. Here is how to
@@ -35,7 +35,7 @@ export function UsaInternshipsOffJobBoards() {
       <h2 className="pt-2 text-2xl font-bold text-slate-900">Build a company-first watchlist</h2>
       <p>
         Instead of keyword searching every day, maintain a watchlist of 40–60 employers. Check their
-        careers pages on a schedule—or use a tool that syncs US internship listings automatically.
+        careers pages on a schedule, or use a tool that syncs US internship listings automatically.
       </p>
       <p>
         <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">

@@ -5,7 +5,7 @@ export function InternshipSearchChecklist() {
     <>
       <p>
         Campus recruiting season moves fast. The students who land strong USA internships usually
-        are not the ones applying randomly on weekends—they run a repeatable weekly rhythm.
+        are not the ones applying randomly on weekends, they run a repeatable weekly rhythm.
       </p>
       <p>
         Use this checklist as a baseline. Adjust dates for your target cycle (summer 2027, fall
@@ -17,7 +17,7 @@ export function InternshipSearchChecklist() {
         <li>Pick 30–50 companies you would actually join, not a list copied from a ranking site.</li>
         <li>Split them into reach, match, and safety tiers.</li>
         <li>
-          Find where each company posts internships—Greenhouse, Lever, or their own careers page.
+          Find where each company posts internships, Greenhouse, Lever, or their own careers page.
         </li>
         <li>
           Browse live US listings on{" "}

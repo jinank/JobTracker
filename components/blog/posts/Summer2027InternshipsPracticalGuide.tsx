@@ -216,7 +216,7 @@ export function Summer2027InternshipsPracticalGuide() {
       <p>Use a mix of these:</p>
       <ul className="list-disc space-y-2 pl-6">
         <li>
-          Internship search platforms —{" "}
+          Internship search platforms , {" "}
           <Link href="/find-internships" className="font-semibold text-scale-purple hover:underline">
             browse USA internships
           </Link>{" "}
@@ -296,7 +296,7 @@ export function Summer2027InternshipsPracticalGuide() {
       </h3>
       <p>
         If a posting mentions Excel, SQL, customer research, or Figma, and you have used those
-        skills, make sure they appear naturally on your resume. Do not lie — but do make your
+        skills, make sure they appear naturally on your resume. Do not lie, but do make your
         experience easy to find.
       </p>
 
@@ -349,7 +349,7 @@ export function Summer2027InternshipsPracticalGuide() {
       <h3 className="pt-1 text-lg font-bold text-slate-900">Keep a professional email setup</h3>
       <p>
         Use a clean email address based on your name. Check your spam folder at least twice a week
-        during recruiting season. Make sure your Gmail display name is professional — recruiters
+        during recruiting season. Make sure your Gmail display name is professional, recruiters
         should see your actual name, not an old nickname.
       </p>
 
@@ -358,7 +358,7 @@ export function Summer2027InternshipsPracticalGuide() {
       </h2>
       <p>
         You will not remember where you applied, what version of your resume you used, or when to
-        follow up. Use a tracker from day one —{" "}
+        follow up. Use a tracker from day one , {" "}
         <Link href="/tracker" className="font-semibold text-scale-purple hover:underline">
           SuperInterns Track Applications
         </Link>{" "}
@@ -548,7 +548,7 @@ export function Summer2027InternshipsPracticalGuide() {
 
       <h3 className="pt-1 text-lg font-bold text-slate-900">Use the STAR method</h3>
       <p>
-        For behavioral questions: Situation, Task, Action, Result. Keep answers focused — usually
+        For behavioral questions: Situation, Task, Action, Result. Keep answers focused, usually
         60–90 seconds.
       </p>
 
@@ -610,7 +610,7 @@ export function Summer2027InternshipsPracticalGuide() {
           cases with peers and structure ambiguous problems clearly.
         </li>
         <li>
-          <strong>Marketing and communications:</strong> Create proof of work — social content,
+          <strong>Marketing and communications:</strong> Create proof of work, social content,
           writing samples, campaign ideas, analytics screenshots, or newsletters.
         </li>
         <li>

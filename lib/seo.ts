@@ -52,7 +52,7 @@ export function buildPageMetadata(options: BuildPageMetadataOptions): Metadata {
   const canonicalPath = path.startsWith("/") ? path : `/${path}`;
   const pageUrl = `${getSiteOrigin()}${canonicalPath === "/" ? "" : canonicalPath}`;
   const socialTitle = ogTitle ?? title;
-  const imageAlt = `${SITE_NAME} — ${socialTitle}`;
+  const imageAlt = `${SITE_NAME}, ${socialTitle}`;
 
   return {
     title,

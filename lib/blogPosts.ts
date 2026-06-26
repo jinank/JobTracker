@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { InternshipSearchChecklist } from "@/components/blog/posts/InternshipSearchChecklist";
 import { SummerInternshipsGuide } from "@/components/blog/posts/SummerInternshipsGuide";
+import { RemoteSummer2027InternshipsGuide } from "@/components/blog/posts/RemoteSummer2027InternshipsGuide";
 import { Summer2027InternshipsPracticalGuide } from "@/components/blog/posts/Summer2027InternshipsPracticalGuide";
 import { Summer2027InternshipsTimelineGuide } from "@/components/blog/posts/Summer2027InternshipsTimelineGuide";
 import { Summer2027InternshipsUsaGuide } from "@/components/blog/posts/Summer2027InternshipsUsaGuide";
@@ -22,6 +23,26 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "remote-summer-2027-internships",
+    title: "Remote Summer 2027 Internships: A Practical Student Search Guide",
+    description:
+      "Find remote summer 2027 internships in the USA, track applications with Gmail, get referrals, prep for video interviews, and follow a 30-day search plan.",
+    publishedAt: "2026-06-27",
+    updatedAt: "2026-06-27",
+    readMinutes: 26,
+    category: "Internship Strategy",
+    tags: [
+      "remote summer 2027 internships",
+      "summer 2027 internships",
+      "virtual internships",
+      "USA internships",
+      "internship search",
+      "college students",
+      "application tracking",
+    ],
+    Content: RemoteSummer2027InternshipsGuide,
+  },
   {
     slug: "2027-summer-internships-practical-guide",
     title: "2027 Summer Internships: A Practical Student Guide to Getting Ahead",
@@ -122,7 +143,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "summer-2027-internship-programs-open-now",
     title: "Summer 2027 Internship Programs Open Right Now",
     description:
-      "A running list of Summer 2027 internship applications that are live today—finance, tech, consulting, and more—with direct apply links to company career pages.",
+      "A running list of Summer 2027 internship applications that are live today, finance, tech, consulting, and more, with direct apply links to company career pages.",
     publishedAt: "2026-06-20",
     updatedAt: "2026-06-20",
     readMinutes: 6,
