@@ -457,7 +457,7 @@ export function LandingPage() {
       {/* ── Hero ───────────────────────────────────────────── */}
       <section
         id="hero"
-        className="landing-section relative overflow-hidden landing-hero-mesh pb-20 pt-16 sm:pt-24"
+        className="landing-section relative overflow-hidden landing-hero-mesh pb-16 pt-16 sm:pb-20 sm:pt-24"
         aria-labelledby="hero-heading"
       >
         <HeroVisuals />
@@ -516,9 +516,18 @@ export function LandingPage() {
             </button>
           </div>
         </div>
+      </section>
 
-        <div className="relative mx-auto mt-16 max-w-5xl px-4 sm:px-6">
-          <ScrollReveal delay={200} direction="scale" duration={900}>
+      <SectionDivider />
+
+      <LandingInternshipsSection />
+
+      <SectionDivider />
+
+      {/* ── Tracker preview ─────────────────────────────────── */}
+      <section className="landing-section pb-20 pt-4 sm:pb-24" aria-label="Application tracker preview">
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
+          <ScrollReveal delay={100} direction="scale" duration={900}>
             <div ref={productParallaxRef}>
               <div className="landing-product-float">
                 <ProductWindow />
@@ -527,10 +536,6 @@ export function LandingPage() {
           </ScrollReveal>
         </div>
       </section>
-
-      <SectionDivider />
-
-      <LandingInternshipsSection />
 
       <SectionDivider />
 

@@ -6,7 +6,7 @@ export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 
 export const SITE_TITLE_DEFAULT =
-  "Summer 2027 Internships | Find & Track USA Roles";
+  "Summer 2027 Internships | Find & Track Summer 2027 Internships";
 
 export const SITE_DESCRIPTION_DEFAULT =
   "Find Summer 2027 internships on company career pages. Track applications from Gmail, practice interviews with AI, and unlock student perks. Free.";
