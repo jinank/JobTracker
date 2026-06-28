@@ -8,7 +8,7 @@ export async function POST() {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  if (user.paid) {
+  if (user.hasProSubscription) {
     return NextResponse.json({ error: "Already subscribed" }, { status: 400 });
   }
 

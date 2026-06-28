@@ -31,6 +31,8 @@ export async function GET() {
     chains: data,
     paid: user.paid,
     studentVerified: user.studentVerified,
+    hasProSubscription: user.hasProSubscription,
+    subscriptionStatus: user.subscriptionStatus,
     chainCount: user.chainCount,
     limit: user.paid ? null : user.limit,
   });

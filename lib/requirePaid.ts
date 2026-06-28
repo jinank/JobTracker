@@ -9,6 +9,9 @@ export interface AppUser {
   email: string;
   paid: boolean;
   studentVerified: boolean;
+  /** Stripe/PayPal Pro subscription (not student free tier). */
+  hasProSubscription: boolean;
+  subscriptionStatus: string | null;
   chainCount: number;
   limit: number;
   gmailConnected: boolean;
@@ -28,10 +31,17 @@ export async function getAppUser(): Promise<AppUser | null> {
 
   if (!data) return null;
 
+  const subscriptionStatus =
+    typeof data.subscription_status === "string" ? data.subscription_status : null;
+
+  const hasProSubscription =
+    subscriptionStatus === "active" ||
+    (data.paid === true && !!data.stripe_subscription_id);
+
   const isPaid =
     data.paid === true ||
-    data.subscription_status === "active" ||
-    data.subscription_status === "student" ||
+    subscriptionStatus === "active" ||
+    subscriptionStatus === "student" ||
     data.student_verified === true;
 
   const { count } = await supabase
@@ -49,6 +59,8 @@ export async function getAppUser(): Promise<AppUser | null> {
     email: session.user.email,
     paid: isPaid,
     studentVerified: data.student_verified === true,
+    hasProSubscription,
+    subscriptionStatus,
     chainCount: count ?? 0,
     limit: isPaid ? Infinity : FREE_TIER_LIMIT,
     gmailConnected,

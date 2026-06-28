@@ -10,6 +10,7 @@ import { SITE_NAME } from "@/lib/site";
 
 const COMPANY_LINKS = [
   { href: "/blog", label: "Blog" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/contact-us", label: "Contact" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Service" },
@@ -169,6 +170,12 @@ export function Footer() {
             >
               Find internships
             </Link>
+            <p className="mt-3 text-sm text-slate-600">
+              Verified student?{" "}
+              <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
+                Upgrade to Pro or Premium
+              </Link>
+            </p>
           </FooterColumn>
         </div>
 

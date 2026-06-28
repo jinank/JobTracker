@@ -9,6 +9,7 @@ export function useChains() {
   const [chains, setChains] = useState<Chain[]>([]);
   const [paid, setPaid] = useState<boolean>(false);
   const [studentVerified, setStudentVerified] = useState<boolean>(false);
+  const [hasProSubscription, setHasProSubscription] = useState<boolean>(false);
   const [chainCount, setChainCount] = useState(0);
   const [limit, setLimit] = useState<number | null>(50);
   const [loading, setLoading] = useState(true);
@@ -39,6 +40,7 @@ export function useChains() {
       );
       setPaid(data.paid ?? false);
       setStudentVerified(data.studentVerified ?? false);
+      setHasProSubscription(data.hasProSubscription ?? false);
       setChainCount(data.chainCount ?? 0);
       setLimit(data.limit ?? null);
       hasLoadedOnce.current = true;
@@ -54,7 +56,17 @@ export function useChains() {
     refresh();
   }, [refresh]);
 
-  return { chains, paid, studentVerified, chainCount, limit, loading, error, refresh };
+  return {
+    chains,
+    paid,
+    studentVerified,
+    hasProSubscription,
+    chainCount,
+    limit,
+    loading,
+    error,
+    refresh,
+  };
 }
 
 export function useChainEvents(chainId: string | null) {
