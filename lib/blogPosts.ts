@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { InternshipSearchChecklist } from "@/components/blog/posts/InternshipSearchChecklist";
 import { SummerInternshipsGuide } from "@/components/blog/posts/SummerInternshipsGuide";
+import { Summer2027InternshipsCompleteUsGuide } from "@/components/blog/posts/Summer2027InternshipsCompleteUsGuide";
 import { Summer2027InternshipsCompleteGuide } from "@/components/blog/posts/Summer2027InternshipsCompleteGuide";
 import { RemoteSummer2027InternshipsGuide } from "@/components/blog/posts/RemoteSummer2027InternshipsGuide";
 import { Summer2027InternshipsPracticalGuide } from "@/components/blog/posts/Summer2027InternshipsPracticalGuide";
@@ -24,6 +25,26 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "2027-summer-internships-complete-us-guide",
+    title: "2027 Summer Internships: Complete U.S. Student Guide",
+    description:
+      "When to apply for 2027 summer internships in the U.S., build a SuperInterns workflow, track with Gmail, get referrals, and prep for interviews.",
+    publishedAt: "2026-06-29",
+    updatedAt: "2026-06-29",
+    readMinutes: 27,
+    category: "Internship Strategy",
+    tags: [
+      "2027 summer internships",
+      "summer 2027 internships",
+      "USA internships",
+      "internship search",
+      "college students",
+      "application tracking",
+      "Gmail tracking",
+    ],
+    Content: Summer2027InternshipsCompleteUsGuide,
+  },
   {
     slug: "summer-2027-internships-complete-guide",
     title: "Summer 2027 Internships: Complete Student Search Guide",
