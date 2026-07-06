@@ -64,4 +64,9 @@ export const INTERNSHIP_SOURCE_SEED: Array<{
   { company: "Ramp", company_slug: "ramp", ats: "ashby", board_token: "ramp", careers_url: "https://ramp.com/careers" },
   { company: "Notion", company_slug: "notion", ats: "ashby", board_token: "notion", careers_url: "https://www.notion.so/careers" },
   { company: "Replit", company_slug: "replit", ats: "ashby", board_token: "replit", careers_url: "https://replit.com/careers" },
+  { company: "Walleye Capital", company_slug: "walleyecapital", ats: "greenhouse", board_token: "walleyecapital-external-students", careers_url: "https://www.walleyecapital.com/careers" },
+  { company: "Aquatic Capital Management", company_slug: "aquaticcapital", ats: "greenhouse", board_token: "aquaticcapitalmanagement", careers_url: "https://www.aquatic.com/careers" },
+  { company: "Optiver", company_slug: "optiver", ats: "greenhouse", board_token: "optiverus", careers_url: "https://www.optiver.com/working-at-optiver/career-opportunities" },
+  { company: "Virtu Financial", company_slug: "virtu", ats: "greenhouse", board_token: "virtu", careers_url: "https://www.virtu.com/careers" },
+  { company: "Point72", company_slug: "point72", ats: "greenhouse", board_token: "point72", careers_url: "https://careers.point72.com" },
 ];

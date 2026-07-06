@@ -327,6 +327,111 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
     ],
   },
   {
+    id: "morgan-stanley",
+    company: "Morgan Stanley",
+    roles: [
+      {
+        title: "2027 Summer Analyst Program, Americas",
+        applyUrl:
+          "https://morganstanley.tal.net/vx/lang-en-GB/mobile-0/brand-2/xf-8f354508211d/candidate",
+      },
+    ],
+  },
+  {
+    id: "bank-of-america",
+    company: "Bank of America",
+    roles: [
+      {
+        title: "Campus Internship and Full-Time Opportunities",
+        applyUrl: "https://campus.bankofamerica.com/en-us",
+      },
+    ],
+  },
+  {
+    id: "capital-one",
+    company: "Capital One",
+    roles: [
+      {
+        title: "Campus Internship Programs",
+        applyUrl: "https://www.capitalonecareers.com/students",
+      },
+    ],
+  },
+  {
+    id: "deloitte",
+    company: "Deloitte",
+    roles: [
+      {
+        title: "Campus Internship Opportunities",
+        applyUrl: "https://apply.deloitte.com/careers/SearchJobs/?524=%5B729%5D",
+      },
+    ],
+  },
+  {
+    id: "optiver",
+    company: "Optiver",
+    roles: [
+      {
+        title: "Software Engineer Intern (Summer 2027 - Chicago)",
+        applyUrl: "https://www.optiver.com/join-us/jobs/8604760002/?gh_jid=8604760002",
+      },
+      {
+        title: "Software Engineer Intern (Summer 2027 - Austin)",
+        applyUrl: "https://www.optiver.com/join-us/jobs/8401052002/?gh_jid=8401052002",
+      },
+      {
+        title: "Quantitative Intern (Summer 2027)",
+        applyUrl: "https://www.optiver.com/join-us/jobs/8402215002/?gh_jid=8402215002",
+      },
+      {
+        title: "Quantitative Research Intern, PhD (Summer 2027)",
+        applyUrl: "https://www.optiver.com/join-us/jobs/8451781002/?gh_jid=8451781002",
+      },
+    ],
+  },
+  {
+    id: "point72",
+    company: "Point72",
+    roles: [
+      {
+        title: "Summer 2027 Quantitative Research Internship",
+        applyUrl:
+          "https://boards.greenhouse.io/point72/jobs/7297642002?gh_jid=7297642002",
+      },
+      {
+        title: "Point72 Academy Investment Analyst Program for Upcoming Graduates (2027 – US)",
+        applyUrl:
+          "https://boards.greenhouse.io/point72/jobs/8541241002?gh_jid=8541241002",
+      },
+    ],
+  },
+  {
+    id: "virtu",
+    company: "Virtu Financial",
+    roles: [
+      {
+        title: "2027 Internship - Quant Research (Undergrad)",
+        applyUrl: "https://job-boards.greenhouse.io/virtu/jobs/8142539002",
+      },
+    ],
+  },
+  {
+    id: "aquatic-capital",
+    company: "Aquatic Capital Management",
+    roles: [
+      {
+        title: "Software Engineer, Intern (Summer 2027)",
+        applyUrl:
+          "https://job-boards.greenhouse.io/aquaticcapitalmanagement/jobs/8489233002",
+      },
+      {
+        title: "Quantitative Researcher, Intern (Summer 2027)",
+        applyUrl:
+          "https://job-boards.greenhouse.io/aquaticcapitalmanagement/jobs/8489186002",
+      },
+    ],
+  },
+  {
     id: "koch",
     company: "Koch",
     roles: [

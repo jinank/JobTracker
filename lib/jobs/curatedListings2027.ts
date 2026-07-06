@@ -96,7 +96,7 @@ export const CURATED_LISTINGS_2027: CuratedListingSeed[] = [
     title: "2027 Software Engineer Intern",
     company: "Anduril Industries",
     applyUrl:
-      "https://jobright.ai/jobs/info/6a2a29e72cde2824469c0471?utm_source=1099&utm_campaign=Software%20Engineer",
+      "https://job-boards.greenhouse.io/andurilindustries/jobs/5148079007?gh_jid=5148079007",
     postedAt: "2026-06-10",
     workType: "On-site",
     location: "Seattle, WA; Costa Mesa, CA; Boston, MA; Irvine, CA; Atlanta, GA",
@@ -229,7 +229,7 @@ export const CURATED_LISTINGS_2027: CuratedListingSeed[] = [
     title: "Software Engineer, Intern (Summer 2027)",
     company: "Aquatic Capital Management",
     applyUrl:
-      "https://jobright.ai/jobs/info/6a1f746ca507373dff6c15ea?utm_source=1099&utm_campaign=Software%20Engineer",
+      "https://job-boards.greenhouse.io/aquaticcapitalmanagement/jobs/8489233002",
     postedAt: "2026-06-02",
     workType: "On-site",
     location: "Chicago, IL (Greater Chicago Area)",
@@ -258,7 +258,7 @@ export const CURATED_LISTINGS_2027: CuratedListingSeed[] = [
     title: "Volatility Trading Developer Intern (Summer 2027)",
     company: "Walleye Capital",
     applyUrl:
-      "https://jobright.ai/jobs/info/6a1d74a26b135014dbc96345?utm_source=1099&utm_campaign=Software%20Engineer",
+      "https://job-boards.greenhouse.io/walleyecapital-external-students/jobs/4679434006",
     postedAt: "2026-06-01",
     workType: "On-site",
     location: "New York, NY",
@@ -273,7 +273,7 @@ export const CURATED_LISTINGS_2027: CuratedListingSeed[] = [
     title: "Technology Intern (Summer 2027)",
     company: "Walleye Capital",
     applyUrl:
-      "https://jobright.ai/jobs/info/6a1d749ce24ef36525837b4f?utm_source=1099&utm_campaign=Software%20Engineer",
+      "https://job-boards.greenhouse.io/walleyecapital-external-students/jobs/4681002006",
     postedAt: "2026-06-01",
     workType: "On-site",
     location: "New York, NY",
