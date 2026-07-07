@@ -44,6 +44,7 @@ function inferLocation(title: string, company: string): string {
   if (/phoenix|tsmc arizona/i.test(t)) return "Phoenix, AZ";
   if (/wichita/i.test(t)) return "Wichita, KS";
   if (/bala cynwyd|philadelphia/i.test(t)) return "Bala Cynwyd, PA";
+  if (/chicago/i.test(t)) return "Chicago, IL";
   if (/macquarie/i.test(company)) return "United States";
   return "United States";
 }

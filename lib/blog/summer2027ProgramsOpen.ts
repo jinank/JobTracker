@@ -239,6 +239,21 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
         applyUrl:
           "https://job-boards.greenhouse.io/andurilindustries/jobs/5148079007?gh_jid=5148079007",
       },
+      {
+        title: "2027 Electrical Engineer Intern",
+        applyUrl:
+          "https://job-boards.greenhouse.io/andurilindustries/jobs/5148101007?gh_jid=5148101007",
+      },
+      {
+        title: "2027 Mechanical Engineer Intern",
+        applyUrl:
+          "https://job-boards.greenhouse.io/andurilindustries/jobs/5153187007?gh_jid=5153187007",
+      },
+      {
+        title: "2027 Manufacturing Engineer Intern",
+        applyUrl:
+          "https://job-boards.greenhouse.io/andurilindustries/jobs/5153218007?gh_jid=5153218007",
+      },
     ],
   },
   {
@@ -323,6 +338,36 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
         title: "Summer Business Analyst 2027",
         applyUrl:
           "https://handshake-adlittle.icims.com/jobs/2117/summer-business-analyst-2027%2C-4---6-months-%28advanced-degree%29/job",
+      },
+    ],
+  },
+  {
+    id: "imc",
+    company: "IMC",
+    roles: [
+      {
+        title: "Software Engineer Intern - Summer 2027",
+        applyUrl: "https://job-boards.eu.greenhouse.io/imc/jobs/4823924101",
+      },
+      {
+        title: "Quantitative Research Intern (BS/MS) - Summer 2027",
+        applyUrl: "https://job-boards.eu.greenhouse.io/imc/jobs/4907399101",
+      },
+      {
+        title: "Quantitative Research Intern (PhD) - Summer 2027",
+        applyUrl: "https://job-boards.eu.greenhouse.io/imc/jobs/4907400101",
+      },
+      {
+        title: "Quantitative Trader Intern - Summer 2027",
+        applyUrl: "https://job-boards.eu.greenhouse.io/imc/jobs/4823923101",
+      },
+      {
+        title: "Hardware Engineer Intern - Summer 2027",
+        applyUrl: "https://job-boards.eu.greenhouse.io/imc/jobs/4823945101",
+      },
+      {
+        title: "Machine Learning Research Intern - Summer 2027",
+        applyUrl: "https://job-boards.eu.greenhouse.io/imc/jobs/4907430101",
       },
     ],
   },
