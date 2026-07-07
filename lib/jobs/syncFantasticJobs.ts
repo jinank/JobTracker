@@ -41,12 +41,21 @@ async function ensureFantasticSource(now: string): Promise<JobSourceRow | null> 
   return data as JobSourceRow;
 }
 
+export type FantasticSyncOptions = {
+  timeFrame?: "1h" | "24h" | "7d";
+  maxPages?: number;
+  titleQuery?: string;
+};
+
 /**
  * Ingest US internships from Fantastic.jobs ATS + job board feeds.
- * Uses time_frame=1h (best for polling every 2–3 hours). Upserts only — does not
+ * Default uses time_frame=1h (best for polling every 2–3 hours). Upserts only — does not
  * deactivate listings missing from the latest window.
  */
-export async function syncFantasticInternships(now: string): Promise<FantasticSyncSlice> {
+export async function syncFantasticInternships(
+  now: string,
+  options?: FantasticSyncOptions
+): Promise<FantasticSyncSlice> {
   const slice: FantasticSyncSlice = {
     fetched: 0,
     internshipsKept: 0,
@@ -71,8 +80,9 @@ export async function syncFantasticInternships(now: string): Promise<FantasticSy
     }
 
     const { ats, jobBoard } = await fetchFantasticAtsAndJobBoardInternships({
-      timeFrame: "1h",
-      maxPages: 15,
+      timeFrame: options?.timeFrame ?? "1h",
+      maxPages: options?.maxPages ?? 15,
+      titleQuery: options?.titleQuery,
     });
 
     slice.fetched = ats.length + jobBoard.length;

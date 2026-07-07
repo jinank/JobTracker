@@ -102,6 +102,6 @@ export function normalizeFantasticJob(
     apply_url: applyUrl,
     description: buildDescription(job, company, locationRaw),
     posted_at: postedAt,
-    tags: [roleCategory, workType, "Internship", sourceLabel, "Fantastic.jobs"],
+    tags: [roleCategory, workType, "Internship", sourceLabel, "Fantastic.jobs", ...( /2027/i.test(title) ? ["2027-internship"] : [])],
   };
 }

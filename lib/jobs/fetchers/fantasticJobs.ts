@@ -34,9 +34,11 @@ export type FantasticEndpoint = "active-ats" | "active-jb";
 export type FetchFantasticOptions = {
   endpoint: FantasticEndpoint;
   /** Best for polling every 2–3 hours. */
-  timeFrame?: "1h" | "24h";
+  timeFrame?: "1h" | "24h" | "7d";
   limit?: number;
   maxPages?: number;
+  /** Override default intern title query (e.g. 2027 backfill). */
+  titleQuery?: string;
 };
 
 function getApiKey(): string | null {
@@ -44,13 +46,16 @@ function getApiKey(): string | null {
   return key || null;
 }
 
-function buildInternshipQuery(endpoint: FantasticEndpoint): URLSearchParams {
+function buildInternshipQuery(
+  endpoint: FantasticEndpoint,
+  titleQuery?: string
+): URLSearchParams {
   const params = new URLSearchParams();
   params.set("location", "United States");
   params.set("ai_employment_type", "INTERN");
   params.set("organization_agency", "exclude");
   params.set("ai_language", "English");
-  params.set("title", "intern OR internship");
+  params.set("title", titleQuery ?? "intern OR internship");
 
   if (endpoint === "active-jb") {
     params.set("seniority", "Internship");
@@ -63,11 +68,12 @@ function buildInternshipQuery(endpoint: FantasticEndpoint): URLSearchParams {
 async function fetchFantasticPage(
   apiKey: string,
   endpoint: FantasticEndpoint,
-  timeFrame: "1h" | "24h",
+  timeFrame: "1h" | "24h" | "7d",
   limit: number,
-  offset: number
+  offset: number,
+  titleQuery?: string
 ): Promise<FantasticJob[]> {
-  const params = buildInternshipQuery(endpoint);
+  const params = buildInternshipQuery(endpoint, titleQuery);
   params.set("time_frame", timeFrame);
   params.set("limit", String(limit));
   params.set("offset", String(offset));
@@ -130,7 +136,8 @@ export async function fetchFantasticInternships(
       options.endpoint,
       timeFrame,
       limit,
-      page * limit
+      page * limit,
+      options.titleQuery
     );
     all.push(...batch);
     if (batch.length < limit) break;
@@ -140,13 +147,16 @@ export async function fetchFantasticInternships(
 }
 
 export async function fetchFantasticAtsAndJobBoardInternships(options?: {
-  timeFrame?: "1h" | "24h";
+  timeFrame?: "1h" | "24h" | "7d";
   maxPages?: number;
+  titleQuery?: string;
+  limit?: number;
 }): Promise<{ ats: FantasticJob[]; jobBoard: FantasticJob[] }> {
   const common = {
     timeFrame: options?.timeFrame ?? "1h",
     maxPages: options?.maxPages ?? 15,
-    limit: 500,
+    limit: options?.limit ?? 500,
+    titleQuery: options?.titleQuery,
   };
 
   const [ats, jobBoard] = await Promise.all([
