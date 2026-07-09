@@ -23,6 +23,8 @@ type InternshipTableProps = {
   loading?: boolean;
   emptyMessage?: string;
   showWorkType?: boolean;
+  recencyField?: "posted" | "updated";
+  recencyLabel?: string;
 };
 
 export function InternshipTable({
@@ -30,6 +32,8 @@ export function InternshipTable({
   loading = false,
   emptyMessage = "No internships match your filters yet.",
   showWorkType = true,
+  recencyField = "posted",
+  recencyLabel = "Posted",
 }: InternshipTableProps) {
   if (loading && jobs.length === 0) {
     return (
@@ -71,7 +75,7 @@ export function InternshipTable({
                 </th>
               ) : null}
               <th scope="col" className="px-4 py-3 font-semibold text-slate-700 sm:px-5">
-                Posted
+                {recencyLabel}
               </th>
               <th scope="col" className="px-4 py-3 text-right font-semibold text-slate-700 sm:px-5">
                 <span className="sr-only">Apply</span>
@@ -124,7 +128,9 @@ export function InternshipTable({
                   </td>
                 ) : null}
                 <td className="whitespace-nowrap px-4 py-3.5 text-slate-500 sm:px-5">
-                  {postedLabel(job.postedDaysAgo)}
+                  {postedLabel(
+                    recencyField === "updated" ? job.updatedDaysAgo : job.postedDaysAgo
+                  )}
                 </td>
                 <td className="px-4 py-3.5 text-right sm:px-5">
                   <a

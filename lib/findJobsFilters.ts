@@ -3,7 +3,9 @@ import type { HiddenJob } from "@/lib/hiddenJobsData";
 
 export type PostedPreset = "all" | "today" | "week" | "month" | "30d";
 export type WorkTypeFilter = "all" | JobListing["workType"];
-export type JobSortField = "posted" | "company" | "role" | "location";
+export type JobSortField = "posted" | "updated" | "company" | "role" | "location";
+
+const JOB_SORT_FIELDS: JobSortField[] = ["posted", "updated", "company", "role", "location"];
 export type SortDir = "asc" | "desc";
 
 export type InternshipQueryParams = {
@@ -97,6 +99,9 @@ export function sortJobListings(
       case "posted":
         cmp = a.postedDaysAgo - b.postedDaysAgo;
         break;
+      case "updated":
+        cmp = a.updatedDaysAgo - b.updatedDaysAgo;
+        break;
       case "company":
         cmp = a.company.localeCompare(b.company);
         break;
@@ -106,6 +111,9 @@ export function sortJobListings(
       case "location":
         cmp = a.location.localeCompare(b.location);
         break;
+    }
+    if (cmp === 0 && (field === "updated" || field === "posted")) {
+      cmp = a.postedDaysAgo - b.postedDaysAgo;
     }
     return dir === "asc" ? cmp : -cmp;
   });
@@ -185,8 +193,9 @@ export function sortHiddenJobs(
 export function parseInternshipQueryParams(
   searchParams: URLSearchParams
 ): InternshipQueryParams {
-  const sortRaw = searchParams.get("sort") || "posted-asc";
-  const [sortField, sortDir] = sortRaw.split("-") as [JobSortField, SortDir];
+  const sortRaw = searchParams.get("sort") || "updated-asc";
+  const [rawField, sortDir] = sortRaw.split("-") as [JobSortField, SortDir];
+  const sortField = JOB_SORT_FIELDS.includes(rawField) ? rawField : "updated";
 
   return {
     search: searchParams.get("search") || "",
@@ -195,7 +204,7 @@ export function parseInternshipQueryParams(
     experienceLevel: searchParams.get("experience") || "all",
     postedPreset: (searchParams.get("posted") || "all") as PostedPreset,
     locationQuery: searchParams.get("location") || "",
-    sortField: sortField || "posted",
+    sortField,
     sortDir: sortDir === "desc" ? "desc" : "asc",
     page: Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1),
     pageSize: Math.min(

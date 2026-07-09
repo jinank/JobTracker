@@ -29,6 +29,7 @@ const POSTED_OPTIONS: { value: PostedPreset; label: string }[] = [
 ];
 
 const SORT_OPTIONS: { value: JobSortField; label: string }[] = [
+  { value: "updated", label: "Recently added" },
   { value: "posted", label: "Date posted" },
   { value: "company", label: "Company" },
   { value: "role", label: "Role" },
@@ -37,6 +38,8 @@ const SORT_OPTIONS: { value: JobSortField; label: string }[] = [
 
 function sortOptionLabel(field: JobSortField, dir: SortDir): string {
   switch (field) {
+    case "updated":
+      return dir === "asc" ? "Recently added (newest first)" : "Recently added (oldest first)";
     case "posted":
       return dir === "asc" ? "Date posted (newest first)" : "Date posted (oldest first)";
     case "company":
@@ -87,7 +90,7 @@ export function FindJobsApp() {
   const [workType, setWorkType] = useState<WorkTypeFilter>("all");
   const [postedPreset, setPostedPreset] = useState<PostedPreset>("all");
   const [locationQuery, setLocationQuery] = useState("");
-  const [sortField, setSortField] = useState<JobSortField>("posted");
+  const [sortField, setSortField] = useState<JobSortField>("updated");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(25);

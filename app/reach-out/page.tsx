@@ -135,7 +135,7 @@ function ReachOutContent() {
             href="/"
             className="flex shrink-0 items-center gap-2 rounded-lg py-1 pl-1 pr-2 text-slate-700 transition-colors hover:bg-slate-100"
           >
-            <LogoMark className="h-8 w-8" iconClassName="w-4 h-4" />
+            <LogoMark className="h-8 w-8" />
             <span className="hidden text-sm font-bold text-slate-900 sm:inline">SuperInterns</span>
           </Link>
         </div>

@@ -9,15 +9,13 @@ export function LogoMark({
   iconClassName?: string;
 }) {
   return (
-    <div className={`relative shrink-0 overflow-hidden ${className}`} role="img" aria-label={SITE_NAME}>
-      <Image
-        src="/superinterns-logo.png"
-        alt={SITE_NAME}
-        fill
-        sizes="64px"
-        className={`object-cover object-left ${iconClassName}`}
-        priority
-      />
-    </div>
+    <Image
+      src="/superinterns-icon.png"
+      alt={SITE_NAME}
+      width={128}
+      height={128}
+      className={`shrink-0 object-contain ${className} ${iconClassName}`.trim()}
+      priority
+    />
   );
 }

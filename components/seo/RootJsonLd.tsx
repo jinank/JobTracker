@@ -2,7 +2,7 @@ import { getSiteOrigin, SITE_NAME } from "@/lib/site";
 
 export function RootJsonLd() {
   const origin = getSiteOrigin();
-  const logoUrl = `${origin}/icon.svg`;
+  const logoUrl = `${origin}/superinterns-icon.png`;
 
   const graph = {
     "@context": "https://schema.org",

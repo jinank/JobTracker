@@ -30,7 +30,7 @@ export async function queryInternships(
     .eq("country", "US")
     .eq("employment_type", "Internship")
     .eq("is_active", true)
-    .order("posted_at", { ascending: false, nullsFirst: false })
+    .order("updated_at", { ascending: false, nullsFirst: false })
     .range(0, 4999);
 
   if (error) {

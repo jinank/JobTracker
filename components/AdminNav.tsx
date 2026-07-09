@@ -19,7 +19,7 @@ export function AdminNav() {
     <header className="border-b border-slate-200 bg-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href="/admin" className="flex items-center gap-2 text-slate-900">
-          <LogoMark className="h-8 w-8" iconClassName="w-4 h-4" />
+          <LogoMark className="h-8 w-8" />
           <span className="text-sm font-bold">SuperInterns Admin</span>
         </Link>
         <nav className="flex flex-wrap items-center gap-1">

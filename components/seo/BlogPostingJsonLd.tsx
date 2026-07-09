@@ -20,7 +20,7 @@ export function BlogPostingJsonLd({ post }: { post: BlogPost }) {  const origin 
       name: SITE_NAME,
       logo: {
         "@type": "ImageObject",
-        url: `${origin}/icon.svg`,
+        url: `${origin}/superinterns-icon.png`,
       },
     },
     mainEntityOfPage: {

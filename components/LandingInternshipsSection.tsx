@@ -8,7 +8,7 @@ import { useInternshipPreview } from "@/hooks/useInternships";
 const PREVIEW_LIMIT = 50;
 
 export function LandingInternshipsSection() {
-  const { jobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT);
+  const { jobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT, "updated-asc");
 
   const totalLabel = stats?.totalActive ?? jobs.length;
 
@@ -34,8 +34,8 @@ export function LandingInternshipsSection() {
               <p className="mt-3 max-w-2xl text-base text-slate-500">
                 {totalLabel > 0 ? (
                   <>
-                    Showing the {Math.min(PREVIEW_LIMIT, jobs.length)} most recent US internships
-                    from company career pages
+                    Showing the {Math.min(PREVIEW_LIMIT, jobs.length)} latest US internships
+                    synced from company career pages
                     {stats?.companies ? ` across ${stats.companies} companies` : ""}. No login
                     required.
                   </>
@@ -61,6 +61,8 @@ export function LandingInternshipsSection() {
             jobs={jobs}
             loading={loading}
             showWorkType={false}
+            recencyField="updated"
+            recencyLabel="Added"
             emptyMessage="Internships sync every few hours. Check back soon."
           />
         </ScrollReveal>

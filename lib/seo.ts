@@ -123,9 +123,9 @@ export function buildRootMetadata(): Metadata {
       images: [{ url: DEFAULT_OG_IMAGE, alt: `${SITE_NAME} | Summer 2027 Internships` }],
     },
     icons: {
-      icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-      shortcut: "/icon.svg",
-      apple: "/icon.svg",
+      icon: [{ url: "/superinterns-icon.png", type: "image/png" }],
+      shortcut: "/superinterns-icon.png",
+      apple: "/superinterns-icon.png",
     },
     category: "technology",
     formatDetection: { telephone: false },
