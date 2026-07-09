@@ -15,7 +15,7 @@ export function LandingInternshipsSection() {
   return (
     <section
       id="latest-internships"
-      className="landing-section py-20 sm:py-24"
+      className="landing-section pt-4 pb-16 sm:pt-6 sm:pb-20"
       aria-labelledby="latest-internships-heading"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">

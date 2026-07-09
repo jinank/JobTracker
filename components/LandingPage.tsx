@@ -9,9 +9,6 @@ import {
   ScrollReveal,
   useScrollParallax,
 } from "@/components/landing/LandingMotion";
-import {
-  smoothScrollToSection,
-} from "@/components/landing/LandingSectionNav";
 import { LandingInternshipsSection } from "@/components/LandingInternshipsSection";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
@@ -457,7 +454,7 @@ export function LandingPage() {
       {/* ── Hero ───────────────────────────────────────────── */}
       <section
         id="hero"
-        className="landing-section relative overflow-hidden landing-hero-mesh pb-16 pt-16 sm:pb-20 sm:pt-24"
+        className="landing-section relative overflow-hidden landing-hero-mesh pb-8 pt-16 sm:pb-10 sm:pt-24"
         aria-labelledby="hero-heading"
       >
         <HeroVisuals />
@@ -504,21 +501,9 @@ export function LandingPage() {
             <p className="mt-5 text-xs text-slate-400">
               Find from everywhere · Apply or let us apply · Track and Reach out to mentors
             </p>
-            <button
-              type="button"
-              onClick={() => smoothScrollToSection("about")}
-              className="landing-scroll-hint mt-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/80 text-slate-400 shadow-sm backdrop-blur-sm transition-colors hover:border-scale-purple/30 hover:text-scale-purple"
-              aria-label="Scroll to About section"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
           </div>
         </div>
       </section>
-
-      <SectionDivider />
 
       <LandingInternshipsSection />
 
