@@ -22,11 +22,11 @@ const UNLIMITED_TRACKING = "Unlimited applications & syncs";
 
 export const PRICING_PLANS: PricingPlan[] = [
   {
-    id: "student",
-    name: "Student",
-    price: "Free",
-    cadence: "with verification",
-    note: "Verify once with your school",
+    id: "starter",
+    name: "Starter Plan",
+    price: "$4.99",
+    cadence: "/month",
+    note: "Everything you need to start your internship search",
     features: [
       "Track up to 50 applications",
       ...SHARED_FEATURES,
@@ -35,10 +35,10 @@ export const PRICING_PLANS: PricingPlan[] = [
       "Mentor & recruiter search",
       "All student deals & resources",
     ],
-    cta: "Verify & unlock everything",
+    cta: "Get Starter",
     highlight: true,
-    badge: "For students",
-    href: "/verify-student",
+    badge: "Best value",
+    href: "/pricing",
   },
   {
     id: "professional",

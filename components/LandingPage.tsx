@@ -264,7 +264,7 @@ function VignetteResources() {
 /* ── Page data ────────────────────────────────────────────── */
 
 const QUICK_FACTS: [string, string][] = [
-  ["$0", "for verified students, every tool included"],
+  ["$4.99", "Starter Plan, core toolkit included"],
   ["Daily", "internship syncs from company career pages"],
   ["25+", "AI mock interviews by company & role"],
   ["50+", "student discounts & free tools"],
@@ -388,7 +388,7 @@ const HOW_IT_WORKS = [
   {
     step: "1",
     title: "Create your free account",
-    desc: "Sign in with Google or email in seconds. Students: verify once with your school and everything unlocks, free forever.",
+    desc: "Sign in with Google or email in seconds. Pick Starter, Pro, or Premium and start tracking applications right away.",
   },
   {
     step: "2",
@@ -436,7 +436,7 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "I'm not a student. Can I use it?",
-    a: "Students verify once for unlimited access, free forever. Pro Plan is $9.99/month for unlimited tracking, or Premium includes 100 applications on your behalf plus a free portfolio website.",
+    a: "Starter Plan is $4.99/month with the core toolkit. Pro Plan is $9.99/month for unlimited tracking and done-for-you applications, or Premium includes 100 applications on your behalf plus a free portfolio website.",
   },
 ];
 
@@ -540,7 +540,7 @@ export function LandingPage() {
                 place: a daily-updated board of US internships, an AI tracker that builds
                 your application pipeline from Gmail, mock interviews tailored to real
                 companies, a mentor finder for referrals and advice, and a library of
-                student discounts. Five tools, one login, free for verified students.
+                student discounts. Five tools, one login, start with Starter at $4.99/mo.
               </p>
             </div>
           </ScrollReveal>
@@ -700,11 +700,11 @@ export function LandingPage() {
                 Pricing
               </span>
               <h2 id="pricing-heading" className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                Students never pay. That&apos;s the pricing page.
+                Simple plans for your internship search
               </h2>
               <p className="mx-auto mt-4 text-base text-slate-500 sm:text-lg">
-                Verify your student status once, unlimited everything, free forever.
-                Pro and Premium add unlimited tracking and done-for-you applications.{" "}
+                Start with Starter at $4.99/mo. Pro and Premium add unlimited tracking and
+                done-for-you applications.{" "}
                 <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
                   Full comparison
                 </Link>

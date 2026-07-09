@@ -6,7 +6,7 @@ import Link from "next/link";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { useChains } from "@/hooks/useChains";
 import { getPricingPlan } from "@/lib/pricingPlans";
-import { getPayPalProCheckoutUrl } from "@/lib/payments";
+import { getPayPalProCheckoutUrl, getPayPalStarterCheckoutUrl } from "@/lib/payments";
 
 function FeatureList({ items, accent }: { items: string[]; accent: "emerald" | "blue" | "purple" }) {
   const iconClass =
@@ -39,15 +39,20 @@ function FeatureList({ items, accent }: { items: string[]; accent: "emerald" | "
 export default function PricingPage() {
   const { data: session } = useSession();
   const { hasProSubscription, studentVerified, chainCount, limit, loading } = useChains();
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState<"starter" | "pro" | null>(null);
 
   const freeLimit = limit ?? 50;
-  const studentPlan = getPricingPlan("student")!;
+  const starterPlan = getPricingPlan("starter")!;
   const proPlan = getPricingPlan("professional")!;
   const premiumPlan = getPricingPlan("premium")!;
 
+  const handleStarterCheckout = () => {
+    setCheckoutLoading("starter");
+    window.location.href = getPayPalStarterCheckoutUrl();
+  };
+
   const handleProCheckout = () => {
-    setCheckoutLoading(true);
+    setCheckoutLoading("pro");
     window.location.href = getPayPalProCheckoutUrl();
   };
 
@@ -94,65 +99,62 @@ export default function PricingPage() {
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
                 {studentVerified
-                  ? "You're on the free student plan with unlimited tracking. Upgrade to Pro or Premium for done-for-you internship applications and extra support."
+                  ? "You're verified with unlimited tracking. Upgrade to Starter, Pro, or Premium for more support and done-for-you applications."
                   : session
-                    ? `You're using ${chainCount} of ${freeLimit} free applications. Verify as a student for free unlimited access, or upgrade to Pro / Premium anytime.`
-                    : "Verify as a student for free unlimited access, or choose Pro / Premium for unlimited tracking and done-for-you applications."}
+                    ? `You're using ${chainCount} of ${freeLimit} free applications. Choose Starter, Pro, or Premium anytime.`
+                    : "Start with Starter for $4.99/mo, or choose Pro / Premium for unlimited tracking and done-for-you applications."}
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {/* Student Plan */}
-              <div
-                className={`flex flex-col rounded-2xl border bg-white p-7 shadow-sm ${
-                  studentVerified ? "border-emerald-400 ring-2 ring-emerald-100" : "border-emerald-300"
-                }`}
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600">
-                      <svg
-                        className="h-5 w-5 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-slate-900">{studentPlan.name}</h2>
-                      <p className="text-xs text-slate-400">{studentPlan.note}</p>
-                    </div>
-                  </div>
-                  <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase text-emerald-700">
-                    {studentVerified ? "Current" : studentPlan.badge}
+              {/* Starter Plan */}
+              <div className="relative flex flex-col rounded-2xl border-2 border-emerald-400 bg-white p-7 shadow-sm">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-semibold text-white">
+                    {starterPlan.badge}
                   </span>
                 </div>
 
-                <div className="mb-5 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-slate-900">{studentPlan.price}</span>
+                <div className="mb-4 mt-1 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600">
+                    <svg
+                      className="h-5 w-5 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-slate-900">{starterPlan.name}</h2>
+                    <p className="text-xs text-slate-400">{starterPlan.note}</p>
+                  </div>
                 </div>
 
-                <FeatureList items={studentPlan.features} accent="emerald" />
+                <div className="mb-1 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-slate-900">{starterPlan.price}</span>
+                  <span className="text-sm text-slate-500">{starterPlan.cadence}</span>
+                </div>
+                <p className="mb-5 text-xs text-slate-400">Cancel anytime</p>
 
-                {studentVerified ? (
-                  <p className="w-full rounded-xl border border-emerald-200 bg-emerald-50 py-3 text-center text-sm font-medium text-emerald-800">
-                    Student plan active
-                  </p>
-                ) : (
-                  <Link
-                    href="/verify-student"
-                    className="block w-full rounded-xl bg-emerald-600 py-3 text-center font-medium text-white transition-colors hover:bg-emerald-700"
-                  >
-                    {studentPlan.cta}
-                  </Link>
-                )}
+                <FeatureList items={starterPlan.features} accent="emerald" />
+
+                <button
+                  type="button"
+                  onClick={handleStarterCheckout}
+                  disabled={checkoutLoading !== null}
+                  className="w-full rounded-xl bg-emerald-600 py-3 font-medium text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {checkoutLoading === "starter" ? "Redirecting to checkout..." : starterPlan.cta}
+                </button>
+
+                <p className="mt-3 text-center text-xs text-slate-400">Secure payment via PayPal</p>
               </div>
 
               {/* Pro Plan */}
@@ -196,10 +198,10 @@ export default function PricingPage() {
                 <button
                   type="button"
                   onClick={handleProCheckout}
-                  disabled={checkoutLoading}
+                  disabled={checkoutLoading !== null}
                   className="w-full rounded-xl bg-blue-600 py-3 font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {checkoutLoading ? "Redirecting to checkout..." : "Upgrade to Pro"}
+                  {checkoutLoading === "pro" ? "Redirecting to checkout..." : "Upgrade to Pro"}
                 </button>
 
                 <p className="mt-3 text-center text-xs text-slate-400">Secure payment via PayPal</p>

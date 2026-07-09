@@ -17,7 +17,7 @@ const COMPANY_LINKS = [
 ] as const;
 
 const FOOTER_TAGLINE =
-  "Find US internships from company career pages, track every application, and prep for interviews, free for students.";
+  "Find US internships from company career pages, track every application, and prep for interviews.";
 
 const footerLinkClass =
   "inline-flex min-h-11 items-center text-sm text-slate-600 transition-colors hover:text-scale-purple sm:min-h-0";
