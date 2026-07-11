@@ -1,5 +1,6 @@
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
 import { INTERNSHIP_LOCATION_INDEX_PATH, INTERNSHIP_LOCATION_PAGES } from "@/lib/internshipLocationPages";
+import { INTERNSHIP_TOPIC_PAGES } from "@/lib/internshipTopicPages";
 import { PRACTICE_INTERVIEWS } from "@/lib/practiceInterviewsData";
 
 export type SitemapPathEntry = {
@@ -42,6 +43,11 @@ export function getPublicSitemapPaths(): SitemapPathEntry[] {
       path: page.path,
       changeFrequency: "daily" as const,
       priority: 0.88,
+    })),
+    ...INTERNSHIP_TOPIC_PAGES.map((page) => ({
+      path: page.path,
+      changeFrequency: "daily" as const,
+      priority: 0.9,
     })),
     { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
     { path: "/find-mentors", changeFrequency: "weekly", priority: 0.85 },

@@ -17,6 +17,8 @@ export type InternshipQueryParams = {
   locationQuery: string;
   /** When set, listing location must match any matcher (overrides locationQuery). */
   locationMatchers?: string[];
+  /** When set, listing company / companySlug must match any matcher. */
+  companyMatchers?: string[];
   sortField: JobSortField;
   sortDir: SortDir;
   page?: number;
@@ -40,6 +42,30 @@ export function postedDaysForPreset(preset: PostedPreset): number | null {
   }
 }
 
+/** Match company name / slug against curated matchers (exact or prefix, not loose includes). */
+export function listingMatchesCompanyMatchers(
+  company: string,
+  companySlug: string,
+  matchers: string[]
+): boolean {
+  if (!matchers.length) return true;
+
+  const name = company.toLowerCase().trim();
+  const slug = companySlug.toLowerCase().trim();
+  const compactName = name.replace(/[^a-z0-9]+/g, "");
+
+  return matchers.some((raw) => {
+    const matcher = raw.toLowerCase().trim();
+    const compactMatcher = matcher.replace(/[^a-z0-9]+/g, "");
+    if (!compactMatcher) return false;
+    if (slug === matcher || slug === compactMatcher) return true;
+    if (name === matcher) return true;
+    if (compactName === compactMatcher) return true;
+    if (name.startsWith(`${matcher} `) || name.startsWith(`${matcher},`)) return true;
+    return false;
+  });
+}
+
 export function filterJobListings(
   jobs: JobListing[],
   opts: Pick<
@@ -51,6 +77,7 @@ export function filterJobListings(
     | "postedPreset"
     | "locationQuery"
     | "locationMatchers"
+    | "companyMatchers"
   >
 ): JobListing[] {
   const q = opts.search.trim().toLowerCase();
@@ -69,6 +96,17 @@ export function filterJobListings(
       return false;
     }
     if (maxDays != null && j.postedDaysAgo > maxDays) return false;
+    if (opts.companyMatchers?.length) {
+      if (
+        !listingMatchesCompanyMatchers(
+          j.company,
+          j.companySlug,
+          opts.companyMatchers
+        )
+      ) {
+        return false;
+      }
+    }
     if (opts.locationMatchers?.length) {
       const loc = j.location.toLowerCase();
       if (

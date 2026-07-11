@@ -4,6 +4,7 @@ import {
   INTERNSHIP_CITY_LOCATION_PAGES,
   INTERNSHIP_STATE_LOCATION_PAGES,
 } from "@/lib/internshipLocationPages";
+import { YC_SUMMER_2027_INTERNSHIPS_PAGE } from "@/lib/internshipTopicPages";
 
 function stateShortLabel(title: string): string {
   return title.replace(/ Summer 2027 Internships$/, "");
@@ -24,12 +25,41 @@ export function InternshipsByStateIndex() {
               Browse summer 2027 internships by location. Each page lists roles synced from company
               career pages in that state or metro area.
             </p>
-            <Link
-              href="/find-internships"
-              className="mt-6 inline-flex items-center justify-center rounded-xl bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-scale-purple-dark"
-            >
-              Browse all internships
-            </Link>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/find-internships"
+                className="inline-flex items-center justify-center rounded-xl bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-scale-purple-dark"
+              >
+                Browse all internships
+              </Link>
+              <Link
+                href={YC_SUMMER_2027_INTERNSHIPS_PAGE.path}
+                className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+              >
+                Y Combinator companies
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="border-b border-slate-200/80 py-10 sm:py-12"
+          aria-labelledby="topics-heading"
+        >
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <h2 id="topics-heading" className="text-xl font-bold text-slate-900">
+              By company type
+            </h2>
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <li>
+                <Link
+                  href={YC_SUMMER_2027_INTERNSHIPS_PAGE.path}
+                  className="flex min-h-11 items-center rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-scale-purple/30 hover:text-scale-purple"
+                >
+                  {YC_SUMMER_2027_INTERNSHIPS_PAGE.footerLabel ?? "Y Combinator"}
+                </Link>
+              </li>
+            </ul>
           </div>
         </section>
 

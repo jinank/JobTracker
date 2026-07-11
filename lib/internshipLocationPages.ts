@@ -18,6 +18,10 @@ export type InternshipLocationPage = {
 
 const BASE_RELATED_LINKS: { href: string; label: string }[] = [
   { href: "/find-internships", label: "All Summer 2027 internships" },
+  {
+    href: "/y-combinator-summer-2027-internships",
+    label: "Y Combinator Summer 2027 internships",
+  },
   { href: "/blog/summer-2027-internships", label: "Summer 2027 internship timeline" },
   {
     href: "/blog/2027-summer-internships-practical-guide",

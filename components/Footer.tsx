@@ -153,6 +153,11 @@ export function Footer() {
                 </li>
               ))}
               <li>
+                <FooterLink href="/y-combinator-summer-2027-internships">
+                  Y Combinator internships
+                </FooterLink>
+              </li>
+              <li>
                 <FooterLink href={INTERNSHIP_LOCATION_INDEX_PATH}>
                   See all Statewise Internships
                 </FooterLink>

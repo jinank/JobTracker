@@ -6,13 +6,22 @@ import { InternshipTable } from "@/components/InternshipTable";
 import { LoginLink } from "@/components/LoginLink";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { ROLE_CATEGORIES } from "@/lib/jobs/constants";
-import type { InternshipLocationPage } from "@/lib/internshipLocationPages";
 import type { InternshipsQueryResult } from "@/lib/jobs/queryInternships";
 
 const PAGE_SIZE = 25;
 
+/** Shared shape for location + topic SEO landing pages. */
+export type BrowseInternshipsPage = {
+  path: string;
+  heading: string;
+  intro: string;
+  relatedLinks: { href: string; label: string }[];
+  badgeLabel?: string;
+  countPhrase?: string;
+};
+
 type Props = {
-  page: InternshipLocationPage;
+  page: BrowseInternshipsPage;
   initial: InternshipsQueryResult;
 };
 
@@ -42,6 +51,8 @@ export function LocationInternshipsLanding({ page, initial }: Props) {
   );
 
   const companies = new Set(filtered.map((j) => j.company)).size;
+  const badgeLabel = page.badgeLabel ?? "Summer 2027 · US internships";
+  const countPhrase = page.countPhrase ?? "in this area";
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -53,7 +64,7 @@ export function LocationInternshipsLanding({ page, initial }: Props) {
         >
           <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
           <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-            <p className="text-sm font-semibold text-emerald-600">Summer 2027 · US internships</p>
+            <p className="text-sm font-semibold text-emerald-600">{badgeLabel}</p>
             <h1
               id="location-internships-heading"
               className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"
@@ -67,7 +78,7 @@ export function LocationInternshipsLanding({ page, initial }: Props) {
               {filtered.length > 0 ? (
                 <>
                   <strong className="font-semibold text-slate-700">{filtered.length}</strong>{" "}
-                  {filtered.length === 1 ? "internship" : "internships"} in this area
+                  {filtered.length === 1 ? "internship" : "internships"} {countPhrase}
                   {companies > 0 ? (
                     <>
                       {" "}
