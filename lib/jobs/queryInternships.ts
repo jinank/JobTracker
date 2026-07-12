@@ -7,7 +7,7 @@ import {
 } from "@/lib/findJobsFilters";
 import { personalizeInternships } from "@/lib/jobs/personalizeInternships";
 import type { InternshipUserPrefs } from "@/lib/jobs/personalizeInternships";
-import { shouldExcludeInternshipTitle } from "@/lib/jobs/internshipTitleQuality";
+import { shouldExcludeInternshipListing } from "@/lib/jobs/internshipTitleQuality";
 import type { JobListing, JobListingRow } from "@/types/jobListing";
 
 export type InternshipsQueryResult = {
@@ -40,7 +40,7 @@ export async function queryInternships(
   const rows = (data ?? []) as JobListingRow[];
   const listings = rows
     .map(rowToJobListing)
-    .filter((job) => !shouldExcludeInternshipTitle(job.title));
+    .filter((job) => !shouldExcludeInternshipListing(job.company, job.title));
 
   let filtered = filterJobListings(listings, params);
   if (params.forMe && userPrefs?.matchEnabled) {
@@ -61,6 +61,7 @@ export async function queryInternships(
   const { data: syncRow } = await supabase
     .from("job_sources")
     .select("last_synced_at")
+    .not("last_synced_at", "is", null)
     .order("last_synced_at", { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -72,22 +73,6 @@ export async function queryInternships(
       totalActive: listings.length,
       companies,
       lastSyncedAt: syncRow?.last_synced_at ?? null,
-      ...(process.env.NODE_ENV === "development"
-        ? {
-            _debug: {
-              rowCount: rows.length,
-              listingCount: listings.length,
-              filteredCount: filtered.length,
-              sortField: params.sortField,
-              sortDir: params.sortDir,
-              firstRowCompany: rows[0]?.company ?? null,
-              firstRowUpdatedAt: rows[0]?.updated_at ?? null,
-              firstListingUpdatedDays: listings[0]?.updatedDaysAgo ?? null,
-              firstSortedCompany: sorted[0]?.company ?? null,
-              firstSortedUpdatedDays: sorted[0]?.updatedDaysAgo ?? null,
-            },
-          }
-        : {}),
     },
   };
 }

@@ -20,7 +20,11 @@ export async function GET(request: Request) {
     }
 
     const result = await queryInternships(params, userPrefs);
-    return NextResponse.json(result);
+    return NextResponse.json(result, {
+      headers: {
+        "Cache-Control": "no-store, max-age=0",
+      },
+    });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Failed to load internships";

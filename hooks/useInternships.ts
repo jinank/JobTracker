@@ -106,7 +106,9 @@ export function useInternshipPreview(
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`/api/internships?limit=${limit}&sort=${sort}`);
+        const res = await fetch(`/api/internships?limit=${limit}&sort=${sort}`, {
+          cache: "no-store",
+        });
         const data = await res.json();
         if (cancelled) return;
         if (res.ok) {
