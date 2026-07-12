@@ -72,6 +72,22 @@ export async function queryInternships(
       totalActive: listings.length,
       companies,
       lastSyncedAt: syncRow?.last_synced_at ?? null,
+      ...(process.env.NODE_ENV === "development"
+        ? {
+            _debug: {
+              rowCount: rows.length,
+              listingCount: listings.length,
+              filteredCount: filtered.length,
+              sortField: params.sortField,
+              sortDir: params.sortDir,
+              firstRowCompany: rows[0]?.company ?? null,
+              firstRowUpdatedAt: rows[0]?.updated_at ?? null,
+              firstListingUpdatedDays: listings[0]?.updatedDaysAgo ?? null,
+              firstSortedCompany: sorted[0]?.company ?? null,
+              firstSortedUpdatedDays: sorted[0]?.updatedDaysAgo ?? null,
+            },
+          }
+        : {}),
     },
   };
 }

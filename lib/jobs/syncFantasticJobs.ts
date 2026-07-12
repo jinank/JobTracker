@@ -44,7 +44,11 @@ async function ensureFantasticSource(now: string): Promise<JobSourceRow | null> 
 export type FantasticSyncOptions = {
   timeFrame?: "1h" | "24h" | "7d";
   maxPages?: number;
+  /** Page size per Fantastic.jobs request (default 500). */
+  limit?: number;
   titleQuery?: string;
+  /** Stop after this many successful upserts (useful for small top-ups). */
+  maxUpsert?: number;
 };
 
 /**
@@ -82,6 +86,7 @@ export async function syncFantasticInternships(
     const { ats, jobBoard } = await fetchFantasticAtsAndJobBoardInternships({
       timeFrame: options?.timeFrame ?? "1h",
       maxPages: options?.maxPages ?? 15,
+      limit: options?.limit,
       titleQuery: options?.titleQuery,
     });
 
@@ -93,9 +98,12 @@ export async function syncFantasticInternships(
     ].filter(Boolean);
 
     const seenApplyUrls = new Set<string>();
+    const maxUpsert = options?.maxUpsert;
 
     for (const draft of drafts) {
       if (!draft) continue;
+      if (maxUpsert != null && slice.upserted >= maxUpsert) break;
+
       slice.internshipsKept++;
       slice.usKept++;
 
