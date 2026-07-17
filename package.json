@@ -15,6 +15,8 @@
     "sync:internships": "npx tsx scripts/sync-internships.mjs",
     "sync:fantastic-2027": "npx tsx scripts/sync-fantastic-2027.mjs",
     "sync:fantastic-topup": "npx tsx scripts/sync-fantastic-topup.mjs",
+    "sync:fantastic-categories": "npx tsx scripts/sync-fantastic-categories.mjs",
+    "seed:category-interns": "npx tsx scripts/seed-category-interns.mjs",
     "seed:curated": "npx tsx scripts/seed-curated-internships.mjs",
     "diagnose:internships": "node scripts/diagnose-internships.mjs"
   },

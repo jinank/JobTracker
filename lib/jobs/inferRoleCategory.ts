@@ -6,8 +6,8 @@ export function inferRoleCategory(title: string): JobListing["roleCategory"] {
 
   if (shouldExcludeInternshipTitle(title)) return "Other";
 
-  if (/design|ux|ui|product designer|graphic design/i.test(t)) return "Design";
-  if (/product manager|product management|\bpm\b/i.test(t)) return "Product";
+  if (/\b(design|ux|ui)\b|product designer|graphic design/i.test(t)) return "Design";
+  if (/product manager|product management|\bpm\b|apm\b|product intern/i.test(t)) return "Product";
   if (
     /data sci|machine learning|\bml\b|analytics engineer|data engineer|data analyst/i.test(
       t
@@ -15,11 +15,11 @@ export function inferRoleCategory(title: string): JobListing["roleCategory"] {
   ) {
     return "Data & Analytics";
   }
-  if (/marketing|growth|brand|content|communications intern/i.test(t)) {
+  if (/marketing|growth|brand|content|communications intern|social media/i.test(t)) {
     return "Marketing";
   }
   if (
-    /operations|bizops|strategy|finance|accounting|investment banking|capital markets|audit\b|assurance\b|commercial real estate|tax intern/i.test(
+    /operations|bizops|strategy|finance|accounting|investment banking|capital markets|audit\b|assurance\b|commercial real estate|tax intern|people team|hr operations|public policy|network strategy|sales project/i.test(
       t
     )
   ) {
