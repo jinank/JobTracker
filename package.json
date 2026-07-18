@@ -17,6 +17,7 @@
     "sync:fantastic-topup": "npx tsx scripts/sync-fantastic-topup.mjs",
     "sync:fantastic-categories": "npx tsx scripts/sync-fantastic-categories.mjs",
     "seed:category-interns": "npx tsx scripts/seed-category-interns.mjs",
+    "seo:indexnow": "npx tsx scripts/submit-indexnow.mjs",
     "seed:curated": "npx tsx scripts/seed-curated-internships.mjs",
     "diagnose:internships": "node scripts/diagnose-internships.mjs"
   },
