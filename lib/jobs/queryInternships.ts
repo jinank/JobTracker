@@ -17,8 +17,20 @@ export type InternshipsQueryResult = {
     totalActive: number;
     companies: number;
     lastSyncedAt: string | null;
+    /** Supabase project host — helps confirm prod vs local DB (not a secret). */
+    dbHost: string | null;
   };
 };
+
+function getSupabaseHost(): string | null {
+  const raw = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!raw) return null;
+  try {
+    return new URL(raw).host;
+  } catch {
+    return null;
+  }
+}
 
 export async function queryInternships(
   params: InternshipQueryParams,
@@ -73,6 +85,7 @@ export async function queryInternships(
       totalActive: listings.length,
       companies,
       lastSyncedAt: syncRow?.last_synced_at ?? null,
+      dbHost: getSupabaseHost(),
     },
   };
 }

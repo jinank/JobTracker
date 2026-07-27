@@ -14,6 +14,7 @@ export type InternshipStats = {
   totalActive: number;
   companies: number;
   lastSyncedAt: string | null;
+  dbHost?: string | null;
 };
 
 export type InternshipFilters = {

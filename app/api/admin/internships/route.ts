@@ -46,12 +46,21 @@ export async function GET() {
 
   const companies = new Set((listings ?? []).map((r) => r.company)).size;
 
+  let dbHost: string | null = null;
+  try {
+    const raw = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (raw) dbHost = new URL(raw).host;
+  } catch {
+    dbHost = null;
+  }
+
   return NextResponse.json({
     stats: {
       activeListings: listings?.length ?? 0,
       companies,
       enabledSources: sourceCount ?? 0,
       lastSyncedAt: lastSourceSync?.last_synced_at ?? null,
+      dbHost,
     },
     lastRun: lastRun ?? null,
   });

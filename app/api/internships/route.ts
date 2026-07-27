@@ -22,7 +22,10 @@ export async function GET(request: Request) {
     const result = await queryInternships(params, userPrefs);
     return NextResponse.json(result, {
       headers: {
-        "Cache-Control": "no-store, max-age=0",
+        "Cache-Control": "private, no-store, no-cache, max-age=0, must-revalidate",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
+        Pragma: "no-cache",
       },
     });
   } catch (error) {
@@ -33,7 +36,13 @@ export async function GET(request: Request) {
         ? "Run supabase/migration_v9_internship_jobs.sql and seed sources."
         : undefined;
     return NextResponse.json(
-      { error: message, hint, jobs: [], total: 0, stats: { totalActive: 0, companies: 0, lastSyncedAt: null } },
+      {
+        error: message,
+        hint,
+        jobs: [],
+        total: 0,
+        stats: { totalActive: 0, companies: 0, lastSyncedAt: null, dbHost: null },
+      },
       { status: message.includes("relation") ? 503 : 500 }
     );
   }

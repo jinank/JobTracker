@@ -9,6 +9,7 @@ type InternshipStats = {
   companies: number;
   enabledSources: number;
   lastSyncedAt: string | null;
+  dbHost?: string | null;
 };
 
 type SyncRun = {
@@ -165,6 +166,12 @@ export default function AdminInternshipsPage() {
             <span className="font-medium text-slate-700">
               {formatWhen(stats?.lastSyncedAt ?? null)}
             </span>
+            {stats?.dbHost ? (
+              <>
+                {" "}
+                · DB: <span className="font-mono text-xs text-slate-600">{stats.dbHost}</span>
+              </>
+            ) : null}
           </p>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
