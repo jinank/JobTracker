@@ -32,6 +32,7 @@ export async function GET() {
   const { data: lastSourceSync } = await supabase
     .from("job_sources")
     .select("last_synced_at")
+    .not("last_synced_at", "is", null)
     .order("last_synced_at", { ascending: false })
     .limit(1)
     .maybeSingle();
