@@ -204,6 +204,8 @@ export function HiddenJobsLanding() {
             jobs={filtered}
             loading={loading}
             showWorkType={false}
+            recencyField="updated"
+            recencyLabel="Added"
             emptyMessage="No internships match your filters yet. Listings sync every few hours from company career pages."
           />
         </div>
