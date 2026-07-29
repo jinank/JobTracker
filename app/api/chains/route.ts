@@ -17,18 +17,28 @@ export async function GET() {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const { data, error } = await supabase
-    .from("chains")
-    .select("*")
-    .eq("user_id", user.userId)
-    .order("last_event_at", { ascending: false });
+  // PostgREST defaults to max 1000 rows — page until we have everything.
+  const PAGE = 1000;
+  const allChains: Record<string, unknown>[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const to = from + PAGE - 1;
+    const { data, error } = await supabase
+      .from("chains")
+      .select("*")
+      .eq("user_id", user.userId)
+      .order("last_event_at", { ascending: false })
+      .range(from, to);
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    if (!data?.length) break;
+    allChains.push(...data);
+    if (data.length < PAGE) break;
   }
 
   return NextResponse.json({
-    chains: data,
+    chains: allChains,
     paid: user.paid,
     studentVerified: user.studentVerified,
     hasProSubscription: user.hasProSubscription,

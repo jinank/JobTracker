@@ -18,6 +18,7 @@ import {
 } from "@/lib/chainMatcher";
 import {
   GMAIL_JOB_QUERY,
+  GMAIL_JOB_QUERY_RECENT,
   MAX_MESSAGES_PER_SYNC,
   MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC,
   GMAIL_FETCH_BATCH_SIZE,
@@ -166,49 +167,92 @@ export async function POST() {
     );
   }
 
-  try {
-    const { data: existingMsgs } = await supabase
-      .from("message_index")
-      .select("provider_message_id")
-      .eq("user_id", user.userId);
+  const accessToken = user.accessToken;
+  const userId = user.userId;
 
-    const processedIds = new Set(
-      (existingMsgs ?? []).map((m) => m.provider_message_id)
+  try {
+    // PostgREST caps at 1000 rows — must page or already-synced mail looks "new".
+    const processedIds = new Set<string>();
+    {
+      const PAGE = 1000;
+      for (let from = 0; ; from += PAGE) {
+        const { data: page } = await supabase
+          .from("message_index")
+          .select("provider_message_id")
+          .eq("user_id", userId)
+          .range(from, from + PAGE - 1);
+        if (!page?.length) break;
+        for (const m of page) {
+          if (m.provider_message_id) processedIds.add(m.provider_message_id);
+        }
+        if (page.length < PAGE) break;
+      }
+    }
+
+    async function collectMessageIds(
+      q: string,
+      cap: number
+    ): Promise<Array<{ id: string; threadId: string }>> {
+      const ids: Array<{ id: string; threadId: string }> = [];
+      let pageToken: string | undefined;
+      while (ids.length < cap) {
+        const listing = await listMessages(accessToken, {
+          q,
+          maxResults: 100,
+          pageToken,
+        });
+        if (listing.messages) ids.push(...listing.messages);
+        pageToken = listing.nextPageToken;
+        if (!pageToken) break;
+      }
+      return ids;
+    }
+
+    // Recent window first so brand-new confirmations win over older matches.
+    const recentIds = await collectMessageIds(
+      GMAIL_JOB_QUERY_RECENT,
+      Math.min(200, MAX_MESSAGES_PER_SYNC)
+    );
+    const olderIds = await collectMessageIds(
+      GMAIL_JOB_QUERY,
+      MAX_MESSAGES_PER_SYNC
     );
 
+    const seenId = new Set<string>();
     const allMessageIds: Array<{ id: string; threadId: string }> = [];
-    let pageToken: string | undefined;
-
-    while (allMessageIds.length < MAX_MESSAGES_PER_SYNC) {
-      const listing = await listMessages(user.accessToken, {
-        q: GMAIL_JOB_QUERY,
-        maxResults: 100,
-        pageToken,
-      });
-
-      if (listing.messages) {
-        allMessageIds.push(...listing.messages);
-      }
-
-      pageToken = listing.nextPageToken;
-      if (!pageToken) break;
+    for (const m of [...recentIds, ...olderIds]) {
+      if (seenId.has(m.id)) continue;
+      seenId.add(m.id);
+      allMessageIds.push(m);
     }
 
     const allNewIds = allMessageIds.filter((m) => !processedIds.has(m.id));
 
-    const { data: userChains } = await supabase
-      .from("chains")
-      .select("chain_id, canonical_company, role_title, status, last_event_at, confidence")
-      .eq("user_id", user.userId);
-
-    const chainCache: ChainRow[] = (userChains ?? []).map((c) => ({
-      chain_id: c.chain_id,
-      canonical_company: c.canonical_company,
-      role_title: c.role_title,
-      status: c.status,
-      last_event_at: c.last_event_at,
-      confidence: c.confidence,
-    }));
+    const chainCache: ChainRow[] = [];
+    {
+      const PAGE = 1000;
+      for (let from = 0; ; from += PAGE) {
+        const { data: page } = await supabase
+          .from("chains")
+          .select(
+            "chain_id, canonical_company, role_title, status, last_event_at, confidence"
+          )
+          .eq("user_id", userId)
+          .range(from, from + PAGE - 1);
+        if (!page?.length) break;
+        for (const c of page) {
+          chainCache.push({
+            chain_id: c.chain_id,
+            canonical_company: c.canonical_company,
+            role_title: c.role_title,
+            status: c.status,
+            last_event_at: c.last_event_at,
+            confidence: c.confidence,
+          });
+        }
+        if (page.length < PAGE) break;
+      }
+    }
 
     let newCount = 0;
     let classifyBudget = MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC;
@@ -219,7 +263,7 @@ export async function POST() {
     const { data: recentIndexed } = await supabase
       .from("message_index")
       .select("provider_message_id,msg_id_internal,received_at")
-      .eq("user_id", user.userId)
+      .eq("user_id", userId)
       .eq("processed", true)
       .gte("received_at", lookback)
       .order("received_at", { ascending: false })
@@ -264,12 +308,12 @@ export async function POST() {
           if (!msgIdInternal) return null;
           try {
             const full = await getMessage(
-              user.accessToken,
+              accessToken,
               missingMsg.provider_message_id
             );
             const parsedMsg = parseGmailMessage(full);
             const classification = await classifyEmail(parsedMsg, {
-              userId: user.userId,
+              userId: userId,
             });
             return { parsedMsg, classification, msgIdInternal };
           } catch {
@@ -281,7 +325,7 @@ export async function POST() {
       for (const item of results) {
         if (!item) continue;
         const created = await ingestClassification({
-          userId: user.userId,
+          userId: userId,
           email: item.parsedMsg,
           classification: item.classification,
           chainCache,
@@ -311,7 +355,7 @@ export async function POST() {
         const results = await Promise.all(
           batch.map(async (m) => {
             try {
-              const full = await getMessage(user.accessToken, m.id);
+              const full = await getMessage(accessToken, m.id);
               return parseGmailMessage(full);
             } catch {
               return null;
@@ -333,7 +377,7 @@ export async function POST() {
         slice.map(async (email) => {
           try {
             const classification = await classifyEmail(email, {
-              userId: user.userId,
+              userId: userId,
             });
             return { email, classification };
           } catch {
@@ -352,7 +396,7 @@ export async function POST() {
         await supabase.from("message_index").upsert(
           {
             msg_id_internal: msgId,
-            user_id: user.userId,
+            user_id: userId,
             provider_message_id: email.gmail_id,
             provider_thread_id: email.thread_id,
             subject_text: email.subject,
@@ -368,7 +412,7 @@ export async function POST() {
         processedIds.add(email.gmail_id);
 
         const created = await ingestClassification({
-          userId: user.userId,
+          userId: userId,
           email,
           classification,
           chainCache,
@@ -384,11 +428,11 @@ export async function POST() {
 
     const mergedDuplicates = await mergeDuplicateChainsForUser(
       supabase,
-      user.userId
+      userId
     );
 
     void recordUserActivity({
-      userId: user.userId,
+      userId: userId,
       action: "gmail_sync",
       meta: {
         newCount,
