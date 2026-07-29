@@ -26,6 +26,7 @@ import {
   isGmailReauthError,
 } from "@/lib/gmailAuthErrors";
 import { mergeDuplicateChainsForUser } from "@/lib/mergeDuplicateChains";
+import { isInternshipTrackerApplication } from "@/lib/gmail/isInternshipApplication";
 
 const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
   "REJECTION",
@@ -197,6 +198,20 @@ export async function POST() {
             classification.confidence >= MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
 
         if (!match && !canCreateFromNoMatch) continue;
+
+        // Internship tracker: only open new chains for intern/co-op applications.
+        // Existing chains still receive status updates from follow-up email.
+        if (
+          !match &&
+          !isInternshipTrackerApplication({
+            roleTitle: role || classification.roleTitle || "",
+            subject: email.subject,
+            snippet: email.snippet,
+            evidence: classification.evidence,
+          })
+        ) {
+          continue;
+        }
 
         let chainId: string;
 
