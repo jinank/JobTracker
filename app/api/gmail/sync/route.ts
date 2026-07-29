@@ -3,7 +3,10 @@ import { getAppUser, requireSyncAccess } from "@/lib/requirePaid";
 import { supabase } from "@/lib/supabase";
 import { listMessages, getMessage } from "@/lib/gmail/client";
 import { parseGmailMessage, type ParsedMessage } from "@/lib/gmail/parser";
-import { classifyEmail } from "@/lib/openai/classifier";
+import {
+  classifyEmail,
+  type ClassificationResult,
+} from "@/lib/openai/classifier";
 import { recordUserActivity } from "@/lib/userTelemetry";
 import {
   eventTypeToStatus,
@@ -26,7 +29,6 @@ import {
   isGmailReauthError,
 } from "@/lib/gmailAuthErrors";
 import { mergeDuplicateChainsForUser } from "@/lib/mergeDuplicateChains";
-import { isInternshipTrackerApplication } from "@/lib/gmail/isInternshipApplication";
 
 const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
   "REJECTION",
@@ -39,6 +41,106 @@ const NON_APPLICATION_CREATE_EVENT_TYPES = new Set<string>([
 // later stages (rejection/interview/etc) but avoid false positives from
 // marketing content.
 const MIN_CONFIDENCE_NON_APPLICATION_CHAIN = 0.55;
+
+/** Re-open apps that were indexed but never got an event (e.g. temporary filters). */
+const BACKFILL_LOOKBACK_MS = 7 * 24 * 60 * 60 * 1000;
+const BACKFILL_CANDIDATE_LIMIT = 120;
+
+async function ingestClassification(opts: {
+  userId: string;
+  email: ParsedMessage;
+  classification: ClassificationResult;
+  chainCache: ChainRow[];
+  msgIdInternal: string;
+}): Promise<boolean> {
+  const { userId, email, classification, chainCache, msgIdInternal } = opts;
+
+  if (
+    classification.eventType === "OTHER" &&
+    classification.confidence < 0.3
+  ) {
+    return false;
+  }
+
+  const status = eventTypeToStatus(classification.eventType);
+  const company = resolveCompanyName(
+    classification.company || undefined,
+    email.from_domain
+  );
+  const role = normalizeRoleTitle(classification.roleTitle || "");
+
+  const match = findBestMatch(chainCache, company, role);
+
+  const canCreateFromNoMatch =
+    classification.eventType === "APPLICATION_RECEIVED" ||
+    (NON_APPLICATION_CREATE_EVENT_TYPES.has(classification.eventType) &&
+      classification.confidence >= MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
+
+  if (!match && !canCreateFromNoMatch) return false;
+
+  let chainId: string;
+
+  if (match) {
+    const updatedStatus = advanceStatus(match.status, status);
+    await supabase
+      .from("chains")
+      .update({
+        status: updatedStatus,
+        last_event_at: Math.max(match.last_event_at, email.received_at),
+        confidence: Math.max(match.confidence, classification.confidence),
+        ...(role && !match.role_title ? { role_title: role } : {}),
+      })
+      .eq("chain_id", match.chain_id);
+
+    match.status = updatedStatus;
+    match.last_event_at = Math.max(match.last_event_at, email.received_at);
+    match.confidence = Math.max(match.confidence, classification.confidence);
+    chainId = match.chain_id;
+  } else {
+    chainId = crypto.randomUUID();
+    const newChain: ChainRow = {
+      chain_id: chainId,
+      canonical_company: company,
+      role_title: role,
+      status,
+      last_event_at: email.received_at,
+      confidence: classification.confidence,
+    };
+
+    await supabase.from("chains").insert({
+      ...newChain,
+      user_id: userId,
+      created_at: Date.now(),
+    });
+
+    chainCache.push(newChain);
+  }
+
+  const deadlineMs = classification.deadline
+    ? new Date(classification.deadline).getTime()
+    : null;
+
+  await supabase.from("events").insert({
+    event_id: crypto.randomUUID(),
+    chain_id: chainId,
+    user_id: userId,
+    event_type: classification.eventType,
+    event_time: email.received_at,
+    due_at: deadlineMs,
+    evidence: classification.evidence,
+    extracted_entities: {
+      company_raw: classification.company || undefined,
+      role_raw: classification.roleTitle || undefined,
+      recruiter_name: classification.recruiterName || undefined,
+      deadline_raw: classification.deadline || undefined,
+      links: classification.links,
+    },
+    msg_id_internal: msgIdInternal,
+    extraction_version: EXTRACTION_VERSION,
+  });
+
+  return true;
+}
 
 export async function POST() {
   const appUser = await getAppUser();
@@ -93,8 +195,110 @@ export async function POST() {
     }
 
     const allNewIds = allMessageIds.filter((m) => !processedIds.has(m.id));
-    const hasMorePending = allNewIds.length > MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC;
-    const newMessageIds = allNewIds.slice(0, MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC);
+
+    const { data: userChains } = await supabase
+      .from("chains")
+      .select("chain_id, canonical_company, role_title, status, last_event_at, confidence")
+      .eq("user_id", user.userId);
+
+    const chainCache: ChainRow[] = (userChains ?? []).map((c) => ({
+      chain_id: c.chain_id,
+      canonical_company: c.canonical_company,
+      role_title: c.role_title,
+      status: c.status,
+      last_event_at: c.last_event_at,
+      confidence: c.confidence,
+    }));
+
+    let newCount = 0;
+    let classifyBudget = MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC;
+
+    // --- Priority: recover recent emails indexed without an event ---
+    // (e.g. temporarily filtered out after being marked processed)
+    const lookback = Date.now() - BACKFILL_LOOKBACK_MS;
+    const { data: recentIndexed } = await supabase
+      .from("message_index")
+      .select("provider_message_id,msg_id_internal,received_at")
+      .eq("user_id", user.userId)
+      .eq("processed", true)
+      .gte("received_at", lookback)
+      .order("received_at", { ascending: false })
+      .limit(BACKFILL_CANDIDATE_LIMIT);
+
+    const indexed = recentIndexed ?? [];
+    let missingBackfill: typeof indexed = [];
+
+    if (indexed.length > 0) {
+      const msgIdInternals = indexed
+        .map((m) => m.msg_id_internal)
+        .filter(Boolean) as string[];
+
+      if (msgIdInternals.length > 0) {
+        const { data: indexedEvents } = await supabase
+          .from("events")
+          .select("msg_id_internal")
+          .in("msg_id_internal", msgIdInternals);
+
+        const hasEvent = new Set(
+          (indexedEvents ?? [])
+            .map((e) => e.msg_id_internal)
+            .filter(Boolean)
+        );
+
+        missingBackfill = indexed.filter(
+          (m) => m.msg_id_internal && !hasEvent.has(m.msg_id_internal)
+        );
+      }
+    }
+
+    const backfillBatch = missingBackfill.slice(0, classifyBudget);
+    for (
+      let i = 0;
+      i < backfillBatch.length;
+      i += CLASSIFY_BATCH_SIZE
+    ) {
+      const slice = backfillBatch.slice(i, i + CLASSIFY_BATCH_SIZE);
+      const results = await Promise.all(
+        slice.map(async (missingMsg) => {
+          const msgIdInternal = missingMsg.msg_id_internal;
+          if (!msgIdInternal) return null;
+          try {
+            const full = await getMessage(
+              user.accessToken,
+              missingMsg.provider_message_id
+            );
+            const parsedMsg = parseGmailMessage(full);
+            const classification = await classifyEmail(parsedMsg, {
+              userId: user.userId,
+            });
+            return { parsedMsg, classification, msgIdInternal };
+          } catch {
+            return null;
+          }
+        })
+      );
+
+      for (const item of results) {
+        if (!item) continue;
+        const created = await ingestClassification({
+          userId: user.userId,
+          email: item.parsedMsg,
+          classification: item.classification,
+          chainCache,
+          msgIdInternal: item.msgIdInternal,
+        });
+        if (created) newCount++;
+      }
+    }
+
+    classifyBudget -= backfillBatch.length;
+    const remainingBackfill = Math.max(
+      0,
+      missingBackfill.length - backfillBatch.length
+    );
+
+    // --- Then: brand-new (never indexed) messages, newest first from Gmail ---
+    const newMessageIds = allNewIds.slice(0, Math.max(0, classifyBudget));
 
     const parsed: ParsedMessage[] = [];
     if (newMessageIds.length > 0) {
@@ -118,21 +322,8 @@ export async function POST() {
       }
     }
 
-    const { data: userChains } = await supabase
-      .from("chains")
-      .select("chain_id, canonical_company, role_title, status, last_event_at, confidence")
-      .eq("user_id", user.userId);
-
-    const chainCache: ChainRow[] = (userChains ?? []).map((c) => ({
-      chain_id: c.chain_id,
-      canonical_company: c.canonical_company,
-      role_title: c.role_title,
-      status: c.status,
-      last_event_at: c.last_event_at,
-      confidence: c.confidence,
-    }));
-
-    let newCount = 0;
+    // Prefer newest among the fetched batch
+    parsed.sort((a, b) => b.received_at - a.received_at);
 
     const toClassify = parsed.filter((e) => !processedIds.has(e.gmail_id));
 
@@ -176,271 +367,20 @@ export async function POST() {
 
         processedIds.add(email.gmail_id);
 
-        if (
-          classification.eventType === "OTHER" &&
-          classification.confidence < 0.3
-        ) {
-          continue;
-        }
-
-        const status = eventTypeToStatus(classification.eventType);
-        const company = resolveCompanyName(
-          classification.company || undefined,
-          email.from_domain
-        );
-        const role = normalizeRoleTitle(classification.roleTitle || "");
-
-        const match = findBestMatch(chainCache, company, role);
-
-        const canCreateFromNoMatch =
-          classification.eventType === "APPLICATION_RECEIVED" ||
-          (NON_APPLICATION_CREATE_EVENT_TYPES.has(classification.eventType) &&
-            classification.confidence >= MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
-
-        if (!match && !canCreateFromNoMatch) continue;
-
-        // Internship tracker: only open new chains for intern/co-op applications.
-        // Existing chains still receive status updates from follow-up email.
-        if (
-          !match &&
-          !isInternshipTrackerApplication({
-            roleTitle: role || classification.roleTitle || "",
-            subject: email.subject,
-            snippet: email.snippet,
-            evidence: classification.evidence,
-          })
-        ) {
-          continue;
-        }
-
-        let chainId: string;
-
-        if (match) {
-          const updatedStatus = advanceStatus(match.status, status);
-          await supabase
-            .from("chains")
-            .update({
-              status: updatedStatus,
-              last_event_at: Math.max(match.last_event_at, email.received_at),
-              confidence: Math.max(match.confidence, classification.confidence),
-              ...(role && !match.role_title ? { role_title: role } : {}),
-            })
-            .eq("chain_id", match.chain_id);
-
-          match.status = updatedStatus;
-          match.last_event_at = Math.max(
-            match.last_event_at,
-            email.received_at
-          );
-          match.confidence = Math.max(
-            match.confidence,
-            classification.confidence
-          );
-          chainId = match.chain_id;
-        } else {
-          chainId = crypto.randomUUID();
-          const newChain: ChainRow = {
-            chain_id: chainId,
-            canonical_company: company,
-            role_title: role,
-            status,
-            last_event_at: email.received_at,
-            confidence: classification.confidence,
-          };
-
-          await supabase.from("chains").insert({
-            ...newChain,
-            user_id: user.userId,
-            created_at: Date.now(),
-          });
-
-          chainCache.push(newChain);
-        }
-
-        const deadlineMs = classification.deadline
-          ? new Date(classification.deadline).getTime()
-          : null;
-
-        await supabase.from("events").insert({
-          event_id: crypto.randomUUID(),
-          chain_id: chainId,
-          user_id: user.userId,
-          event_type: classification.eventType,
-          event_time: email.received_at,
-          due_at: deadlineMs,
-          evidence: classification.evidence,
-          extracted_entities: {
-            company_raw: classification.company || undefined,
-            role_raw: classification.roleTitle || undefined,
-            recruiter_name: classification.recruiterName || undefined,
-            deadline_raw: classification.deadline || undefined,
-            links: classification.links,
-          },
-          msg_id_internal: msgId,
-          extraction_version: EXTRACTION_VERSION,
+        const created = await ingestClassification({
+          userId: user.userId,
+          email,
+          classification,
+          chainCache,
+          msgIdInternal: msgId,
         });
-
-        newCount++;
+        if (created) newCount++;
       }
     }
 
-    // Backfill: if we previously indexed a message but skipped inserting an
-    // event (e.g. due to earlier strict matching), create the missing event
-    // now. This is limited to recently indexed messages to avoid heavy API usage.
-    const BACKFILL_LOOKBACK_MS = 24 * 60 * 60 * 1000;
-    const MAX_BACKFILL_MESSAGES = 8;
-
-    const lookback = Date.now() - BACKFILL_LOOKBACK_MS;
-    const { data: recentIndexed } = await supabase
-      .from("message_index")
-      .select("provider_message_id,msg_id_internal,received_at")
-      .eq("user_id", user.userId)
-      .eq("processed", true)
-      .gte("received_at", lookback)
-      .order("received_at", { ascending: false })
-      .limit(50);
-
-    const indexed = recentIndexed ?? [];
-    if (indexed.length > 0) {
-      const msgIdInternals = indexed
-        .map((m) => m.msg_id_internal)
-        .filter(Boolean);
-
-      if (msgIdInternals.length > 0) {
-        const { data: indexedEvents } = await supabase
-          .from("events")
-          .select("msg_id_internal")
-          .in("msg_id_internal", msgIdInternals);
-
-        const hasEvent = new Set(
-          (indexedEvents ?? [])
-            .map((e) => e.msg_id_internal)
-            .filter(Boolean)
-        );
-
-        const missing = indexed
-          .filter((m) => !hasEvent.has(m.msg_id_internal))
-          .slice(0, MAX_BACKFILL_MESSAGES);
-
-        for (const missingMsg of missing) {
-          const msgIdInternal = missingMsg.msg_id_internal;
-          if (!msgIdInternal) continue;
-
-          let parsedMsg: ParsedMessage | null = null;
-          try {
-            const full = await getMessage(
-              user.accessToken,
-              missingMsg.provider_message_id
-            );
-            parsedMsg = parseGmailMessage(full);
-          } catch {
-            continue;
-          }
-
-          if (!parsedMsg) continue;
-
-          let classification;
-          try {
-            classification = await classifyEmail(parsedMsg, { userId: user.userId });
-          } catch {
-            continue;
-          }
-
-          if (
-            classification.eventType === "OTHER" &&
-            classification.confidence < 0.3
-          ) {
-            continue;
-          }
-
-          const status = eventTypeToStatus(classification.eventType);
-          const company = resolveCompanyName(
-            classification.company || undefined,
-            parsedMsg.from_domain
-          );
-          const role = normalizeRoleTitle(classification.roleTitle || "");
-
-          const match = findBestMatch(chainCache, company, role);
-          const canCreateFromNoMatch =
-            classification.eventType === "APPLICATION_RECEIVED" ||
-            (NON_APPLICATION_CREATE_EVENT_TYPES.has(
-              classification.eventType
-            ) &&
-              classification.confidence >=
-                MIN_CONFIDENCE_NON_APPLICATION_CHAIN);
-
-          if (!match && !canCreateFromNoMatch) continue;
-
-          let chainId: string;
-          if (match) {
-            const updatedStatus = advanceStatus(match.status, status);
-            await supabase
-              .from("chains")
-              .update({
-                status: updatedStatus,
-                last_event_at: Math.max(
-                  match.last_event_at,
-                  parsedMsg.received_at
-                ),
-                confidence: Math.max(match.confidence, classification.confidence),
-                ...(role && !match.role_title ? { role_title: role } : {}),
-              })
-              .eq("chain_id", match.chain_id);
-
-            match.status = updatedStatus;
-            match.last_event_at = Math.max(
-              match.last_event_at,
-              parsedMsg.received_at
-            );
-            match.confidence = Math.max(match.confidence, classification.confidence);
-            chainId = match.chain_id;
-          } else {
-            chainId = crypto.randomUUID();
-            const newChain: ChainRow = {
-              chain_id: chainId,
-              canonical_company: company,
-              role_title: role,
-              status,
-              last_event_at: parsedMsg.received_at,
-              confidence: classification.confidence,
-            };
-
-            await supabase.from("chains").insert({
-              ...newChain,
-              user_id: user.userId,
-              created_at: Date.now(),
-            });
-
-            chainCache.push(newChain);
-          }
-
-          const deadlineMs = classification.deadline
-            ? new Date(classification.deadline).getTime()
-            : null;
-
-          await supabase.from("events").insert({
-            event_id: crypto.randomUUID(),
-            chain_id: chainId,
-            user_id: user.userId,
-            event_type: classification.eventType,
-            event_time: parsedMsg.received_at,
-            due_at: deadlineMs,
-            evidence: classification.evidence,
-            extracted_entities: {
-              company_raw: classification.company || undefined,
-              role_raw: classification.roleTitle || undefined,
-              recruiter_name: classification.recruiterName || undefined,
-              deadline_raw: classification.deadline || undefined,
-              links: classification.links,
-            },
-            msg_id_internal: msgIdInternal,
-            extraction_version: EXTRACTION_VERSION,
-          });
-
-          newCount++;
-        }
-      }
-    }
+    const hasMorePending =
+      remainingBackfill > 0 ||
+      allNewIds.length > newMessageIds.length;
 
     const mergedDuplicates = await mergeDuplicateChainsForUser(
       supabase,
@@ -450,7 +390,13 @@ export async function POST() {
     void recordUserActivity({
       userId: user.userId,
       action: "gmail_sync",
-      meta: { newCount, total: allMessageIds.length, mergedDuplicates },
+      meta: {
+        newCount,
+        total: allMessageIds.length,
+        mergedDuplicates,
+        backfillAttempted: backfillBatch.length,
+        remainingBackfill,
+      },
     });
 
     return NextResponse.json({
@@ -458,6 +404,8 @@ export async function POST() {
       total: allMessageIds.length,
       hasMore: hasMorePending,
       mergedDuplicates,
+      backfillAttempted: backfillBatch.length,
+      remainingBackfill,
     });
   } catch (error) {
     const message =

@@ -92,53 +92,74 @@ export function useSync(
       syncHasMore: false,
     }));
 
+    const MAX_AUTO_BATCHES = 4;
+    let totalNew = 0;
+    let hasMore = false;
+
     try {
-      const res = await fetch("/api/gmail/sync", { method: "POST" });
-      const data = (await res.json().catch(() => ({}))) as {
-        code?: string;
-        error?: string;
-        needsReauth?: boolean;
-        newCount?: number;
-        total?: number;
-        hasMore?: boolean;
-      };
-
-      if (!res.ok) {
-        if (
-          res.status === 403 &&
-          (data.code === "UPGRADE_REQUIRED" || data.code === "PAYMENT_REQUIRED")
-        ) {
+      for (let batch = 0; batch < MAX_AUTO_BATCHES; batch++) {
+        if (batch > 0) {
           setState((s) => ({
             ...s,
-            syncing: false,
-            progress: "",
-            paymentRequired: true,
-            syncHasMore: false,
+            progress: `Continuing sync (batch ${batch + 1})...`,
           }));
-          onComplete();
-          return;
         }
 
-        const errText =
-          typeof data.error === "string" ? data.error : "Sync failed";
-        const needsReauth =
-          data.needsReauth === true ||
-          isGmailReauthError(errText, data.code);
+        const res = await fetch("/api/gmail/sync", { method: "POST" });
+        const data = (await res.json().catch(() => ({}))) as {
+          code?: string;
+          error?: string;
+          needsReauth?: boolean;
+          newCount?: number;
+          total?: number;
+          hasMore?: boolean;
+        };
 
-        if (needsReauth) {
-          setState((s) => ({
-            ...s,
-            syncing: false,
-            progress: "",
-            error: errText,
-            needsGmailReauth: true,
-            syncHasMore: false,
-          }));
-          onComplete();
-          return;
+        if (!res.ok) {
+          if (
+            res.status === 403 &&
+            (data.code === "UPGRADE_REQUIRED" || data.code === "PAYMENT_REQUIRED")
+          ) {
+            setState((s) => ({
+              ...s,
+              syncing: false,
+              progress: "",
+              paymentRequired: true,
+              syncHasMore: false,
+              newCount: totalNew,
+            }));
+            onComplete();
+            return;
+          }
+
+          const errText =
+            typeof data.error === "string" ? data.error : "Sync failed";
+          const needsReauth =
+            data.needsReauth === true ||
+            isGmailReauthError(errText, data.code);
+
+          if (needsReauth) {
+            setState((s) => ({
+              ...s,
+              syncing: false,
+              progress: "",
+              error: errText,
+              needsGmailReauth: true,
+              syncHasMore: false,
+              newCount: totalNew,
+            }));
+            onComplete();
+            return;
+          }
+
+          throw new Error(errText);
         }
 
-        throw new Error(errText);
+        totalNew += data.newCount ?? 0;
+        hasMore = data.hasMore === true;
+
+        // Keep going while more mail is queued so recent apps aren't stuck behind batches.
+        if (!hasMore) break;
       }
 
       const now = Date.now();
@@ -148,10 +169,10 @@ export function useSync(
         progress: "",
         lastSyncAt: now,
         error: null,
-        newCount: data.newCount ?? 0,
+        newCount: totalNew,
         paymentRequired: false,
         needsGmailReauth: false,
-        syncHasMore: data.hasMore === true,
+        syncHasMore: hasMore,
       });
       onComplete();
     } catch (error) {
@@ -166,6 +187,7 @@ export function useSync(
           : errText,
         needsGmailReauth: needsReauth,
         syncHasMore: false,
+        newCount: totalNew,
       }));
     }
   }, [onComplete, syncStorageKey]);

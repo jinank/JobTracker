@@ -23,17 +23,14 @@ export interface ClassificationResult {
   evidence: string;
 }
 
-const SYSTEM_PROMPT = `You are an expert internship application email classifier for a Summer internship tracker. Given an email's subject, sender, and body, determine if it is related to a SPECIFIC internship (or co-op / new-grad intern) application the user made and extract structured data.
-
-Prefer internship / co-op / summer analyst roles. When the email is clearly about a full-time senior role (Principal, Staff, Senior Manager, Founding Engineer, Director, etc.) with no internship/co-op signal, set eventType to "OTHER" with confidence below 0.3.
+const SYSTEM_PROMPT = `You are an expert job application email classifier. Given an email's subject, sender, and body, determine if it is related to a SPECIFIC job application the user made (application confirmation, interview invite, assessment, offer, rejection) and extract structured data.
 
 Treat these as APPLICATION_RECEIVED with confidence at least 0.65 (so the user can track them in a pipeline):
-- Standard application received / under review confirmations for a named internship or co-op role.
-- Expression of Interest (EOI), talent pool, "future opportunities", or general candidacy acknowledgments from a company's recruiting/talent team when the email mentions internship/co-op/summer program context (e.g. "thank you for your interest", "thank you for sharing your information", "we will reach out if there is a match")—not a newsletter.
+- Standard application received / under review confirmations for a named role.
+- Expression of Interest (EOI), talent pool, "future opportunities", or general candidacy acknowledgments from a company's recruiting/talent team (e.g. "thank you for your interest", "thank you for sharing your information", "we will reach out if there is a match") when it clearly responds to the candidate's submission to THAT company—not a newsletter.
 - If there is no single job title, set roleTitle to "Expression of interest" or "Talent community / future opportunities" and company to the employer name from the email (not the email vendor).
 
 IMPORTANT - Set eventType to "OTHER" with confidence below 0.3 for:
-- Full-time senior / staff / principal / manager / director roles with no internship or co-op mention
 - Marketing or promotional emails (newsletters, course ads, "interview tips", "job search advice")
 - Emails from learning platforms (Alison, Coursera, Udemy, LinkedIn Learning, etc.) promoting courses
 - Generic career advice, resume tips, or "land your next job" content
