@@ -68,7 +68,7 @@ function isUsEnough(location, company) {
   const loc = (location || "").toLowerCase();
   if (!loc || loc === "in-office" || loc.includes("hybrid") || loc === "remote") return true;
   if (
-    /italy|milan|london|sydney|singapore|dublin|brazil|são paulo|sao paulo|india|europe|uk\b|united kingdom|canada\b|mexico|germany|france|japan|china/i.test(
+    /italy|milan|london|sydney|singapore|dublin|brazil|são paulo|sao paulo|india|europe|uk\b|united kingdom|canada\b|mexico|germany|france|japan|china|amsterdam|netherlands|nl\b/i.test(
       loc
     ) &&
     !/united states|\busa\b|, [a-z]{2}, us|\bus\b/.test(loc)
