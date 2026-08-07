@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "AI Prompt Guide PDF",
   description:
-    "SuperInterns AI Prompt Guide — 15 playbooks from resume to offer. Request access and receive the PDF after approval.",
+    "SuperInterns AI Prompt Guide - 15 playbooks from resume to offer. Request access and receive the PDF after approval.",
   path: "/resources/ai-prompt-guide",
   keywords: [
     "AI job search prompts",

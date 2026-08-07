@@ -72,7 +72,7 @@ export function PromptGuideHighlight() {
             AI Prompt Guide (PDF)
           </h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
-            SuperInterns&apos; own playbook set — 15 stages from resume to offer,
+            SuperInterns&apos; own playbook set - 15 stages from resume to offer,
             with strategy under every prompt so you move faster without sounding
             generic.
           </p>
@@ -81,13 +81,13 @@ export function PromptGuideHighlight() {
               <span className="text-amber-300" aria-hidden>
                 ✓
               </span>
-              <span>Request access — we review and send the PDF when approved</span>
+              <span>Request access - we review and send the PDF when approved</span>
             </li>
             <li className="flex gap-2">
               <span className="text-amber-300" aria-hidden>
                 ✓
               </span>
-              <span>Works with Claude, ChatGPT, Gemini — any AI tool</span>
+              <span>Works with Claude, ChatGPT, Gemini - any AI tool</span>
             </li>
           </ul>
           {error && (
@@ -104,7 +104,7 @@ export function PromptGuideHighlight() {
               />
             ) : approved ? (
               <span className="inline-flex rounded-xl bg-emerald-500/20 px-5 py-2.5 text-sm font-semibold text-emerald-200 ring-1 ring-emerald-400/30">
-                Access approved — PDF coming via email
+                Access approved - PDF coming via email
               </span>
             ) : pending ? (
               <span className="inline-flex rounded-xl bg-amber-500/20 px-5 py-2.5 text-sm font-semibold text-amber-100 ring-1 ring-amber-400/30">
@@ -145,7 +145,7 @@ export function PromptGuideHighlight() {
             </div>
           </dl>
           <p className="mt-5 text-xs leading-relaxed text-slate-400">
-            Free with approval. No payment — request access from Resources and we
+            Free with approval. No payment - request access from Resources and we
             send the SuperInterns PDF when your request is approved.
           </p>
         </div>

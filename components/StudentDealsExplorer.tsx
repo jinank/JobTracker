@@ -248,8 +248,8 @@ export function StudentDealsExplorer() {
       <div className="mb-8 border-t border-slate-200/80 pt-8">
         <div className="mb-6 rounded-2xl border border-amber-100 bg-amber-50/80 px-4 py-3 text-sm text-amber-950/90">
           <strong className="font-semibold">Heads up:</strong> Programs, prices, and eligibility change
-          often. Always confirm the current offer on the provider&apos;s official site. {SITE_NAME}
-          doesn&apos;t run these programs and may earn nothing from these links.
+          often. Always confirm the current offer on the provider&apos;s official site.{" "}
+          {SITE_NAME} doesn&apos;t run these programs and may earn nothing from these links.
         </div>
 
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

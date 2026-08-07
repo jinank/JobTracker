@@ -24,7 +24,7 @@ export const PROMPT_GUIDE_STAGES = [
   },
 ];
 
-/** Outline only — full prompts ship as a PDF after access is approved. */
+/** Outline only - full prompts ship as a PDF after access is approved. */
 export const PROMPT_GUIDE_PLAYBOOK_TITLES = [
   "01 · Review Your Current Resume",
   "02 · Build Your Why-How-What Narrative",

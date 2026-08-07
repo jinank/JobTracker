@@ -70,7 +70,7 @@ export function PromptGuideApp() {
         AI Prompt Guide (PDF)
       </h1>
       <p className="mt-4 text-base leading-relaxed text-slate-600">
-        SuperInterns&apos; job-search prompt system — 15 playbooks from the first
+        SuperInterns&apos; job-search prompt system - 15 playbooks from the first
         resume draft to the offer conversation. Request access and we send the PDF
         after approval. Prompt content stays private until then.
       </p>
@@ -105,11 +105,11 @@ export function PromptGuideApp() {
             />
           ) : approved ? (
             <span className="inline-flex rounded-xl bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800 ring-1 ring-emerald-100">
-              Access approved — check your email for the PDF
+              Access approved - check your email for the PDF
             </span>
           ) : pending ? (
             <span className="inline-flex rounded-xl bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-900 ring-1 ring-amber-100">
-              Request sent — we&apos;ll review shortly
+              Request sent - we&apos;ll review shortly
             </span>
           ) : (
             <button
