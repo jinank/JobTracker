@@ -52,6 +52,11 @@ export function getPublicSitemapPaths(): SitemapPathEntry[] {
     { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
     { path: "/find-mentors", changeFrequency: "weekly", priority: 0.85 },
     { path: "/resources", changeFrequency: "weekly", priority: 0.85 },
+    {
+      path: "/resources/ai-prompt-guide",
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     { path: "/practice-interviews", changeFrequency: "weekly", priority: 0.85 },
     {
       path: "/blog",

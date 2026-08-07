@@ -7,6 +7,11 @@ export type MemberResource = {
 /** Free member perks for SuperInterns accounts. */
 export const MEMBER_RESOURCES: MemberResource[] = [
   {
+    id: "ai-prompt-guide",
+    title: "AI Prompt Guide (PDF)",
+    tagline: "15 playbooks from resume to offer. Request access.",
+  },
+  {
     id: "linkedin-profile-review",
     title: "LinkedIn review",
     tagline: "Profile feedback, free.",
