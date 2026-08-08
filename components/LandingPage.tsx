@@ -10,6 +10,7 @@ import {
   useScrollParallax,
 } from "@/components/landing/LandingMotion";
 import { LandingInternshipsSection } from "@/components/LandingInternshipsSection";
+import { LandingPromptGuideTeaser } from "@/components/LandingPromptGuideTeaser";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
@@ -504,6 +505,8 @@ export function LandingPage() {
           </div>
         </div>
       </section>
+
+      <LandingPromptGuideTeaser />
 
       <LandingInternshipsSection />
 
