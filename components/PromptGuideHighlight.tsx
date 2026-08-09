@@ -63,7 +63,7 @@ export function PromptGuideHighlight() {
       <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="px-6 py-8 sm:px-8 sm:py-10">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-amber-300/90">
-            Featured resource
+            Limited time · Free resource
           </p>
           <h2
             id="prompt-guide-highlight-heading"

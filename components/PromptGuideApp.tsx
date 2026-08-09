@@ -64,7 +64,7 @@ export function PromptGuideApp() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 pb-20 pt-8 sm:px-6">
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-amber-700">
-        Resources · Featured
+        Limited time · Free resource
       </p>
       <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
         AI Prompt Guide (PDF)
@@ -76,6 +76,9 @@ export function PromptGuideApp() {
       </p>
 
       <div className="mt-6 flex flex-wrap gap-3 text-sm">
+        <span className="rounded-full bg-amber-50 px-3 py-1 font-semibold text-amber-900 ring-1 ring-amber-100">
+          Limited time
+        </span>
         <span className="rounded-full bg-emerald-50 px-3 py-1 font-semibold text-emerald-800 ring-1 ring-emerald-100">
           Free with approval
         </span>

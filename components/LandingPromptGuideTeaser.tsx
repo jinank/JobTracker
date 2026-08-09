@@ -22,7 +22,7 @@ export function LandingPromptGuideTeaser() {
             <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8">
               <div className="min-w-0 max-w-2xl">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-amber-300/90">
-                  Free resource
+                  Limited time · Free resource
                 </p>
                 <h2
                   id="landing-prompt-guide-heading"
