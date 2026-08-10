@@ -46,6 +46,25 @@ const MIN_CONFIDENCE_NON_APPLICATION_CHAIN = 0.55;
 /** Re-open apps that were indexed but never got an event (e.g. temporary filters). */
 const BACKFILL_LOOKBACK_MS = 7 * 24 * 60 * 60 * 1000;
 const BACKFILL_CANDIDATE_LIMIT = 120;
+/** Cap backfill so junk digests cannot starve brand-new mail. */
+const MAX_BACKFILL_PER_SYNC = 8;
+
+const APPLICATIONISH_SUBJECT_RE =
+  /\b(application|applied|applying|applicant|thank you for (your )?(interest|applying|application)|thanks for applying|received your|we have received|we've received|interview|assessment|offer|rejection|unfortunately|not moving forward|expression of interest|candidacy|under review|next steps)\b/i;
+
+function shouldBackfillSubject(subject: string | null | undefined): boolean {
+  return APPLICATIONISH_SUBJECT_RE.test(subject || "");
+}
+
+async function markIngestSkipped(msgIdInternal: string): Promise<void> {
+  const { error } = await supabase
+    .from("message_index")
+    .update({ ingest_skipped: true })
+    .eq("msg_id_internal", msgIdInternal);
+  if (error && !/ingest_skipped/i.test(error.message)) {
+    console.warn("markIngestSkipped:", error.message);
+  }
+}
 
 async function ingestClassification(opts: {
   userId: string;
@@ -256,26 +275,147 @@ export async function POST() {
 
     let newCount = 0;
     let classifyBudget = MAX_NEW_EMAILS_CLASSIFIED_PER_SYNC;
+    let backfillAttempted = 0;
+    let remainingBackfill = 0;
 
-    // --- Priority: recover recent emails indexed without an event ---
-    // (e.g. temporarily filtered out after being marked processed)
+    // --- 1) Brand-new messages first (must not be starved by backfill) ---
+    const newMessageIds = allNewIds.slice(0, Math.max(0, classifyBudget));
+
+    const parsed: ParsedMessage[] = [];
+    if (newMessageIds.length > 0) {
+      for (
+        let i = 0;
+        i < newMessageIds.length;
+        i += GMAIL_FETCH_BATCH_SIZE
+      ) {
+        const batch = newMessageIds.slice(i, i + GMAIL_FETCH_BATCH_SIZE);
+        const results = await Promise.all(
+          batch.map(async (m) => {
+            try {
+              const full = await getMessage(accessToken, m.id);
+              return parseGmailMessage(full);
+            } catch {
+              return null;
+            }
+          })
+        );
+        parsed.push(...results.filter((r): r is ParsedMessage => r !== null));
+      }
+    }
+
+    parsed.sort((a, b) => b.received_at - a.received_at);
+
+    const toClassify = parsed.filter((e) => !processedIds.has(e.gmail_id));
+
+    for (let i = 0; i < toClassify.length; i += CLASSIFY_BATCH_SIZE) {
+      const slice = toClassify.slice(i, i + CLASSIFY_BATCH_SIZE);
+      const classified = await Promise.all(
+        slice.map(async (email) => {
+          try {
+            const classification = await classifyEmail(email, {
+              userId: userId,
+            });
+            return { email, classification };
+          } catch {
+            return null;
+          }
+        })
+      );
+
+      for (const item of classified) {
+        if (!item) continue;
+        const { email, classification } = item;
+        if (processedIds.has(email.gmail_id)) continue;
+
+        const msgId = crypto.randomUUID();
+
+        {
+          const row = {
+            msg_id_internal: msgId,
+            user_id: userId,
+            provider_message_id: email.gmail_id,
+            provider_thread_id: email.thread_id,
+            subject_text: email.subject,
+            from_email: email.from_email,
+            from_domain: email.from_domain,
+            received_at: email.received_at,
+            snippet: email.snippet,
+            processed: true,
+            ingest_skipped: false,
+          };
+          const { error: upErr } = await supabase
+            .from("message_index")
+            .upsert(row, { onConflict: "user_id,provider_message_id" });
+          if (upErr && /ingest_skipped/i.test(upErr.message)) {
+            const { ingest_skipped: _skip, ...without } = row;
+            await supabase
+              .from("message_index")
+              .upsert(without, { onConflict: "user_id,provider_message_id" });
+          }
+        }
+
+        processedIds.add(email.gmail_id);
+
+        const created = await ingestClassification({
+          userId: userId,
+          email,
+          classification,
+          chainCache,
+          msgIdInternal: msgId,
+        });
+        if (created) {
+          newCount++;
+        } else {
+          await markIngestSkipped(msgId);
+        }
+      }
+    }
+
+    classifyBudget = Math.max(0, classifyBudget - toClassify.length);
+
+    // --- 2) Small backfill for real app emails indexed without an event ---
     const lookback = Date.now() - BACKFILL_LOOKBACK_MS;
-    const { data: recentIndexed } = await supabase
-      .from("message_index")
-      .select("provider_message_id,msg_id_internal,received_at")
-      .eq("user_id", userId)
-      .eq("processed", true)
-      .gte("received_at", lookback)
-      .order("received_at", { ascending: false })
-      .limit(BACKFILL_CANDIDATE_LIMIT);
+    type BackfillRow = {
+      provider_message_id: string;
+      msg_id_internal: string;
+      received_at: number;
+      subject_text?: string | null;
+      ingest_skipped?: boolean | null;
+    };
 
-    const indexed = recentIndexed ?? [];
-    let missingBackfill: typeof indexed = [];
+    let recentIndexed: BackfillRow[] = [];
+    {
+      const withSkip = await supabase
+        .from("message_index")
+        .select(
+          "provider_message_id,msg_id_internal,received_at,subject_text,ingest_skipped"
+        )
+        .eq("user_id", userId)
+        .eq("processed", true)
+        .gte("received_at", lookback)
+        .order("received_at", { ascending: false })
+        .limit(BACKFILL_CANDIDATE_LIMIT);
 
-    if (indexed.length > 0) {
-      const msgIdInternals = indexed
+      if (withSkip.error && /ingest_skipped/i.test(withSkip.error.message)) {
+        const fallback = await supabase
+          .from("message_index")
+          .select("provider_message_id,msg_id_internal,received_at,subject_text")
+          .eq("user_id", userId)
+          .eq("processed", true)
+          .gte("received_at", lookback)
+          .order("received_at", { ascending: false })
+          .limit(BACKFILL_CANDIDATE_LIMIT);
+        recentIndexed = (fallback.data ?? []) as BackfillRow[];
+      } else {
+        recentIndexed = (withSkip.data ?? []) as BackfillRow[];
+      }
+    }
+
+    let missingBackfill: BackfillRow[] = [];
+    if (recentIndexed.length > 0) {
+      const msgIdInternals = recentIndexed
         .map((m) => m.msg_id_internal)
-        .filter(Boolean) as string[];
+        .filter(Boolean);
 
       if (msgIdInternals.length > 0) {
         const { data: indexedEvents } = await supabase
@@ -289,13 +429,25 @@ export async function POST() {
             .filter(Boolean)
         );
 
-        missingBackfill = indexed.filter(
-          (m) => m.msg_id_internal && !hasEvent.has(m.msg_id_internal)
+        missingBackfill = recentIndexed.filter(
+          (m) =>
+            m.msg_id_internal &&
+            !hasEvent.has(m.msg_id_internal) &&
+            m.ingest_skipped !== true &&
+            shouldBackfillSubject(m.subject_text)
         );
       }
     }
 
-    const backfillBatch = missingBackfill.slice(0, classifyBudget);
+    const backfillBudget = Math.min(
+      MAX_BACKFILL_PER_SYNC,
+      classifyBudget,
+      missingBackfill.length
+    );
+    const backfillBatch = missingBackfill.slice(0, backfillBudget);
+    backfillAttempted = backfillBatch.length;
+    remainingBackfill = Math.max(0, missingBackfill.length - backfillBatch.length);
+
     for (
       let i = 0;
       i < backfillBatch.length;
@@ -331,94 +483,38 @@ export async function POST() {
           chainCache,
           msgIdInternal: item.msgIdInternal,
         });
-        if (created) newCount++;
+        if (created) {
+          newCount++;
+        } else {
+          await markIngestSkipped(item.msgIdInternal);
+        }
       }
     }
 
-    classifyBudget -= backfillBatch.length;
-    const remainingBackfill = Math.max(
-      0,
-      missingBackfill.length - backfillBatch.length
-    );
-
-    // --- Then: brand-new (never indexed) messages, newest first from Gmail ---
-    const newMessageIds = allNewIds.slice(0, Math.max(0, classifyBudget));
-
-    const parsed: ParsedMessage[] = [];
-    if (newMessageIds.length > 0) {
-      for (
-        let i = 0;
-        i < newMessageIds.length;
-        i += GMAIL_FETCH_BATCH_SIZE
-      ) {
-        const batch = newMessageIds.slice(i, i + GMAIL_FETCH_BATCH_SIZE);
-        const results = await Promise.all(
-          batch.map(async (m) => {
-            try {
-              const full = await getMessage(accessToken, m.id);
-              return parseGmailMessage(full);
-            } catch {
-              return null;
-            }
-          })
+    // Mark marketing/job-alert indexed rows (no event, not applicationish) as skipped.
+    {
+      const msgIdInternals = recentIndexed
+        .map((m) => m.msg_id_internal)
+        .filter(Boolean);
+      if (msgIdInternals.length > 0) {
+        const { data: indexedEvents } = await supabase
+          .from("events")
+          .select("msg_id_internal")
+          .in("msg_id_internal", msgIdInternals);
+        const hasEvent = new Set(
+          (indexedEvents ?? []).map((e) => e.msg_id_internal).filter(Boolean)
         );
-        parsed.push(...results.filter((r): r is ParsedMessage => r !== null));
-      }
-    }
-
-    // Prefer newest among the fetched batch
-    parsed.sort((a, b) => b.received_at - a.received_at);
-
-    const toClassify = parsed.filter((e) => !processedIds.has(e.gmail_id));
-
-    for (let i = 0; i < toClassify.length; i += CLASSIFY_BATCH_SIZE) {
-      const slice = toClassify.slice(i, i + CLASSIFY_BATCH_SIZE);
-      const classified = await Promise.all(
-        slice.map(async (email) => {
-          try {
-            const classification = await classifyEmail(email, {
-              userId: userId,
-            });
-            return { email, classification };
-          } catch {
-            return null;
+        for (const m of recentIndexed) {
+          if (
+            !m.msg_id_internal ||
+            hasEvent.has(m.msg_id_internal) ||
+            m.ingest_skipped === true ||
+            shouldBackfillSubject(m.subject_text)
+          ) {
+            continue;
           }
-        })
-      );
-
-      for (const item of classified) {
-        if (!item) continue;
-        const { email, classification } = item;
-        if (processedIds.has(email.gmail_id)) continue;
-
-        const msgId = crypto.randomUUID();
-
-        await supabase.from("message_index").upsert(
-          {
-            msg_id_internal: msgId,
-            user_id: userId,
-            provider_message_id: email.gmail_id,
-            provider_thread_id: email.thread_id,
-            subject_text: email.subject,
-            from_email: email.from_email,
-            from_domain: email.from_domain,
-            received_at: email.received_at,
-            snippet: email.snippet,
-            processed: true,
-          },
-          { onConflict: "user_id,provider_message_id" }
-        );
-
-        processedIds.add(email.gmail_id);
-
-        const created = await ingestClassification({
-          userId: userId,
-          email,
-          classification,
-          chainCache,
-          msgIdInternal: msgId,
-        });
-        if (created) newCount++;
+          await markIngestSkipped(m.msg_id_internal);
+        }
       }
     }
 
@@ -438,8 +534,9 @@ export async function POST() {
         newCount,
         total: allMessageIds.length,
         mergedDuplicates,
-        backfillAttempted: backfillBatch.length,
+        backfillAttempted,
         remainingBackfill,
+        newFetched: newMessageIds.length,
       },
     });
 
@@ -448,8 +545,9 @@ export async function POST() {
       total: allMessageIds.length,
       hasMore: hasMorePending,
       mergedDuplicates,
-      backfillAttempted: backfillBatch.length,
+      backfillAttempted,
       remainingBackfill,
+      newFetched: newMessageIds.length,
     });
   } catch (error) {
     const message =
