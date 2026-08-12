@@ -537,6 +537,7 @@ export async function POST() {
         backfillAttempted,
         remainingBackfill,
         newFetched: newMessageIds.length,
+        pendingNew: Math.max(0, allNewIds.length - newMessageIds.length),
       },
     });
 
@@ -548,6 +549,7 @@ export async function POST() {
       backfillAttempted,
       remainingBackfill,
       newFetched: newMessageIds.length,
+      pendingNew: Math.max(0, allNewIds.length - newMessageIds.length),
     });
   } catch (error) {
     const message =

@@ -92,16 +92,27 @@ export function useSync(
       syncHasMore: false,
     }));
 
-    const MAX_AUTO_BATCHES = 4;
+    // First-time / 6-month import: keep draining while Gmail still has queued mail.
+    // ~42 emails classified per server batch; 25 batches ≈ 1000 messages per Sync click.
+    const MAX_AUTO_BATCHES = 25;
     let totalNew = 0;
     let hasMore = false;
+    let pendingEstimate: number | null = null;
 
     try {
       for (let batch = 0; batch < MAX_AUTO_BATCHES; batch++) {
         if (batch > 0) {
           setState((s) => ({
             ...s,
-            progress: `Continuing sync (batch ${batch + 1})...`,
+            progress:
+              pendingEstimate != null && pendingEstimate > 0
+                ? `Importing applications (batch ${batch + 1}, ~${pendingEstimate} emails left)...`
+                : `Importing applications (batch ${batch + 1})...`,
+          }));
+        } else {
+          setState((s) => ({
+            ...s,
+            progress: "Importing up to 6 months of job emails...",
           }));
         }
 
@@ -113,6 +124,7 @@ export function useSync(
           newCount?: number;
           total?: number;
           hasMore?: boolean;
+          pendingNew?: number;
         };
 
         if (!res.ok) {
@@ -157,8 +169,13 @@ export function useSync(
 
         totalNew += data.newCount ?? 0;
         hasMore = data.hasMore === true;
+        if (typeof data.pendingNew === "number") {
+          pendingEstimate = data.pendingNew;
+        }
 
-        // Keep going while more mail is queued so recent apps aren't stuck behind batches.
+        // Refresh the tracker as batches land so apps appear while importing.
+        onComplete();
+
         if (!hasMore) break;
       }
 

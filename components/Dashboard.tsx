@@ -451,7 +451,8 @@ export function Dashboard() {
             )}
             {syncHasMore && (
               <span className="block mt-2 text-xs text-emerald-800/90 font-medium">
-                More messages are queued, press Sync again to continue importing.
+                More emails from the last 6 months are still queued - press Sync
+                again to keep importing.
               </span>
             )}
           </div>

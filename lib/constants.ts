@@ -20,8 +20,9 @@ export const GMAIL_JOB_QUERY = `newer_than:6m (subject:(${GMAIL_SUBJECT_TERMS}) 
  */
 export const GMAIL_JOB_QUERY_RECENT = `newer_than:5d (subject:(${GMAIL_SUBJECT_TERMS}) OR from:(${GMAIL_ATS_FROM}))`;
 
-/** Max message IDs to collect from Gmail list pagination per sync. */
-export const MAX_MESSAGES_PER_SYNC = 400;
+/** Max message IDs to collect from Gmail list pagination per sync.
+ * High enough to cover a typical 6-month application mailbox (newest first). */
+export const MAX_MESSAGES_PER_SYNC = 2000;
 
 /**
  * New (unindexed) messages to fetch + classify per POST.
