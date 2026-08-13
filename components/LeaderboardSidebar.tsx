@@ -297,8 +297,8 @@ export function LeaderboardSidebar({ chains }: { chains: Chain[] }) {
             <div className="min-w-0 pr-1">
               <h2 className="text-sm font-semibold text-slate-800">Leaderboard</h2>
               <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
-                Top 5 trackers by applications synced. Names are shortened for
-                privacy.
+                Top 5 trackers by unique applications (same company + role
+                counts once). Names are shortened for privacy.
               </p>
             </div>
             <LeaderboardSettingsButton
