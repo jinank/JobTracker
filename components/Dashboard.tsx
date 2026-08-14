@@ -13,7 +13,7 @@ import { ChainCard } from "./ChainCard";
 import { ChainView } from "./ChainView";
 import { CompanyGroupCard, buildCompanyGroups } from "./CompanyGroupCard";
 import { EmptyState } from "./EmptyState";
-import { LeaderboardSidebar } from "./LeaderboardSidebar";
+import { TrackerStatsSidebar } from "./TrackerStatsSidebar";
 import { InviteResponseBanner } from "./InviteResponseBanner";
 import type { Chain, ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
@@ -349,7 +349,7 @@ export function Dashboard() {
               onRefresh={refresh}
             />
           </main>
-          <LeaderboardSidebar chains={chains} />
+          <TrackerStatsSidebar chains={chains} />
           </div>
         </div>
       </div>
@@ -789,7 +789,7 @@ export function Dashboard() {
           </>
         )}
         </main>
-        <LeaderboardSidebar chains={chains} />
+        <TrackerStatsSidebar chains={chains} />
         </div>
       </div>
     </div>
