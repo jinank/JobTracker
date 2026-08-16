@@ -12,11 +12,7 @@ export type PricingPlan = {
   href?: string;
 };
 
-const SHARED_FEATURES = [
-  "AI email classification",
-  "Pipeline dashboard with filters",
-  "All five tools included",
-] as const;
+const SHARED_FEATURES = ["AI email classification"] as const;
 
 const UNLIMITED_TRACKING = "Unlimited applications & syncs";
 
@@ -50,8 +46,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       ...SHARED_FEATURES,
       "Auto Apply from the internship board",
       "100 Auto Apply applications",
-      "Full pipeline & timeline",
-      "Priority support",
       "Cancel anytime",
       "100% refund guaranteed if you don't like it",
     ],
@@ -73,7 +67,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       "100 Auto Apply applications",
       "Free portfolio website",
       "AI mock interviews & mentor search",
-      "Priority support",
     ],
     cta: "Get Premium",
     badge: "Done-for-you",

@@ -466,8 +466,8 @@ export function LandingPage() {
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
           <div className="landing-hero-stagger">
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-white/70 px-4 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm sm:text-sm">
-              🎓 Free for students: verify once, everything unlocked
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-scale-purple/20 bg-white/70 px-4 py-1.5 text-xs font-semibold text-scale-purple shadow-sm backdrop-blur-sm sm:text-sm">
+              Auto Apply on supported internship listings
             </span>
             <h1
               id="hero-heading"
@@ -919,7 +919,7 @@ export function LandingPage() {
                   This semester&apos;s the one.
                 </h2>
                 <p className="mx-auto mt-4 max-w-xl text-lg text-violet-100">
-                  Set up in under a minute. Free for students, forever.
+                  Set up in under a minute. Auto Apply on supported listings.
                 </p>
                 <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <LoginLink
