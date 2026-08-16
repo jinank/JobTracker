@@ -90,7 +90,7 @@ export function InternshipTable({
                 {recencyLabel}
               </th>
               <th scope="col" className="px-4 py-3 text-right font-semibold text-slate-700 sm:px-5">
-                <span className="sr-only">Apply</span>
+                <span className="sr-only">Actions</span>
               </th>
             </tr>
           </thead>

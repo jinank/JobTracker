@@ -96,7 +96,7 @@ export function FindJobListCard({
         </p>
       </div>
 
-      <div className="shrink-0">
+      <div className="shrink-0 self-center">
         <InternshipApplyButton
           job={job}
           autoApply={autoApply}
