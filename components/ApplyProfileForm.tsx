@@ -89,9 +89,9 @@ export function ApplyProfileForm({
       onSubmit={handleSubmit}
       className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm"
     >
-      <h2 className="text-sm font-bold text-slate-900">One-click apply</h2>
+      <h2 className="text-sm font-bold text-slate-900">Auto Apply</h2>
       <p className="mt-1 text-xs text-slate-600">
-        We submit on the company ATS using your profile. Recruiter replies still go to your email.
+        Auto Apply submits on the company career page using your profile. Recruiter replies still go to your email.
       </p>
 
       {ready ? (
@@ -109,7 +109,7 @@ export function ApplyProfileForm({
       {resumeFilename ? (
         <p className="mt-2 text-xs text-slate-500">
           Resume: {resumeFilename}
-          {hasPdfResume ? "" : " (PDF required for auto-apply)"}
+          {hasPdfResume ? "" : " (PDF required for Auto Apply)"}
         </p>
       ) : null}
 
@@ -125,7 +125,7 @@ export function ApplyProfileForm({
       ) : null}
       {!paid ? (
         <p className="mt-3 text-xs text-slate-500">
-          One-click apply is included with student and paid access. You can still save this profile.
+          Auto Apply is included with student and paid access. You can still save this profile.
         </p>
       ) : null}
       {!configured && configuredMessage ? (

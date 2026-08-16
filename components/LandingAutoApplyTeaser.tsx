@@ -16,18 +16,18 @@ export function LandingAutoApplyTeaser() {
             <div className="flex flex-col gap-6 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8">
               <div className="min-w-0 max-w-2xl">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-violet-200">
-                  New · One-click apply
+                  New · Auto Apply
                 </p>
                 <h2
                   id="landing-auto-apply-heading"
                   className="mt-2 text-xl font-bold tracking-tight sm:text-2xl"
                 >
-                  We apply for you
+                  Auto Apply
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-violet-100">
-                  Save your resume and apply profile once. Click Apply on a listing and we
-                  submit on the company career page. Pro and Premium include 100 internship
-                  applications on your behalf.
+                  Save your resume and apply profile once. Click Apply on a listing and Auto
+                  Apply submits on the company career page. Pro and Premium include 100 Auto
+                  Apply applications.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col items-stretch gap-2 sm:items-end">

@@ -23,5 +23,5 @@ export function getTsentaWebhookSecret(): string | null {
 }
 
 export function tsentaNotConfiguredMessage(): string {
-  return "One-click apply is not available right now. Open the listing and apply on the company site.";
+  return "Auto Apply is not available right now. Open the listing and apply on the company site.";
 }

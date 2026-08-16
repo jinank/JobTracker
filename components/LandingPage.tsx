@@ -292,12 +292,12 @@ const TOOL_SECTIONS: ToolSection[] = [
     eyebrow: "Find Internships",
     eyebrowColor: "text-emerald-600",
     title: "Real openings, straight from company career pages",
-    desc: "We sync US internships every day from employers' own job boards (Greenhouse and Lever), so you see real, current roles instead of expired reposts. One-click apply submits on supported listings for you.",
+    desc: "We sync US internships every day from employers' own job boards (Greenhouse and Lever), so you see real, current roles instead of expired reposts. Auto Apply submits on supported listings.",
     bullets: [
       "US-based internships, including US-eligible remote roles",
       "Filter by role category, work type, location, and date posted",
       "Software, product, design, data, marketing, and operations roles",
-      "One-click apply on supported listings, or open the company site",
+      "Auto Apply on supported listings, or open the company site",
     ],
     checkColor: "text-emerald-600",
     href: "/find-internships",
@@ -394,7 +394,7 @@ const HOW_IT_WORKS = [
   {
     step: "2",
     title: "Find roles & apply",
-    desc: "Browse internships synced daily from company career pages. Apply yourself, or let SuperInterns submit on supported listings.",
+    desc: "Browse internships synced daily from company career pages. Apply yourself, or use Auto Apply on supported listings.",
   },
   {
     step: "3",
@@ -436,12 +436,12 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
     a: "Click and fix it. You can edit any application's company, role, or stage whenever the AI misreads something.",
   },
   {
-    q: "What is one-click apply?",
-    a: "Save your resume and apply profile, then click Apply on a listing. SuperInterns submits on the company career page for supported systems. Pro and Premium include 100 internship applications on your behalf. If a listing is not supported, we open the company site instead.",
+    q: "What is Auto Apply?",
+    a: "Save your resume and apply profile, then click Apply on a listing. Auto Apply submits on the company career page for supported systems. Pro and Premium include 100 Auto Apply applications. If a listing is not supported, we open the company site instead.",
   },
   {
     q: "I'm not a student. Can I use it?",
-    a: "Starter Plan is $4.99/month with the core toolkit. Pro Plan is $9.99/month for unlimited tracking and 100 internship applications on your behalf. Premium is $49 lifetime with the same 100 applications plus a free portfolio website.",
+    a: "Starter Plan is $4.99/month with the core toolkit. Pro Plan is $9.99/month for unlimited tracking and 100 Auto Apply applications. Premium is $49 lifetime with the same 100 Auto Apply applications plus a free portfolio website.",
   },
 ];
 
@@ -504,7 +504,7 @@ export function LandingPage() {
               </Link>
             </div>
             <p className="mt-5 text-xs text-slate-400">
-              Find from everywhere · Apply or let us apply · Track and Reach out to mentors
+              Find from everywhere · Auto Apply · Track and Reach out to mentors
             </p>
           </div>
         </div>
@@ -547,7 +547,7 @@ export function LandingPage() {
                 place: a daily-updated board of US internships, an AI tracker that builds
                 your application pipeline from Gmail, mock interviews tailored to real
                 companies, a mentor finder for referrals and advice, and a library of
-                student discounts. One-click apply on supported listings. Five tools, one
+                student discounts. Auto Apply on supported listings. Five tools, one
                 login, start with Starter at $4.99/mo.
               </p>
             </div>
@@ -712,7 +712,7 @@ export function LandingPage() {
               </h2>
               <p className="mx-auto mt-4 text-base text-slate-500 sm:text-lg">
                 Start with Starter at $4.99/mo. Pro and Premium add unlimited tracking and
-                100 internship applications on your behalf.{" "}
+                100 Auto Apply applications.{" "}
                 <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
                   Full comparison
                 </Link>

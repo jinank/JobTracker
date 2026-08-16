@@ -23,7 +23,7 @@ export function buildLlmsTxt(): string {
     `- [Student Resources](${line("/resources")}): Member perks and curated student discounts.`,
     "",
     "## Pricing & account",
-    `- [Pricing](${line("/pricing")}): Starter $4.99/mo, Pro $9.99/mo with 100 applications on your behalf, Premium $49 lifetime.`,
+    `- [Pricing](${line("/pricing")}): Starter $4.99/mo, Pro $9.99/mo with 100 Auto Apply applications, Premium $49 lifetime.`,
     `- [Sign in](${line("/login")}): Create an account with email or Google.`,
     `- [Verify student status](${line("/verify-student")}): Unlock free unlimited access for students.`,
     "",

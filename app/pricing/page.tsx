@@ -77,7 +77,7 @@ export default function PricingPage() {
             <h1 className="text-xl font-bold text-slate-900">You&apos;re on Pro</h1>
             <p className="mt-2 text-sm text-slate-500">
               You have unlimited application tracking and Pro benefits. Need Premium with
-              done-for-you applications?{" "}
+              Auto Apply and a portfolio website?{" "}
               <Link href="/contact-us?plan=premium" className="font-semibold text-scale-purple hover:underline">
                 Contact us
               </Link>
@@ -99,10 +99,10 @@ export default function PricingPage() {
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
                 {studentVerified
-                  ? "You're verified with unlimited tracking. Upgrade to Starter, Pro, or Premium for more support and done-for-you applications."
+                  ? "You're verified with unlimited tracking. Upgrade to Starter, Pro, or Premium for Auto Apply and more support."
                   : session
                     ? `You're using ${chainCount} of ${freeLimit} free applications. Choose Starter, Pro, or Premium anytime.`
-                    : "Start with Starter for $4.99/mo, or choose Pro / Premium for unlimited tracking and 100 internship applications on your behalf."}
+                    : "Start with Starter for $4.99/mo, or choose Pro / Premium for unlimited tracking and 100 Auto Apply applications."}
               </p>
             </div>
 
