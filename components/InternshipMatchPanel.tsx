@@ -92,8 +92,8 @@ export function InternshipMatchPanel({
       <div className="mb-3">
         <h2 className="text-sm font-bold text-slate-900">Match for me</h2>
         <p className="mt-1 text-xs text-slate-600">
-          Upload your resume and pick roles you want. We&apos;ll surface
-          internships that fit your background.
+          Upload a PDF resume and pick roles you want. We&apos;ll surface
+          internships that fit, and use the PDF for one-click apply.
         </p>
       </div>
 
@@ -111,7 +111,7 @@ export function InternshipMatchPanel({
 
       <div className="mb-4">
         <span className="mb-1.5 block text-xs font-medium text-slate-600">
-          Resume (PDF or TXT)
+          Resume (PDF for auto-apply, or TXT)
         </span>
         {prefs.resumeFilename ? (
           <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">

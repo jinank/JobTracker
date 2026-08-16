@@ -5,6 +5,8 @@ import {
   formatTableLocation,
   locationHasMultipleCities,
 } from "@/lib/jobs/formatTableLocation";
+import { InternshipApplyButton } from "@/components/InternshipApplyButton";
+import type { PublicTsentaApplication } from "@/lib/tsenta/types";
 
 function postedLabel(days: number): string {
   if (days <= 1) return "Today";
@@ -25,6 +27,11 @@ type InternshipTableProps = {
   showWorkType?: boolean;
   recencyField?: "posted" | "updated";
   recencyLabel?: string;
+  autoApply?: boolean;
+  applicationsByKey?: Record<string, PublicTsentaApplication>;
+  profileReady?: boolean;
+  onApply?: (job: JobListing) => void;
+  onNeedProfile?: () => void;
 };
 
 export function InternshipTable({
@@ -34,6 +41,11 @@ export function InternshipTable({
   showWorkType = true,
   recencyField = "posted",
   recencyLabel = "Posted",
+  autoApply = false,
+  applicationsByKey,
+  profileReady = false,
+  onApply,
+  onNeedProfile,
 }: InternshipTableProps) {
   if (loading && jobs.length === 0) {
     return (
@@ -133,14 +145,16 @@ export function InternshipTable({
                   )}
                 </td>
                 <td className="px-4 py-3.5 text-right sm:px-5">
-                  <a
-                    href={job.applyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex rounded-lg border border-scale-purple/25 bg-scale-mist/40 px-3 py-1.5 text-xs font-semibold text-scale-purple transition-colors hover:bg-scale-purple hover:text-white"
-                  >
-                    Apply
-                  </a>
+                  <InternshipApplyButton
+                    job={job}
+                    autoApply={autoApply}
+                    application={
+                      applicationsByKey?.[job.id] ?? applicationsByKey?.[job.applyUrl]
+                    }
+                    profileReady={profileReady}
+                    onApply={onApply}
+                    onNeedProfile={onNeedProfile}
+                  />
                 </td>
               </tr>
             );

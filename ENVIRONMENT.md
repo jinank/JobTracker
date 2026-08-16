@@ -123,3 +123,21 @@ AUTH_EMAIL_FROM=SuperInterns <auth@summer2027internships.com>
 2. Add the keys above to `.env.local` and Vercel Production, then redeploy.
 
 **Without Resend:** paste `supabase/email-templates/magic-link.html` into **Supabase Dashboard → Authentication → Email Templates** for **Magic Link** and **Confirm signup**. Set the subject to `Sign in to SuperInterns`. Under **Authentication → Settings**, set the sender name to **SuperInterns**.
+
+---
+
+## Tsenta one-click auto-apply
+
+[Tsenta Developer API](https://docs.tsenta.com/developers) submits applications on Greenhouse, Lever, Ashby, Workday, and other ATS sites. SuperInterns holds one server-side key and pays **$0.09 per submitted application**.
+
+1. Email [founders@tsenta.com](mailto:founders@tsenta.com) for an API key and credit (not self-serve).
+2. Run `supabase/migration_v17_tsenta_apply.sql` in the SQL editor (creates `tsenta_applications` and a private `resumes` bucket).
+3. Add to `.env.local` and Vercel Production:
+
+```env
+TSENTA_API_KEY=sk_live_...
+# Optional: verify POST /api/webhooks/tsenta
+# TSENTA_WEBHOOK_SECRET=
+```
+
+Never expose `TSENTA_API_KEY` to the browser. Until the key is set, Apply stays a career-page link and `/api/apply` returns a clear not-configured error.

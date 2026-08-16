@@ -1,14 +1,18 @@
 "use client";
 
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { SiteNavApp } from "@/components/SiteNav";
 import { AppHeaderActions } from "@/components/AppHeaderActions";
 import { InternshipTable } from "@/components/InternshipTable";
+import { ApplyProfileForm } from "@/components/ApplyProfileForm";
 import { useChains } from "@/hooks/useChains";
 import { useInternships } from "@/hooks/useInternships";
 import { useInternshipPreferences } from "@/hooks/useInternshipPreferences";
+import { useApplyProfile } from "@/hooks/useApplyProfile";
+import { useTsentaApply } from "@/hooks/useTsentaApply";
 import { InternshipMatchPanel } from "@/components/InternshipMatchPanel";
+import type { JobListing } from "@/types/jobListing";
 import { countUniqueApplications } from "@/lib/uniqueApplications";
 import { ROLE_CATEGORIES, WORK_TYPES } from "@/lib/jobs/constants";
 import type {
@@ -108,6 +112,12 @@ export function FindJobsApp() {
     removeResume,
   } = useInternshipPreferences();
 
+  const applyProfile = useApplyProfile();
+  const signedIn = Boolean(session?.user?.email);
+  const canAutoApply = signedIn && applyProfile.paid && applyProfile.configured;
+  const { byKey: applyByKey, apply: startApply } = useTsentaApply(canAutoApply);
+  const applyProfileRef = useRef<HTMLDivElement>(null);
+
   const filters = useMemo(
     () => ({
       search,
@@ -138,10 +148,32 @@ export function FindJobsApp() {
 
   const { jobs, total, stats, loading, error, refresh } = useInternships(filters);
 
+  const refreshApplyProfile = applyProfile.refresh;
+
   const handleMatchChange = useCallback(() => {
     refreshMatchPrefs();
+    refreshApplyProfile();
     refresh();
-  }, [refreshMatchPrefs, refresh]);
+  }, [refreshMatchPrefs, refreshApplyProfile, refresh]);
+
+  const focusApplyProfile = useCallback(() => {
+    setMobileFiltersOpen(true);
+    applyProfileRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const handleAutoApply = useCallback(
+    async (job: JobListing) => {
+      const result = await startApply({ listingId: job.id, applyUrl: job.applyUrl });
+      if ("needsProfile" in result && result.needsProfile) {
+        focusApplyProfile();
+        return;
+      }
+      if ("unsupported" in result && result.unsupported && result.applyUrl) {
+        window.open(result.applyUrl, "_blank", "noopener,noreferrer");
+      }
+    },
+    [startApply, focusApplyProfile]
+  );
 
   const matchPanel = (
     <InternshipMatchPanel
@@ -156,6 +188,24 @@ export function FindJobsApp() {
       onPreferencesChange={handleMatchChange}
     />
   );
+
+  const applyPanel = signedIn ? (
+    <div ref={applyProfileRef}>
+      <ApplyProfileForm
+        profile={applyProfile.profile}
+        hasPdfResume={applyProfile.hasPdfResume}
+        resumeFilename={applyProfile.resumeFilename}
+        ready={applyProfile.ready}
+        paid={applyProfile.paid}
+        configured={applyProfile.configured}
+        configuredMessage={applyProfile.configuredMessage}
+        loading={applyProfile.loading}
+        saving={applyProfile.saving}
+        error={applyProfile.error}
+        onSave={applyProfile.save}
+      />
+    </div>
+  ) : null;
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const safePage = Math.min(page, totalPages);
@@ -377,6 +427,7 @@ export function FindJobsApp() {
                 {mobileFiltersOpen && (
                   <div className="mt-3 space-y-3">
                     {matchPanel}
+                    {applyPanel}
                     <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                       {filtersPanel}
                     </div>
@@ -426,6 +477,11 @@ export function FindJobsApp() {
                     showWorkType={false}
                     recencyField="updated"
                     recencyLabel="Added"
+                    autoApply={canAutoApply}
+                    applicationsByKey={applyByKey}
+                    profileReady={applyProfile.ready}
+                    onApply={handleAutoApply}
+                    onNeedProfile={focusApplyProfile}
                     emptyMessage={
                       matchPrefs.matchEnabled
                         ? "No internships match these filters. Try turning off “Show only relevant internships” or broaden your role picks."
@@ -481,6 +537,7 @@ export function FindJobsApp() {
               aria-label="Internship filters"
             >
               {matchPanel}
+              {applyPanel}
               <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 shadow-sm">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-sm font-bold text-slate-900">Filters</h2>

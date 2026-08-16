@@ -1,6 +1,8 @@
 "use client";
 
 import type { JobListing } from "@/types/jobListing";
+import { InternshipApplyButton } from "@/components/InternshipApplyButton";
+import type { PublicTsentaApplication } from "@/lib/tsenta/types";
 
 function companyInitials(name: string): string {
   return name
@@ -37,7 +39,21 @@ const WORK_TYPE_STYLES: Record<JobListing["workType"], string> = {
   "On-site": "bg-amber-50 text-amber-800 ring-amber-100",
 };
 
-export function FindJobListCard({ job }: { job: JobListing }) {
+export function FindJobListCard({
+  job,
+  autoApply = false,
+  application,
+  profileReady = false,
+  onApply,
+  onNeedProfile,
+}: {
+  job: JobListing;
+  autoApply?: boolean;
+  application?: PublicTsentaApplication;
+  profileReady?: boolean;
+  onApply?: (job: JobListing) => void;
+  onNeedProfile?: () => void;
+}) {
   return (
     <article className="group flex items-center gap-3 sm:gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-card transition-all duration-200 hover:border-blue-200/80 hover:shadow-card-hover">
       <div
@@ -80,14 +96,16 @@ export function FindJobListCard({ job }: { job: JobListing }) {
         </p>
       </div>
 
-      <a
-        href={job.applyUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="shrink-0 rounded-lg border border-blue-200/60 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600 transition-colors hover:bg-blue-100"
-      >
-        Apply
-      </a>
+      <div className="shrink-0">
+        <InternshipApplyButton
+          job={job}
+          autoApply={autoApply}
+          application={application}
+          profileReady={profileReady}
+          onApply={onApply}
+          onNeedProfile={onNeedProfile}
+        />
+      </div>
     </article>
   );
 }
