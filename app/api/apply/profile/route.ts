@@ -75,7 +75,7 @@ export async function GET() {
 
   if (error) {
     const hint = error.message.includes("apply_profile")
-      ? "Run supabase/migration_v17_tsenta_apply.sql"
+      ? "Auto-apply is not set up yet."
       : undefined;
     return NextResponse.json({ error: error.message, hint }, { status: 500 });
   }
@@ -106,7 +106,7 @@ export async function POST(request: Request) {
 
   if (loadError) {
     const hint = loadError.message.includes("apply_profile")
-      ? "Run supabase/migration_v17_tsenta_apply.sql"
+      ? "Auto-apply is not set up yet."
       : undefined;
     return NextResponse.json({ error: loadError.message, hint }, { status: 500 });
   }

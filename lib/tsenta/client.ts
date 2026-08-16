@@ -94,8 +94,12 @@ async function tsentaFetch<T>(
   }
 
   if (!res.ok) {
-    const { message, code } = readError(json, `Tsenta request failed (${res.status})`);
-    throw new TsentaApiError(message, res.status, code);
+    const { message, code } = readError(json, `Auto-apply request failed (${res.status})`);
+    throw new TsentaApiError(
+      message.replace(/tsenta/gi, "auto-apply"),
+      res.status,
+      code
+    );
   }
 
   return json as T;
@@ -192,7 +196,7 @@ export async function createProfile(
   });
   const id = data.id ?? data.profile_id;
   if (!id) {
-    throw new TsentaApiError("Tsenta did not return a profile id.", 502, "invalid_request");
+    throw new TsentaApiError("Could not create your apply profile.", 502, "invalid_request");
   }
   return { id };
 }

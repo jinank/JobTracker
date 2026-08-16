@@ -64,11 +64,11 @@ export async function syncTsentaCandidate(input: {
         return { candidateId: candidate.id, profileId: candidate.profile_id };
       } catch (retryErr) {
         const message =
-          retryErr instanceof Error ? retryErr.message : "Could not sync apply profile to Tsenta.";
+          retryErr instanceof Error ? retryErr.message : "Could not save your apply profile.";
         return { error: message };
       }
     }
-    const message = err instanceof Error ? err.message : "Could not sync apply profile to Tsenta.";
+    const message = err instanceof Error ? err.message : "Could not save your apply profile.";
     return { error: message };
   }
 }

@@ -30,7 +30,7 @@ export async function uploadResumePdf(
   if (error) {
     throw new Error(
       error.message.includes("Bucket not found")
-        ? "Resume storage is missing. Run supabase/migration_v17_tsenta_apply.sql."
+        ? "Resume storage is not set up yet."
         : error.message
     );
   }

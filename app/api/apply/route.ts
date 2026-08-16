@@ -45,7 +45,7 @@ export async function GET() {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to load applications";
     const hint = message.includes("tsenta_applications")
-      ? "Run supabase/migration_v17_tsenta_apply.sql"
+      ? "Auto-apply is not set up yet."
       : undefined;
     return NextResponse.json({ error: message, hint }, { status: 500 });
   }

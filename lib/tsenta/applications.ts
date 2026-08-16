@@ -281,12 +281,12 @@ export async function recordSubmittedApplication(
     user_id: row.user_id,
     event_type: "APPLICATION_RECEIVED",
     event_time: now,
-    evidence: `Auto-applied via Tsenta${row.ats ? ` (${row.ats})` : ""}.`,
+    evidence: `Auto-applied from SuperInterns${row.ats ? ` (${row.ats})` : ""}.`,
     extracted_entities: {
       company_raw: company,
       role_raw: role || undefined,
       links: [row.apply_url],
-      source: "tsenta",
+      source: "auto_apply",
     },
     extraction_version: 1,
   });

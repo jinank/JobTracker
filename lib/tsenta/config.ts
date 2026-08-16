@@ -23,5 +23,5 @@ export function getTsentaWebhookSecret(): string | null {
 }
 
 export function tsentaNotConfiguredMessage(): string {
-  return "Auto-apply is not configured yet. Add TSENTA_API_KEY after Tsenta loads credit (founders@tsenta.com).";
+  return "One-click apply is not available right now. Open the listing and apply on the company site.";
 }

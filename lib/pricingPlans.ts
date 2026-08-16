@@ -36,7 +36,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       "All student deals & resources",
     ],
     cta: "Get Starter",
-    highlight: true,
     badge: "Best value",
     href: "/pricing",
   },
@@ -49,6 +48,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     features: [
       UNLIMITED_TRACKING,
       ...SHARED_FEATURES,
+      "One-click apply from the internship board",
       "100 internship applications on your behalf",
       "Full pipeline & timeline",
       "Priority support",
@@ -56,6 +56,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       "100% refund guaranteed if you don't like it",
     ],
     cta: "Start Pro",
+    highlight: true,
     badge: "Most Popular",
     href: "/pricing",
   },
@@ -68,6 +69,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     features: [
       UNLIMITED_TRACKING,
       ...SHARED_FEATURES,
+      "One-click apply from the internship board",
       "100 internship applications on your behalf",
       "Free portfolio website",
       "AI mock interviews & mentor search",

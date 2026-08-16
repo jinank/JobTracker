@@ -102,7 +102,7 @@ export default function PricingPage() {
                   ? "You're verified with unlimited tracking. Upgrade to Starter, Pro, or Premium for more support and done-for-you applications."
                   : session
                     ? `You're using ${chainCount} of ${freeLimit} free applications. Choose Starter, Pro, or Premium anytime.`
-                    : "Start with Starter for $4.99/mo, or choose Pro / Premium for unlimited tracking and done-for-you applications."}
+                    : "Start with Starter for $4.99/mo, or choose Pro / Premium for unlimited tracking and 100 internship applications on your behalf."}
               </p>
             </div>
 
@@ -201,7 +201,7 @@ export default function PricingPage() {
                   disabled={checkoutLoading !== null}
                   className="w-full rounded-xl bg-blue-600 py-3 font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {checkoutLoading === "pro" ? "Redirecting to checkout..." : "Upgrade to Pro"}
+                  {checkoutLoading === "pro" ? "Redirecting to checkout..." : proPlan.cta}
                 </button>
 
                 <p className="mt-3 text-center text-xs text-slate-400">Secure payment via PayPal</p>
