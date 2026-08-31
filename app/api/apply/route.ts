@@ -240,7 +240,21 @@ export async function POST(request: Request) {
         { status: 422 }
       );
     }
-    const message = err instanceof Error ? err.message : "Could not start auto-apply.";
+    if (
+      err instanceof TsentaApiError &&
+      (err.code === "insufficient_credit" || err.status === 402)
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Auto Apply is paused until credit is added. Use View Internship to apply on the company site.",
+          unsupported: true,
+          applyUrl,
+        },
+        { status: 402 }
+      );
+    }
+    const message = err instanceof Error ? err.message : "Could not start Auto Apply.";
     const status = err instanceof TsentaApiError ? Math.max(400, err.status) : 500;
     return NextResponse.json({ error: message }, { status: status >= 500 ? 502 : status });
   }
