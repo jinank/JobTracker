@@ -20,7 +20,7 @@ type NavAuthActionProps = {
 export function NavAuthAction({
   className = "",
   callbackUrl,
-  signInLabel = "Get started free",
+  signInLabel = "Get started",
   signedInLabel = "Open dashboard",
   dashboardHref = "/",
 }: NavAuthActionProps) {

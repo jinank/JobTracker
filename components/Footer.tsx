@@ -189,7 +189,7 @@ export function Footer() {
             © {year} {SITE_NAME}. All rights reserved.
           </p>
           <p className="text-xs font-medium text-slate-400">
-            Free for students · Synced daily from company career pages
+            Synced daily from company career pages
           </p>
         </div>
       </div>

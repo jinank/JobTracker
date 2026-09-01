@@ -6,15 +6,15 @@ export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 
 export const SITE_TITLE_DEFAULT =
-  "Summer 2027 Internships | Find, Apply & Track USA Summer 2027 Internships";
+  "Summer 2027 Internships | Find, Track & Auto Apply";
 
 export const SITE_DESCRIPTION_DEFAULT =
-  "Find Summer 2027 Internships in USA directly from company career pages. Apply and Track applications from Gmail, practice interviews with AI, and unlock student perks. Free.";
+  "Find Summer 2027 internships in the USA from company career pages. Track applications from Gmail, practice interviews, and Auto Apply on supported listings.";
 
 export const SITE_KEYWORDS = [
   "Summer 2027 Internships",
   "summer 2027 internships",
-  " 2027 summer internships",
+  "2027 summer internships",
   "summer internships",
   "USA internships",
   "internship search",

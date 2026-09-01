@@ -14,6 +14,7 @@ import { LandingAutoApplyTeaser } from "@/components/LandingAutoApplyTeaser";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
+import { MARKETING_FAQ_ITEMS } from "@/lib/marketingFaq";
 import { PRICING_PLANS } from "@/lib/pricingPlans";
 import { CANONICAL_SITE_HOST } from "@/lib/site";
 
@@ -388,7 +389,7 @@ const TOOL_SECTIONS: ToolSection[] = [
 const HOW_IT_WORKS = [
   {
     step: "1",
-    title: "Create your free account",
+    title: "Create your account",
     desc: "Sign in with Google or email in seconds. Pick Starter, Pro, or Premium and start tracking applications right away.",
   },
   {
@@ -419,29 +420,6 @@ const PRIVACY_POINTS = [
   {
     title: "You stay in control",
     desc: "Every AI-classified application can be edited or corrected. Your data powers your dashboard, governed by our privacy policy.",
-  },
-];
-
-const FAQ_ITEMS: { q: string; a: string }[] = [
-  {
-    q: "What does SuperInterns do with my Gmail?",
-    a: "We request minimal, read-only access and only look for job-related threads, confirmations, assessments, interview invites, offers. You can revoke access anytime from your Google account, and Gmail is optional to start.",
-  },
-  {
-    q: "How is this different from LinkedIn or Handshake?",
-    a: "Internship listings come straight from company career pages, not crowded job boards. And instead of you maintaining a spreadsheet, AI builds your pipeline from your own inbox.",
-  },
-  {
-    q: "What if the AI gets a status wrong?",
-    a: "Click and fix it. You can edit any application's company, role, or stage whenever the AI misreads something.",
-  },
-  {
-    q: "What is Auto Apply?",
-    a: "Save your resume and apply profile, then click Apply on a listing. Auto Apply submits on the company career page for supported systems. Pro and Premium include 100 Auto Apply applications. If a listing is not supported, we open the company site instead.",
-  },
-  {
-    q: "I'm not a student. Can I use it?",
-    a: "Starter Plan is $4.99/month with the core toolkit. Pro Plan is $9.99/month for unlimited tracking and 100 Auto Apply applications. Premium is $49 lifetime with the same 100 Auto Apply applications plus a free portfolio website.",
   },
 ];
 
@@ -491,7 +469,7 @@ export function LandingPage() {
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-scale-purple px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-scale-purple-dark active:scale-[0.98] sm:w-auto"
               >
                 <GoogleIcon />
-                Get started free
+                Get started
               </LoginLink>
               <Link
                 href="#latest-internships"
@@ -869,7 +847,7 @@ export function LandingPage() {
           </ScrollReveal>
           <ScrollReveal delay={120}>
             <div className="divide-y divide-slate-200/80 rounded-2xl border border-slate-200/70 bg-white">
-            {FAQ_ITEMS.map((item, i) => {
+            {MARKETING_FAQ_ITEMS.map((item, i) => {
               const open = faqOpen === i;
               return (
                 <div key={item.q}>
@@ -927,7 +905,7 @@ export function LandingPage() {
                     className="inline-flex items-center gap-3 rounded-xl bg-white px-9 py-3.5 text-sm font-bold text-scale-purple shadow-lg transition-all hover:bg-scale-mist active:scale-[0.98]"
                   >
                     <GoogleIcon />
-                    Get started free
+                    Get started
                   </LoginLink>
                   <LoginLink
                     callbackUrl="/"
