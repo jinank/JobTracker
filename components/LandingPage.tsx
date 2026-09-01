@@ -10,7 +10,6 @@ import {
   useScrollParallax,
 } from "@/components/landing/LandingMotion";
 import { LandingInternshipsSection } from "@/components/LandingInternshipsSection";
-import { LandingAutoApplyTeaser } from "@/components/LandingAutoApplyTeaser";
 import { LandingReferEarnSection } from "@/components/LandingReferEarnSection";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
@@ -488,8 +487,6 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-
-      <LandingAutoApplyTeaser />
 
       <LandingInternshipsSection />
 
