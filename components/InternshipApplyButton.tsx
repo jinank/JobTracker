@@ -4,22 +4,11 @@ import type { ReactNode } from "react";
 import type { JobListing } from "@/types/jobListing";
 import { isInFlightStatus, type PublicTsentaApplication } from "@/lib/tsenta/types";
 
-const viewClass =
-  "inline-flex rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50";
-
 const linkClass =
   "inline-flex rounded-lg border border-scale-purple/25 bg-scale-mist/40 px-3 py-1.5 text-xs font-semibold text-scale-purple transition-colors hover:bg-scale-purple hover:text-white";
 
 const buttonClass =
   "inline-flex rounded-lg border border-scale-purple/25 bg-scale-mist/40 px-3 py-1.5 text-xs font-semibold text-scale-purple transition-colors hover:bg-scale-purple hover:text-white disabled:cursor-wait disabled:opacity-70";
-
-function ViewInternshipLink({ href }: { href: string }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={viewClass}>
-      View Internship
-    </a>
-  );
-}
 
 type Props = {
   job: JobListing;
@@ -91,10 +80,5 @@ export function InternshipApplyButton({
     );
   }
 
-  return (
-    <span className="inline-flex flex-col items-end gap-1.5 sm:flex-row sm:items-center">
-      <ViewInternshipLink href={job.applyUrl} />
-      {applyControl}
-    </span>
-  );
+  return applyControl;
 }

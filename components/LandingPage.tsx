@@ -452,7 +452,7 @@ export function LandingPage() {
               className="mx-auto max-w-3xl font-extrabold leading-[1.1] tracking-tight"
             >
               <span className="block whitespace-nowrap text-[clamp(1.25rem,4.8vw,2.5rem)] text-scale-purple">
-                Summer 2027 Internships
+                Internships on Auto Pilot
               </span>
               <span className="relative mt-1 inline-block whitespace-nowrap text-[clamp(1.25rem,4.8vw,2.5rem)] text-hero-gradient">
                 Your internship search in one place

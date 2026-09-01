@@ -247,7 +247,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "Auto Apply is paused until credit is added. Use View Internship to apply on the company site.",
+            "Auto Apply is paused until credit is added. Apply on the company site instead.",
           unsupported: true,
           applyUrl,
         },
