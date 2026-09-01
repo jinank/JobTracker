@@ -1,14 +1,17 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
-import { InternshipTable } from "@/components/InternshipTable";
+import { LandingCompanyInternshipTable } from "@/components/LandingCompanyInternshipTable";
 import { ScrollReveal } from "@/components/landing/LandingMotion";
 import { useInternshipPreview } from "@/hooks/useInternships";
+import { groupJobsByCompany } from "@/lib/jobs/groupJobsByCompany";
 
 const PREVIEW_LIMIT = 50;
 
 export function LandingInternshipsSection() {
   const { jobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT, "updated-asc");
+  const companyCount = useMemo(() => groupJobsByCompany(jobs).length, [jobs]);
 
   const totalLabel = stats?.totalActive ?? jobs.length;
 
@@ -34,10 +37,9 @@ export function LandingInternshipsSection() {
               <p className="mt-3 max-w-2xl text-base text-slate-500">
                 {totalLabel > 0 ? (
                   <>
-                    Showing the {Math.min(PREVIEW_LIMIT, jobs.length)} latest US internships
-                    synced from company career pages
-                    {stats?.companies ? ` across ${stats.companies} companies` : ""}. No login
-                    required.
+                    {companyCount} companies from the latest US listings
+                    {stats?.companies ? ` · ${stats.companies} on the full board` : ""}. Expand a
+                    row to see every open role. No login required.
                   </>
                 ) : (
                   <>US internships sync every few hours from company career pages. No login required.</>
@@ -57,12 +59,9 @@ export function LandingInternshipsSection() {
         </ScrollReveal>
 
         <ScrollReveal delay={100}>
-          <InternshipTable
+          <LandingCompanyInternshipTable
             jobs={jobs}
             loading={loading}
-            showWorkType={false}
-            recencyField="updated"
-            recencyLabel="Added"
             emptyMessage="Internships sync every few hours. Check back soon."
           />
         </ScrollReveal>

@@ -11,6 +11,7 @@ import {
 } from "@/components/landing/LandingMotion";
 import { LandingInternshipsSection } from "@/components/LandingInternshipsSection";
 import { LandingAutoApplyTeaser } from "@/components/LandingAutoApplyTeaser";
+import { LandingReferEarnSection } from "@/components/LandingReferEarnSection";
 import { SiteNavMarketing } from "@/components/SiteNav";
 import { MarketingFaqJsonLd } from "@/components/seo/MarketingFaqJsonLd";
 import { getBlogPostsNewestFirst } from "@/lib/blogPosts";
@@ -765,6 +766,10 @@ export function LandingPage() {
           </div>
         </div>
       </section>
+
+      <SectionDivider />
+
+      <LandingReferEarnSection />
 
       <SectionDivider />
 

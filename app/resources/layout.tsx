@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Resources & student perks",
   description:
-    "Request the SuperInterns AI Prompt Guide PDF, LinkedIn and resume reviews, headshot tools, and curated student discounts.",
+    "LinkedIn and resume reviews, headshot tools, and curated student discounts.",
   path: "/resources",
   keywords: [
     "student discounts",

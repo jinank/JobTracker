@@ -12,7 +12,6 @@ import {
 } from "@/lib/studentDealsData";
 import type { MemberResource } from "@/lib/memberResources";
 import { SITE_NAME } from "@/lib/site";
-import { PromptGuideHighlight } from "@/components/PromptGuideHighlight";
 
 const RESOURCE_ICONS: Record<string, ReactNode> = {
   "ai-prompt-guide": (
@@ -201,8 +200,6 @@ export function StudentDealsExplorer() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6">
-      <PromptGuideHighlight />
-
       <section className="mb-12" aria-labelledby="member-resources-heading">
         <div className="mb-8 text-center sm:text-left">
           <h2
