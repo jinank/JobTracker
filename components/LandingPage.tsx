@@ -445,7 +445,7 @@ export function LandingPage() {
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
           <div className="landing-hero-stagger">
             <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-scale-purple/20 bg-white/70 px-4 py-1.5 text-xs font-semibold text-scale-purple shadow-sm backdrop-blur-sm sm:text-sm">
-              Auto Apply on supported internship listings
+              Your Internships Search on Autopilot
             </span>
             <h1
               id="hero-heading"
