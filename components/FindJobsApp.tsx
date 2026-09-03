@@ -114,7 +114,8 @@ export function FindJobsApp() {
 
   const applyProfile = useApplyProfile();
   const signedIn = Boolean(session?.user?.email);
-  const canAutoApply = signedIn && applyProfile.paid && applyProfile.configured;
+  const canAutoApply =
+    signedIn && applyProfile.hasProSubscription && applyProfile.configured;
   const { byKey: applyByKey, apply: startApply } = useTsentaApply(canAutoApply);
   const applyProfileRef = useRef<HTMLDivElement>(null);
 

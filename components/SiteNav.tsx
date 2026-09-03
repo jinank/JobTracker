@@ -108,7 +108,8 @@ export function SiteNavMarketing() {
 
         <div className="hidden w-[10.5rem] shrink-0 justify-end lg:flex">
           <NavAuthAction
-            callbackUrl={pathname}
+            callbackUrl="/pricing"
+            dashboardHref="/tracker"
             className="rounded-full bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
           />
         </div>
@@ -142,7 +143,8 @@ export function SiteNavMarketing() {
           />
           <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4">
             <NavAuthAction
-              callbackUrl={pathname}
+              callbackUrl="/pricing"
+              dashboardHref="/tracker"
               className="w-full rounded-xl bg-scale-purple py-3 text-center text-sm font-semibold text-white"
             />
           </div>

@@ -10,7 +10,7 @@ export function buildLlmsTxt(): string {
   const sections: string[] = [
     `# ${SITE_NAME}`,
     "",
-    `> ${SITE_NAME} helps students find USA internships from company career pages (Greenhouse and Lever), track job applications with read-only Gmail sync, practice AI mock interviews, find mentors, and unlock member perks. Free for verified students.`,
+    `> ${SITE_NAME} helps students find USA internships from company career pages (Greenhouse and Lever), track job applications with read-only Gmail sync, practice AI mock interviews, find mentors, and unlock member perks. Starter is $4.99/mo.`,
     "",
     "Use the public marketing pages below for accurate product descriptions. Authenticated app areas (tracker, reach-out, admin) require sign-in and are not listed here.",
     "",
@@ -25,7 +25,7 @@ export function buildLlmsTxt(): string {
     "## Pricing & account",
     `- [Pricing](${line("/pricing")}): Starter $4.99/mo, Pro $9.99/mo with 100 Auto Apply applications, Premium $49 lifetime.`,
     `- [Sign in](${line("/login")}): Create an account with email or Google.`,
-    `- [Verify student status](${line("/verify-student")}): Unlock free unlimited access for students.`,
+    `- [Verify student status](${line("/verify-student")}): Keep student status on file for member perks.`,
     "",
     "## Blog",
     `- [Blog index](${line("/blog")}): Internship search and application tracking guides.`,

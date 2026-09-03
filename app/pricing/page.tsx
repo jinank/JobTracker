@@ -7,6 +7,8 @@ import { SiteNavMarketing } from "@/components/SiteNav";
 import { useChains } from "@/hooks/useChains";
 import { getPricingPlan } from "@/lib/pricingPlans";
 import { getPayPalProCheckoutUrl, getPayPalStarterCheckoutUrl } from "@/lib/payments";
+import { FREE_TIER_LIMIT } from "@/lib/freeTier";
+import { loginUrl } from "@/lib/loginUrl";
 
 function FeatureList({ items, accent }: { items: string[]; accent: "emerald" | "blue" | "purple" }) {
   const iconClass =
@@ -38,10 +40,10 @@ function FeatureList({ items, accent }: { items: string[]; accent: "emerald" | "
 
 export default function PricingPage() {
   const { data: session } = useSession();
-  const { hasProSubscription, studentVerified, chainCount, limit, loading } = useChains();
+  const { hasProSubscription, chainCount, limit, loading } = useChains();
   const [checkoutLoading, setCheckoutLoading] = useState<"starter" | "pro" | null>(null);
 
-  const freeLimit = limit ?? 50;
+  const freeLimit = limit ?? FREE_TIER_LIMIT;
   const starterPlan = getPricingPlan("starter")!;
   const proPlan = getPricingPlan("professional")!;
   const premiumPlan = getPricingPlan("premium")!;
@@ -98,11 +100,9 @@ export default function PricingPage() {
                 Choose your plan
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                {studentVerified
-                  ? "You're verified with unlimited tracking. Upgrade to Starter, Pro, or Premium for Auto Apply and more support."
-                  : session
-                    ? `You're using ${chainCount} of ${freeLimit} free applications. Choose Starter, Pro, or Premium anytime.`
-                    : "Start with Starter for $4.99/mo, or choose Pro / Premium for unlimited tracking and 100 Auto Apply applications."}
+                {session
+                  ? `You're using ${chainCount} of ${freeLimit} free applications. Starter, Pro, or Premium unlocks the rest of recruiting season.`
+                  : "Start with Starter for $4.99/mo, or choose Pro / Premium for unlimited tracking and 100 Auto Apply applications."}
               </p>
             </div>
 
@@ -260,9 +260,9 @@ export default function PricingPage() {
 
             <div className="mt-8 text-center">
               <p className="text-xs text-slate-400">
-                Free tier includes up to {freeLimit} applications with no payment required.{" "}
-                <Link href="/login" className="font-medium text-scale-purple hover:underline">
-                  Get started free
+                Try {freeLimit} applications free, then pick a plan.{" "}
+                <Link href={loginUrl("/pricing")} className="font-medium text-scale-purple hover:underline">
+                  Get started
                 </Link>
               </p>
             </div>

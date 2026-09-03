@@ -18,6 +18,7 @@ import { InviteResponseBanner } from "./InviteResponseBanner";
 import type { Chain, ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
 import { startOfCalendarWeekMs } from "@/lib/utils";
+import { FREE_TIER_LIMIT } from "@/lib/freeTier";
 import { countUniqueApplications } from "@/lib/uniqueApplications";
 
 const TERMINAL_STATUSES: ChainStatus[] = ["REJECTED", "GHOSTED", "WITHDRAWN"];
@@ -79,7 +80,7 @@ export function Dashboard() {
   const { notifications, unreadCount, markAllRead, clearAll } =
     useNotifications(chains);
 
-  const freeLimit = limit ?? 50;
+  const freeLimit = limit ?? FREE_TIER_LIMIT;
   const atLimit = !paid && chainCount >= freeLimit;
 
   const [showStudentApprovedNotif, setShowStudentApprovedNotif] =
@@ -410,8 +411,8 @@ export function Dashboard() {
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm rounded-xl px-4 py-3 mb-5">
             <div className="font-semibold">Student verification approved</div>
             <div className="text-xs text-emerald-700/90 mt-1">
-              You now have free student access. Reach out and manage your
-              applications in the dashboard.
+              Your student status is on file. A paid plan unlocks unlimited
+              tracking and Auto Apply.
             </div>
             <div className="mt-3">
               <button
@@ -425,25 +426,26 @@ export function Dashboard() {
         )}
 
         {!paid && (
-          <div className="bg-white rounded-xl border border-slate-200/80 shadow-card p-4 mb-5">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-slate-600">
-                Free plan: {chainCount}/{freeLimit} applications
-              </span>
-              {!atLimit ? (
-                <span className="text-xs text-slate-400">
-                  {freeLimit - chainCount} remaining
-                </span>
-              ) : (
-                <a
-                  href="/pricing"
-                  className="text-xs font-semibold text-scale-purple hover:text-scale-purple-dark transition-colors"
-                >
-                  Upgrade to Pro →
-                </a>
-              )}
+          <div className="mb-5 overflow-hidden rounded-2xl border border-scale-purple/20 bg-white p-4 shadow-card sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-bold text-slate-900">
+                  {atLimit ? "Free plan is full" : "You're on the free plan"}
+                </p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {atLimit
+                    ? `You've used all ${freeLimit} free applications. Starter is $4.99/mo. Pro is $9.99/mo with Auto Apply.`
+                    : `${chainCount} of ${freeLimit} free applications used. Upgrade for unlimited tracking and Auto Apply.`}
+                </p>
+              </div>
+              <a
+                href="/pricing"
+                className="inline-flex shrink-0 items-center justify-center rounded-xl bg-scale-purple px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-scale-purple-dark"
+              >
+                See plans
+              </a>
             </div>
-            <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden">
+            <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-100">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   atLimit ? "bg-red-500" : chainCount > freeLimit * 0.8 ? "bg-amber-500" : "bg-scale-purple"

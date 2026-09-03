@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAppUser, requireSyncAccess } from "@/lib/requirePaid";
+import { FREE_TIER_LIMIT, getAppUser, requireSyncAccess } from "@/lib/requirePaid";
 import { supabase } from "@/lib/supabase";
 import { listMessages, getMessage } from "@/lib/gmail/client";
 import { parseGmailMessage, type ParsedMessage } from "@/lib/gmail/parser";
@@ -181,7 +181,10 @@ export async function POST() {
   const user = await requireSyncAccess();
   if (!user) {
     return NextResponse.json(
-      { error: "Free tier limit reached (50 applications). Upgrade to Pro for unlimited.", code: "UPGRADE_REQUIRED" },
+      {
+        error: `Free tier limit reached (${FREE_TIER_LIMIT} applications). Upgrade to keep tracking.`,
+        code: "UPGRADE_REQUIRED",
+      },
       { status: 403 }
     );
   }

@@ -56,9 +56,9 @@ export async function POST(request: Request) {
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
-  if (!user.paid) {
+  if (!user.hasProSubscription) {
     return NextResponse.json(
-      { error: "Auto-apply is available on student and paid plans." },
+      { error: "Auto Apply is included with Pro and Premium." },
       { status: 403 }
     );
   }

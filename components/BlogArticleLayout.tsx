@@ -50,7 +50,7 @@ export function BlogArticleLayout({ post, children }: BlogArticleLayoutProps) {
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               Browse USA internships, track applications from Gmail, and practice interviews in one
-              free student account.
+              account. Starter is $4.99/mo.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
@@ -60,10 +60,10 @@ export function BlogArticleLayout({ post, children }: BlogArticleLayoutProps) {
                 Find internships
               </Link>
               <Link
-                href="/login"
+                href="/login?callbackUrl=%2Fpricing"
                 className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-scale-purple/40"
               >
-                Create free account
+                See plans
               </Link>
             </div>
           </footer>

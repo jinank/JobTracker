@@ -1,8 +1,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
+import { FREE_TIER_LIMIT } from "@/lib/freeTier";
 
-const FREE_TIER_LIMIT = 50;
+export { FREE_TIER_LIMIT };
 
 export interface AppUser {
   userId: string;
@@ -38,11 +39,13 @@ export async function getAppUser(): Promise<AppUser | null> {
     subscriptionStatus === "active" ||
     (data.paid === true && !!data.stripe_subscription_id);
 
+  // Student verification is a label, not a paid plan.
   const isPaid =
-    data.paid === true ||
     subscriptionStatus === "active" ||
-    subscriptionStatus === "student" ||
-    data.student_verified === true;
+    (data.paid === true && !!data.stripe_subscription_id) ||
+    (data.paid === true &&
+      data.student_verified !== true &&
+      subscriptionStatus !== "student");
 
   const { count } = await supabase
     .from("chains")

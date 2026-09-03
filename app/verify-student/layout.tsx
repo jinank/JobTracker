@@ -5,9 +5,9 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Verify student status",
   description:
-    "Verify your student email to unlock free unlimited access to internships, tracking, mock interviews, and member perks.",
+    "Verify your student email so we can keep your status on file for member perks. Tracking and Auto Apply are on paid plans.",
   path: "/verify-student",
-  keywords: ["student verification", "free internship tools"],
+  keywords: ["student verification", "internship tools"],
 });
 
 export default function VerifyStudentLayout({ children }: { children: ReactNode }) {

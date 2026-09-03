@@ -72,14 +72,14 @@ export function InternshipSearchChecklist() {
         <li>Are any stages wrong and need a quick correction?</li>
       </ol>
 
-      <h2 className="pt-2 text-2xl font-bold text-slate-900">Student advantage: verify once, stay organized free</h2>
+      <h2 className="pt-2 text-2xl font-bold text-slate-900">Keep the search in one place</h2>
       <p>
-        Verified students get unlimited tracking, Gmail sync, mock interviews, and member resources on
-        SuperInterns. If you are eligible,{" "}
-        <Link href="/verify-student" className="font-semibold text-scale-purple hover:underline">
-          verify your student status
+        SuperInterns tracks applications from Gmail, syncs US internships, and includes mock interviews.
+        Starter is $4.99/mo. See{" "}
+        <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
+          plans
         </Link>{" "}
-        early so you are not juggling tools mid-season.
+        before peak season so you are not juggling tools mid-search.
       </p>
     </>
   );

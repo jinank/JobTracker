@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import type { Chain } from "@/types/chain";
 import type { AppEvent } from "@/types/event";
 import { chainsDataEqual } from "@/lib/chainsSnapshot";
+import { FREE_TIER_LIMIT } from "@/lib/freeTier";
 
 export function useChains() {
   const [chains, setChains] = useState<Chain[]>([]);
@@ -11,7 +12,7 @@ export function useChains() {
   const [studentVerified, setStudentVerified] = useState<boolean>(false);
   const [hasProSubscription, setHasProSubscription] = useState<boolean>(false);
   const [chainCount, setChainCount] = useState(0);
-  const [limit, setLimit] = useState<number | null>(50);
+  const [limit, setLimit] = useState<number | null>(FREE_TIER_LIMIT);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const hasLoadedOnce = useRef(false);

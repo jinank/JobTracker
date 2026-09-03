@@ -125,7 +125,7 @@ export function ApplyProfileForm({
       ) : null}
       {!paid ? (
         <p className="mt-3 text-xs text-slate-500">
-          Auto Apply is included with student and paid access. You can still save this profile.
+          Auto Apply is included with Pro and Premium. You can still save this profile.
         </p>
       ) : null}
       {!configured && configuredMessage ? (

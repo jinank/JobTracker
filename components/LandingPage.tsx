@@ -465,7 +465,7 @@ export function LandingPage() {
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <LoginLink
-                callbackUrl="/"
+                callbackUrl="/pricing"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-scale-purple px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-scale-purple-dark active:scale-[0.98] sm:w-auto"
               >
                 <GoogleIcon />
@@ -748,7 +748,7 @@ export function LandingPage() {
                     </Link>
                   ) : (
                     <LoginLink
-                      callbackUrl="/"
+                      callbackUrl="/pricing"
                       label={p.cta}
                       className={`mt-7 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${
                         p.highlight
@@ -903,14 +903,14 @@ export function LandingPage() {
                 </p>
                 <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <LoginLink
-                    callbackUrl="/"
+                    callbackUrl="/pricing"
                     className="inline-flex items-center gap-3 rounded-xl bg-white px-9 py-3.5 text-sm font-bold text-scale-purple shadow-lg transition-all hover:bg-scale-mist active:scale-[0.98]"
                   >
                     <GoogleIcon />
                     Get started
                   </LoginLink>
                   <LoginLink
-                    callbackUrl="/"
+                    callbackUrl="/pricing"
                     label="Sign in"
                     className="inline-flex items-center gap-2 rounded-xl border border-white/70 bg-transparent px-9 py-3.5 text-sm font-bold text-white transition-all hover:bg-white/10 active:scale-[0.98]"
                   />

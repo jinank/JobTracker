@@ -27,7 +27,7 @@ type UserApplyRow = {
 };
 
 function profilePayload(
-  user: { paid: boolean; email: string },
+  user: { paid: boolean; hasProSubscription: boolean; email: string },
   row: UserApplyRow
 ) {
   const stored = parseStoredApplyProfile(row.apply_profile);
@@ -53,6 +53,7 @@ function profilePayload(
     resumeFilename: row.resume_filename,
     ready,
     paid: user.paid,
+    hasProSubscription: user.hasProSubscription,
     configured: isTsentaConfigured(),
     missingFields: applyProfileMissingFields(profile),
     configuredMessage: isTsentaConfigured() ? null : tsentaNotConfiguredMessage(),

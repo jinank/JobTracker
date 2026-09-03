@@ -9,6 +9,7 @@ export type ApplyProfileState = {
   resumeFilename: string | null;
   ready: boolean;
   paid: boolean;
+  hasProSubscription: boolean;
   configured: boolean;
   missingFields: string[];
   configuredMessage: string | null;
@@ -20,6 +21,7 @@ const EMPTY: ApplyProfileState = {
   resumeFilename: null,
   ready: false,
   paid: false,
+  hasProSubscription: false,
   configured: false,
   missingFields: [],
   configuredMessage: null,
@@ -49,6 +51,7 @@ export function useApplyProfile() {
         resumeFilename: data.resumeFilename ?? null,
         ready: data.ready === true,
         paid: data.paid === true,
+        hasProSubscription: data.hasProSubscription === true,
         configured: data.configured === true,
         missingFields: Array.isArray(data.missingFields) ? data.missingFields : [],
         configuredMessage: data.configuredMessage ?? null,
@@ -85,6 +88,7 @@ export function useApplyProfile() {
         resumeFilename: data.resumeFilename ?? null,
         ready: data.ready === true,
         paid: data.paid === true,
+        hasProSubscription: data.hasProSubscription === true,
         configured: data.configured === true,
         missingFields: Array.isArray(data.missingFields) ? data.missingFields : [],
         configuredMessage: data.configuredMessage ?? null,

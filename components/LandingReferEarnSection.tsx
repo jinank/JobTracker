@@ -26,7 +26,7 @@ export function LandingReferEarnSection() {
               Refer your friends and get 1 month of Pro subscription completely free
             </p>
             <LoginLink
-              callbackUrl="/"
+              callbackUrl="/pricing"
               className="mt-8 inline-flex rounded-xl bg-scale-purple px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-scale-purple-dark active:scale-[0.98]"
             >
               Get started

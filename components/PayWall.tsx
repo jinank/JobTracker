@@ -8,7 +8,7 @@ interface PayWallProps {
   limit?: number;
 }
 
-export function PayWall({ chainCount = 0, limit = 50 }: PayWallProps) {
+export function PayWall({ chainCount = 0, limit = 10 }: PayWallProps) {
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = () => {
