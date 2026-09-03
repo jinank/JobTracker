@@ -1,14 +1,18 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
+import { FREE_TIER_LIMIT } from "@/lib/freeTier";
 
-const FREE_TIER_LIMIT = 50;
+export { FREE_TIER_LIMIT };
 
 export interface AppUser {
   userId: string;
   email: string;
   paid: boolean;
   studentVerified: boolean;
+  /** Stripe/PayPal Pro subscription (not student free tier). */
+  hasProSubscription: boolean;
+  subscriptionStatus: string | null;
   chainCount: number;
   limit: number;
   gmailConnected: boolean;
@@ -28,11 +32,20 @@ export async function getAppUser(): Promise<AppUser | null> {
 
   if (!data) return null;
 
+  const subscriptionStatus =
+    typeof data.subscription_status === "string" ? data.subscription_status : null;
+
+  const hasProSubscription =
+    subscriptionStatus === "active" ||
+    (data.paid === true && !!data.stripe_subscription_id);
+
+  // Student verification is a label, not a paid plan.
   const isPaid =
-    data.paid === true ||
-    data.subscription_status === "active" ||
-    data.subscription_status === "student" ||
-    data.student_verified === true;
+    subscriptionStatus === "active" ||
+    (data.paid === true && !!data.stripe_subscription_id) ||
+    (data.paid === true &&
+      data.student_verified !== true &&
+      subscriptionStatus !== "student");
 
   const { count } = await supabase
     .from("chains")
@@ -49,6 +62,8 @@ export async function getAppUser(): Promise<AppUser | null> {
     email: session.user.email,
     paid: isPaid,
     studentVerified: data.student_verified === true,
+    hasProSubscription,
+    subscriptionStatus,
     chainCount: count ?? 0,
     limit: isPaid ? Infinity : FREE_TIER_LIMIT,
     gmailConnected,

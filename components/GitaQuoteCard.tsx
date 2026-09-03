@@ -30,11 +30,14 @@ function formatResumeTime(ts: number): string {
 }
 
 export function GitaQuoteCard() {
-  const [ready, setReady] = useState(false);
   const [visibility, setVisibility] = useState<
     "visible" | "snoozed" | "disabled"
-  >("visible");
-  const [snoozeUntil, setSnoozeUntil] = useState<number | null>(null);
+  >(() =>
+    typeof window !== "undefined" ? readGitaQuoteVisibility() : "visible"
+  );
+  const [snoozeUntil, setSnoozeUntil] = useState<number | null>(() =>
+    typeof window !== "undefined" ? snoozeEndsAtMs() : null
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const menuWrapRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +48,6 @@ export function GitaQuoteCard() {
 
   useEffect(() => {
     refreshPrefs();
-    setReady(true);
   }, [refreshPrefs]);
 
   useEffect(() => {
@@ -91,17 +93,6 @@ export function GitaQuoteCard() {
     refreshPrefs();
   };
 
-  if (!ready) {
-    return (
-      <div
-        className="rounded-2xl border border-slate-200/80 bg-white shadow-card overflow-hidden animate-pulse"
-        aria-hidden
-      >
-        <div className="h-24 bg-slate-50 m-3 rounded-xl" />
-      </div>
-    );
-  }
-
   if (visibility !== "visible") {
     return (
       <div className="rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50 to-amber-50/20 shadow-card px-4 py-3 text-center">
@@ -131,7 +122,7 @@ export function GitaQuoteCard() {
             A moment of steadiness
           </h2>
           <p className="text-[10px] text-amber-900/55 mt-0.5 leading-snug">
-            From the Bhagavad Gita — for difficult days in the search.
+            From the Bhagavad Gita, for difficult days in the search.
           </p>
         </div>
         <div className="relative shrink-0" ref={menuWrapRef}>
@@ -211,7 +202,7 @@ export function GitaQuoteCard() {
           </span>
         </blockquote>
         <cite className="not-italic block text-[11px] text-slate-500 mt-3 text-right">
-          — {quote.ref}
+          ({quote.ref})
         </cite>
       </div>
     </div>

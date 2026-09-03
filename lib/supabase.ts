@@ -5,11 +5,14 @@ let _client: SupabaseClient | null = null;
 export function getSupabase(): SupabaseClient {
   if (_client) return _client;
 
-  const url = process.env.SUPABASE_URL;
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!url || !key) {
-    throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+    throw new Error(
+      "Missing SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) or SUPABASE_SERVICE_ROLE_KEY. " +
+        "Add both to Vercel Production env vars for admin internship sync."
+    );
   }
 
   _client = createClient(url, key);

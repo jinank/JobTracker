@@ -1,10 +1,16 @@
-import { getSiteOrigin } from "@/lib/site";
+import { PRICING_PLANS } from "@/lib/pricingPlans";
+import { getSiteOrigin, SITE_NAME } from "@/lib/site";
 
-const SITE_NAME = "RethinkJobs";
+function planPriceAmount(price: string): number {
+  return Number.parseFloat(price.replace(/[^0-9.]+/g, ""));
+}
 
 export function RootJsonLd() {
   const origin = getSiteOrigin();
-  const logoUrl = `${origin}/icon.svg`;
+  const logoUrl = `${origin}/superinterns-icon.png`;
+  const planPrices = PRICING_PLANS.map((plan) => planPriceAmount(plan.price));
+  const lowPrice = Math.min(...planPrices);
+  const highPrice = Math.max(...planPrices);
 
   const graph = {
     "@context": "https://schema.org",
@@ -16,7 +22,7 @@ export function RootJsonLd() {
         url: origin,
         logo: { "@type": "ImageObject", url: logoUrl },
         description:
-          "RethinkJobs builds AI-powered tools to track job applications and internships from Gmail with read-only sync.",
+          "SuperInterns helps students find Summer 2027 internships, track applications from Gmail, and prepare for interviews.",
       },
       {
         "@type": "WebSite",
@@ -25,32 +31,42 @@ export function RootJsonLd() {
         url: origin,
         publisher: { "@id": `${origin}/#organization` },
         description:
-          "AI job application tracker and internship tracker for students and professionals—sync Gmail, organize your pipeline, and track job applications in one place.",
+          "Summer 2027 internship search, application tracking, and interview prep for students. Sync Gmail, browse company career pages, and manage your pipeline in one place.",
         inLanguage: "en-US",
+        potentialAction: {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${origin}/find-internships?search={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        },
       },
       {
         "@type": "SoftwareApplication",
         "@id": `${origin}/#software`,
-        name: `${SITE_NAME} — Job application tracker`,
+        name: `${SITE_NAME} internship platform`,
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",
         browserRequirements: "Requires JavaScript. Modern browser recommended.",
         offers: {
-          "@type": "Offer",
-          price: "0",
+          "@type": "AggregateOffer",
           priceCurrency: "USD",
-          description: "Free tier available; student and paid plans offered.",
+          lowPrice: lowPrice.toFixed(2),
+          highPrice: highPrice.toFixed(2),
+          offerCount: String(PRICING_PLANS.length),
         },
         description:
-          "RethinkJobs is an AI job search tool that helps you track job applications automatically. Connect Gmail (read-only), classify recruiter email with AI, and manage your internship and full-time pipeline from one dashboard.",
+          "SuperInterns helps people find USA internships, track applications from Gmail with read-only sync, practice interviews, and Auto Apply on supported listings.",
         url: origin,
         author: { "@id": `${origin}/#organization` },
         publisher: { "@id": `${origin}/#organization` },
         featureList: [
+          "Daily-updated USA internship listings from company career pages",
           "Gmail read-only sync for job-related email",
           "AI classification of company, role, and application status",
-          "Pipeline dashboard and filters",
-          "Timeline and deadline tracking",
+          "Auto Apply on supported internship listings",
+          "Pipeline dashboard, mock interviews, and member resources",
         ],
       },
     ],

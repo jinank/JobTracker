@@ -51,7 +51,7 @@ function primaryStatus(statuses: ChainStatus[]): ChainStatus {
 }
 
 export interface CompanyGroup {
-  /** Stable key — lowercased canonical_company. */
+  /** Stable key, lowercased canonical_company. */
   key: string;
   company: string;
   chains: Chain[];

@@ -1,10 +1,15 @@
-import { internSalaryRange } from "@/lib/jobs/inferRoleCategory";
+import { inferRoleCategory, internSalaryRange } from "@/lib/jobs/inferRoleCategory";
 import type { JobListing, JobListingRow } from "@/types/jobListing";
 
+export function daysAgo(iso: string | null, fallback = 30): number {
+  if (!iso) return fallback;
+  const ms = Date.now() - new Date(iso).getTime();
+  if (ms <= 0) return 0;
+  return Math.floor(ms / (24 * 60 * 60 * 1000));
+}
+
 export function postedDaysAgo(postedAt: string | null): number {
-  if (!postedAt) return 30;
-  const ms = Date.now() - new Date(postedAt).getTime();
-  return Math.max(1, Math.ceil(ms / (24 * 60 * 60 * 1000)));
+  return daysAgo(postedAt);
 }
 
 export function rowToJobListing(row: JobListingRow): JobListing {
@@ -15,8 +20,9 @@ export function rowToJobListing(row: JobListingRow): JobListing {
     companySlug: row.company_slug,
     title: row.title,
     location: row.location_raw,
-    roleCategory: row.role_category,
+    roleCategory: inferRoleCategory(row.title),
     postedDaysAgo: postedDaysAgo(row.posted_at),
+    updatedDaysAgo: daysAgo(row.updated_at, postedDaysAgo(row.posted_at)),
     workType: row.work_type,
     applyUrl: row.apply_url,
     description: row.description,

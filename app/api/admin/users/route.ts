@@ -4,19 +4,28 @@ import { authOptions } from "@/lib/auth";
 import { isAdminSession } from "@/lib/isAdmin";
 import { supabase } from "@/lib/supabase";
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
   if (!isAdminSession(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { data: users, error } = await supabase
+  const { searchParams } = new URL(request.url);
+  const withLocationOnly = searchParams.get("withLocation") === "1";
+
+  let query = supabase
     .from("users")
     .select(
-      "id, email, name, image, paid, paid_at, subscription_status, student_verified, created_at, last_login_at, login_count, stripe_customer_id, stripe_subscription_id"
+      "id, email, name, image, paid, paid_at, subscription_status, student_verified, created_at, last_login_at, login_count, stripe_customer_id, stripe_subscription_id, city, state, country"
     )
     .order("created_at", { ascending: false })
     .limit(500);
+
+  if (withLocationOnly) {
+    query = query.not("city", "is", null).not("state", "is", null).not("country", "is", null);
+  }
+
+  const { data: users, error } = await query;
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

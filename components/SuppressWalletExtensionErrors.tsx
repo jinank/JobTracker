@@ -12,7 +12,7 @@ function rejectionMessage(reason: unknown): string {
 }
 
 /**
- * MetaMask injects on every tab; failed auto-connect is not a RethinkJobs error.
+ * MetaMask injects on every tab; failed auto-connect is not a SuperInterns error.
  * Prevents the Next.js dev overlay from treating it as an unhandled rejection.
  */
 export function SuppressWalletExtensionErrors() {

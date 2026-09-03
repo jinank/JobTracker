@@ -115,7 +115,7 @@ export default function VerifyStudentPage() {
                 />
               </svg>
             </div>
-            <h1 className="text-base font-bold text-slate-900">Rethinkjobs</h1>
+            <h1 className="text-base font-bold text-slate-900">SuperInterns</h1>
           </Link>
           <Link
             href="/pricing"
@@ -140,13 +140,13 @@ export default function VerifyStudentPage() {
             </div>
             <h2 className="text-xl font-bold text-slate-900 mb-2">You&apos;re Verified!</h2>
             <p className="text-slate-500 text-sm mb-6">
-              Your student status has been verified. You have full free access to Rethinkjobs.
+              Your student status is on file. Pick a plan to unlock unlimited tracking and Auto Apply.
             </p>
             <Link
-              href="/"
+              href="/pricing"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
             >
-              Go to Dashboard
+              See plans
             </Link>
           </div>
         ) : status === "pending" || submitted ? (
@@ -179,7 +179,7 @@ export default function VerifyStudentPage() {
                 Student Verification
               </h2>
               <p className="text-sm text-slate-500">
-                Students get <span className="font-semibold text-emerald-600">free unlimited access</span> to Rethinkjobs. Fill out the form below to verify your student status.
+                We keep your student status on file for member perks. Unlimited tracking and Auto Apply are on paid plans.
               </p>
             </div>
 

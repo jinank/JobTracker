@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Terms – Rethinkjobs",
-  description: "Terms of use for Rethinkjobs.",
-};
+export const metadata = buildPageMetadata({
+  title: "Terms of use for SuperInterns student accounts",
+  description: "Terms of use for SuperInterns, including accounts, subscriptions, and acceptable use.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
@@ -14,26 +16,15 @@ export default function TermsPage() {
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Rethinkjobs
+            ← SuperInterns
           </Link>
         </div>
       </header>
-
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12 w-full">
-        <h1 className="text-2xl font-bold text-slate-900 mb-4">Terms of use</h1>
-        <p className="text-slate-600 text-sm leading-relaxed mb-4">
-          This is a placeholder terms page. Replace with counsel-approved terms before
-          production. Typical sections include: acceptable use, account
-          responsibilities, subscription and billing (e.g. Stripe), disclaimers, and
-          limitation of liability.
-        </p>
-        <p className="text-sm text-slate-500">
-          Questions?{" "}
-          <Link href="/contact" className="text-blue-600 hover:underline">
-            Contact us
-          </Link>
-          .
-        </p>
+      <main id="main-content" className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-10">
+        <h1 className="text-3xl font-bold text-slate-900 mb-6">Terms of Use</h1>
+        <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+          <p>Placeholder terms. Replace with your legal terms before launch.</p>
+        </div>
       </main>
     </div>
   );

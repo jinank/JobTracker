@@ -1,9 +1,9 @@
 export const DEFAULT_DAILY_TARGET = 3;
 export const DEFAULT_WEEKLY_TARGET = 7;
 
-const KEY_PERIOD = "rethinkjobs_goal_period";
-const KEY_DAILY = "rethinkjobs_goal_daily_target";
-const KEY_WEEKLY = "rethinkjobs_goal_weekly_target";
+const KEY_PERIOD = "summer_internships_goal_period";
+const KEY_DAILY = "summer_internships_goal_daily_target";
+const KEY_WEEKLY = "summer_internships_goal_weekly_target";
 
 export type GoalPeriod = "daily" | "weekly";
 

@@ -1,12 +1,18 @@
 "use client";
 
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { SiteNavApp } from "@/components/SiteNav";
 import { AppHeaderActions } from "@/components/AppHeaderActions";
-import { FindJobListCard } from "@/components/FindJobListCard";
+import { InternshipTable } from "@/components/InternshipTable";
+import { ApplyProfileForm } from "@/components/ApplyProfileForm";
 import { useChains } from "@/hooks/useChains";
 import { useInternships } from "@/hooks/useInternships";
+import { useInternshipPreferences } from "@/hooks/useInternshipPreferences";
+import { useApplyProfile } from "@/hooks/useApplyProfile";
+import { useTsentaApply } from "@/hooks/useTsentaApply";
+import { InternshipMatchPanel } from "@/components/InternshipMatchPanel";
+import type { JobListing } from "@/types/jobListing";
 import { countUniqueApplications } from "@/lib/uniqueApplications";
 import { ROLE_CATEGORIES, WORK_TYPES } from "@/lib/jobs/constants";
 import type {
@@ -27,11 +33,27 @@ const POSTED_OPTIONS: { value: PostedPreset; label: string }[] = [
 ];
 
 const SORT_OPTIONS: { value: JobSortField; label: string }[] = [
+  { value: "updated", label: "Recently added" },
   { value: "posted", label: "Date posted" },
   { value: "company", label: "Company" },
   { value: "role", label: "Role" },
   { value: "location", label: "Location" },
 ];
+
+function sortOptionLabel(field: JobSortField, dir: SortDir): string {
+  switch (field) {
+    case "updated":
+      return dir === "asc" ? "Recently added (newest first)" : "Recently added (oldest first)";
+    case "posted":
+      return dir === "asc" ? "Date posted (newest first)" : "Date posted (oldest first)";
+    case "company":
+      return dir === "asc" ? "Company (A→Z)" : "Company (Z→A)";
+    case "role":
+      return dir === "asc" ? "Role (A→Z)" : "Role (Z→A)";
+    case "location":
+      return dir === "asc" ? "Location (A→Z)" : "Location (Z→A)";
+  }
+}
 
 function FilterField({
   label,
@@ -72,11 +94,30 @@ export function FindJobsApp() {
   const [workType, setWorkType] = useState<WorkTypeFilter>("all");
   const [postedPreset, setPostedPreset] = useState<PostedPreset>("all");
   const [locationQuery, setLocationQuery] = useState("");
-  const [sortField, setSortField] = useState<JobSortField>("posted");
+  const [sortField, setSortField] = useState<JobSortField>("updated");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(25);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const {
+    prefs: matchPrefs,
+    loading: matchLoading,
+    saving: matchSaving,
+    uploading: matchUploading,
+    error: matchError,
+    refresh: refreshMatchPrefs,
+    savePrefs,
+    uploadResume,
+    removeResume,
+  } = useInternshipPreferences();
+
+  const applyProfile = useApplyProfile();
+  const signedIn = Boolean(session?.user?.email);
+  const canAutoApply =
+    signedIn && applyProfile.hasProSubscription && applyProfile.configured;
+  const { byKey: applyByKey, apply: startApply } = useTsentaApply(canAutoApply);
+  const applyProfileRef = useRef<HTMLDivElement>(null);
 
   const filters = useMemo(
     () => ({
@@ -90,6 +131,7 @@ export function FindJobsApp() {
       sortDir,
       page,
       pageSize,
+      forMe: matchPrefs.matchEnabled,
     }),
     [
       search,
@@ -101,10 +143,70 @@ export function FindJobsApp() {
       sortDir,
       page,
       pageSize,
+      matchPrefs.matchEnabled,
     ]
   );
 
   const { jobs, total, stats, loading, error, refresh } = useInternships(filters);
+
+  const refreshApplyProfile = applyProfile.refresh;
+
+  const handleMatchChange = useCallback(() => {
+    refreshMatchPrefs();
+    refreshApplyProfile();
+    refresh();
+  }, [refreshMatchPrefs, refreshApplyProfile, refresh]);
+
+  const focusApplyProfile = useCallback(() => {
+    setMobileFiltersOpen(true);
+    applyProfileRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const handleAutoApply = useCallback(
+    async (job: JobListing) => {
+      const result = await startApply({ listingId: job.id, applyUrl: job.applyUrl });
+      if ("needsProfile" in result && result.needsProfile) {
+        focusApplyProfile();
+        return;
+      }
+      if ("unsupported" in result && result.unsupported && result.applyUrl) {
+        window.open(result.applyUrl, "_blank", "noopener,noreferrer");
+      }
+    },
+    [startApply, focusApplyProfile]
+  );
+
+  const matchPanel = (
+    <InternshipMatchPanel
+      prefs={matchPrefs}
+      loading={matchLoading}
+      saving={matchSaving}
+      uploading={matchUploading}
+      error={matchError}
+      onSavePrefs={savePrefs}
+      onUploadResume={uploadResume}
+      onRemoveResume={removeResume}
+      onPreferencesChange={handleMatchChange}
+    />
+  );
+
+  const applyPanel = signedIn ? (
+    <div ref={applyProfileRef}>
+      <ApplyProfileForm
+        profile={applyProfile.profile}
+        hasPdfResume={applyProfile.hasPdfResume}
+        resumeFilename={applyProfile.resumeFilename}
+        ready={applyProfile.ready}
+        paid={applyProfile.paid}
+        configured={applyProfile.configured}
+        configuredMessage={applyProfile.configuredMessage}
+        loading={applyProfile.loading}
+        saving={applyProfile.saving}
+        error={applyProfile.error}
+        onSave={applyProfile.save}
+      />
+    </div>
+  ) : null;
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const safePage = Math.min(page, totalPages);
@@ -113,27 +215,32 @@ export function FindJobsApp() {
 
   const activeFilterCount = useMemo(() => {
     let n = 0;
+    if (matchPrefs.matchEnabled) n++;
     if (search.trim()) n++;
     if (roleCategory !== "All roles") n++;
     if (workType !== "all") n++;
     if (postedPreset !== "all") n++;
     if (locationQuery.trim()) n++;
     return n;
-  }, [search, roleCategory, workType, postedPreset, locationQuery]);
+  }, [matchPrefs.matchEnabled, search, roleCategory, workType, postedPreset, locationQuery]);
 
-  function clearFilters() {
+  async function clearFilters() {
     setRoleCategory("All roles");
     setWorkType("all");
     setPostedPreset("all");
     setLocationQuery("");
     setSearch("");
     setPage(1);
+    if (matchPrefs.matchEnabled) {
+      await savePrefs({ matchEnabled: false });
+      handleMatchChange();
+    }
   }
 
   const filtersPanel = (
     <div className="space-y-4">
       <p className="rounded-lg border border-violet-100 bg-violet-50/80 px-3 py-2 text-xs text-violet-900">
-        USA internships only — sourced from company career pages.
+        USA internships only, sourced from company career pages.
       </p>
 
       <div className="relative">
@@ -238,10 +345,10 @@ export function FindJobsApp() {
         >
           {SORT_OPTIONS.flatMap((o) => [
             <option key={`${o.value}-asc`} value={`${o.value}-asc`}>
-              {o.label} (newest / A→Z)
+              {sortOptionLabel(o.value, "asc")}
             </option>,
             <option key={`${o.value}-desc`} value={`${o.value}-desc`}>
-              {o.label} (oldest / Z→A)
+              {sortOptionLabel(o.value, "desc")}
             </option>,
           ])}
         </FilterField>
@@ -288,7 +395,7 @@ export function FindJobsApp() {
               Fresh US internships, straight from the source
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-slate-600">
-              Synced daily from company career pages — apply early, before the crowd finds them.
+              Synced daily from company career pages, apply early, before the crowd finds them.
             </p>
           </div>
           <div className="flex flex-col items-start gap-8 xl:flex-row">
@@ -319,8 +426,12 @@ export function FindJobsApp() {
                   </svg>
                 </button>
                 {mobileFiltersOpen && (
-                  <div className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                    {filtersPanel}
+                  <div className="mt-3 space-y-3">
+                    {matchPanel}
+                    {applyPanel}
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                      {filtersPanel}
+                    </div>
                   </div>
                 )}
               </div>
@@ -341,6 +452,9 @@ export function FindJobsApp() {
               <p className="mb-3 text-sm text-slate-600">
                 <span className="font-semibold text-slate-900">{total}</span>
                 {total === 1 ? " internship" : " internships"}
+                {matchPrefs.matchEnabled ? (
+                  <span className="text-violet-700"> matched for you</span>
+                ) : null}
                 {stats.companies > 0 ? (
                   <span className="text-slate-500">
                     {" "}
@@ -357,28 +471,36 @@ export function FindJobsApp() {
                   <div className="h-10 w-10 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
                 </div>
               ) : (
-                <div className="space-y-2">
-                  {jobs.map((job) => (
-                    <FindJobListCard key={job.id} job={job} />
-                  ))}
-                  {jobs.length === 0 && (
-                    <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-14 text-center">
-                      <p className="text-sm font-medium text-slate-700">
-                        No internships match these filters
-                      </p>
-                      <p className="mt-1 text-xs text-slate-500">
-                        Listings sync daily from company career pages. Try clearing filters or check back after the next sync.
-                      </p>
+                <>
+                  <InternshipTable
+                    jobs={jobs}
+                    loading={loading}
+                    showWorkType={false}
+                    recencyField="updated"
+                    recencyLabel="Added"
+                    autoApply={canAutoApply}
+                    applicationsByKey={applyByKey}
+                    profileReady={applyProfile.ready}
+                    onApply={handleAutoApply}
+                    onNeedProfile={focusApplyProfile}
+                    emptyMessage={
+                      matchPrefs.matchEnabled
+                        ? "No internships match these filters. Try turning off “Show only relevant internships” or broaden your role picks."
+                        : "No internships match these filters. Listings sync every few hours from company career pages."
+                    }
+                  />
+                  {jobs.length === 0 && !loading && (
+                    <div className="mt-4 text-center">
                       <button
                         type="button"
                         onClick={clearFilters}
-                        className="mt-4 text-xs font-semibold text-scale-purple hover:text-scale-purple-dark"
+                        className="text-xs font-semibold text-scale-purple hover:text-scale-purple-dark"
                       >
                         Clear filters
                       </button>
                     </div>
                   )}
-                </div>
+                </>
               )}
 
               {totalPages > 1 && (
@@ -412,9 +534,11 @@ export function FindJobsApp() {
             </div>
 
             <aside
-              className="hidden w-72 shrink-0 self-start xl:sticky xl:top-28 xl:block"
+              className="hidden w-72 shrink-0 self-start space-y-4 xl:sticky xl:top-28 xl:block"
               aria-label="Internship filters"
             >
+              {matchPanel}
+              {applyPanel}
               <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 shadow-sm">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-sm font-bold text-slate-900">Filters</h2>

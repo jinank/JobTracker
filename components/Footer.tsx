@@ -1,6 +1,53 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { LogoMark } from "@/components/LogoMark";
+import { PRODUCT_FEATURES } from "@/lib/productFeatures";
+import {
+  getFooterFeaturedStatePages,
+  INTERNSHIP_LOCATION_INDEX_PATH,
+} from "@/lib/internshipLocationPages";
+import { SITE_NAME } from "@/lib/site";
+
+const COMPANY_LINKS = [
+  { href: "/blog", label: "Blog" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/contact-us", label: "Contact" },
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Service" },
+] as const;
+
+const FOOTER_TAGLINE =
+  "Find US internships from company career pages, track every application, and prep for interviews.";
+
+const footerLinkClass =
+  "inline-flex min-h-11 items-center text-sm text-slate-600 transition-colors hover:text-scale-purple sm:min-h-0";
+
+function FooterColumn({
+  title,
+  children,
+  className = "",
+}: {
+  title: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        {title}
+      </h2>
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+function FooterLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link href={href} className={footerLinkClass}>
+      {children}
+    </Link>
+  );
+}
 
 function SocialIcon({
   href,
@@ -17,80 +64,57 @@ function SocialIcon({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 hover:border-slate-600 transition-colors"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-slate-50 text-slate-500 transition-all hover:border-scale-purple/30 hover:bg-scale-lavender hover:text-scale-purple"
     >
       {children}
     </a>
   );
 }
 
+function stateShortLabel(title: string): string {
+  return title.replace(/ Summer 2027 Internships$/, "");
+}
+
 export function Footer() {
+  const year = new Date().getFullYear();
+  const featuredStates = getFooterFeaturedStatePages();
+
   return (
-    <footer className="mt-auto border-t border-slate-800/80 bg-slate-950 text-slate-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4">
-          <div className="flex items-center gap-4">
+    <footer className="mt-auto border-t border-slate-200/80 bg-white">
+      <div
+        className="h-1 bg-gradient-to-r from-scale-purple via-violet-500 to-scale-purple-deep"
+        aria-hidden
+      />
+
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-10">
+          <div className="sm:col-span-2 lg:col-span-4">
             <Link
               href="/"
-              className="flex shrink-0 items-center gap-2 opacity-90 transition-opacity hover:opacity-100"
-              aria-label="Rethinkjobs home"
+              className="inline-flex items-center gap-2.5 rounded-lg transition-opacity hover:opacity-90"
+              aria-label={`${SITE_NAME} home`}
             >
-              <LogoMark className="h-9 w-9" iconClassName="w-5 h-5" />
-              <span className="text-sm font-bold text-white">RethinkJobs</span>
+              <LogoMark />
+              <span className="text-base font-bold tracking-tight text-slate-900">
+                {SITE_NAME}
+              </span>
             </Link>
-            <nav className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-300">
-              <Link href="/find-jobs" className="hover:text-white transition-colors">
-                Find Internships
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/" className="hover:text-white transition-colors">
-                Track Applications
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/practice-interviews" className="hover:text-white transition-colors">
-                Interview Prep
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/find-mentors" className="hover:text-white transition-colors">
-                Find Mentors
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/resources" className="hover:text-white transition-colors">
-                Resources
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/blog" className="hover:text-white transition-colors">
-                Blog
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/contact-us" className="hover:text-white transition-colors">
-                Contact
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/privacy" className="hover:text-white transition-colors">
-                Privacy
-              </Link>
-              <span className="text-slate-700 hidden sm:inline">•</span>
-              <Link href="/terms" className="hover:text-white transition-colors">
-                Terms
-              </Link>
-            </nav>
-            <div className="flex items-center gap-2">
-              <SocialIcon href="https://twitter.com" label="Rethinkjobs on X">
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-600">
+              {FOOTER_TAGLINE}
+            </p>
+            <div className="mt-6 flex items-center gap-2.5">
+              <SocialIcon href="https://twitter.com" label={`${SITE_NAME} on X`}>
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </SocialIcon>
-              <SocialIcon
-                href="https://www.linkedin.com"
-                label="Rethinkjobs on LinkedIn"
-              >
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <SocialIcon href="https://www.linkedin.com" label={`${SITE_NAME} on LinkedIn`}>
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                 </svg>
               </SocialIcon>
-              <SocialIcon href="https://github.com" label="Rethinkjobs on GitHub">
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <SocialIcon href="https://github.com" label={`${SITE_NAME} on GitHub`}>
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
@@ -100,6 +124,73 @@ export function Footer() {
               </SocialIcon>
             </div>
           </div>
+
+          <FooterColumn title="Product" className="lg:col-span-2">
+            <ul className="space-y-1">
+              {PRODUCT_FEATURES.map((feature) => (
+                <li key={feature.id}>
+                  <FooterLink href={feature.href}>{feature.label}</FooterLink>
+                </li>
+              ))}
+            </ul>
+          </FooterColumn>
+
+          <FooterColumn title="Company" className="lg:col-span-2">
+            <ul className="space-y-1">
+              {COMPANY_LINKS.map((link) => (
+                <li key={link.href}>
+                  <FooterLink href={link.href}>{link.label}</FooterLink>
+                </li>
+              ))}
+            </ul>
+          </FooterColumn>
+
+          <FooterColumn title="Browse by location" className="lg:col-span-2">
+            <ul className="space-y-1">
+              {featuredStates.map((page) => (
+                <li key={page.slug}>
+                  <FooterLink href={page.path}>{stateShortLabel(page.title)}</FooterLink>
+                </li>
+              ))}
+              <li>
+                <FooterLink href="/y-combinator-summer-2027-internships">
+                  Y Combinator internships
+                </FooterLink>
+              </li>
+              <li>
+                <FooterLink href={INTERNSHIP_LOCATION_INDEX_PATH}>
+                  See all Statewise Internships
+                </FooterLink>
+              </li>
+            </ul>
+          </FooterColumn>
+
+          <FooterColumn title="Get started" className="lg:col-span-2">
+            <p className="text-sm leading-relaxed text-slate-600">
+              Browse fresh internships and set up your tracker in under a minute.
+            </p>
+            <Link
+              href="/find-internships"
+              className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-scale-purple px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-scale-purple-dark active:scale-[0.98] sm:min-h-0"
+            >
+              Find internships
+            </Link>
+            <p className="mt-3 text-sm text-slate-600">
+              Verified student?{" "}
+              <Link href="/pricing" className="font-semibold text-scale-purple hover:underline">
+                Upgrade to Pro or Premium
+              </Link>
+            </p>
+          </FooterColumn>
+        </div>
+
+        <div className="mt-12 flex flex-col gap-3 border-t border-slate-200/80 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-slate-500">
+            © {year} {SITE_NAME}. All rights reserved.
+          </p>
+          <p className="text-xs font-medium text-slate-400">
+            Synced daily from company career pages
+          </p>
         </div>
       </div>
     </footer>

@@ -62,15 +62,17 @@ export async function POST(request: Request) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.metadata?.userId;
+      const isSubscription =
+        session.mode === "subscription" || !!session.subscription;
 
-      if (session.subscription) {
+      if (isSubscription && session.subscription) {
         const subscription = await stripe.subscriptions.retrieve(
           session.subscription as string
         );
         await updateSubscriptionStatus(subscription, userId ?? undefined);
       }
 
-      if (userId) {
+      if (userId && isSubscription) {
         await supabase
           .from("users")
           .update({ paid: true, paid_at: new Date().toISOString() })

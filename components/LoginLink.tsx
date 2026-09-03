@@ -8,7 +8,7 @@ import { loginUrl } from "@/lib/loginUrl";
 /** Link to the dedicated login page (email + Google, no Gmail). */
 export function LoginLink({
   className = "",
-  label = "Get started free",
+  label = "Get started",
   callbackUrl,
   href: hrefOverride,
   children,

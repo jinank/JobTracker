@@ -10,9 +10,13 @@ export type NavLinkItem = {
 /** Primary portal navigation — four product areas. */
 export { PRODUCT_NAV_LINKS };
 
-export const APP_NAV_LINKS: NavLinkItem[] = PRODUCT_NAV_LINKS;
+const HEADER_NAV_LINKS = PRODUCT_NAV_LINKS.filter(
+  (item) => item.href !== "/find-mentors"
+);
 
-export const MARKETING_NAV_LINKS: NavLinkItem[] = PRODUCT_NAV_LINKS;
+export const APP_NAV_LINKS: NavLinkItem[] = HEADER_NAV_LINKS;
+
+export const MARKETING_NAV_LINKS: NavLinkItem[] = HEADER_NAV_LINKS;
 
 export function isNavLinkActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";

@@ -56,8 +56,6 @@ export async function PATCH(req: Request) {
       .from("users")
       .update({
         student_verified: true,
-        paid: true,
-        subscription_status: "student",
       })
       .eq("id", verification.user_id);
   }

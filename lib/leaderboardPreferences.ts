@@ -1,5 +1,5 @@
-const SNOOZE_UNTIL_KEY = "rethinkjobs_leaderboard_snooze_until_ms";
-const DISABLED_KEY = "rethinkjobs_leaderboard_disabled";
+const SNOOZE_UNTIL_KEY = "summer_internships_leaderboard_snooze_until_ms";
+const DISABLED_KEY = "summer_internships_leaderboard_disabled";
 
 export type LeaderboardVisibility = "visible" | "snoozed" | "disabled";
 

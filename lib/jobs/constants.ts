@@ -6,6 +6,7 @@ export const ROLE_CATEGORIES = [
   "Design",
   "Marketing",
   "Operations",
+  "Other",
 ] as const;
 
 export const WORK_TYPES = ["Remote", "Hybrid", "On-site"] as const;

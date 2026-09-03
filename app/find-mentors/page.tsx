@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { FindMentorsApp } from "@/components/FindMentorsApp";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Find Mentors",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Find mentors for Summer 2027 internship search",
   description:
-    "Find mentors, recruiters, and campus hiring contacts at any company. Reach out on LinkedIn for advice, referrals, and coffee chats — free for students.",
-  alternates: { canonical: "/find-mentors" },
-};
+    "Find mentors and campus hiring contacts for Summer 2027 internships. Reach out on LinkedIn for advice, referrals, and coffee chats. Free for students.",
+  path: "/find-mentors",
+  keywords: [
+    "Summer 2027 Internships",
+    "find mentors",
+    "recruiter search",
+    "internship networking",
+    "LinkedIn outreach",
+  ],
+});
 
 export default function FindMentorsPage() {
   return (

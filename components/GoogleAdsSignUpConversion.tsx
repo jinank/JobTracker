@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-const STORAGE_PREFIX = "rethinkjobs_ads_signup_fired:";
+const STORAGE_PREFIX = "summer_internships_ads_signup_fired:";
 
 declare global {
   interface Window {

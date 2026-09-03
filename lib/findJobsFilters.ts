@@ -3,7 +3,9 @@ import type { HiddenJob } from "@/lib/hiddenJobsData";
 
 export type PostedPreset = "all" | "today" | "week" | "month" | "30d";
 export type WorkTypeFilter = "all" | JobListing["workType"];
-export type JobSortField = "posted" | "company" | "role" | "location";
+export type JobSortField = "posted" | "updated" | "company" | "role" | "location";
+
+const JOB_SORT_FIELDS: JobSortField[] = ["posted", "updated", "company", "role", "location"];
 export type SortDir = "asc" | "desc";
 
 export type InternshipQueryParams = {
@@ -13,11 +15,16 @@ export type InternshipQueryParams = {
   experienceLevel: string;
   postedPreset: PostedPreset;
   locationQuery: string;
+  /** When set, listing location must match any matcher (overrides locationQuery). */
+  locationMatchers?: string[];
+  /** When set, listing company / companySlug must match any matcher. */
+  companyMatchers?: string[];
   sortField: JobSortField;
   sortDir: SortDir;
   page?: number;
   pageSize?: number;
   limit?: number;
+  forMe?: boolean;
 };
 
 export function postedDaysForPreset(preset: PostedPreset): number | null {
@@ -35,6 +42,30 @@ export function postedDaysForPreset(preset: PostedPreset): number | null {
   }
 }
 
+/** Match company name / slug against curated matchers (exact or prefix, not loose includes). */
+export function listingMatchesCompanyMatchers(
+  company: string,
+  companySlug: string,
+  matchers: string[]
+): boolean {
+  if (!matchers.length) return true;
+
+  const name = company.toLowerCase().trim();
+  const slug = companySlug.toLowerCase().trim();
+  const compactName = name.replace(/[^a-z0-9]+/g, "");
+
+  return matchers.some((raw) => {
+    const matcher = raw.toLowerCase().trim();
+    const compactMatcher = matcher.replace(/[^a-z0-9]+/g, "");
+    if (!compactMatcher) return false;
+    if (slug === matcher || slug === compactMatcher) return true;
+    if (name === matcher) return true;
+    if (compactName === compactMatcher) return true;
+    if (name.startsWith(`${matcher} `) || name.startsWith(`${matcher},`)) return true;
+    return false;
+  });
+}
+
 export function filterJobListings(
   jobs: JobListing[],
   opts: Pick<
@@ -45,6 +76,8 @@ export function filterJobListings(
     | "experienceLevel"
     | "postedPreset"
     | "locationQuery"
+    | "locationMatchers"
+    | "companyMatchers"
   >
 ): JobListing[] {
   const q = opts.search.trim().toLowerCase();
@@ -63,7 +96,29 @@ export function filterJobListings(
       return false;
     }
     if (maxDays != null && j.postedDaysAgo > maxDays) return false;
-    if (locQ && !j.location.toLowerCase().includes(locQ)) return false;
+    if (opts.companyMatchers?.length) {
+      if (
+        !listingMatchesCompanyMatchers(
+          j.company,
+          j.companySlug,
+          opts.companyMatchers
+        )
+      ) {
+        return false;
+      }
+    }
+    if (opts.locationMatchers?.length) {
+      const loc = j.location.toLowerCase();
+      if (
+        !opts.locationMatchers.some((matcher) =>
+          loc.includes(matcher.toLowerCase())
+        )
+      ) {
+        return false;
+      }
+    } else if (locQ && !j.location.toLowerCase().includes(locQ)) {
+      return false;
+    }
     if (!q) return true;
     const blob = `${j.company} ${j.title} ${j.location} ${j.roleCategory} ${j.description} ${(j.tags ?? []).join(" ")}`.toLowerCase();
     return blob.includes(q);
@@ -82,6 +137,9 @@ export function sortJobListings(
       case "posted":
         cmp = a.postedDaysAgo - b.postedDaysAgo;
         break;
+      case "updated":
+        cmp = a.updatedDaysAgo - b.updatedDaysAgo;
+        break;
       case "company":
         cmp = a.company.localeCompare(b.company);
         break;
@@ -91,6 +149,9 @@ export function sortJobListings(
       case "location":
         cmp = a.location.localeCompare(b.location);
         break;
+    }
+    if (cmp === 0 && (field === "updated" || field === "posted")) {
+      cmp = a.postedDaysAgo - b.postedDaysAgo;
     }
     return dir === "asc" ? cmp : -cmp;
   });
@@ -170,8 +231,9 @@ export function sortHiddenJobs(
 export function parseInternshipQueryParams(
   searchParams: URLSearchParams
 ): InternshipQueryParams {
-  const sortRaw = searchParams.get("sort") || "posted-asc";
-  const [sortField, sortDir] = sortRaw.split("-") as [JobSortField, SortDir];
+  const sortRaw = searchParams.get("sort") || "updated-asc";
+  const [rawField, sortDir] = sortRaw.split("-") as [JobSortField, SortDir];
+  const sortField = JOB_SORT_FIELDS.includes(rawField) ? rawField : "updated";
 
   return {
     search: searchParams.get("search") || "",
@@ -180,7 +242,7 @@ export function parseInternshipQueryParams(
     experienceLevel: searchParams.get("experience") || "all",
     postedPreset: (searchParams.get("posted") || "all") as PostedPreset,
     locationQuery: searchParams.get("location") || "",
-    sortField: sortField || "posted",
+    sortField,
     sortDir: sortDir === "desc" ? "desc" : "asc",
     page: Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1),
     pageSize: Math.min(
@@ -190,5 +252,6 @@ export function parseInternshipQueryParams(
     limit: searchParams.get("limit")
       ? parseInt(searchParams.get("limit")!, 10)
       : undefined,
+    forMe: searchParams.get("forMe") === "1",
   };
 }

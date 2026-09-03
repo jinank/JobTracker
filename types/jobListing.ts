@@ -11,6 +11,8 @@ export type JobListing = {
   location: string;
   roleCategory: string;
   postedDaysAgo: number;
+  /** Days since this listing was last synced or updated in SuperInterns. */
+  updatedDaysAgo: number;
   workType: WorkType;
   applyUrl: string;
   description: string;
@@ -24,7 +26,7 @@ export type JobSourceRow = {
   id: string;
   company: string;
   company_slug: string;
-  ats: "greenhouse" | "lever";
+  ats: "greenhouse" | "lever" | "ashby" | "fantastic";
   board_token: string;
   careers_url: string;
   enabled: boolean;
@@ -50,6 +52,7 @@ export type JobListingRow = {
   apply_url: string;
   description: string;
   posted_at: string | null;
+  updated_at: string;
   tags: string[] | null;
   is_active: boolean;
 };

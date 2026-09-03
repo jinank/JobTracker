@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signInWithGmailTracking } from "@/lib/authSignIn";
 
-const GMAIL_PRIVACY_ACK_KEY = "rethinkjobs_signup_gmail_privacy_v1";
+const GMAIL_PRIVACY_ACK_KEY = "summer_internships_signup_gmail_privacy_v1";
 
 export function GmailConnectBanner() {
   const [privacyOpen, setPrivacyOpen] = useState(false);

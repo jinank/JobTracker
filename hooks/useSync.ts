@@ -4,11 +4,12 @@ import { useState, useCallback, useEffect, useMemo } from "react";
 import { isGmailReauthError } from "@/lib/gmailAuthErrors";
 
 const LEGACY_LAST_SYNC_KEY = "rethinkjobs_last_sync_at_ms";
+const LAST_SYNC_KEY = "summer_internships_last_sync_at_ms";
 
 function lastSyncStorageKey(accountEmail?: string | null): string {
   const e = (accountEmail ?? "").trim().toLowerCase();
-  if (!e) return LEGACY_LAST_SYNC_KEY;
-  return `rethinkjobs_last_sync_at_ms::${e}`;
+  if (!e) return LAST_SYNC_KEY;
+  return `${LAST_SYNC_KEY}::${e}`;
 }
 
 function readStoredLastSyncAt(key: string): number | null {
@@ -16,7 +17,9 @@ function readStoredLastSyncAt(key: string): number | null {
   try {
     let raw = localStorage.getItem(key);
     if (!raw && key !== LEGACY_LAST_SYNC_KEY) {
-      raw = localStorage.getItem(LEGACY_LAST_SYNC_KEY);
+      raw =
+        localStorage.getItem(LEGACY_LAST_SYNC_KEY) ??
+        localStorage.getItem(`${LEGACY_LAST_SYNC_KEY}::${key.split("::")[1] ?? ""}`);
     }
     if (!raw) return null;
     const n = parseInt(raw, 10);
@@ -89,53 +92,91 @@ export function useSync(
       syncHasMore: false,
     }));
 
+    // First-time / 6-month import: keep draining while Gmail still has queued mail.
+    // ~42 emails classified per server batch; 25 batches ≈ 1000 messages per Sync click.
+    const MAX_AUTO_BATCHES = 25;
+    let totalNew = 0;
+    let hasMore = false;
+    let pendingEstimate: number | null = null;
+
     try {
-      const res = await fetch("/api/gmail/sync", { method: "POST" });
-      const data = (await res.json().catch(() => ({}))) as {
-        code?: string;
-        error?: string;
-        needsReauth?: boolean;
-        newCount?: number;
-        total?: number;
-        hasMore?: boolean;
-      };
-
-      if (!res.ok) {
-        if (
-          res.status === 403 &&
-          (data.code === "UPGRADE_REQUIRED" || data.code === "PAYMENT_REQUIRED")
-        ) {
+      for (let batch = 0; batch < MAX_AUTO_BATCHES; batch++) {
+        if (batch > 0) {
           setState((s) => ({
             ...s,
-            syncing: false,
-            progress: "",
-            paymentRequired: true,
-            syncHasMore: false,
+            progress:
+              pendingEstimate != null && pendingEstimate > 0
+                ? `Importing applications (batch ${batch + 1}, ~${pendingEstimate} emails left)...`
+                : `Importing applications (batch ${batch + 1})...`,
           }));
-          onComplete();
-          return;
-        }
-
-        const errText =
-          typeof data.error === "string" ? data.error : "Sync failed";
-        const needsReauth =
-          data.needsReauth === true ||
-          isGmailReauthError(errText, data.code);
-
-        if (needsReauth) {
+        } else {
           setState((s) => ({
             ...s,
-            syncing: false,
-            progress: "",
-            error: errText,
-            needsGmailReauth: true,
-            syncHasMore: false,
+            progress: "Importing up to 6 months of job emails...",
           }));
-          onComplete();
-          return;
         }
 
-        throw new Error(errText);
+        const res = await fetch("/api/gmail/sync", { method: "POST" });
+        const data = (await res.json().catch(() => ({}))) as {
+          code?: string;
+          error?: string;
+          needsReauth?: boolean;
+          newCount?: number;
+          total?: number;
+          hasMore?: boolean;
+          pendingNew?: number;
+        };
+
+        if (!res.ok) {
+          if (
+            res.status === 403 &&
+            (data.code === "UPGRADE_REQUIRED" || data.code === "PAYMENT_REQUIRED")
+          ) {
+            setState((s) => ({
+              ...s,
+              syncing: false,
+              progress: "",
+              paymentRequired: true,
+              syncHasMore: false,
+              newCount: totalNew,
+            }));
+            onComplete();
+            return;
+          }
+
+          const errText =
+            typeof data.error === "string" ? data.error : "Sync failed";
+          const needsReauth =
+            data.needsReauth === true ||
+            isGmailReauthError(errText, data.code);
+
+          if (needsReauth) {
+            setState((s) => ({
+              ...s,
+              syncing: false,
+              progress: "",
+              error: errText,
+              needsGmailReauth: true,
+              syncHasMore: false,
+              newCount: totalNew,
+            }));
+            onComplete();
+            return;
+          }
+
+          throw new Error(errText);
+        }
+
+        totalNew += data.newCount ?? 0;
+        hasMore = data.hasMore === true;
+        if (typeof data.pendingNew === "number") {
+          pendingEstimate = data.pendingNew;
+        }
+
+        // Refresh the tracker as batches land so apps appear while importing.
+        onComplete();
+
+        if (!hasMore) break;
       }
 
       const now = Date.now();
@@ -145,10 +186,10 @@ export function useSync(
         progress: "",
         lastSyncAt: now,
         error: null,
-        newCount: data.newCount ?? 0,
+        newCount: totalNew,
         paymentRequired: false,
         needsGmailReauth: false,
-        syncHasMore: data.hasMore === true,
+        syncHasMore: hasMore,
       });
       onComplete();
     } catch (error) {
@@ -163,6 +204,7 @@ export function useSync(
           : errText,
         needsGmailReauth: needsReauth,
         syncHasMore: false,
+        newCount: totalNew,
       }));
     }
   }, [onComplete, syncStorageKey]);

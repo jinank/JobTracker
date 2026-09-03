@@ -16,10 +16,19 @@ export async function GET() {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
+  const uniqueRes = await supabase.rpc("count_unique_applications_for_user", {
+    p_user_id: user.userId,
+  });
+
+  const uniqueCount =
+    uniqueRes.error || uniqueRes.data == null
+      ? user.chainCount
+      : Number(uniqueRes.data);
+
   const [topRes, aboveRes, trackersRes] = await Promise.all([
     supabase.rpc("leaderboard_by_chain_count", { p_limit: 5 }),
     supabase.rpc("count_users_with_more_chains", {
-      p_count: user.chainCount,
+      p_count: uniqueCount,
     }),
     supabase.rpc("count_users_with_chains"),
   ]);
@@ -29,7 +38,7 @@ export async function GET() {
     return NextResponse.json(
       {
         error: "Leaderboard unavailable",
-        hint: "Run supabase/migration_v4_leaderboard.sql if this is a new environment.",
+        hint: "Run supabase/migration_v16_leaderboard_unique_apps.sql if this is a new environment.",
       },
       { status: 503 }
     );
@@ -57,7 +66,7 @@ export async function GET() {
   return NextResponse.json({
     entries,
     yourRank,
-    yourApplicationCount: user.chainCount,
+    yourApplicationCount: uniqueCount,
     trackersWithApplications,
   });
 }

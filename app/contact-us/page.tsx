@@ -1,12 +1,20 @@
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
+import { getSupportEmail } from "@/lib/site";
 
-export const metadata = {
-  title: "Contact Us – Rethinkjobs",
+export const metadata = buildPageMetadata({
+  title: "Contact SuperInterns support for internship help",
   description:
-    "Contact support at info.rethinksoft@gmail.com if you have any issues.",
-};
-
-export default function ContactUsPage() {
+    "Contact SuperInterns support for help with accounts, billing, internships, and student verification.",
+  path: "/contact-us",
+});
+export default function ContactUsPage({
+  searchParams,
+}: {
+  searchParams?: { plan?: string };
+}) {
+  const supportEmail = getSupportEmail();
+  const isPremiumInquiry = searchParams?.plan === "premium";
   return (
     <div className="min-h-0 flex-1 flex flex-col bg-slate-50">
       <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-sm">
@@ -15,7 +23,7 @@ export default function ContactUsPage() {
             href="/"
             className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
           >
-            ← Rethinkjobs
+            ← SuperInterns
           </Link>
           <Link
             href="/pricing"
@@ -26,8 +34,17 @@ export default function ContactUsPage() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12 w-full">
+      <main id="main-content" className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12 w-full">
         <h1 className="text-2xl font-bold text-slate-900 mb-2">Contact Us</h1>
+        {isPremiumInquiry ? (
+          <div className="mb-6 rounded-xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm text-violet-900">
+            <p className="font-semibold">Premium package ($49 one-time)</p>
+            <p className="mt-1 text-violet-800">
+              Includes 100 Auto Apply applications and a free portfolio website.
+              Email us with your target roles and we&apos;ll get you started.
+            </p>
+          </div>
+        ) : null}
         <p className="text-slate-600 text-sm mb-8">
           If any student or user has an issue, you can reach us by email and we&apos;ll
           get back to you as soon as possible.
@@ -39,10 +56,10 @@ export default function ContactUsPage() {
               Email
             </h2>
             <a
-              href="mailto:info.rethinksoft@gmail.com"
+              href={`mailto:${supportEmail}`}
               className="text-blue-600 font-medium hover:text-blue-700 text-lg"
             >
-              info.rethinksoft@gmail.com
+              {supportEmail}
             </a>
             <p className="text-xs text-slate-500 mt-2">
               Please include screenshots (if relevant) and the email you use to sign in.

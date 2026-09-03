@@ -1,3 +1,6 @@
+import { resolveGreenhouseLocation } from "@/lib/jobs/resolveGreenhouseLocation";
+import type { AshbyJob } from "@/lib/jobs/fetchers/ashby";
+import { resolveAshbyLocation } from "@/lib/jobs/fetchers/ashby";
 import type { GreenhouseJob } from "@/lib/jobs/fetchers/greenhouse";
 import type { LeverPosting } from "@/lib/jobs/fetchers/lever";
 import {
@@ -39,7 +42,7 @@ export function normalizeGreenhouseJob(
   source: JobSourceRow,
   job: GreenhouseJob
 ): NormalizedJobDraft | null {
-  const locationRaw = job.location?.name?.trim() || "United States";
+  const locationRaw = resolveGreenhouseLocation(job);
   if (
     !isUsInternship(job.title, locationRaw, {
       forceInternship: source.force_internship,
@@ -118,6 +121,46 @@ export function normalizeLeverPosting(
     experience_level: "Intern",
     apply_url: posting.hostedUrl,
     description: desc,
+    posted_at: postedAt,
+    tags: [roleCategory, workType, "Internship", "Company site"],
+  };
+}
+
+export function normalizeAshbyJob(
+  source: JobSourceRow,
+  job: AshbyJob
+): NormalizedJobDraft | null {
+  const locationRaw = resolveAshbyLocation(job);
+  if (
+    !isUsInternship(job.title, locationRaw, {
+      forceInternship: source.force_internship,
+    })
+  ) {
+    return null;
+  }
+
+  const { city, state, country } = parseUsLocation(locationRaw);
+  const workType = inferWorkType(locationRaw);
+  const roleCategory = inferRoleCategory(job.title);
+  const postedAt = job.publishedAt || null;
+
+  return {
+    external_id: job.id,
+    company: source.company,
+    company_slug: source.company_slug,
+    title: job.title.trim(),
+    location_raw: locationRaw,
+    city,
+    state,
+    country: country || "US",
+    work_type: workType,
+    role_category: roleCategory,
+    employment_type: "Internship",
+    experience_level: "Intern",
+    apply_url: job.jobUrl,
+    description:
+      stripHtml(job.descriptionHtml || "") ||
+      `${source.company} is hiring a ${job.title} in ${locationRaw}. Apply on the company career site.`,
     posted_at: postedAt,
     tags: [roleCategory, workType, "Internship", "Company site"],
   };

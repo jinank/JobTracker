@@ -115,9 +115,9 @@ function ReachOutContent() {
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
           <div className="flex min-w-0 flex-1 items-center gap-3">
             <Link
-              href="/"
+              href="/tracker"
               className="shrink-0 rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"
-              aria-label="Back to dashboard"
+              aria-label="Back to tracker"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -126,7 +126,7 @@ function ReachOutContent() {
             <div className="min-w-0">
               <h1 className="truncate text-base font-bold text-slate-900">Reach Out</h1>
               <p className="truncate text-xs text-slate-500">
-                {company || "—"}
+                {company || "N/A"}
                 {role ? ` · ${role}` : ""}
               </p>
             </div>
@@ -135,8 +135,8 @@ function ReachOutContent() {
             href="/"
             className="flex shrink-0 items-center gap-2 rounded-lg py-1 pl-1 pr-2 text-slate-700 transition-colors hover:bg-slate-100"
           >
-            <LogoMark className="h-8 w-8" iconClassName="w-4 h-4" />
-            <span className="hidden text-sm font-bold text-slate-900 sm:inline">Rethinkjobs</span>
+            <LogoMark className="h-8 w-8" />
+            <span className="hidden text-sm font-bold text-slate-900 sm:inline">SuperInterns</span>
           </Link>
         </div>
       </header>
