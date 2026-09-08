@@ -214,7 +214,7 @@ async function fetchRecruitersFromClay(args: {
     company: args.company,
     domain: args.domain,
     recruiter_title_filters: RECRUITER_TITLES,
-    source: "rethinkjobs-reach-out",
+    source: "summer-internships-reach-out",
   };
 
   const controller = new AbortController();
@@ -584,7 +584,7 @@ async function fetchRecruitersFromHappenstance(args: {
         rawStatus: lastStatus,
         message:
           people.length > 0
-            ? "Matches from your Happenstance network (connections/groups)—warmer paths than raw domain lists."
+            ? "Matches from your Happenstance network (connections/groups), warmer paths than raw domain lists."
             : undefined,
       };
     }

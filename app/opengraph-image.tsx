@@ -1,9 +1,9 @@
 import { ImageResponse } from "next/og";
+import { SITE_NAME } from "@/lib/site";
 
 export const runtime = "edge";
 
-export const alt =
-  "RethinkJobs — AI-powered job application tracker for students and professionals";
+export const alt = `${SITE_NAME} | USA internship search for students`;
 
 export const size = { width: 1200, height: 630 };
 
@@ -52,7 +52,7 @@ export default function OpenGraphImage() {
               />
             </svg>
           </div>
-          <span style={{ fontSize: 56, fontWeight: 800, color: "white" }}>RethinkJobs</span>
+          <span style={{ fontSize: 56, fontWeight: 800, color: "white" }}>{SITE_NAME}</span>
         </div>
         <div
           style={{
@@ -64,7 +64,7 @@ export default function OpenGraphImage() {
             lineHeight: 1.3,
           }}
         >
-          AI-powered job application tracker for students &amp; professionals
+          USA internship search for students
         </div>
         <div
           style={{
@@ -73,7 +73,7 @@ export default function OpenGraphImage() {
             color: "rgba(255,255,255,0.75)",
           }}
         >
-          Track job applications · Internship tracker · Gmail sync
+          Find internships · Track applications · Practice interviews
         </div>
       </div>
     ),

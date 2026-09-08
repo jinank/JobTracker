@@ -5,39 +5,9 @@ import { useMemo, useState } from "react";
 import { NavAuthAction } from "@/components/NavAuthAction";
 import { useInternshipPreview } from "@/hooks/useInternships";
 import { ROLE_CATEGORIES } from "@/lib/jobs/constants";
-import type { JobListing } from "@/types/jobListing";
+import { InternshipTable } from "@/components/InternshipTable";
 
-const COMPARISON = {
-  boards: [
-    "Hundreds of applicants per internship posting",
-    "Hard to tell which roles are still open",
-    "Mostly aggregated reposts, not direct employer pages",
-    "Generic alerts that miss company career sites",
-    "Little signal on US-only student roles",
-  ],
-  rethink: [
-    "Internships from company career pages directly",
-    "Less competition than big job boards",
-    "US-focused: on-site, hybrid, and remote (US)",
-    "Apply straight to the hiring team",
-    "Sync applications to Track Jobs after you apply",
-  ],
-};
-
-const FAQ = [
-  {
-    q: "What internships are listed?",
-    a: "Software engineering, product, design, data, marketing, and operations internships at US companies. We pull from public Greenhouse and Lever career boards.",
-  },
-  {
-    q: "Are these US-only roles?",
-    a: "Yes. We filter for internships based in the United States, including remote roles that are US-eligible.",
-  },
-  {
-    q: "How is this different from LinkedIn or Handshake?",
-    a: "We surface roles from company websites, not crowded job boards. You apply on the employer site and can track replies in RethinkJobs.",
-  },
-];
+const PREVIEW_LIMIT = 50;
 
 function CheckIcon({ className = "h-5 w-5 text-scale-purple" }: { className?: string }) {
   return (
@@ -47,38 +17,9 @@ function CheckIcon({ className = "h-5 w-5 text-scale-purple" }: { className?: st
   );
 }
 
-function JobCard({ job }: { job: JobListing }) {
-  return (
-    <article className="flex flex-col rounded-2xl border border-slate-200/90 bg-white p-4 shadow-card hover:shadow-card-hover transition-shadow">
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-wide text-emerald-700">Internship</p>
-          <h3 className="text-sm font-bold text-slate-900">{job.company}</h3>
-        </div>
-        <span className="shrink-0 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-          {job.workType}
-        </span>
-      </div>
-      <p className="text-sm font-semibold text-slate-800 leading-snug">{job.title}</p>
-      <p className="mt-1 text-xs text-slate-500">{job.location}</p>
-      <p className="mt-2 text-[11px] text-slate-400">
-        Posted {job.postedDaysAgo === 1 ? "1 day" : `${job.postedDaysAgo} days`} ago
-      </p>
-      <a
-        href={job.applyUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-4 inline-flex items-center justify-center rounded-xl border border-scale-purple/30 bg-scale-mist/50 px-4 py-2.5 text-xs font-semibold text-scale-purple hover:bg-scale-purple hover:text-white transition-colors"
-      >
-        Apply on company site
-      </a>
-    </article>
-  );
-}
-
-/** Marketing landing for /find-jobs (logged-out visitors). */
+/** Marketing browse page for /find-internships (logged-out visitors). */
 export function HiddenJobsLanding() {
-  const { jobs: previewJobs, stats, loading } = useInternshipPreview(8);
+  const { jobs: previewJobs, stats, loading } = useInternshipPreview(PREVIEW_LIMIT);
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<string>("All roles");
 
@@ -100,25 +41,23 @@ export function HiddenJobsLanding() {
   return (
     <div className="pb-16">
       <section
-        className="relative overflow-hidden landing-hero-mesh pb-20 pt-10 sm:pb-24 sm:pt-14 lg:pb-28 lg:pt-16"
-        aria-labelledby="find-jobs-hero-heading"
+        className="relative overflow-hidden landing-hero-mesh pb-8 pt-10 sm:pb-10 sm:pt-14 lg:pt-16"
+        aria-labelledby="find-internships-hero-heading"
       >
         <div className="pointer-events-none absolute inset-0 landing-hero-grid" aria-hidden />
         <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20">
           <div className="landing-hero-stagger text-center lg:text-left">
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-scale-purple/20 bg-white/80 px-4 py-1.5 text-xs font-semibold text-scale-purple shadow-sm backdrop-blur-sm">
-              <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
-              USA Internships · Company career pages
-            </p>
             <h1
-              id="find-jobs-hero-heading"
-              className="mb-6 text-[2rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]"
+              id="find-internships-hero-heading"
+              className="mb-6 text-[1.625rem] font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-[1.875rem] lg:text-[2.25rem]"
             >
-              Find{" "}
-              <span className="text-hero-gradient">internships in the US</span>
+              <span className="block">
+                Find <span className="text-hero-gradient">Summer 2027 Internships</span>
+              </span>
+              <span className="block">in the US from company career pages</span>
             </h1>
             <p className="mx-auto mb-8 max-w-lg text-base leading-relaxed text-slate-600 lg:mx-0 lg:text-lg">
-              Built for students. Discover internships on company career sites—not buried on crowded job boards.
+              Built for students. Discover internships on company career sites, not buried on crowded job boards.
             </p>
             <div className="mx-auto mb-8 grid max-w-md gap-3 sm:grid-cols-2 lg:mx-0 lg:max-w-none">
               <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 text-left shadow-sm backdrop-blur-sm">
@@ -139,7 +78,7 @@ export function HiddenJobsLanding() {
                   </svg>
                 </div>
                 <p className="text-sm font-semibold text-slate-900">Student-focused</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">Engineering, product, design, data, and more—internships only.</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">Engineering, product, design, data, and more, internships only.</p>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
@@ -150,8 +89,8 @@ export function HiddenJobsLanding() {
                 Browse internships
               </a>
               <NavAuthAction
-                callbackUrl="/find-jobs"
-                signInLabel="Sign in for full list"
+                callbackUrl="/find-internships"
+                signInLabel="Get Full Access"
                 signedInLabel="Open Track Jobs"
                 className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-slate-200/90 bg-white/90 px-8 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-scale-purple/40 hover:bg-white sm:w-auto"
               />
@@ -218,49 +157,13 @@ export function HiddenJobsLanding() {
         </div>
       </section>
 
-      <section className="py-14 sm:py-16 bg-slate-50">
+      <section id="job-listings" className="pb-14 sm:pb-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-center text-2xl font-bold text-slate-900 mb-10">
-            Skip the internship posting pile-on
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-red-200/80 bg-red-50/50 p-6">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-red-800 mb-4">
-                LinkedIn / Indeed
-              </h3>
-              <ul className="space-y-2.5">
-                {COMPARISON.boards.map((line) => (
-                  <li key={line} className="flex gap-2 text-sm text-red-900/90">
-                    <span className="text-red-500 shrink-0">✕</span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-6 ring-2 ring-scale-purple/20">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-emerald-800 mb-4">
-                RethinkJobs Internships
-              </h3>
-              <ul className="space-y-2.5">
-                {COMPARISON.rethink.map((line) => (
-                  <li key={line} className="flex gap-2 text-sm text-emerald-900/90">
-                    <span className="text-emerald-600 shrink-0">✓</span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="job-listings" className="py-14 sm:py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50/90 px-4 py-3 text-sm text-amber-950">
-            <strong>Preview:</strong> Sample internships below. Sign in to browse the full catalog with filters
-            and apply links, then sync applications to{" "}
-            <Link href="/" className="font-semibold text-scale-purple hover:underline">
-              Track Jobs
+          <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/90 px-4 py-3 text-sm text-emerald-950">
+            <strong>{PREVIEW_LIMIT} recent internships</strong> below, no login required. Sign in
+            to browse the full catalog with filters, then sync applications to{" "}
+            <Link href="/tracker" className="font-semibold text-scale-purple hover:underline">
+              Track Applications
             </Link>
             .
           </div>
@@ -293,51 +196,18 @@ export function HiddenJobsLanding() {
           </div>
 
           <p className="mb-4 text-xs text-slate-500">
-            Showing {filtered.length} preview internship{filtered.length !== 1 ? "s" : ""}
+            Showing {filtered.length} of {PREVIEW_LIMIT} recent internship
+            {filtered.length !== 1 ? "s" : ""}
           </p>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
-
-          {filtered.length === 0 && !loading && (
-            <p className="py-12 text-center text-sm text-slate-500">
-              No internships match your filters yet. Listings sync daily from company career pages.
-            </p>
-          )}
-        </div>
-      </section>
-
-      <section className="border-t border-slate-100 bg-scale-mist/40 py-14">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h2 className="text-xl font-bold text-slate-900 mb-6 text-center">Frequently asked questions</h2>
-          <div className="space-y-4">
-            {FAQ.map((item) => (
-              <div key={item.q} className="rounded-xl border border-slate-200/80 bg-white p-5">
-                <h3 className="text-sm font-semibold text-slate-900">{item.q}</h3>
-                <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-14">
-        <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
-          <h2 className="text-2xl font-bold text-slate-900">Find internships. Track every reply.</h2>
-          <p className="mt-3 text-slate-600">
-            Browse USA internships, practice interviews, and sync recruiter mail to your pipeline—all in RethinkJobs.
-          </p>
-          <div className="mt-6 flex justify-center">
-            <NavAuthAction
-              callbackUrl="/find-jobs"
-              signInLabel="Get started free"
-              signedInLabel="Back to Track Jobs"
-              className="rounded-full bg-scale-purple px-8 py-3.5 text-sm font-semibold text-white hover:bg-scale-purple-dark transition-colors"
-            />
-          </div>
+          <InternshipTable
+            jobs={filtered}
+            loading={loading}
+            showWorkType={false}
+            recencyField="updated"
+            recencyLabel="Added"
+            emptyMessage="No internships match your filters yet. Listings sync every few hours from company career pages."
+          />
         </div>
       </section>
     </div>

@@ -1,4 +1,4 @@
-# Rethinkjobs (Next.js) – environment variables
+# SuperInterns (Next.js) – environment variables
 
 ## Quick start (Reach Out / recruiters)
 
@@ -36,7 +36,7 @@ HAPPENSTANCE_API_KEY="your_key"
 # HAPPENSTANCE_MAX_WAIT_MS=55000
 ```
 
-**Important:** Results are scoped to the **Happenstance account that owns the API key**. In a multi-user product, every Rethinkjobs user shares that same graph unless you issue per-user keys or integrate Happenstance per account.
+**Important:** Results are scoped to the **Happenstance account that owns the API key**. In a multi-user product, every SuperInterns user shares that same graph unless you issue per-user keys or integrate Happenstance per account.
 
 Searches run **asynchronously**; the server polls until `COMPLETED` or timeout (see env above). Uses credits per [Happenstance billing](https://developer.happenstance.ai/).
 
@@ -53,7 +53,7 @@ Searches run **asynchronously**; the server polls until `COMPLETED` or timeout (
 HUNTER_API_KEY="your_key"
 ```
 
-Rethinkjobs calls `GET https://api.hunter.io/v2/domain-search?domain=...` using the guessed company domain. Results are **filtered** toward recruiter/HR-style titles when possible; if none match, it shows a broader slice of contacts at that domain with an info message.
+SuperInterns calls `GET https://api.hunter.io/v2/domain-search?domain=...` using the guessed company domain. Results are **filtered** toward recruiter/HR-style titles when possible; if none match, it shows a broader slice of contacts at that domain with an info message.
 
 ---
 
@@ -85,14 +85,14 @@ Clay often requires **paid credits** to return enrichment data. If you use a Cla
 
 ### Clay table contract
 
-**Request body** (from Rethinkjobs):
+**Request body** (from SuperInterns):
 
 ```json
 {
   "company": "Acme Corp",
   "domain": "acme.com",
   "recruiter_title_filters": ["recruiter", "hiring manager", "..."],
-  "source": "rethinkjobs-reach-out"
+  "source": "summer-internships-reach-out"
 }
 ```
 
@@ -105,3 +105,35 @@ The API key under Clay **Settings → API key** is not a substitute for the tabl
 ## Merging with Gmail data
 
 Whatever provider you use, recruiter names already extracted from **synced job emails** are **merged** in and de-duplicated when possible.
+
+---
+
+## Branded sign-in emails (Supabase / Resend)
+
+Email magic-link sign-in uses Supabase Auth. By default Supabase sends a generic message from `noreply@mail.app.supabase.io` (“Confirm your signup”, powered by Supabase footer).
+
+**Recommended:** set **`RESEND_API_KEY`** so the app sends a branded email from your domain:
+
+```env
+RESEND_API_KEY=re_...
+AUTH_EMAIL_FROM=SuperInterns <auth@summer2027internships.com>
+```
+
+1. Sign up at [resend.com](https://resend.com) and verify `summer2027internships.com` (or use `onboarding@resend.dev` for local testing only).
+2. Add the keys above to `.env.local` and Vercel Production, then redeploy.
+
+**Without Resend:** paste `supabase/email-templates/magic-link.html` into **Supabase Dashboard → Authentication → Email Templates** for **Magic Link** and **Confirm signup**. Set the subject to `Sign in to SuperInterns`. Under **Authentication → Settings**, set the sender name to **SuperInterns**.
+
+---
+
+## One-click auto-apply
+
+Server-side apply uses `TSENTA_API_KEY` in `.env.local` (never expose it to the browser). Run `supabase/migration_v17_tsenta_apply.sql` in the SQL editor, then add:
+
+```env
+TSENTA_API_KEY=
+# Optional: verify POST /api/webhooks/tsenta
+# TSENTA_WEBHOOK_SECRET=
+```
+
+Until the key is set, Apply stays a career-page link.

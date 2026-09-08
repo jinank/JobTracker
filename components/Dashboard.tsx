@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useChains } from "@/hooks/useChains";
 import { useSync } from "@/hooks/useSync";
@@ -13,11 +13,12 @@ import { ChainCard } from "./ChainCard";
 import { ChainView } from "./ChainView";
 import { CompanyGroupCard, buildCompanyGroups } from "./CompanyGroupCard";
 import { EmptyState } from "./EmptyState";
-import { LeaderboardSidebar } from "./LeaderboardSidebar";
+import { TrackerStatsSidebar } from "./TrackerStatsSidebar";
 import { InviteResponseBanner } from "./InviteResponseBanner";
 import type { Chain, ChainStatus } from "@/types/chain";
 import { STATUS_ORDER } from "@/types/chain";
 import { startOfCalendarWeekMs } from "@/lib/utils";
+import { FREE_TIER_LIMIT } from "@/lib/freeTier";
 import { countUniqueApplications } from "@/lib/uniqueApplications";
 
 const TERMINAL_STATUSES: ChainStatus[] = ["REJECTED", "GHOSTED", "WITHDRAWN"];
@@ -54,7 +55,7 @@ function sortChains(
 }
 
 export function Dashboard() {
-  const { data: session, update: updateSession } = useSession();
+  const { data: session } = useSession();
   const gmailConnected = session?.gmailConnected === true;
   const {
     chains,
@@ -79,7 +80,7 @@ export function Dashboard() {
   const { notifications, unreadCount, markAllRead, clearAll } =
     useNotifications(chains);
 
-  const freeLimit = limit ?? 50;
+  const freeLimit = limit ?? FREE_TIER_LIMIT;
   const atLimit = !paid && chainCount >= freeLimit;
 
   const [showStudentApprovedNotif, setShowStudentApprovedNotif] =
@@ -92,7 +93,7 @@ export function Dashboard() {
     const email = session?.user?.email;
     if (!email) return;
 
-    const key = `rethinkjobs_student_verified_approved_notif_${email.toLowerCase()}`;
+    const key = `summer_internships_student_verified_approved_notif_${email.toLowerCase()}`;
     try {
       if (localStorage.getItem(key)) return;
       localStorage.setItem(key, "1");
@@ -113,13 +114,6 @@ export function Dashboard() {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [groupByCompany, setGroupByCompany] = useState(true);
-
-  const refreshedSessionForGmail = useRef(false);
-  useEffect(() => {
-    if (refreshedSessionForGmail.current || session?.gmailConnected) return;
-    refreshedSessionForGmail.current = true;
-    void updateSession();
-  }, [session?.gmailConnected, updateSession]);
 
   useEffect(() => {
     setSelectedChain((prev) => {
@@ -172,7 +166,7 @@ export function Dashboard() {
     }
   }, [datePreset, dateFrom, dateTo]);
 
-  /** Pipeline “+N …” badge window + label — matches selected date preset. */
+  /** Pipeline “+N …” badge window + label, matches selected date preset. */
   const pipelineGrowth = useMemo(() => {
     const now = new Date();
     const endOfDay = (d: Date) =>
@@ -356,7 +350,7 @@ export function Dashboard() {
               onRefresh={refresh}
             />
           </main>
-          <LeaderboardSidebar chains={chains} />
+          <TrackerStatsSidebar chains={chains} />
           </div>
         </div>
       </div>
@@ -386,6 +380,21 @@ export function Dashboard() {
         {!gmailConnected && <GmailConnectBanner />}
         <div className="flex flex-col xl:flex-row gap-8 items-start">
         <main className="flex-1 min-w-0 w-full max-w-4xl">
+        <h1 className="sr-only">Summer 2027 Internship Application Tracker</h1>
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <a
+            href="/tracker/report"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-scale-purple/30 hover:bg-scale-lavender/40"
+          >
+            <svg className="h-4 w-4 text-scale-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+            Application report
+            <span className="text-xs font-medium text-slate-500">
+              Month, day, and pipeline stats
+            </span>
+          </a>
+        </div>
         {chainsError && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
             {chainsError}
@@ -402,8 +411,8 @@ export function Dashboard() {
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm rounded-xl px-4 py-3 mb-5">
             <div className="font-semibold">Student verification approved</div>
             <div className="text-xs text-emerald-700/90 mt-1">
-              You now have free student access. Reach out and manage your
-              applications in the dashboard.
+              Your student status is on file. A paid plan unlocks unlimited
+              tracking and Auto Apply.
             </div>
             <div className="mt-3">
               <button
@@ -417,25 +426,26 @@ export function Dashboard() {
         )}
 
         {!paid && (
-          <div className="bg-white rounded-xl border border-slate-200/80 shadow-card p-4 mb-5">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-slate-600">
-                Free plan: {chainCount}/{freeLimit} applications
-              </span>
-              {!atLimit ? (
-                <span className="text-xs text-slate-400">
-                  {freeLimit - chainCount} remaining
-                </span>
-              ) : (
-                <a
-                  href="/pricing"
-                  className="text-xs font-semibold text-scale-purple hover:text-scale-purple-dark transition-colors"
-                >
-                  Upgrade to Pro →
-                </a>
-              )}
+          <div className="mb-5 overflow-hidden rounded-2xl border border-scale-purple/20 bg-white p-4 shadow-card sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-bold text-slate-900">
+                  {atLimit ? "Free plan is full" : "You're on the free plan"}
+                </p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {atLimit
+                    ? `You've used all ${freeLimit} free applications. Starter is $4.99/mo. Pro is $9.99/mo with Auto Apply.`
+                    : `${chainCount} of ${freeLimit} free applications used. Upgrade for unlimited tracking and Auto Apply.`}
+                </p>
+              </div>
+              <a
+                href="/pricing"
+                className="inline-flex shrink-0 items-center justify-center rounded-xl bg-scale-purple px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-scale-purple-dark"
+              >
+                See plans
+              </a>
             </div>
-            <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden">
+            <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-100">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   atLimit ? "bg-red-500" : chainCount > freeLimit * 0.8 ? "bg-amber-500" : "bg-scale-purple"
@@ -457,18 +467,15 @@ export function Dashboard() {
             )}
             {syncHasMore && (
               <span className="block mt-2 text-xs text-emerald-800/90 font-medium">
-                More messages are queued — press Sync again to continue importing.
+                More emails from the last 6 months are still queued - press Sync
+                again to keep importing.
               </span>
             )}
           </div>
         )}
 
-        {loading && chains.length === 0 ? (
-          <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-2 border-scale-purple border-t-transparent rounded-full animate-spin" />
-          </div>
-        ) : chains.length === 0 ? (
-          <EmptyState onSync={sync} onRetry={refresh} />
+        {chains.length === 0 ? (
+          <EmptyState onSync={sync} onRetry={refresh} loading={loading} />
         ) : (
           <>
             {/* Date Filter - above pipeline so it filters the stats */}
@@ -784,7 +791,7 @@ export function Dashboard() {
           </>
         )}
         </main>
-        <LeaderboardSidebar chains={chains} />
+        <TrackerStatsSidebar chains={chains} />
         </div>
       </div>
     </div>

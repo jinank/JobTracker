@@ -8,6 +8,8 @@ const links: { href: string; label: string }[] = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/students", label: "Student requests" },
+  { href: "/admin/resources", label: "Resource requests" },
+  { href: "/admin/internships", label: "Internships" },
 ];
 
 export function AdminNav() {
@@ -17,8 +19,8 @@ export function AdminNav() {
     <header className="border-b border-slate-200 bg-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href="/admin" className="flex items-center gap-2 text-slate-900">
-          <LogoMark className="h-8 w-8" iconClassName="w-4 h-4" />
-          <span className="text-sm font-bold">Rethinkjobs Admin</span>
+          <LogoMark className="h-8 w-8" />
+          <span className="text-sm font-bold">SuperInterns Admin</span>
         </Link>
         <nav className="flex flex-wrap items-center gap-1">
           {links.map(({ href, label }) => {

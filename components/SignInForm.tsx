@@ -44,8 +44,10 @@ export function SignInForm({
       setError("Enter your email address.");
       return;
     }
+
     setLoading(true);
     setError(null);
+
     try {
       const res = await fetch("/api/auth/email-otp", {
         method: "POST",
@@ -65,6 +67,11 @@ export function SignInForm({
     }
   }
 
+  function handleGoogleSignIn() {
+    setError(null);
+    void signInWithGoogleBasic(callbackUrl);
+  }
+
   return (
     <div className="w-full max-w-md">
       {errorBanner && (
@@ -78,7 +85,7 @@ export function SignInForm({
           <div className="rounded-xl border border-emerald-200 bg-emerald-50/80 px-4 py-4 text-sm text-emerald-900">
             <p className="font-semibold">Check your email</p>
             <p className="mt-1 text-emerald-800/90">
-              We sent a sign-in link to <strong>{email.trim()}</strong>. Open it on this device to continue.
+              We sent a sign-in link to <strong>{email.trim()}</strong>. Check your inbox for an email from SuperInterns.
             </p>
           </div>
         ) : (
@@ -101,7 +108,7 @@ export function SignInForm({
               onClick={() => void sendMagicLink()}
               className="mt-3 w-full rounded-xl bg-slate-900 py-3.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
             >
-              {loading ? "Sending…" : "Continue with email"}
+              {loading ? "Sending..." : "Continue with email"}
             </button>
             <p className="mt-2 text-center text-[11px] text-slate-500">
               New here? Same link creates your account.
@@ -114,7 +121,7 @@ export function SignInForm({
 
       <button
         type="button"
-        onClick={() => void signInWithGoogleBasic(callbackUrl)}
+        onClick={handleGoogleSignIn}
         className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-slate-200 bg-white py-3.5 text-sm font-semibold text-slate-800 hover:border-scale-purple/40 hover:bg-scale-mist/30"
       >
         <GoogleIcon />
@@ -122,11 +129,6 @@ export function SignInForm({
       </button>
       <p className="mt-3 text-center text-xs text-slate-500 leading-relaxed">
         Google sign-in uses your profile only. We do not request Gmail on this step.
-      </p>
-
-      <p className="mt-6 rounded-xl border border-scale-purple/15 bg-scale-mist/40 px-4 py-3 text-xs text-slate-600 leading-relaxed">
-        Want to <strong className="text-slate-800">track applications from Gmail</strong>? After you sign in, open
-        Track Jobs and use <strong className="text-slate-800">Connect Gmail</strong> for read-only mail access.
       </p>
 
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}

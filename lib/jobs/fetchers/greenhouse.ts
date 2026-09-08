@@ -3,6 +3,8 @@ export type GreenhouseJob = {
   title: string;
   absolute_url: string;
   location?: { name?: string };
+  offices?: Array<{ name?: string; location?: string }>;
+  metadata?: Array<{ name?: string; value?: string | string[] }>;
   updated_at?: string;
   first_published?: string;
   content?: string;

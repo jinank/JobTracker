@@ -11,6 +11,7 @@ import {
   isNavLinkActive,
   type NavLinkItem,
 } from "@/lib/siteNav";
+import { SITE_NAME } from "@/lib/site";
 
 /** Shared sticky header height (app + marketing). */
 const HEADER_BAR_CLASS = "h-16 sm:h-[4.5rem]";
@@ -62,7 +63,7 @@ function AppLogoBlock({ activeCount }: { activeCount?: number }) {
     <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3">
       <LogoMark />
       <div className="min-w-0">
-        <p className="truncate text-sm font-bold text-slate-900 sm:text-base">RethinkJobs</p>
+        <p className="truncate text-sm font-bold text-slate-900 sm:text-base">{SITE_NAME}</p>
         {activeCount != null ? (
           <p className="truncate text-[11px] text-slate-500 sm:text-xs min-h-[1.125rem] sm:min-h-[1.25rem]">
             {activeCount} active application{activeCount !== 1 ? "s" : ""}
@@ -77,7 +78,7 @@ function AppLogoBlock({ activeCount }: { activeCount?: number }) {
   );
 }
 
-/** Marketing site header — landing, resources, practice interviews, blog, etc. */
+/** Marketing site header — landing, resources, practice interviews, etc. */
 export function SiteNavMarketing() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -92,12 +93,12 @@ export function SiteNavMarketing() {
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2"
-          aria-label="RethinkJobs home"
+          aria-label={`${SITE_NAME} home`}
           onClick={closeMenu}
         >
           <LogoMark />
           <span className="hidden text-lg font-bold tracking-tight text-slate-900 sm:inline">
-            RethinkJobs
+            {SITE_NAME}
           </span>
         </Link>
 
@@ -107,7 +108,8 @@ export function SiteNavMarketing() {
 
         <div className="hidden w-[10.5rem] shrink-0 justify-end lg:flex">
           <NavAuthAction
-            callbackUrl={pathname}
+            callbackUrl="/pricing"
+            dashboardHref="/tracker"
             className="rounded-full bg-scale-purple px-5 py-2.5 text-sm font-semibold text-white shadow-scale-soft transition-all hover:bg-scale-purple-dark hover:shadow-lg active:scale-[0.98]"
           />
         </div>
@@ -141,7 +143,8 @@ export function SiteNavMarketing() {
           />
           <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4">
             <NavAuthAction
-              callbackUrl={pathname}
+              callbackUrl="/pricing"
+              dashboardHref="/tracker"
               className="w-full rounded-xl bg-scale-purple py-3 text-center text-sm font-semibold text-white"
             />
           </div>
@@ -151,7 +154,7 @@ export function SiteNavMarketing() {
   );
 }
 
-/** Logged-in app header — fixed bar height + reserved action column. */
+/** Logged-in app header, fixed bar height + reserved action column. */
 export function SiteNavApp({
   activeCount,
   children,

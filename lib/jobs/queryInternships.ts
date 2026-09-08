@@ -5,6 +5,9 @@ import {
   sortJobListings,
   type InternshipQueryParams,
 } from "@/lib/findJobsFilters";
+import { personalizeInternships } from "@/lib/jobs/personalizeInternships";
+import type { InternshipUserPrefs } from "@/lib/jobs/personalizeInternships";
+import { shouldExcludeInternshipListing } from "@/lib/jobs/internshipTitleQuality";
 import type { JobListing, JobListingRow } from "@/types/jobListing";
 
 export type InternshipsQueryResult = {
@@ -14,11 +17,24 @@ export type InternshipsQueryResult = {
     totalActive: number;
     companies: number;
     lastSyncedAt: string | null;
+    /** Supabase project host — helps confirm prod vs local DB (not a secret). */
+    dbHost: string | null;
   };
 };
 
+function getSupabaseHost(): string | null {
+  const raw = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!raw) return null;
+  try {
+    return new URL(raw).host;
+  } catch {
+    return null;
+  }
+}
+
 export async function queryInternships(
-  params: InternshipQueryParams
+  params: InternshipQueryParams,
+  userPrefs?: InternshipUserPrefs | null
 ): Promise<InternshipsQueryResult> {
   const { data, error } = await supabase
     .from("job_listings")
@@ -26,16 +42,22 @@ export async function queryInternships(
     .eq("country", "US")
     .eq("employment_type", "Internship")
     .eq("is_active", true)
-    .order("posted_at", { ascending: false, nullsFirst: false });
+    .order("updated_at", { ascending: false, nullsFirst: false })
+    .range(0, 4999);
 
   if (error) {
     throw new Error(error.message);
   }
 
   const rows = (data ?? []) as JobListingRow[];
-  const listings = rows.map(rowToJobListing);
+  const listings = rows
+    .map(rowToJobListing)
+    .filter((job) => !shouldExcludeInternshipListing(job.company, job.title));
 
-  const filtered = filterJobListings(listings, params);
+  let filtered = filterJobListings(listings, params);
+  if (params.forMe && userPrefs?.matchEnabled) {
+    filtered = personalizeInternships(filtered, userPrefs);
+  }
   const sorted = sortJobListings(filtered, params.sortField, params.sortDir);
 
   const total = sorted.length;
@@ -51,6 +73,7 @@ export async function queryInternships(
   const { data: syncRow } = await supabase
     .from("job_sources")
     .select("last_synced_at")
+    .not("last_synced_at", "is", null)
     .order("last_synced_at", { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -62,6 +85,7 @@ export async function queryInternships(
       totalActive: listings.length,
       companies,
       lastSyncedAt: syncRow?.last_synced_at ?? null,
+      dbHost: getSupabaseHost(),
     },
   };
 }

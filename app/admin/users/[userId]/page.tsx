@@ -78,6 +78,9 @@ export default function AdminUserDetailPage() {
     created_at: string;
     last_login_at: string | null;
     login_count: number | null;
+    city: string | null;
+    state: string | null;
+    country: string | null;
     google_sub: string | null;
     stripe_customer_id: string | null;
     stripe_subscription_id: string | null;
@@ -119,7 +122,7 @@ export default function AdminUserDetailPage() {
           ["Indexed Gmail messages", data.stats.indexed_messages],
           ["OpenAI tokens (total)", data.stats.ai_tokens_total.toLocaleString()],
           ["Classify API calls logged", data.stats.ai_calls_recorded],
-          ["Logins (sessions recorded)", u.login_count ?? "—"],
+          ["Logins (sessions recorded)", u.login_count ?? "N/A"],
         ].map(([label, val]) => (
           <div key={String(label)} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
@@ -136,12 +139,20 @@ export default function AdminUserDetailPage() {
             <dd className="font-mono text-xs text-slate-800">{userId}</dd>
           </div>
           <div className="flex flex-wrap gap-2">
+            <dt className="text-slate-500">Location</dt>
+            <dd className="text-slate-800">
+              {u.city && u.state && u.country
+                ? `${u.city}, ${u.state}, ${u.country}`
+                : "N/A"}
+            </dd>
+          </div>
+          <div className="flex flex-wrap gap-2">
             <dt className="text-slate-500">Created</dt>
-            <dd className="text-slate-800">{u.created_at ? new Date(u.created_at).toLocaleString() : "—"}</dd>
+            <dd className="text-slate-800">{u.created_at ? new Date(u.created_at).toLocaleString() : "N/A"}</dd>
           </div>
           <div className="flex flex-wrap gap-2">
             <dt className="text-slate-500">Last login (profile)</dt>
-            <dd className="text-slate-800">{u.last_login_at ? new Date(u.last_login_at).toLocaleString() : "—"}</dd>
+            <dd className="text-slate-800">{u.last_login_at ? new Date(u.last_login_at).toLocaleString() : "N/A"}</dd>
           </div>
           {u.google_sub && (
             <div className="flex flex-wrap gap-2">

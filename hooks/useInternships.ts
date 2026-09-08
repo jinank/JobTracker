@@ -14,6 +14,7 @@ export type InternshipStats = {
   totalActive: number;
   companies: number;
   lastSyncedAt: string | null;
+  dbHost?: string | null;
 };
 
 export type InternshipFilters = {
@@ -27,6 +28,7 @@ export type InternshipFilters = {
   sortDir: SortDir;
   page: number;
   pageSize: number;
+  forMe?: boolean;
 };
 
 function buildQueryString(filters: InternshipFilters): string {
@@ -40,6 +42,7 @@ function buildQueryString(filters: InternshipFilters): string {
   p.set("sort", `${filters.sortField}-${filters.sortDir}`);
   p.set("page", String(filters.page));
   p.set("pageSize", String(filters.pageSize));
+  if (filters.forMe) p.set("forMe", "1");
   return p.toString();
 }
 
@@ -92,7 +95,10 @@ export function useInternships(filters: InternshipFilters) {
   return { jobs, total, stats, loading, error, refresh };
 }
 
-export function useInternshipPreview(limit = 8) {
+export function useInternshipPreview(
+  limit = 8,
+  sort: "posted-asc" | "posted-desc" | "updated-asc" | "updated-desc" = "updated-asc"
+) {
   const [jobs, setJobs] = useState<JobListing[]>([]);
   const [stats, setStats] = useState<InternshipStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -101,7 +107,9 @@ export function useInternshipPreview(limit = 8) {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`/api/internships?limit=${limit}&sort=posted-asc`);
+        const res = await fetch(`/api/internships?limit=${limit}&sort=${sort}`, {
+          cache: "no-store",
+        });
         const data = await res.json();
         if (cancelled) return;
         if (res.ok) {
@@ -115,7 +123,7 @@ export function useInternshipPreview(limit = 8) {
     return () => {
       cancelled = true;
     };
-  }, [limit]);
+  }, [limit, sort]);
 
   return { jobs, stats, loading };
 }

@@ -105,7 +105,7 @@ export function PracticeInterviewsExplorer() {
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-slate-600">
           AI mock interviews tailored to the companies and roles you&apos;re applying to.
-          No scheduling, no judgment — practice as many times as you want.
+          No scheduling, no judgment, practice as many times as you want.
         </p>
       </div>
 

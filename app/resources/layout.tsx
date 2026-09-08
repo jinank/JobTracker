@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Resources – Free member perks & student discounts | Rethinkjobs",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Resources & student perks",
   description:
-    "Free LinkedIn review, resume review, and headshot tools for RethinkJobs members, plus curated student discounts on AI, dev tools, and more.",
-};
+    "LinkedIn and resume reviews, headshot tools, and curated student discounts.",
+  path: "/resources",
+  keywords: [
+    "student discounts",
+    "resume review",
+    "LinkedIn review",
+    "AI prompt guide",
+    "internship resources",
+  ],
+});
 
 export default function ResourcesLayout({ children }: { children: ReactNode }) {
   return children;

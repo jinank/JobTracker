@@ -13,8 +13,8 @@ export interface Notification {
   read: boolean;
 }
 
-const STORAGE_KEY = "rethinkjobs_notifications";
-const SEEN_KEY = "rethinkjobs_seen_chains";
+const STORAGE_KEY = "summer_internships_notifications";
+const SEEN_KEY = "summer_internships_seen_chains";
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;

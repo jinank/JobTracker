@@ -1,12 +1,14 @@
 /**
  * Pull live internships from Greenhouse/Lever into Supabase.
- * Usage: npx tsx scripts/sync-internships.mjs
+ * Usage: node scripts/sync-internships.mjs
  */
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
+import { createRequire } from "module";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const require = createRequire(import.meta.url);
 
 function loadEnvLocal() {
   const envPath = path.join(__dirname, "..", ".env.local");

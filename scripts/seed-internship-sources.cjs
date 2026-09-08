@@ -51,7 +51,6 @@ const SOURCES = [
   { company: "Snowflake", company_slug: "snowflake", ats: "greenhouse", board_token: "snowflake", careers_url: "https://careers.snowflake.com" },
   { company: "Square", company_slug: "square", ats: "greenhouse", board_token: "squareup", careers_url: "https://block.xyz/careers" },
   { company: "Twilio", company_slug: "twilio", ats: "greenhouse", board_token: "twilio", careers_url: "https://www.twilio.com/company/jobs" },
-  { company: "Unity", company_slug: "unity", ats: "greenhouse", board_token: "unity3d", careers_url: "https://careers.unity.com" },
   { company: "Vercel", company_slug: "vercel", ats: "greenhouse", board_token: "vercel", careers_url: "https://vercel.com/careers" },
   { company: "Webflow", company_slug: "webflow", ats: "greenhouse", board_token: "webflow", careers_url: "https://webflow.com/careers" },
   { company: "Airtable", company_slug: "airtable", ats: "greenhouse", board_token: "airtable", careers_url: "https://airtable.com/careers" },

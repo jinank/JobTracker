@@ -4,13 +4,15 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import type { Chain } from "@/types/chain";
 import type { AppEvent } from "@/types/event";
 import { chainsDataEqual } from "@/lib/chainsSnapshot";
+import { FREE_TIER_LIMIT } from "@/lib/freeTier";
 
 export function useChains() {
   const [chains, setChains] = useState<Chain[]>([]);
   const [paid, setPaid] = useState<boolean>(false);
   const [studentVerified, setStudentVerified] = useState<boolean>(false);
+  const [hasProSubscription, setHasProSubscription] = useState<boolean>(false);
   const [chainCount, setChainCount] = useState(0);
-  const [limit, setLimit] = useState<number | null>(50);
+  const [limit, setLimit] = useState<number | null>(FREE_TIER_LIMIT);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const hasLoadedOnce = useRef(false);
@@ -39,6 +41,7 @@ export function useChains() {
       );
       setPaid(data.paid ?? false);
       setStudentVerified(data.studentVerified ?? false);
+      setHasProSubscription(data.hasProSubscription ?? false);
       setChainCount(data.chainCount ?? 0);
       setLimit(data.limit ?? null);
       hasLoadedOnce.current = true;
@@ -54,7 +57,17 @@ export function useChains() {
     refresh();
   }, [refresh]);
 
-  return { chains, paid, studentVerified, chainCount, limit, loading, error, refresh };
+  return {
+    chains,
+    paid,
+    studentVerified,
+    hasProSubscription,
+    chainCount,
+    limit,
+    loading,
+    error,
+    refresh,
+  };
 }
 
 export function useChainEvents(chainId: string | null) {

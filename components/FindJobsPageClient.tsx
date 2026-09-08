@@ -12,9 +12,9 @@ export function FindJobsPageClient() {
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <SiteNavMarketing />
-        <div className="flex flex-1 items-center justify-center py-24">
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
-        </div>
+        <main className="flex-1">
+          <HiddenJobsLanding />
+        </main>
       </div>
     );
   }

@@ -136,7 +136,7 @@ export const PRACTICE_INTERVIEWS: PracticeInterview[] = [
     title: "AI Engineer Interview",
     durationMinutes: 8,
     description:
-      "Leadership, cognitive ability, and role knowledge—problem-solving, decision-making, cross-functional collaboration, and resilience.",
+      "Leadership, cognitive ability, and role knowledge: problem-solving, decision-making, cross-functional collaboration, and resilience.",
     interviewerBrief:
       "Google behavioural (Googliness + leadership): AI/ML project ownership, ambiguity, and collaboration with research or infra teams.",
   },
@@ -194,7 +194,7 @@ export const PRACTICE_INTERVIEWS: PracticeInterview[] = [
     interviewType: "PRODUCT_SENSE",
     roleType: "Product Designer",
     title:
-      "Google Product Designer Case Interview — Product Sense, Systems Thinking, and Execution",
+      "Google Product Designer Case Interview: Product Sense, Systems Thinking, and Execution",
     durationMinutes: 8,
     description:
       "Ambiguous user problem on a core Google surface (Maps, Photos, Search, YouTube, or Workspace). End-to-end design with engineering awareness at billions-of-users scale.",
@@ -357,7 +357,7 @@ const OPENING_PROMPTS: Record<InterviewType, (i: PracticeInterview) => string> =
   PRODUCT_SENSE: (i) =>
     `Imagine you're improving a flagship ${i.companyName} product for a specific user segment. Which segment would you pick first, and what problem would you solve? Walk me through your reasoning.`,
   TECHNICAL: () =>
-    "Let's work through a problem together. I'll describe a scenario—ask clarifying questions, then outline your approach before we go deeper. Ready? Here's the setup: design a system that ingests job-application emails and surfaces structured updates to users. What questions do you have?",
+    "Let's work through a problem together. I'll describe a scenario. Ask clarifying questions, then outline your approach before we go deeper. Ready? Here's the setup: design a system that ingests job-application emails and surfaces structured updates to users. What questions do you have?",
 };
 
 /** Client-safe opening line for mock interview UI (no OpenAI import). */

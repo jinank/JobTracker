@@ -108,16 +108,16 @@ export function findBestMatch(
 
   if (companyMatches.length === 0) return null;
 
+  // Generic / empty incoming role → attach to best company chain (often EOI).
   if (roleIsGeneric || !role) {
     return pickBestCompanyMatch(companyMatches);
   }
 
+  // Specific role → only match a similar specific role. Do NOT collapse a new
+  // titled application into an existing "Expression of interest" chain.
   for (const chain of companyMatches) {
     const chainRole = (chain.role_title || "").toLowerCase();
-
-    if (isGenericRole(chain.role_title) || !chainRole) {
-      return chain;
-    }
+    if (isGenericRole(chain.role_title) || !chainRole) continue;
 
     const roleDist = levenshtein(roleNorm, chainRole);
     const roleThreshold = Math.max(3, Math.floor(roleNorm.length * 0.3));

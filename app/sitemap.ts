@@ -1,35 +1,14 @@
 import type { MetadataRoute } from "next";
+import { getPublicSitemapPaths } from "@/lib/sitemapPaths";
 import { getSiteOrigin } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getSiteOrigin();
-  const now = new Date();
+  const fallbackModified = new Date();
 
-  const paths: {
-    path: string;
-    changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
-    priority: number;
-  }[] = [
-      { path: "", changeFrequency: "weekly", priority: 1 },
-      { path: "/login", changeFrequency: "monthly", priority: 0.7 },
-      { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
-      { path: "/find-jobs", changeFrequency: "weekly", priority: 0.9 },
-      { path: "/find-mentors", changeFrequency: "weekly", priority: 0.85 },
-      { path: "/resources", changeFrequency: "weekly", priority: 0.85 },
-      { path: "/practice-interviews", changeFrequency: "weekly", priority: 0.85 },
-      { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
-      { path: "/contact-us", changeFrequency: "monthly", priority: 0.6 },
-      { path: "/contact", changeFrequency: "monthly", priority: 0.6 },
-      { path: "/privacy", changeFrequency: "yearly", priority: 0.4 },
-      { path: "/terms", changeFrequency: "yearly", priority: 0.4 },
-      { path: "/verify-student", changeFrequency: "monthly", priority: 0.55 },
-      { path: "/reach-out", changeFrequency: "monthly", priority: 0.55 },
-      { path: "/success", changeFrequency: "monthly", priority: 0.3 },
-    ];
-
-  return paths.map(({ path, changeFrequency, priority }) => ({
+  return getPublicSitemapPaths().map(({ path, changeFrequency, priority, lastModified }) => ({
     url: `${base}${path}`,
-    lastModified: now,
+    lastModified: lastModified ? new Date(`${lastModified}T12:00:00`) : fallbackModified,
     changeFrequency,
     priority,
   }));

@@ -13,7 +13,7 @@ export function AppHeaderActions({
   extra,
 }: {
   email?: string | null;
-  /** Sync button column — pass null to reserve empty space on non-track pages. */
+  /** Sync button column, pass null to reserve empty space on non-track pages. */
   syncSlot?: ReactNode | null;
   extra?: ReactNode;
 }) {

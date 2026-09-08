@@ -133,7 +133,7 @@ function MentorsSearch() {
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
           Search any company to find recruiters, campus hiring teams, and people-team
-          contacts — then reach out on LinkedIn for advice, referrals, or a coffee chat.
+          contacts, then reach out on LinkedIn for advice, referrals, or a coffee chat.
         </p>
       </div>
 
@@ -210,7 +210,7 @@ function MentorsSearch() {
           </ul>
           <p className="mt-6 rounded-2xl bg-scale-mist px-4 py-3 text-xs leading-relaxed text-slate-600">
             <span className="font-semibold text-slate-800">Tip:</span> a short, specific
-            message works best — mention your school, what you&apos;re studying, and one
+            message works best, mention your school, what you&apos;re studying, and one
             thing you admire about their team. Ask for advice before asking for a referral.
           </p>
         </>
@@ -257,9 +257,24 @@ export function FindMentorsApp() {
     return (
       <div className="flex min-h-screen flex-col bg-white">
         <SiteNavMarketing />
-        <div className="flex flex-1 items-center justify-center py-24">
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-scale-purple border-t-transparent" />
-        </div>
+        <main className="flex-1">
+          <section className="landing-hero-mesh">
+            <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:py-28">
+              <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-rose-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-rose-600 shadow-sm">
+                <span className="flex h-1.5 w-1.5 rounded-full bg-rose-500" aria-hidden />
+                Free for students
+              </p>
+              <h1 className="text-[2rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl">
+                Find <span className="text-hero-gradient">mentors</span> for your
+                Summer 2027 internship search
+              </h1>
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
+                Search any company and we&apos;ll surface recruiters, campus hiring teams,
+                and people-team contacts you can message on LinkedIn.
+              </p>
+            </div>
+          </section>
+        </main>
       </div>
     );
   }
@@ -276,12 +291,12 @@ export function FindMentorsApp() {
                 Free for students
               </p>
               <h1 className="text-[2rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl">
-                Find <span className="text-hero-gradient">mentors</span> at the companies
-                you dream about
+                Find <span className="text-hero-gradient">mentors</span> for your
+                Summer 2027 internship search
               </h1>
               <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
                 Search any company and we&apos;ll surface recruiters, campus hiring teams,
-                and people-team contacts you can message on LinkedIn — for advice,
+                and people-team contacts you can message on LinkedIn, for advice,
                 referrals, or a quick coffee chat.
               </p>
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
