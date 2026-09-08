@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase";
 import { recordUserSignIn } from "@/lib/userTelemetry";
-import { isAdminEmail } from "@/lib/isAdmin";
 
 export type AppAuthProvider = "google" | "google-gmail" | "email";
 
@@ -15,6 +14,12 @@ export async function ensureAppUser(params: {
   const email = params.email.trim().toLowerCase();
   if (!email) return null;
 
+  const ownerEmails = (process.env.OWNER_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  const isOwner = ownerEmails.includes(email);
+
   const row: Record<string, unknown> = {
     email,
     name: params.name ?? "",
@@ -23,7 +28,7 @@ export async function ensureAppUser(params: {
   };
   if (params.googleSub) row.google_sub = params.googleSub;
   if (params.supabaseAuthId) row.supabase_auth_id = params.supabaseAuthId;
-  if (isAdminEmail(email)) {
+  if (isOwner) {
     row.paid = true;
     row.subscription_status = "active";
   }
