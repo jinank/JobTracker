@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
+import { isAdminEmail } from "@/lib/isAdmin";
 
 const FREE_TIER_LIMIT = 50;
 
@@ -29,6 +30,7 @@ export async function getAppUser(): Promise<AppUser | null> {
   if (!data) return null;
 
   const isPaid =
+    isAdminEmail(session.user.email) ||
     data.paid === true ||
     data.subscription_status === "active" ||
     data.subscription_status === "student" ||
