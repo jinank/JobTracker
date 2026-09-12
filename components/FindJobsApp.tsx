@@ -116,7 +116,7 @@ export function FindJobsApp() {
   const signedIn = Boolean(session?.user?.email);
   const canAutoApply =
     signedIn && applyProfile.hasProSubscription && applyProfile.configured;
-  const { byKey: applyByKey, apply: startApply } = useTsentaApply(canAutoApply);
+  const { byKey: applyByKey, apply: startApply, error: applyError } = useTsentaApply(canAutoApply);
   const applyProfileRef = useRef<HTMLDivElement>(null);
 
   const filters = useMemo(
@@ -167,10 +167,6 @@ export function FindJobsApp() {
       const result = await startApply({ listingId: job.id, applyUrl: job.applyUrl });
       if ("needsProfile" in result && result.needsProfile) {
         focusApplyProfile();
-        return;
-      }
-      if ("unsupported" in result && result.unsupported && result.applyUrl) {
-        window.open(result.applyUrl, "_blank", "noopener,noreferrer");
       }
     },
     [startApply, focusApplyProfile]
@@ -446,6 +442,11 @@ export function FindJobsApp() {
                   >
                     Retry
                   </button>
+                </div>
+              )}
+              {applyError && (
+                <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                  {applyError} You can still apply on the company site from the Apply link.
                 </div>
               )}
 

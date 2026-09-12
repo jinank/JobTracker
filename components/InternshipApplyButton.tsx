@@ -7,9 +7,6 @@ import { isInFlightStatus, type PublicTsentaApplication } from "@/lib/tsenta/typ
 const linkClass =
   "inline-flex rounded-lg border border-scale-purple/25 bg-scale-mist/40 px-3 py-1.5 text-xs font-semibold text-scale-purple transition-colors hover:bg-scale-purple hover:text-white";
 
-const buttonClass =
-  "inline-flex rounded-lg border border-scale-purple/25 bg-scale-mist/40 px-3 py-1.5 text-xs font-semibold text-scale-purple transition-colors hover:bg-scale-purple hover:text-white disabled:cursor-wait disabled:opacity-70";
-
 type Props = {
   job: JobListing;
   autoApply?: boolean;
@@ -60,23 +57,27 @@ export function InternshipApplyButton({
         </a>
       </span>
     );
-  } else if (!autoApply) {
+  } else {
+    // Always use a real link so Apply opens the career page in this click.
+    // Auto Apply / profile prompts run in the background and must not replace navigation
+    // (async window.open after /api/apply is blocked by browsers).
     applyControl = (
-      <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+      <a
+        href={job.applyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClass}
+        onClick={() => {
+          if (!autoApply) return;
+          if (!profileReady) {
+            onNeedProfile?.();
+            return;
+          }
+          onApply?.(job);
+        }}
+      >
         Apply
       </a>
-    );
-  } else if (!profileReady) {
-    applyControl = (
-      <button type="button" onClick={onNeedProfile} className={buttonClass}>
-        Apply
-      </button>
-    );
-  } else {
-    applyControl = (
-      <button type="button" onClick={() => onApply?.(job)} className={buttonClass}>
-        Apply
-      </button>
     );
   }
 
