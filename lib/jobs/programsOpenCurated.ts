@@ -39,12 +39,21 @@ function inferLocation(title: string, company: string): string {
   const t = `${title} ${company}`;
   if (/new york city|new york,?\s*ny|\bnyc\b/i.test(t)) return "New York, NY";
   if (/san francisco|california.*san francisco/i.test(t)) return "San Francisco, CA";
+  if (/san mateo/i.test(t)) return "San Mateo, CA";
+  if (/mountain view/i.test(t)) return "Mountain View, CA";
+  if (/redwood city|c3 ai/i.test(t)) return "Redwood City, CA";
+  if (/santa clara|nvidia/i.test(t)) return "Santa Clara, CA";
+  if (/mclean|appian/i.test(t)) return "McLean, VA";
+  if (/longmont/i.test(t)) return "Longmont, CO";
+  if (/o'?fallon|mastercard/i.test(t)) return "O'Fallon, MO";
   if (/washington d\.?c\.?/i.test(t)) return "Washington, DC";
   if (/atlanta/i.test(t)) return "Atlanta, GA";
   if (/phoenix|tsmc arizona/i.test(t)) return "Phoenix, AZ";
   if (/wichita/i.test(t)) return "Wichita, KS";
   if (/bala cynwyd|philadelphia/i.test(t)) return "Bala Cynwyd, PA";
   if (/chicago/i.test(t)) return "Chicago, IL";
+  if (/hawthorne|spacex/i.test(t) && /software/i.test(t)) return "United States";
+  if (/dropbox|workiva|remote/i.test(t) && /intern/i.test(t)) return "Remote, United States";
   if (/macquarie/i.test(company)) return "United States";
   return "United States";
 }

@@ -213,6 +213,11 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
     company: "Google",
     roles: [
       {
+        title: "Software Engineering Intern, BS, Summer 2027",
+        applyUrl:
+          "https://www.google.com/about/careers/applications/jobs/results/100648618540573382-software-engineering-intern-bs-summer-2027",
+      },
+      {
         title: "Software Engineering Intern, Summer 2027",
         applyUrl:
           "https://www.google.com/about/careers/applications/jobs/results/120997883141857990-software-engineering-intern/",
@@ -240,6 +245,11 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
           "https://job-boards.greenhouse.io/andurilindustries/jobs/5148079007?gh_jid=5148079007",
       },
       {
+        title: "2027 Software Engineer Intern",
+        applyUrl:
+          "https://boards.greenhouse.io/andurilindustries/jobs/5231488007?gh_jid=5231488007",
+      },
+      {
         title: "2027 Electrical Engineer Intern",
         applyUrl:
           "https://job-boards.greenhouse.io/andurilindustries/jobs/5148101007?gh_jid=5148101007",
@@ -253,6 +263,16 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
         title: "2027 Manufacturing Engineer Intern",
         applyUrl:
           "https://job-boards.greenhouse.io/andurilindustries/jobs/5153218007?gh_jid=5153218007",
+      },
+      {
+        title: "2027 Hardware Engineer Intern",
+        applyUrl:
+          "https://boards.greenhouse.io/andurilindustries/jobs/5231555007?gh_jid=5231555007",
+      },
+      {
+        title: "2027 Quality & Test Engineer Intern",
+        applyUrl:
+          "https://boards.greenhouse.io/andurilindustries/jobs/5231653007?gh_jid=5231653007",
       },
     ],
   },
@@ -458,6 +478,14 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
         title: "2027 Internship - Quant Research (Undergrad)",
         applyUrl: "https://job-boards.greenhouse.io/virtu/jobs/8142539002",
       },
+      {
+        title: "2027 Internship - Software Engineer",
+        applyUrl: "https://job-boards.greenhouse.io/virtu/jobs/8624410002",
+      },
+      {
+        title: "2027 Internship - Quantitative Trading",
+        applyUrl: "https://job-boards.greenhouse.io/virtu/jobs/8624408002",
+      },
     ],
   },
   {
@@ -504,6 +532,287 @@ export const SUMMER_2027_PROGRAMS_OPEN: ProgramCompanySection[] = [
         title: "Spring or Summer 2027 Tax Internship, Atlanta",
         applyUrl:
           "https://koch.avature.net/en_US/CollegeRecruiting/JobDetail/United-States-Spring-or-Summer-2027-Tax-Internship-Atlanta/183167",
+      },
+    ],
+  },
+  {
+    id: "spacex",
+    company: "SpaceX",
+    roles: [
+      {
+        title: "Summer 2027 Software Engineering Internship/Co-op",
+        applyUrl: "https://boards.greenhouse.io/spacex/jobs/8621757002?gh_jid=8621757002",
+      },
+      {
+        title: "Summer 2027 Engineering Internship/Co-op",
+        applyUrl: "https://boards.greenhouse.io/spacex/jobs/8621740002?gh_jid=8621740002",
+      },
+      {
+        title: "Spring 2027 Software Engineering Internship/Co-op",
+        applyUrl: "https://boards.greenhouse.io/spacex/jobs/8621756002?gh_jid=8621756002",
+      },
+    ],
+  },
+  {
+    id: "dropbox",
+    company: "Dropbox",
+    roles: [
+      {
+        title: "Software Engineering Intern (Summer 2027)",
+        applyUrl: "https://jobs.dropbox.com/listing/8106224?gh_jid=8106224",
+      },
+    ],
+  },
+  {
+    id: "roblox",
+    company: "Roblox",
+    roles: [
+      {
+        title: "[Summer 2027] Software Engineer Intern",
+        applyUrl: "https://careers.roblox.com/jobs/8072713?gh_jid=8072713",
+      },
+      {
+        title: "[Summer 2027] Product Management Intern",
+        applyUrl: "https://careers.roblox.com/jobs/8143981?gh_jid=8143981",
+      },
+      {
+        title: "[Summer 2027] Product Design Intern",
+        applyUrl: "https://careers.roblox.com/jobs/8143984?gh_jid=8143984",
+      },
+    ],
+  },
+  {
+    id: "vercel",
+    company: "Vercel",
+    roles: [
+      {
+        title: "Software Engineering Intern - Summer '27",
+        applyUrl: "https://job-boards.greenhouse.io/vercel/jobs/6181759004",
+      },
+      {
+        title: "Software Engineering Intern - Winter '27",
+        applyUrl: "https://job-boards.greenhouse.io/vercel/jobs/6181755004",
+      },
+    ],
+  },
+  {
+    id: "figma",
+    company: "Figma",
+    roles: [
+      {
+        title: "Software Engineer Intern (Winter 2027)",
+        applyUrl: "https://boards.greenhouse.io/figma/jobs/6131089004?gh_jid=6131089004",
+      },
+    ],
+  },
+  {
+    id: "databricks",
+    company: "Databricks",
+    roles: [
+      {
+        title: "Software Engineering Intern (2027 Start) - Winter",
+        applyUrl:
+          "https://databricks.com/company/careers/open-positions/job?gh_jid=8732364002",
+      },
+      {
+        title: "Product Management Intern (Summer 2027)",
+        applyUrl:
+          "https://databricks.com/company/careers/open-positions/job?gh_jid=6883068002",
+      },
+    ],
+  },
+  {
+    id: "nvidia",
+    company: "NVIDIA",
+    roles: [
+      {
+        title: "NVIDIA 2027 Internships: Software Engineering",
+        applyUrl: "https://jobs.nvidia.com/careers/job/893397026205",
+      },
+      {
+        title: "NVIDIA 2027 Internships: Systems Software Engineering",
+        applyUrl: "https://jobs.nvidia.com/careers/job/893397026201",
+      },
+    ],
+  },
+  {
+    id: "workiva",
+    company: "Workiva",
+    roles: [
+      {
+        title: "Summer 2027 Intern - Software Engineering",
+        applyUrl:
+          "https://workiva.wd503.myworkdayjobs.com/en-US/careers/job/USA---Remote/Summer-2027-Intern---Software-Engineering_R12190",
+      },
+    ],
+  },
+  {
+    id: "mastercard",
+    company: "Mastercard",
+    roles: [
+      {
+        title: "Software Engineer Intern, Summer 2027 – United States",
+        applyUrl:
+          "https://mastercard.wd1.myworkdayjobs.com/en-US/Campus/job/OFallon-Missouri/Software-Engineer-Intern--Summer-2027---United-States_R-287618-1",
+      },
+    ],
+  },
+  {
+    id: "mckesson",
+    company: "McKesson",
+    roles: [
+      {
+        title: "Software Engineer Intern - Summer 2027 (Longmont)",
+        applyUrl:
+          "https://mckesson.wd3.myworkdayjobs.com/en-US/External_Careers/job/USA-CO-Longmont/Software-Engineer-Intern---Summer-2027_JR0152469",
+      },
+      {
+        title: "Software Engineer Intern - Summer 2027 (Atlanta)",
+        applyUrl:
+          "https://mckesson.wd3.myworkdayjobs.com/en-US/External_Careers/job/USA-GA-Atlanta/Software-Engineer-Intern---Summer-2027_JR0153235",
+      },
+    ],
+  },
+  {
+    id: "c3-ai",
+    company: "C3 AI",
+    roles: [
+      {
+        title: "Software Engineer - Intern (Summer 2027)",
+        applyUrl: "https://job-boards.greenhouse.io/c3ascend/jobs/8739036002",
+      },
+      {
+        title: "Data Science - Intern (Summer 2027)",
+        applyUrl: "https://job-boards.greenhouse.io/c3ascend/jobs/8738917002",
+      },
+    ],
+  },
+  {
+    id: "appian",
+    company: "Appian",
+    roles: [
+      {
+        title: "Software Engineering Intern",
+        applyUrl: "https://job-boards.greenhouse.io/appian/jobs/8041237",
+      },
+    ],
+  },
+  {
+    id: "commure",
+    company: "Commure",
+    roles: [
+      {
+        title: "Software Engineering Intern, Summer 2027",
+        applyUrl:
+          "https://jobs.ashbyhq.com/commure/62841aa1-3ee5-4547-8380-637b737b2cb3",
+      },
+    ],
+  },
+  {
+    id: "dv-trading",
+    company: "DV Trading",
+    roles: [
+      {
+        title: "Software Engineer Intern - Summer 2027 (DV Commodities)",
+        applyUrl: "https://job-boards.greenhouse.io/dvtrading/jobs/4719119005",
+      },
+      {
+        title: "Software Developer Intern - Summer 2027 (DV Equities)",
+        applyUrl: "https://job-boards.greenhouse.io/dvtrading/jobs/4733138005",
+      },
+      {
+        title: "AI Engineer Intern - Summer 2027",
+        applyUrl: "https://job-boards.greenhouse.io/dvtrading/jobs/4732429005",
+      },
+    ],
+  },
+  {
+    id: "akuna-capital",
+    company: "Akuna Capital",
+    roles: [
+      {
+        title: "Software Engineer Intern - C++, Summer 2027",
+        applyUrl: "https://www.akunacapital.com/careers/job/8018847/?gh_jid=8018847",
+      },
+      {
+        title: "Software Engineer Intern - Python, Summer 2027",
+        applyUrl: "https://www.akunacapital.com/careers/job/8018853/?gh_jid=8018853",
+      },
+      {
+        title: "Software Engineer Intern - Full Stack Web, Summer 2027",
+        applyUrl: "https://www.akunacapital.com/careers/job/8018893/?gh_jid=8018893",
+      },
+      {
+        title: "Quantitative Research Intern, Summer 2027",
+        applyUrl: "https://www.akunacapital.com/careers/job/8036614/?gh_jid=8036614",
+      },
+    ],
+  },
+  {
+    id: "five-rings",
+    company: "Five Rings",
+    roles: [
+      {
+        title: "Summer Intern 2027 - Software Developer",
+        applyUrl: "https://job-boards.greenhouse.io/fiveringsllc/jobs/5349707008",
+      },
+      {
+        title: "Summer Intern 2027 - Quantitative Trader",
+        applyUrl: "https://job-boards.greenhouse.io/fiveringsllc/jobs/5139668008",
+      },
+    ],
+  },
+  {
+    id: "waymo",
+    company: "Waymo",
+    roles: [
+      {
+        title: "2027 Summer Intern, BS, SysEng Software Engineer",
+        applyUrl: "https://careers.withwaymo.com/jobs?gh_jid=8174099",
+      },
+      {
+        title: "2027 Summer Intern, MS, Software Engineering, Behavior Test",
+        applyUrl: "https://careers.withwaymo.com/jobs?gh_jid=8174504",
+      },
+      {
+        title: "2027 Summer Intern, BS/MS, Pipeline and Test Health Engineer",
+        applyUrl: "https://careers.withwaymo.com/jobs?gh_jid=8177651",
+      },
+    ],
+  },
+  {
+    id: "lyft",
+    company: "Lyft",
+    roles: [
+      {
+        title: "Software Engineer Intern, Backend (Summer 2027)",
+        applyUrl:
+          "https://app.careerpuck.com/job-board/lyft/job/8767726002?gh_jid=8767726002",
+      },
+      {
+        title: "Software Engineer Intern, Frontend (Summer 2027)",
+        applyUrl:
+          "https://app.careerpuck.com/job-board/lyft/job/8797819002?gh_jid=8797819002",
+      },
+      {
+        title: "Software Engineer Intern, Fullstack (Summer 2027)",
+        applyUrl:
+          "https://app.careerpuck.com/job-board/lyft/job/8797859002?gh_jid=8797859002",
+      },
+      {
+        title: "Software Engineer Intern, Machine Learning (Summer 2027)",
+        applyUrl:
+          "https://app.careerpuck.com/job-board/lyft/job/8802332002?gh_jid=8802332002",
+      },
+    ],
+  },
+  {
+    id: "scale-ai",
+    company: "Scale AI",
+    roles: [
+      {
+        title: "Software Engineering Intern (Summer 2027)",
+        applyUrl: "https://job-boards.greenhouse.io/scaleai/jobs/4730845005",
       },
     ],
   },
